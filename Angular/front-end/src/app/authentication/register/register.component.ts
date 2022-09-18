@@ -1,0 +1,26 @@
+import { Component, OnInit } from '@angular/core';
+import {faFacebookF, faGithub, faGoogle, faTwitter} from "@fortawesome/free-brands-svg-icons";
+import {faAddressCard, faUser } from '@fortawesome/free-regular-svg-icons';
+import { faKey, faLock } from '@fortawesome/free-solid-svg-icons';
+
+@Component({
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
+})
+export class RegisterComponent implements OnInit {
+  faFacebook = faFacebookF;
+  faTwitter = faTwitter;
+  faGoogle = faGoogle;
+  faGithub = faGithub;
+  faUser = faUser;
+  faKey = faKey;
+  faLock = faLock;
+  faAddressCard = faAddressCard;
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}

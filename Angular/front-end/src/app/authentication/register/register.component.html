@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="register-wrapper">
+    <h2 class="register-heading mb-30 text-center">Greetings!</h2>
+    <p class="text-bold-600 welcome-label text-center mb-10">Please provide the following data</p>
+    <form>
+      <!-- Email input -->
+      <div class="input-group mb-4">
+        <span class="input-group-text" id="username-icon"><fa-icon [icon]="faUser"></fa-icon></span>
+        <input type="text" id="username" name="username" placeholder="Username" class="form-control"/>
+      </div>
+
+      <div class="input-group mb-4">
+        <span class="input-group-text" id="first-name-icon"><fa-icon [icon]="faAddressCard"></fa-icon></span>
+        <input type="text" id="first-name" name="firstName" placeholder="First Name" class="form-control"/>
+      </div>
+
+      <div class="input-group mb-4">
+        <span class="input-group-text" id="last-name-icon"><fa-icon [icon]="faAddressCard"></fa-icon></span>
+        <input type="text" id="last-name" name="lastName" placeholder="Last Name" class="form-control"/>
+      </div>
+
+      <!-- Password input -->
+      <div class="input-group mb-4">
+        <span class="input-group-text" id="password-icon"><fa-icon [icon]="faKey"></fa-icon></span>
+        <input type="password" id="password" name="password" placeholder="Password" class="form-control"/>
+      </div>
+
+      <div class="input-group mb-4">
+        <span class="input-group-text" id="confirm-password-icon"><fa-icon [icon]="faLock"></fa-icon></span>
+        <input type="password" id="confirm-password" name="confirmPassword" placeholder="Confirm password" class="form-control"/>
+      </div>
+
+      <!-- 2 column grid layout for inline styling -->
+      <div class="row mb-4">
+        <div class="col d-flex justify-content-center">
+          <!-- Checkbox -->
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked/>
+            <label class="form-check-label" for="form2Example31"> Remember me </label>
+          </div>
+        </div>
+
+        <div class="col">
+          <!-- Simple link -->
+          <a href="#">Forgot password?</a>
+        </div>
+      </div>
+
+      <!-- Submit button -->
+      <button type="button" class="btn btn-primary btn-block mb-4 submit-btn">Sign up</button>
+      <!-- Register buttons -->
+      <div class="text-center">
+        <p>Have an account? <a href="#" routerLink="/login">Login</a></p>
+        <p>or sign up with:</p>
+        <button type="button" class="btn btn-link btn-floating mx-1">
+          <fa-icon [icon]="faFacebook"></fa-icon>
+        </button>
+
+        <button type="button" class="btn btn-link btn-floating mx-1">
+          <fa-icon [icon]="faGoogle"></fa-icon>
+        </button>
+
+        <button type="button" class="btn btn-link btn-floating mx-1">
+          <fa-icon [icon]="faTwitter"></fa-icon>
+        </button>
+
+        <button type="button" class="btn btn-link btn-floating mx-1">
+          <fa-icon [icon]="faGithub"></fa-icon>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

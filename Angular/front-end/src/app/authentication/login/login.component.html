@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="login-wrapper">
+    <h2 class="login-heading mb-30 text-center">Greetings!</h2>
+    <p class="text-bold-600 welcome-label text-center mb-10">Please enter username and password</p>
+    <form>
+      <!-- Email input -->
+      <div class="input-group mb-4">
+        <span class="input-group-text" id="username-icon"><fa-icon [icon]="faUser"></fa-icon></span>
+        <input type="text" id="username-input" name="username" placeholder="Username" class="form-control"/>
+<!--        <label class="form-label" for="username-input">Username</label>-->
+      </div>
+
+      <!-- Password input -->
+      <div class="input-group mb-4">
+        <span class="input-group-text" id="password-icon"><fa-icon [icon]="faKey"></fa-icon></span>
+        <input type="password" id="password-input" name="password" placeholder="Password" class="form-control"/>
+<!--        <label class="form-label" for="password-input">Password</label>-->
+      </div>
+
+      <!-- 2 column grid layout for inline styling -->
+      <div class="row mb-4">
+        <div class="col d-flex justify-content-center">
+          <!-- Checkbox -->
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked/>
+            <label class="form-check-label" for="form2Example31"> Remember me </label>
+          </div>
+        </div>
+
+        <div class="col">
+          <!-- Simple link -->
+          <a href="#">Forgot password?</a>
+        </div>
+      </div>
+
+      <!-- Submit button -->
+      <button type="button" class="btn btn-primary btn-block mb-4 submit-btn">Sign in</button>
+
+      <!-- Register buttons -->
+      <div class="text-center">
+        <p>Not a member? <a href="#" routerLink="/register">Register</a></p>
+        <p>or sign up with:</p>
+        <button type="button" class="btn btn-link btn-floating mx-1">
+          <fa-icon [icon]="faFacebook"></fa-icon>
+        </button>
+
+        <button type="button" class="btn btn-link btn-floating mx-1">
+          <fa-icon [icon]="faGoogle"></fa-icon>
+        </button>
+
+        <button type="button" class="btn btn-link btn-floating mx-1">
+          <fa-icon [icon]="faTwitter"></fa-icon>
+        </button>
+
+        <button type="button" class="btn btn-link btn-floating mx-1">
+          <fa-icon [icon]="faGithub"></fa-icon>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+@use 'reset';
+
+$base-color-green: #3eda5f;
+$base-color-white: #e4e6eb;
+
+.text-bold-600 {
+  font-weight: 600;
+}
+
+.mb-10 {
+  margin-bottom: 10px !important;
+}
+
+.mb-30 {
+  margin-bottom: 30px !important;
+}
