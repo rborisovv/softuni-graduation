@@ -1,5 +1,6 @@
 package bg.rborisov.softunigraduation.web;
 
+import bg.rborisov.softunigraduation.dto.UserLoginDto;
 import bg.rborisov.softunigraduation.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,8 @@ public class AuthResource {
     }
 
     @GetMapping("/login")
-    public ResponseEntity<String> login(@RequestParam("username") String username,
-                                        @RequestParam("password") String password) {
+    public ResponseEntity<UserLoginDto> login(@RequestParam("username") String username,
+                                              @RequestParam("password") String password) {
         return userService.login(username, password);
     }
 }

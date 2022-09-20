@@ -50,10 +50,4 @@ public class User extends BaseEntity implements Serializable {
 
     @Column(name = "is_locked", nullable = false)
     private Boolean isLocked;
-
-    @Column(name = "is_expired", nullable = false)
-    private Boolean isExpired;
-
-    @Column(name = "is_disabled", nullable = false)
-    private Boolean isDisabled;
 }

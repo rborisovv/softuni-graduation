@@ -33,9 +33,7 @@ public class AppUserDetailsService implements UserDetailsService {
                 .password(user.getPassword())
                 .roles(user.getRole().getName())
                 .authorities(this.mapAuthorities(user.getRole().getAuthorities()))
-                .accountExpired(user.getIsExpired())
                 .accountLocked(user.getIsLocked())
-                .disabled(user.getIsDisabled())
                 .build();
     }
 

@@ -56,9 +56,7 @@ public class DatabaseInit implements CommandLineRunner {
                     .role(OwnerRole)
                     .joinDate(new Date())
                     .imageUrl(null)
-                    .isExpired(false)
                     .isLocked(false)
-                    .isDisabled(false)
                     .build();
 
 
