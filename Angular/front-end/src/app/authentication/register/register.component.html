@@ -4,10 +4,15 @@
     <p class="text-bold-600 welcome-label text-center mb-10">Please provide the following data</p>
     <form>
       <!-- Email input -->
-      <div class="input-group mb-4">
-        <span class="input-group-text" id="username-icon"><fa-icon [icon]="faUser"></fa-icon></span>
-        <input type="text" id="username" name="username" placeholder="Username" class="form-control"/>
-      </div>
+        <div class="input-group mb-4">
+          <span class="input-group-text" id="username-icon"><fa-icon [icon]="faUser"></fa-icon></span>
+          <input type="text" id="username" name="username" placeholder="Username" class="form-control"/>
+        </div>
+
+        <div class="input-group mb-4">
+          <span class="input-group-text" id="email-icon"><fa-icon [icon]="faEnvelope"></fa-icon></span>
+          <input type="text" id="email" name="email" placeholder="Email" class="form-control"/>
+        </div>
 
       <div class="input-group mb-4">
         <span class="input-group-text" id="first-name-icon"><fa-icon [icon]="faAddressCard"></fa-icon></span>
@@ -27,11 +32,12 @@
 
       <div class="input-group mb-4">
         <span class="input-group-text" id="confirm-password-icon"><fa-icon [icon]="faLock"></fa-icon></span>
-        <input type="password" id="confirm-password" name="confirmPassword" placeholder="Confirm password" class="form-control"/>
+        <input type="password" id="confirm-password" name="confirmPassword" placeholder="Confirm password"
+               class="form-control"/>
       </div>
 
       <!-- 2 column grid layout for inline styling -->
-      <div class="row mb-4">
+      <div class="row mb-4 text-center">
         <div class="col d-flex justify-content-center">
           <!-- Checkbox -->
           <div class="form-check">

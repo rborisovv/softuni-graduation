@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {faFacebookF, faGithub, faGoogle, faTwitter} from "@fortawesome/free-brands-svg-icons";
-import {faAddressCard, faUser } from '@fortawesome/free-regular-svg-icons';
-import { faKey, faLock } from '@fortawesome/free-solid-svg-icons';
+import {faAddressCard, faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
+import {faKey, faLock } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-register',
@@ -17,6 +17,7 @@ export class RegisterComponent implements OnInit {
   faKey = faKey;
   faLock = faLock;
   faAddressCard = faAddressCard;
+  faEnvelope = faEnvelope;
 
   constructor() { }
 

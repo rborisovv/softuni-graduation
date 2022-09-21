@@ -10,8 +10,8 @@
 }
 
 .register-wrapper {
-  width: 40%;
-  padding:20px 70px 70px 70px;
+  padding: 20px 70px 70px 70px;
+  width: 45%;
 
   -webkit-box-shadow: 0 0 17px 5px rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 17px 5px rgba(0, 0, 0, 0.2);
@@ -26,8 +26,13 @@
   }
 }
 
+.row > * {
+  padding-right: 0;
+}
+
 @media screen and (max-width: 800px) {
   .register-wrapper {
+    padding: 20px 2rem;
     width: 100% !important;
   }
 }
