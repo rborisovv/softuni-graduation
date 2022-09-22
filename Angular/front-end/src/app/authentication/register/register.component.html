@@ -4,36 +4,54 @@
     <p class="text-bold-600 welcome-label text-center mb-10">Please provide the following data</p>
     <form>
       <!-- Email input -->
+      <div class="row">
         <div class="input-group mb-4">
           <span class="input-group-text" id="username-icon"><fa-icon [icon]="faUser"></fa-icon></span>
           <input type="text" id="username" name="username" placeholder="Username" class="form-control"/>
         </div>
+      </div>
 
+      <div class="row">
         <div class="input-group mb-4">
           <span class="input-group-text" id="email-icon"><fa-icon [icon]="faEnvelope"></fa-icon></span>
           <input type="text" id="email" name="email" placeholder="Email" class="form-control"/>
         </div>
-
-      <div class="input-group mb-4">
-        <span class="input-group-text" id="first-name-icon"><fa-icon [icon]="faAddressCard"></fa-icon></span>
-        <input type="text" id="first-name" name="firstName" placeholder="First Name" class="form-control"/>
       </div>
 
-      <div class="input-group mb-4">
-        <span class="input-group-text" id="last-name-icon"><fa-icon [icon]="faAddressCard"></fa-icon></span>
-        <input type="text" id="last-name" name="lastName" placeholder="Last Name" class="form-control"/>
+
+      <div class="row">
+        <div class="input-group col mb-4">
+          <span class="input-group-text" id="first-name-icon"><fa-icon [icon]="faAddressCard"></fa-icon></span>
+          <input type="text" id="first-name" name="firstName" placeholder="First Name" class="form-control"/>
+        </div>
+
+        <div class="input-group col mb-4">
+          <span class="input-group-text" id="last-name-icon"><fa-icon [icon]="faAddressCard"></fa-icon></span>
+          <input type="text" id="last-name" name="lastName" placeholder="Last Name" class="form-control"/>
+        </div>
       </div>
+
+
+      <div class="row justify-content-center">
+        <div class="input-group col mb-4">
+          <span class="input-group-text" id="birthdate-icon"><fa-icon [icon]="faCalendar"></fa-icon></span>
+          <input id="birthdate" placeholder="Birthdate" class="form-control" onblur="(this.type='text')" onfocus="(this.type='date')" type="text"/>
+        </div>
+      </div>
+
 
       <!-- Password input -->
-      <div class="input-group mb-4">
-        <span class="input-group-text" id="password-icon"><fa-icon [icon]="faKey"></fa-icon></span>
-        <input type="password" id="password" name="password" placeholder="Password" class="form-control"/>
-      </div>
+      <div class="row">
+        <div class="input-group col mb-4">
+          <span class="input-group-text" id="password-icon"><fa-icon [icon]="faKey"></fa-icon></span>
+          <input type="password" id="password" name="password" placeholder="Password" class="form-control"/>
+        </div>
 
-      <div class="input-group mb-4">
-        <span class="input-group-text" id="confirm-password-icon"><fa-icon [icon]="faLock"></fa-icon></span>
-        <input type="password" id="confirm-password" name="confirmPassword" placeholder="Confirm password"
-               class="form-control"/>
+        <div class="input-group col mb-4">
+          <span class="input-group-text" id="confirm-password-icon"><fa-icon [icon]="faLock"></fa-icon></span>
+          <input type="password" id="confirm-password" name="confirmPassword" placeholder="Confirm password"
+                 class="form-control"/>
+        </div>
       </div>
 
       <!-- 2 column grid layout for inline styling -->

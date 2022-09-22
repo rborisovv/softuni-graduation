@@ -2,18 +2,17 @@
   <div class="login-wrapper">
     <h2 class="login-heading mb-30 text-center">Greetings!</h2>
     <p class="text-bold-600 welcome-label text-center mb-10">Please enter username and password</p>
-    <form>
+    <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
       <!-- Email input -->
       <div class="input-group mb-4">
         <span class="input-group-text" id="username-icon"><fa-icon [icon]="faUser"></fa-icon></span>
-        <input type="text" id="username-input" name="username" placeholder="Username" class="form-control"/>
-<!--        <label class="form-label" for="username-input">Username</label>-->
+        <input type="text" #usernameInput="ngModel" ngModel required id="username-input" name="username" placeholder="Username" class="form-control"/>
       </div>
 
       <!-- Password input -->
       <div class="input-group mb-4">
         <span class="input-group-text" id="password-icon"><fa-icon [icon]="faKey"></fa-icon></span>
-        <input type="password" id="password-input" name="password" placeholder="Password" class="form-control"/>
+        <input type="password" id="password-input" #passwordInput="ngModel" ngModel required name="password" placeholder="Password" class="form-control"/>
 <!--        <label class="form-label" for="password-input">Password</label>-->
       </div>
 
@@ -34,7 +33,7 @@
       </div>
 
       <!-- Submit button -->
-      <button type="button" class="btn btn-primary btn-block mb-4 submit-btn">Sign in</button>
+      <button type="submit" class="btn btn-primary btn-block mb-4 submit-btn">Sign in</button>
 
       <!-- Register buttons -->
       <div class="text-center">

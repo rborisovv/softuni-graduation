@@ -30,6 +30,10 @@
   padding-right: 0;
 }
 
+#birthdate {
+  cursor: default;
+}
+
 @media screen and (max-width: 800px) {
   .register-wrapper {
     padding: 20px 2rem;

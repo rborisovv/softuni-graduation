@@ -1,10 +1,11 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {LoginComponent} from './login/login.component';
+import {RegisterComponent} from './register/register.component';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {RouterModule} from "@angular/router";
-
+import {FormsModule} from "@angular/forms";
+import {UserService} from "../service/user.service";
 
 
 @NgModule({
@@ -15,8 +16,11 @@ import {RouterModule} from "@angular/router";
   imports: [
     CommonModule,
     FontAwesomeModule,
-    RouterModule
+    RouterModule,
+    FormsModule
   ],
+  providers: [UserService],
   exports: [LoginComponent, RegisterComponent]
 })
-export class AuthenticationModule { }
+export class AuthenticationModule {
+}
