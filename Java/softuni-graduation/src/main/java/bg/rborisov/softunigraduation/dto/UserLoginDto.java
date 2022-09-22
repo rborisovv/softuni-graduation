@@ -1,9 +1,9 @@
 package bg.rborisov.softunigraduation.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
-
-import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,18 +13,12 @@ import java.util.Date;
 @ToString
 public class UserLoginDto {
 
+    @NotBlank
+    @Size(min = 5, max = 30)
     private String username;
 
-    private String email;
-
-    private String firstName;
-
-    private String lastName;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "Europe/Sofia")
-    private Date joinDate;
-
-    private String imageUrl;
-
-    private Boolean isLocked;
+    @NotBlank
+    @Size(min = 6, max = 50)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
 }

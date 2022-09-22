@@ -55,6 +55,7 @@ public class DatabaseInit implements CommandLineRunner {
                     .lastName("Borisov")
                     .role(OwnerRole)
                     .joinDate(new Date())
+                    .birthDate(new Date())
                     .imageUrl(null)
                     .isLocked(false)
                     .build();

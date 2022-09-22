@@ -5,7 +5,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,8 +18,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Set;
 
+import static bg.rborisov.softunigraduation.common.JwtConstants.*;
 import static bg.rborisov.softunigraduation.constant.SecurityConstant.HTTP_OPTIONS_NAME;
-import static bg.rborisov.softunigraduation.constant.SecurityConstant.TOKEN_PREFIX;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -39,7 +38,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }
 
-        String authorizationHeaders = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+
+        String authorizationHeaders = request.getHeader(JWT_COOKIE_NAME);
+
         if (authorizationHeaders == null || !authorizationHeaders.startsWith(TOKEN_PREFIX)) {
             filterChain.doFilter(request, response);
             return;

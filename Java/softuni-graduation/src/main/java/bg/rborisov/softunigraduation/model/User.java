@@ -1,6 +1,5 @@
 package bg.rborisov.softunigraduation.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -42,8 +41,11 @@ public class User extends BaseEntity implements Serializable {
     private Role role;
 
     @Column(name = "join_date", nullable = false, updatable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "Europe/Sofia")
     private Date joinDate;
+
+    @Column(name = "birth_date", nullable = false, updatable = false)
+    private Date birthDate;
+
 
     @Column(name = "image_url")
     private String imageUrl;
