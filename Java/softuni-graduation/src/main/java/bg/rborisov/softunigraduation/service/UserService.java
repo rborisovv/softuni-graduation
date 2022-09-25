@@ -45,7 +45,6 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final Validator validator;

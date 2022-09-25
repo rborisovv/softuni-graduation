@@ -7,8 +7,7 @@ import {CommonModule} from "../common/common.module";
     HomeComponent
   ],
   imports: [
-    CommonModule
-  ]
+    CommonModule]
 })
 export class CoreModule {
 }

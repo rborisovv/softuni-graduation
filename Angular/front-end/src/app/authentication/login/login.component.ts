@@ -6,6 +6,8 @@ import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {NotificationType} from "../../enumeration/notification-enum";
+import {NotifierService} from "angular-notifier";
 
 @Component({
   selector: 'app-login',
@@ -27,7 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     password: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(50)])
   });
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private router: Router, private readonly notifier: NotifierService) {
   }
 
   ngOnInit(): void {
@@ -51,6 +53,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('/home');
       }
     })
+    this.notifier.notify(NotificationType.SUCCESS, 'Welcome, Username');
     this.subscriptions.push();
   }
 

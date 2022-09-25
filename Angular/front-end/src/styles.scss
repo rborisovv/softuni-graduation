@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @use 'reset';
 
+@import "angular-notifier/styles.css";
+
 $base-color-green: #3eda5f;
 $base-color-white: #e4e6eb;
 
@@ -14,4 +16,8 @@ $base-color-white: #e4e6eb;
 
 .mb-30 {
   margin-bottom: 30px !important;
+}
+
+.notifier__notification svg {
+  vertical-align: text-top !important;
 }
