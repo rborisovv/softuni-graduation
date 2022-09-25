@@ -1,12 +1,19 @@
 package bg.rborisov.softunigraduation.service;
 
+import bg.rborisov.softunigraduation.dao.RoleRepository;
 import bg.rborisov.softunigraduation.dao.UserRepository;
+import bg.rborisov.softunigraduation.dto.UserLoginDto;
 import bg.rborisov.softunigraduation.dto.UserRegisterDto;
 import bg.rborisov.softunigraduation.dto.UserWelcomeDto;
+import bg.rborisov.softunigraduation.enumeration.RoleEnum;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
+import bg.rborisov.softunigraduation.model.Role;
 import bg.rborisov.softunigraduation.model.User;
 import bg.rborisov.softunigraduation.util.JwtProvider;
 import jakarta.servlet.http.Cookie;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +28,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Optional;
+import java.util.Set;
 
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.USER_NOT_FOUND;
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.USER_WITH_USERNAME_OR_EMAIL_EXISTS;
@@ -39,17 +47,30 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
+    private final Validator validator;
 
-    public UserService(JwtProvider jwtProvider, UserDetailsService userDetailsService, AuthenticationManager authenticationManager, ModelMapper modelMapper, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(JwtProvider jwtProvider, UserDetailsService userDetailsService, AuthenticationManager authenticationManager, ModelMapper modelMapper,
+                       UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, Validator validator) {
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
         this.authenticationManager = authenticationManager;
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+        this.validator = validator;
     }
 
-    public ResponseEntity<UserWelcomeDto> login(String username, String password) {
+    public ResponseEntity<UserWelcomeDto> login(UserLoginDto userLoginDto) {
+        Set<ConstraintViolation<UserLoginDto>> violations = validator.validate(userLoginDto);
+
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
+
+        String username = userLoginDto.getUsername();
+        String password = userLoginDto.getPassword();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
@@ -74,12 +95,21 @@ public class UserService {
     }
 
     public UserRegisterDto register(UserRegisterDto registerDto) throws UserWithUsernameOrEmailExists {
+        Set<ConstraintViolation<UserRegisterDto>> violations = validator.validate(registerDto);
+
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
+
         preRegisterValidation(registerDto);
         registerDto.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 
         User user = modelMapper.map(registerDto, User.class);
         user.setUserId(RandomStringUtils.randomAscii(10).replaceAll("\s", ""));
-        user.setJoinDate(new Date());
+        Role userRole = roleRepository.findRoleByName(RoleEnum.USER.name());
+        user.setRole(userRole);
+        user.setJoinDate(LocalDate.now());
+        user.setIsLocked(false);
         userRepository.save(user);
 
         return registerDto;

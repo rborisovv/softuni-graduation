@@ -11,12 +11,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static bg.rborisov.softunigraduation.common.RoleAuthority.USER_AUTHORITIES;
 import static bg.rborisov.softunigraduation.enumeration.RoleEnum.OWNER;
+import static bg.rborisov.softunigraduation.enumeration.RoleEnum.USER;
 
 @Component
 public class DatabaseInit implements CommandLineRunner {
@@ -45,6 +46,11 @@ public class DatabaseInit implements CommandLineRunner {
                     .authorities(authorities)
                     .build();
 
+            Role userRole = Role.builder()
+                    .name(USER.name())
+                    .authorities(authorities)
+                    .build();
+
 
             User user = User.builder()
                     .userId(RandomStringUtils.randomAscii(10).replaceAll("\s", ""))
@@ -54,8 +60,8 @@ public class DatabaseInit implements CommandLineRunner {
                     .firstName("Radoslav")
                     .lastName("Borisov")
                     .role(OwnerRole)
-                    .joinDate(new Date())
-                    .birthDate(new Date())
+                    .joinDate(LocalDate.now())
+                    .birthDate(LocalDate.now())
                     .imageUrl(null)
                     .isLocked(false)
                     .build();
@@ -63,6 +69,7 @@ public class DatabaseInit implements CommandLineRunner {
 
             authorityRepository.saveAll(authorities);
             roleRepository.save(OwnerRole);
+            roleRepository.save(userRole);
             userRepository.save(user);
         }
     }

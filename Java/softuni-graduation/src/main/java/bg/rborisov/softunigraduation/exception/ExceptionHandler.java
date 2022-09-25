@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.Locale;
 
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.ACCOUNT_LOCKED;
+import static bg.rborisov.softunigraduation.common.ExceptionMessages.USER_WITH_USERNAME_OR_EMAIL_EXISTS;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @RestControllerAdvice
@@ -19,6 +20,11 @@ public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(LockedException.class)
     public ResponseEntity<HttpResponse> accountLockedException() {
         return createHttpResponse(BAD_REQUEST, ACCOUNT_LOCKED);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(UserWithUsernameOrEmailExists.class)
+    public ResponseEntity<HttpResponse> usernameOrEmailExists() {
+        return createHttpResponse(BAD_REQUEST, USER_WITH_USERNAME_OR_EMAIL_EXISTS);
     }
 
     private ResponseEntity<HttpResponse> createHttpResponse(HttpStatus httpStatus, String message) {

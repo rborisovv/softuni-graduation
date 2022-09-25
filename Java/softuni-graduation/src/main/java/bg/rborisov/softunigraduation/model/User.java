@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,10 +41,10 @@ public class User extends BaseEntity implements Serializable {
     private Role role;
 
     @Column(name = "join_date", nullable = false, updatable = false)
-    private Date joinDate;
+    private LocalDate joinDate;
 
     @Column(name = "birth_date", nullable = false, updatable = false)
-    private Date birthDate;
+    private LocalDate birthDate;
 
 
     @Column(name = "image_url")
