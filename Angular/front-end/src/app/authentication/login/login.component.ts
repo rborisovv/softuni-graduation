@@ -5,7 +5,7 @@ import {faKey} from '@fortawesome/free-solid-svg-icons';
 import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
-import {IUser} from "../../interface/user-login";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-login',
@@ -22,6 +22,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   faUser = faUser;
   faKey = faKey;
 
+  loginForm = new FormGroup({
+    username: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(30)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(50)])
+  });
+
   constructor(private userService: UserService, private router: Router) {
   }
 
@@ -33,12 +38,27 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  public onLogin(user: IUser) {
-    const subscription: Subscription = this.userService.loginUser(user).subscribe({
+  public onLogin() {
+    if (!this.username.value || !this.password.value) {
+      return;
+    }
+    const formData: FormData = this.userService.createFormData({
+      'username': this.username.value,
+      'password': this.password.value
+    });
+    this.userService.loginUser(formData).subscribe({
       next: () => {
         this.router.navigateByUrl('/home');
       }
-    });
-    this.subscriptions.push(subscription);
+    })
+    this.subscriptions.push();
+  }
+
+  get username() {
+    return this.loginForm.get('username');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
   }
 }

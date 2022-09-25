@@ -30,6 +30,24 @@
   padding-right: 0;
 }
 
+.error-messages {
+  position: relative;
+  bottom: 1.4rem;
+}
+
+.name-messgaes-wrapper {
+
+}
+
+.password-messages, .confirm-password-messages, .name-messages {
+  width: 50% !important;
+}
+
+.password-matches-message {
+  position: relative;
+  top: 1rem;
+}
+
 #birthdate {
   cursor: default;
 }

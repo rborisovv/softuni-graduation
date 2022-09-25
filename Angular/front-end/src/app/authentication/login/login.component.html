@@ -2,18 +2,46 @@
   <div class="login-wrapper">
     <h2 class="login-heading mb-30 text-center">Greetings!</h2>
     <p class="text-bold-600 welcome-label text-center mb-10">Please enter username and password</p>
-    <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <!-- Email input -->
-      <div class="input-group mb-4">
-        <span class="input-group-text" id="username-icon"><fa-icon [icon]="faUser"></fa-icon></span>
-        <input type="text" #usernameInput="ngModel" ngModel required id="username-input" name="username" placeholder="Username" class="form-control"/>
+      <div class="row">
+        <div class="input-group mb-4">
+          <span class="input-group-text" id="username-icon"><fa-icon [icon]="faUser"></fa-icon></span>
+          <input type="text" id="username-input" formControlName="username" required name="username"
+                 placeholder="Username"
+                 [ngClass]="{'is-valid': !username.errors, 'is-invalid': (username.errors && username.touched)}"
+                 class="form-control"/>
+        </div>
+        <div class="error-messages text-danger">
+          <div *ngIf="username.errors?.['required'] && username.touched">Username is required.</div>
+          <div *ngIf="username.errors?.['minlength'] && username.touched">The username must be at least 5 characters
+            long.
+          </div>
+          <div *ngIf="username.errors?.['maxlength'] && username.touched">The maximum length of the username is 30
+            symbols.
+          </div>
+        </div>
       </div>
 
       <!-- Password input -->
-      <div class="input-group mb-4">
-        <span class="input-group-text" id="password-icon"><fa-icon [icon]="faKey"></fa-icon></span>
-        <input type="password" id="password-input" #passwordInput="ngModel" ngModel required name="password" placeholder="Password" class="form-control"/>
-<!--        <label class="form-label" for="password-input">Password</label>-->
+      <div class="row">
+        <div class="input-group mb-4">
+          <span class="input-group-text" id="password-icon"><fa-icon [icon]="faKey"></fa-icon></span>
+          <input type="password" id="password-input" formControlName="password" required name="password"
+                 placeholder="Password"
+                 [ngClass]="{'is-valid': !password.errors, 'is-invalid': (password.errors && password.touched)}"
+                 class="form-control"/>
+        </div>
+
+        <div class="error-messages text-danger">
+          <div *ngIf="password.errors?.['required'] && password.touched">Password is required.</div>
+          <div *ngIf="password.errors?.['minlength'] && password.touched">The password must be at least 6 characters
+            long.
+          </div>
+          <div *ngIf="password.errors?.['maxlength'] && password.touched">The maximum length of the password is 50
+            symbols.
+          </div>
+        </div>
       </div>
 
       <!-- 2 column grid layout for inline styling -->
@@ -33,7 +61,7 @@
       </div>
 
       <!-- Submit button -->
-      <button type="submit" class="btn btn-primary btn-block mb-4 submit-btn">Sign in</button>
+      <button type="submit" [disabled]="loginForm.invalid" class="btn btn-primary btn-block mb-4 submit-btn">Sign in</button>
 
       <!-- Register buttons -->
       <div class="text-center">

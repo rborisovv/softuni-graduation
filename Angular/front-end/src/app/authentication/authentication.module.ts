@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {RouterModule} from "@angular/router";
-import {FormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 import {UserService} from "../service/user.service";
 
 
@@ -17,9 +17,9 @@ import {UserService} from "../service/user.service";
     CommonModule,
     FontAwesomeModule,
     RouterModule,
-    FormsModule
+    ReactiveFormsModule
   ],
-  providers: [UserService],
+  providers: [UserService, DatePipe],
   exports: [LoginComponent, RegisterComponent]
 })
 export class AuthenticationModule {

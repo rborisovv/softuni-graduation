@@ -26,6 +26,11 @@
   }
 }
 
+.error-messages {
+  position: relative;
+  bottom: 1.4rem;
+}
+
 @media screen and (max-width: 800px) {
   .register-wrapper {
     width: 100% !important;
