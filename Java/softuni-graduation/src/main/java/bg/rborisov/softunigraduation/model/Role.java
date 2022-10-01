@@ -21,7 +21,7 @@ public class Role extends BaseEntity implements Serializable {
     @NonNull
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
     private Set<Authority> authorities;
 }

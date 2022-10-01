@@ -1,1 +1,13 @@
 <app-header></app-header>
+
+<main>
+  <div class="wrapper">
+    <h1 class="main-heading">Welcome to Bulgaria ...</h1>
+    <div class="cards">
+      <div class="card" *ngFor="let city of cities">
+        <img class="card-img-top" [src]="city.imageUrl" alt="Card image cap">
+        <h5 class="card-title">{{city.name}}</h5>
+      </div>
+    </div>
+  </div>
+</main>

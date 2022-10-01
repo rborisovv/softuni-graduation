@@ -124,4 +124,8 @@ public class UserService {
             throw new UserWithUsernameOrEmailExists(USER_WITH_USERNAME_OR_EMAIL_EXISTS);
         }
     }
+
+    public void logout() {
+        SecurityContextHolder.clearContext();
+    }
 }

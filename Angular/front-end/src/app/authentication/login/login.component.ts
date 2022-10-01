@@ -19,7 +19,7 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 export class LoginComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
-  private jwtCookieName: string = 'X-XSRF-TOKEN';
+  private jwtCookieName: string = 'X-XSRF-JWT';
 
   faFacebook = faFacebookF;
   faTwitter = faTwitter;

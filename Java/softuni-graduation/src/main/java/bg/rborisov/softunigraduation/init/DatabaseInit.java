@@ -1,11 +1,13 @@
 package bg.rborisov.softunigraduation.init;
 
 import bg.rborisov.softunigraduation.dao.AuthorityRepository;
+import bg.rborisov.softunigraduation.dao.CityRepository;
 import bg.rborisov.softunigraduation.dao.RoleRepository;
 import bg.rborisov.softunigraduation.dao.UserRepository;
 import bg.rborisov.softunigraduation.model.Authority;
 import bg.rborisov.softunigraduation.model.Role;
 import bg.rborisov.softunigraduation.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,25 +22,33 @@ import static bg.rborisov.softunigraduation.enumeration.RoleEnum.OWNER;
 import static bg.rborisov.softunigraduation.enumeration.RoleEnum.USER;
 
 @Component
+@Slf4j
 public class DatabaseInit implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CityRepository cityRepository;
 
-    public DatabaseInit(UserRepository userRepository, RoleRepository roleRepository, AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder) {
+    private static final String DEFAULT_SYSTEM_PATH;
+
+    static {
+        DEFAULT_SYSTEM_PATH = System.getProperty("user.home");
+    }
+
+    public DatabaseInit(UserRepository userRepository, RoleRepository roleRepository, AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder, CityRepository cityRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.authorityRepository = authorityRepository;
         this.passwordEncoder = passwordEncoder;
+        this.cityRepository = cityRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
 
         if (userRepository.count() == 0 && roleRepository.count() == 0 && authorityRepository.count() == 0) {
-
             Set<Authority> authorities = this.mapAuthorities();
 
             Role OwnerRole = Role.builder()
@@ -50,7 +60,6 @@ public class DatabaseInit implements CommandLineRunner {
                     .name(USER.name())
                     .authorities(authorities)
                     .build();
-
 
             User user = User.builder()
                     .userId(RandomStringUtils.randomAscii(10).replaceAll("\s", ""))

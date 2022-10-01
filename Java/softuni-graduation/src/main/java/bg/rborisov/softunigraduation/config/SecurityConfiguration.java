@@ -1,6 +1,7 @@
 package bg.rborisov.softunigraduation.config;
 
 import bg.rborisov.softunigraduation.dao.UserRepository;
+import bg.rborisov.softunigraduation.httpFilter.JWTAuthEntryPoint;
 import bg.rborisov.softunigraduation.httpFilter.JwtAuthFilter;
 import bg.rborisov.softunigraduation.service.AppUserDetailsService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -27,7 +28,6 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static bg.rborisov.softunigraduation.constant.SecurityConstant.COOKIE_MAX_AGE;
 import static bg.rborisov.softunigraduation.constant.SecurityConstant.PUBLIC_URLS;
 
 @Configuration
@@ -36,10 +36,12 @@ import static bg.rborisov.softunigraduation.constant.SecurityConstant.PUBLIC_URL
 public class SecurityConfiguration {
     private final UserRepository userRepository;
     private final JwtAuthFilter jwtAuthFilter;
+    private final JWTAuthEntryPoint jwtAuthEntryPoint;
 
-    public SecurityConfiguration(UserRepository userRepository, @Lazy JwtAuthFilter jwtAuthFilter) {
+    public SecurityConfiguration(UserRepository userRepository, @Lazy JwtAuthFilter jwtAuthFilter, JWTAuthEntryPoint jwtAuthEntryPoint) {
         this.userRepository = userRepository;
         this.jwtAuthFilter = jwtAuthFilter;
+        this.jwtAuthEntryPoint = jwtAuthEntryPoint;
     }
 
     @Bean
@@ -53,21 +55,12 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public CookieCsrfTokenRepository cookieCsrfTokenRepository() {
-        CookieCsrfTokenRepository tokenRepository = new CookieCsrfTokenRepository();
-        tokenRepository.setCookieHttpOnly(false);
-        tokenRepository.setCookieMaxAge(COOKIE_MAX_AGE);
-        tokenRepository.setCookiePath("/");
-        return tokenRepository;
-    }
-
-    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors()
                 .and()
                 .csrf()
-                .csrfTokenRepository(cookieCsrfTokenRepository())
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .ignoringAntMatchers(PUBLIC_URLS)
                 .and()
                 .sessionManagement()
@@ -81,7 +74,11 @@ public class SecurityConfiguration {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthEntryPoint)
+                .and()
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout();
 
         return http.build();
     }
@@ -99,9 +96,9 @@ public class SecurityConfiguration {
         corsConfiguration.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
                 "Accept", "Jwt-Token", "Authorization", "Origin, Accept", "X-Request-With", "Access-Control-Request-Method",
-                "Access-Control-Request-Headers", "XSRF-TOKEN", "X-XSRF-TOKEN"));
+                "Access-Control-Request-Headers", "XSRF-TOKEN", "X-XSRF-TOKEN", "X-XSRF-JWT"));
         corsConfiguration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Jwt-Token", "Authorization",
-                "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "XSRF-TOKEN", "X-XSRF-TOKEN"));
+                "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "XSRF-TOKEN", "X-XSRF-TOKEN", "X-XSRF-JWT"));
         corsConfiguration.setAllowedMethods(Arrays.asList(
                 HttpMethod.GET.name(), HttpMethod.POST.name(),
                 HttpMethod.PUT.name(), HttpMethod.PATCH.name(),

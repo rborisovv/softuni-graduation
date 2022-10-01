@@ -47,4 +47,9 @@ public class AuthResource extends ExceptionHandler {
                 LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")), password, confirmPassword);
         return userService.register(userRegisterDto);
     }
+
+    @PostMapping("/logout")
+    public void logout() {
+        this.userService.logout();
+    }
 }

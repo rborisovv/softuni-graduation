@@ -6,12 +6,28 @@
 $base-color-green: #3eda5f;
 $base-color-white: #e4e6eb;
 
+.wrapper-1300 {
+  width: 1300px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.wrapper-1500 {
+  width: 1500px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
 .text-bold-600 {
   font-weight: 600;
 }
 
 .mb-10 {
   margin-bottom: 10px !important;
+}
+
+.mr-40 {
+  margin-right: 40px !important;
 }
 
 .mb-30 {

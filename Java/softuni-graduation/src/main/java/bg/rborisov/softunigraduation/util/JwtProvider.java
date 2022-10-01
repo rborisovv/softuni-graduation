@@ -63,7 +63,8 @@ public class JwtProvider {
     }
 
     public Set<GrantedAuthority> getAuthorities(String token) {
-        String[] claims = getClaimsFromUser(token);
+        String username = this.getSubject(token);
+        String[] claims = getClaimsFromUser(username);
         return stream(claims).map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
     }
 

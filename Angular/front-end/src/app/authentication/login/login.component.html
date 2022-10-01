@@ -52,13 +52,13 @@
           <!-- Checkbox -->
           <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked/>
-            <label class="form-check-label" for="form2Example31"> Remember me </label>
+            <label class="form-check-label rmbr" for="form2Example31"> Remember me </label>
           </div>
         </div>
 
         <div class="col">
           <!-- Simple link -->
-          <a href="#">Forgot password?</a>
+          <a class="fpsw" href="#">Forgot password?</a>
         </div>
       </div>
 
@@ -67,21 +67,21 @@
 
       <!-- Register buttons -->
       <div class="text-center">
-        <p>Not a member? <a href="#" routerLink="/register">Register</a></p>
+        <p>Not a member? <a class="reg" href="#" routerLink="/register">Register</a></p>
         <p>or sign up with:</p>
-        <button type="button" class="btn btn-link btn-floating mx-1">
+        <button type="button" class="btn btn-link btn-floating mx-1 social">
           <fa-icon [icon]="faFacebook"></fa-icon>
         </button>
 
-        <button type="button" class="btn btn-link btn-floating mx-1">
+        <button type="button" class="btn btn-link btn-floating mx-1 social">
           <fa-icon [icon]="faGoogle"></fa-icon>
         </button>
 
-        <button type="button" class="btn btn-link btn-floating mx-1">
+        <button type="button" class="btn btn-link btn-floating mx-1 social">
           <fa-icon [icon]="faTwitter"></fa-icon>
         </button>
 
-        <button type="button" class="btn btn-link btn-floating mx-1">
+        <button type="button" class="btn btn-link btn-floating mx-1 social">
           <fa-icon [icon]="faGithub"></fa-icon>
         </button>
       </div>

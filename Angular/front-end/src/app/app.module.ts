@@ -6,9 +6,11 @@ import {AppComponent} from './app.component';
 import {CommonModule} from "./common/common.module";
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {AuthenticationModule} from "./authentication/authentication.module";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
 import {CoreModule} from "./core/core.module";
 import {NotifierModule} from "angular-notifier";
+import {JwtModule} from "@auth0/angular-jwt";
+import {XsrfInterceptor} from "./interceptor/xsrf-interceptor";
 
 @NgModule({
   declarations: [
@@ -22,6 +24,10 @@ import {NotifierModule} from "angular-notifier";
     AuthenticationModule,
     CoreModule,
     HttpClientModule,
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'XSRF-TOKEN',
+      headerName: 'X-XSRF-TOKEN'
+    }),
     NotifierModule.withConfig(
       {
         position: {
@@ -31,7 +37,7 @@ import {NotifierModule} from "angular-notifier";
           },
           vertical: {
             position: 'top',
-            distance: 70,
+            distance: 90,
             gap: 10,
           },
         },
@@ -63,9 +69,20 @@ import {NotifierModule} from "angular-notifier";
           overlap: 150,
         },
       }
-    )
+    ),
+    JwtModule.forRoot({
+      config: {
+        allowedDomains: ['http://localhost:8080/'],
+        headerName: 'X-XSRF-TOKEN',
+        skipWhenExpired: true
+      }
+    })
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: XsrfInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {
