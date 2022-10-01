@@ -9,6 +9,8 @@ import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/form
 import {DatePipe} from "@angular/common";
 import {environment} from "../../../environments/environment.prod";
 import {Router} from "@angular/router";
+import {NotifierService} from "angular-notifier";
+import {NotificationType} from "../../enumeration/notification-enum";
 
 @Component({
   selector: 'app-register',
@@ -31,8 +33,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   faEnvelope = faEnvelope;
   faCalendar = faCalendarAlt;
 
-  constructor(private userService: UserService,
-              private datePipe: DatePipe, private router: Router) {
+  constructor(private userService: UserService, private datePipe: DatePipe, private router: Router, private notifier: NotifierService) {
   }
 
   registerForm = new FormGroup({
@@ -67,6 +68,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     const subscription: Subscription = this.userService.registerUser(formData).subscribe({
       next: () => {
         this.router.navigateByUrl('/login');
+        this.notifier.notify(NotificationType.SUCCESS, `Successfully registered ${this.username}`);
       }
     });
 
