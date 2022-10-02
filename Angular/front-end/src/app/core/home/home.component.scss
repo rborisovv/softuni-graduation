@@ -25,7 +25,7 @@
     scale: 1.15;
   }
 
-  & > img {
+  & img {
     height: 265px !important;
   }
 }
@@ -42,4 +42,24 @@
   color: #fff;
   font-size: 30px;
   font-weight: bold;
+}
+
+.card.mb-3 {
+  width: 100% !important;
+  scale: unset;
+}
+
+.modal-body {
+  width: 100% !important;
+}
+
+.modal-dialog {
+  max-width: unset;
+  width: 1500px;
+}
+
+.card img.img-fluid {
+  width: 600px;
+  max-width: none;
+  height: unset !important;
 }

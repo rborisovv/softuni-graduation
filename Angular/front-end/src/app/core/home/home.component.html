@@ -4,9 +4,46 @@
   <div class="wrapper">
     <h1 class="main-heading">Welcome to Bulgaria ...</h1>
     <div class="cards">
-      <div class="card" *ngFor="let city of cities">
-        <img class="card-img-top" [src]="city.imageUrl" alt="Card image cap">
-        <h5 class="card-title">{{city.name}}</h5>
+      <a href="javascript:void(0)" data-bs-toggle="modal" [attr.data-bs-target]="'#' + city.name.replace(' ', '')" data-bs-target="#Sofia" *ngFor="let city of cities">
+        <div class="card">
+          <img class="card-img-top" [src]="city.imageUrl" alt="Card image cap">
+          <h5 class="card-title">{{city.name}}</h5>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+  <div class="modal fade" [id]="city.name.replace(' ', '')" tabindex="-1" [attr.aria-labelledby]="city.name" aria-hidden="true" *ngFor="let city of cities">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-center" id="exampleModalLabel">{{city.name}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+
+          <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-6">
+                <img [src]="city.imageUrl" class="img-fluid rounded-start" alt="...">
+              </div>
+              <div class="col-md-6">
+                <div class="card-body">
+                  <h5 class="card-title">{{city.name}}</h5>
+                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                    additional content. This content is a little bit longer. </p>
+                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>
