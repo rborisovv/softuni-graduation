@@ -7,7 +7,6 @@ import {CookieService} from "ngx-cookie-service";
 import {NotifierService} from "angular-notifier";
 
 
-
 @NgModule({
     declarations: [
         HeaderComponent,
@@ -16,11 +15,11 @@ import {NotifierService} from "angular-notifier";
     imports: [
         FontAwesomeModule
     ],
-    exports: [
-        HeaderComponent
-    ],
+  exports: [
+    HeaderComponent
+  ],
   providers: [
     UserService, CookieService, NotifierService
   ]
 })
-export class CommonModule { }
+export class SharedModule { }

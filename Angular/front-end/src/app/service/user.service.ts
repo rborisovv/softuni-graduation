@@ -8,6 +8,10 @@ import {Observable} from "rxjs";
 export class UserService {
   private apiUrl: string = environment.apiHost;
 
+  public role: string = '';
+
+  public username: string = '';
+
   constructor(private http: HttpClient) {
   }
 

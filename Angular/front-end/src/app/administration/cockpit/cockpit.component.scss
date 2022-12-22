@@ -1,0 +1,26 @@
+@import "../../../common";
+
+main > .services, h1 {
+  margin-top: 40px;
+}
+
+.services {
+  & img {
+    width: 100px;
+  }
+
+  & .service-fig {
+    @include flex-horizontal-center-col;
+  }
+
+  & .col {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    height: 250px;
+
+    border-radius: 12px;
+
+    box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
+  }
+}

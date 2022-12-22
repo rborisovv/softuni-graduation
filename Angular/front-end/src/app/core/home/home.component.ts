@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {CityService} from "../../service/city.service";
-import {City} from "../../interface/city";
 
 @Component({
   selector: 'app-home',
@@ -8,20 +6,10 @@ import {City} from "../../interface/city";
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  public cities: City[];
 
-  constructor(private cityService: CityService) {
+  constructor() {
   }
 
   ngOnInit(): void {
-    this.getCity();
-  }
-
-  private getCity(): void {
-    this.cityService.findAllCities().subscribe({
-      next: (cities) => {
-        this.cities = cities;
-      }
-    })
   }
 }
