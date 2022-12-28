@@ -6,23 +6,28 @@ import bg.rborisov.softunigraduation.dto.UserWelcomeDto;
 import bg.rborisov.softunigraduation.exception.ExceptionHandler;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
 import bg.rborisov.softunigraduation.service.UserService;
+import bg.rborisov.softunigraduation.util.JwtProvider;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
+import static bg.rborisov.softunigraduation.common.JwtConstants.TOKEN_PREFIX;
 
 @RestController
 @RequestMapping("/user")
 public class AuthResource extends ExceptionHandler {
     private final UserService userService;
 
-    public AuthResource(UserService userService) {
+    private final JwtProvider jwtProvider;
+
+    public AuthResource(UserService userService, JwtProvider jwtProvider) {
         this.userService = userService;
+        this.jwtProvider = jwtProvider;
     }
 
     @PostMapping("/login")
@@ -31,25 +36,26 @@ public class AuthResource extends ExceptionHandler {
                                                 HttpServletResponse response) {
         UserLoginDto userLoginDto = UserLoginDto.builder().username(username).password(password).build();
         ResponseEntity<UserWelcomeDto> responseEntity = userService.login(userLoginDto);
+
         response.addCookie(userService.generateJwtCookie());
+
         return responseEntity;
     }
 
     @PostMapping("/register")
-    public UserRegisterDto register(@RequestParam String username,
-                                    @RequestParam String email,
-                                    @RequestParam String firstName,
-                                    @RequestParam String lastName,
-                                    @RequestParam String birthDate,
-                                    @RequestParam String password,
-                                    @RequestParam String confirmPassword) throws UserWithUsernameOrEmailExists {
-        UserRegisterDto userRegisterDto = new UserRegisterDto(username, email, firstName, lastName,
-                LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")), password, confirmPassword);
+    public UserRegisterDto register(@RequestBody UserRegisterDto userRegisterDto) throws UserWithUsernameOrEmailExists {
         return userService.register(userRegisterDto);
     }
 
     @PostMapping("/logout")
     public void logout() {
         this.userService.logout();
+    }
+
+    @GetMapping("/admin")
+    public boolean adminPage(HttpServletRequest request) {
+        String authorizationHeaders = request.getHeader(JWT_COOKIE_NAME);
+
+        return this.userService.isAdmin(authorizationHeaders);
     }
 }

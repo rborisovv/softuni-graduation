@@ -3,12 +3,22 @@ import {CommonModule, DatePipe} from '@angular/common';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
-import {RouterModule} from "@angular/router";
+import {RouterModule, Routes} from "@angular/router";
 import {ReactiveFormsModule} from "@angular/forms";
 import {UserService} from "../service/user.service";
 import {SharedModule as SharedModule} from '../shared/shared.module';
 import {CookieService} from "ngx-cookie-service";
+import {StoreModule} from "@ngrx/store";
+import {AuthGuard} from "../guard/auth.guard";
 
+const routes: Routes = [
+  {
+    path: '', canActivateChild: [AuthGuard], children: [
+      {path: 'login', component: LoginComponent},
+      {path: 'register', component: RegisterComponent}
+    ]
+  }
+]
 
 @NgModule({
   declarations: [
@@ -18,11 +28,11 @@ import {CookieService} from "ngx-cookie-service";
   imports: [
     CommonModule,
     FontAwesomeModule,
-    RouterModule,
+    RouterModule.forChild(routes),
     ReactiveFormsModule,
     SharedModule
   ],
-  providers: [UserService, DatePipe, CookieService],
+  providers: [UserService, DatePipe, CookieService, AuthGuard],
   exports: [LoginComponent, RegisterComponent]
 })
 export class AuthenticationModule {

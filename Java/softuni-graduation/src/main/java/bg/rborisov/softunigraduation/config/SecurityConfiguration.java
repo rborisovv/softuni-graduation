@@ -23,6 +23,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -48,7 +50,7 @@ public class SecurityConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new Argon2PasswordEncoder(16,16,16,16,16);
+        return new Argon2PasswordEncoder(32, 32, 32, 64, 32);
     }
 
     @Bean
@@ -58,27 +60,34 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//
+//        XorCsrfTokenRequestAttributeHandler requestHandler = new XorCsrfTokenRequestAttributeHandler();
+//        // set the name of the attribute the CsrfToken will be populated on
+//        requestHandler.setCsrfRequestAttributeName("_csrf");
+//
         http
                 .cors()
                 .and()
-                .csrf()
-                .disable()
+//                .csrf((csrf) -> csrf
+//                        .csrfTokenRequestHandler(requestHandler))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .csrf()
+                .disable()
                 .authorizeHttpRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 .permitAll()
-                .requestMatchers("/home")
+                .requestMatchers("/home", "/user/login", "/user/register")
                 .permitAll()
                 .anyRequest()
-                .authenticated();
-//                .and()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(jwtAuthEntryPoint)
-//                .and()
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//                .logout();
+                .authenticated()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthEntryPoint)
+                .and()
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout();
 
         return http.build();
     }

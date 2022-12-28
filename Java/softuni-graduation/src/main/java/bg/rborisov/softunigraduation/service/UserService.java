@@ -5,6 +5,7 @@ import bg.rborisov.softunigraduation.dao.UserRepository;
 import bg.rborisov.softunigraduation.dto.UserLoginDto;
 import bg.rborisov.softunigraduation.dto.UserRegisterDto;
 import bg.rborisov.softunigraduation.dto.UserWelcomeDto;
+import bg.rborisov.softunigraduation.enumeration.AuthorityEnum;
 import bg.rborisov.softunigraduation.enumeration.RoleEnum;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
 import bg.rborisov.softunigraduation.model.Role;
@@ -35,6 +36,7 @@ import java.util.Set;
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.USER_NOT_FOUND;
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.USER_WITH_USERNAME_OR_EMAIL_EXISTS;
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
+import static bg.rborisov.softunigraduation.common.JwtConstants.TOKEN_PREFIX;
 import static bg.rborisov.softunigraduation.constant.SecurityConstant.COOKIE_MAX_AGE;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -104,7 +106,7 @@ public class UserService {
         registerDto.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 
         User user = modelMapper.map(registerDto, User.class);
-        user.setUserId(RandomStringUtils.randomAscii(10).replaceAll("\s", ""));
+        user.setUserId(RandomStringUtils.randomAscii(10).replaceAll(" ", ""));
         Role userRole = roleRepository.findRoleByName(RoleEnum.USER.name());
         user.setRole(userRole);
         user.setJoinDate(LocalDate.now());
@@ -123,6 +125,16 @@ public class UserService {
         if (userByUsernameOrEmail.isPresent()) {
             throw new UserWithUsernameOrEmailExists(USER_WITH_USERNAME_OR_EMAIL_EXISTS);
         }
+    }
+
+    public boolean isAdmin(String authorizationHeader) {
+        String token = authorizationHeader.substring(TOKEN_PREFIX.length());
+        String username = this.jwtProvider.getSubject(token);
+
+        User user = this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
+
+        return user.getRole().getName().equalsIgnoreCase(RoleEnum.ADMIN.name());
     }
 
     public void logout() {

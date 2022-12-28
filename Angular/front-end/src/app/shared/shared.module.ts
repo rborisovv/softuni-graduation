@@ -4,7 +4,7 @@ import { FooterComponent } from './footer/footer.component';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {UserService} from "../service/user.service";
 import {CookieService} from "ngx-cookie-service";
-import {NotifierService} from "angular-notifier";
+import {RouterLink} from "@angular/router";
 
 
 @NgModule({
@@ -13,13 +13,14 @@ import {NotifierService} from "angular-notifier";
         FooterComponent
     ],
     imports: [
-        FontAwesomeModule
+        FontAwesomeModule,
+        RouterLink
     ],
   exports: [
     HeaderComponent
   ],
   providers: [
-    UserService, CookieService, NotifierService
+    UserService, CookieService
   ]
 })
 export class SharedModule { }

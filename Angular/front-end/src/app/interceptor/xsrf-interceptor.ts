@@ -6,13 +6,13 @@ import {Observable} from "rxjs";
 export class XsrfInterceptor implements HttpInterceptor {
   intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const csrfToken: string = 'XSRF-TOKEN';
-    const jwtToken: string = 'X-XSRF-JWT';
+    const jwtToken: string = 'JWT-TOKEN';
 
 
     return next.handle(httpRequest.clone({
       setHeaders: {
         'X-XSRF-TOKEN': XsrfInterceptor.obtainCsrfHeader(csrfToken),
-        'X-XSRF-JWT': XsrfInterceptor.obtainJwtHeader(jwtToken)
+        'JWT-TOKEN': XsrfInterceptor.obtainJwtHeader(jwtToken)
       }
     }));
   }

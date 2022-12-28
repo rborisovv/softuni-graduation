@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+@import "../../../common";
 
 $font-family: 'Roboto', sans-serif;
 $font-size-base: 0.925rem;
-$base-color: #66f;
+$base-color: #00c5b2;
 $text-dark: #3c4250;
 $border-color: #eceef3;
 
@@ -55,6 +55,14 @@ a {
 }
 
 // Start navbar
+
+.logo-wrapper {
+  display: flex;
+  @include flex-horizontal-center-row;
+  gap: 1rem;
+  font-size: 32px;
+  color: $base-color !important;
+}
 
 .navbar,
 .navbar > .container {

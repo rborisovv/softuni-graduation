@@ -1,15 +1,13 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {faFacebookF, faGithub, faGoogle, faTwitter} from "@fortawesome/free-brands-svg-icons";
-import {faUser} from '@fortawesome/free-regular-svg-icons';
-import {faKey} from '@fortawesome/free-solid-svg-icons';
 import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {NotificationType} from "../../enumeration/notification-enum";
-import {NotifierService} from "angular-notifier";
 import {CookieService} from "ngx-cookie-service";
-import {JwtHelperService} from "@auth0/angular-jwt";
+import {Store} from "@ngrx/store";
+import {authStatus, loginAction} from "../../store/action/auth.action";
+import {faUser, faKey} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-login',
@@ -18,8 +16,6 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 })
 export class LoginComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
-
-  private jwtCookieName: string = 'X-XSRF-JWT';
 
   faFacebook = faFacebookF;
   faTwitter = faTwitter;
@@ -34,15 +30,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   });
 
   constructor(private userService: UserService, private router: Router,
-              private readonly notifier: NotifierService,
-              private cookieService: CookieService, private jwtService: JwtHelperService) {
+              private cookieService: CookieService, private readonly store: Store) {
   }
 
   ngOnInit(): void {
-    const CsrfTokenCookie = this.cookieService.get(this.jwtCookieName);
-    if (CsrfTokenCookie) {
-      this.router.navigateByUrl('/home');
-    }
+
   }
 
   ngOnDestroy() {
@@ -58,11 +50,22 @@ export class LoginComponent implements OnInit, OnDestroy {
       'password': this.password.value
     });
     const subscription: Subscription = this.userService.loginUser(formData).subscribe({
-      next: () => {
-        this.router.navigateByUrl('/home');
-        const jwtCookie = this.cookieService.get(this.jwtCookieName);
-        const subject: string = this.jwtService.decodeToken(jwtCookie).sub;
-        this.notifier.notify(NotificationType.SUCCESS, `Welcome, ${subject}`);
+      next: (user) => {
+        this.store.dispatch(loginAction({
+          user: {
+            username: user.username,
+            email: user.email,
+            role: user.role
+          }
+        }));
+
+        this.store.dispatch(authStatus({isLoggedIn: true}));
+
+        if (user.role === 'ADMIN') {
+          this.router.navigateByUrl('/admin/cockpit')
+        } else {
+          this.router.navigateByUrl('/home');
+        }
       }
     });
 

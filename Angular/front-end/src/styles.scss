@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @use 'reset';
 
-@import "angular-notifier/styles.css";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
 
 $base-color-green: #3eda5f;
 $base-color-white: #e4e6eb;
@@ -20,6 +20,10 @@ $base-color-white: #e4e6eb;
 
 .text-bold-600 {
   font-weight: 600;
+}
+
+.mt-10 {
+  margin-top: 10px !important;
 }
 
 .mt-20 {

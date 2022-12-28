@@ -1,17 +1,21 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivateChild, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
+import {CookieService} from "ngx-cookie-service";
 
 @Injectable()
-export class AuthGuard implements CanActivate {
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):
+export class AuthGuard implements CanActivateChild {
+  constructor(private cookieService: CookieService, private router: Router) {
+  }
+
+  canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot):
     Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    const name = "X-XSRF-JWT";
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    const jwtCookie = parts.pop().split(';').shift();
+    const isAnonymous = !this.cookieService.check('JWT-TOKEN');
 
-    return !!jwtCookie;
+    if (!isAnonymous) {
+      this.router.navigateByUrl('/home').then();
+    }
+    return isAnonymous;
   }
 }

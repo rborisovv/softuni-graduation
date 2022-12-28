@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {HomeComponent} from './home/home.component';
 import {SharedModule as SharedModule} from "../shared/shared.module";
-import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {XsrfInterceptor} from "../interceptor/xsrf-interceptor";
 import {CommonModule} from "@angular/common";
 
@@ -11,7 +11,8 @@ import {CommonModule} from "@angular/common";
   ],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    HttpClientModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

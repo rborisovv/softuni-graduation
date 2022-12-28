@@ -1,26 +1,29 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {IUserLogin} from "../interface/user-login";
 import {environment} from "../../environments/environment.prod";
 import {Observable} from "rxjs";
+import {UserWelcome} from "../interface/user.welcome";
+import {UserRegisterModel} from "../authentication/register/userRegisterModel";
 
 @Injectable()
 export class UserService {
   private apiUrl: string = environment.apiHost;
-
-  public role: string = '';
 
   public username: string = '';
 
   constructor(private http: HttpClient) {
   }
 
-  public loginUser(formData: FormData): Observable<IUserLogin> {
-    return this.http.post<IUserLogin>(`${this.apiUrl}/user/login`, formData, {withCredentials: true});
+  public loginUser(formData: FormData): Observable<UserWelcome> {
+    return this.http.post<UserWelcome>(`${this.apiUrl}/user/login`, formData, {withCredentials: true});
   }
 
-  public registerUser(formData: FormData) {
-    return this.http.post(`${this.apiUrl}/user/register`, formData);
+  public registerUser(registerData: UserRegisterModel) {
+    return this.http.post(`${this.apiUrl}/user/register`, registerData, {withCredentials: true});
+  }
+
+  public isAdmin(): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/user/admin`, {withCredentials: true});
   }
 
   public logoutUser() {

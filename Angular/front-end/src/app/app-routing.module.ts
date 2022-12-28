@@ -1,13 +1,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {RegisterComponent} from './authentication/register/register.component';
-import {LoginComponent} from "./authentication/login/login.component";
 import {HomeComponent} from "./core/home/home.component";
-import {AuthGuard} from "./guard/auth.guard";
+import {environment} from "../environments/environment";
 
 const routes: Routes = [
-  {path: 'register', component: RegisterComponent},
-  {path: 'login', component: LoginComponent},
+  {path: 'auth', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule)},
   {path: 'home', component: HomeComponent},
   {path: '', pathMatch: "full", redirectTo: '/home'},
   {
@@ -17,9 +14,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {enableTracing: !environment.production})],
   exports: [RouterModule],
-  providers: [AuthGuard]
+  providers: []
 })
 export class AppRoutingModule {
 }
