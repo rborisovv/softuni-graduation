@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment.prod";
 import {Observable} from "rxjs";
 import {UserWelcome} from "../interface/user.welcome";
-import {UserRegisterModel} from "../authentication/register/userRegisterModel";
+import {IUserRegisterModel} from "../authentication/register/IUserRegisterModel";
 
 @Injectable()
 export class UserService {
@@ -18,7 +18,7 @@ export class UserService {
     return this.http.post<UserWelcome>(`${this.apiUrl}/user/login`, formData, {withCredentials: true});
   }
 
-  public registerUser(registerData: UserRegisterModel) {
+  public registerUser(registerData: IUserRegisterModel) {
     return this.http.post(`${this.apiUrl}/user/register`, registerData, {withCredentials: true});
   }
 

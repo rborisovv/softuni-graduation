@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {faFacebookF, faGithub, faGoogle, faTwitter} from "@fortawesome/free-brands-svg-icons";
 import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
@@ -15,6 +15,7 @@ import {faUser, faKey} from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
+
   private subscriptions: Subscription[] = [];
 
   faFacebook = faFacebookF;

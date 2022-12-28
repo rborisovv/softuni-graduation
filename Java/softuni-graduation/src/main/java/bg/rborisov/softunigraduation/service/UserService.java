@@ -5,7 +5,6 @@ import bg.rborisov.softunigraduation.dao.UserRepository;
 import bg.rborisov.softunigraduation.dto.UserLoginDto;
 import bg.rborisov.softunigraduation.dto.UserRegisterDto;
 import bg.rborisov.softunigraduation.dto.UserWelcomeDto;
-import bg.rborisov.softunigraduation.enumeration.AuthorityEnum;
 import bg.rborisov.softunigraduation.enumeration.RoleEnum;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
 import bg.rborisov.softunigraduation.model.Role;

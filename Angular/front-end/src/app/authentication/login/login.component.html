@@ -1,5 +1,4 @@
-<app-header></app-header>
-
+<app-auth-header url="/auth/login"></app-auth-header>
 
 <form class="form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
   <h3 class="form-title">Sign in to your account</h3>
@@ -23,7 +22,7 @@
 
   <div class="form-controll">
     <div class="form-input">
-      <input type="text" name="password" id="password" formControlName="password" required>
+      <input type="password" name="password" id="password" formControlName="password" required>
       <label for="password">
         <fa-icon [icon]="faKey"></fa-icon>
         Password</label>

@@ -4,20 +4,24 @@ import { FooterComponent } from './footer/footer.component';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {UserService} from "../service/user.service";
 import {CookieService} from "ngx-cookie-service";
-import {RouterLink} from "@angular/router";
+import {RouterLink, RouterLinkActive} from "@angular/router";
+import { AuthHeaderComponent } from './auth-header/auth-header.component';
 
 
 @NgModule({
     declarations: [
         HeaderComponent,
-        FooterComponent
+        FooterComponent,
+        AuthHeaderComponent
     ],
-    imports: [
-        FontAwesomeModule,
-        RouterLink
-    ],
+  imports: [
+    FontAwesomeModule,
+    RouterLink,
+    RouterLinkActive
+  ],
   exports: [
-    HeaderComponent
+    HeaderComponent,
+    AuthHeaderComponent
   ],
   providers: [
     UserService, CookieService

@@ -9,6 +9,7 @@ import bg.rborisov.softunigraduation.service.UserService;
 import bg.rborisov.softunigraduation.util.JwtProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class AuthResource extends ExceptionHandler {
     public ResponseEntity<UserWelcomeDto> login(@RequestParam String username,
                                                 @RequestParam String password,
                                                 HttpServletResponse response) {
-        UserLoginDto userLoginDto = UserLoginDto.builder().username(username).password(password).build();
+        @Valid UserLoginDto userLoginDto = UserLoginDto.builder().username(username).password(password).build();
         ResponseEntity<UserWelcomeDto> responseEntity = userService.login(userLoginDto);
 
         response.addCookie(userService.generateJwtCookie());
@@ -43,7 +44,7 @@ public class AuthResource extends ExceptionHandler {
     }
 
     @PostMapping("/register")
-    public UserRegisterDto register(@RequestBody UserRegisterDto userRegisterDto) throws UserWithUsernameOrEmailExists {
+    public UserRegisterDto register(@RequestBody @Valid UserRegisterDto userRegisterDto) throws UserWithUsernameOrEmailExists {
         return userService.register(userRegisterDto);
     }
 
