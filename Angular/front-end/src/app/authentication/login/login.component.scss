@@ -216,3 +216,63 @@ input:valid + label {
   z-index: 9;
   opacity: 1;
 }
+
+.icon-wrapper {
+  @include flex-horizontal-center-row;
+  gap: 20px;
+
+  & fa-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 5px;
+    border-radius: 100%;
+    transition: all 200ms ease-in-out;
+    font-size: 20px;
+
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.facebook {
+  border: 2px solid #385596;
+
+  color: #385596;
+}
+
+.facebook:hover {
+  background: #385596;
+  color: #ffffff;
+}
+
+.google {
+  border: 2px solid #f73e2f;
+  color: #f73e2f;
+}
+
+.google:hover {
+  background: #f73e2f;
+  color: #ffffff;
+}
+
+.github {
+  border: 2px solid #161414;
+  color: #161414;
+}
+
+.github:hover {
+  background: #161414;
+  color: #ffffff;
+}
+
+.twitter {
+  border: 2px solid #1c96e9;
+  color: #1c96e9;
+}
+
+.twitter:hover {
+  background: #1c96e9;
+  color: #ffffff;
+}

@@ -30,8 +30,20 @@ $base-color-white: #e4e6eb;
   margin-top: 20px !important;
 }
 
+.mt-40 {
+  margin-top: 40px !important;
+}
+
+.mt-50 {
+  margin-top: 50px !important;
+}
+
 .mb-10 {
   margin-bottom: 10px !important;
+}
+
+.mb-30 {
+  margin-bottom: 30px !important;
 }
 
 .mr-25 {
@@ -46,8 +58,8 @@ $base-color-white: #e4e6eb;
   margin-right: 40px !important;
 }
 
-.mb-30 {
-  margin-bottom: 30px !important;
+.ml-5 {
+  margin-left: 5px !important;
 }
 
 .notifier__notification svg {

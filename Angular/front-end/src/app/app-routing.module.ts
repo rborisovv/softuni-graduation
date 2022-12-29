@@ -2,10 +2,14 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from "./core/home/home.component";
 import {environment} from "../environments/environment";
+import {PageGuard} from "./guard/page.guard";
 
 const routes: Routes = [
-  {path: 'auth', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule)},
-  {path: 'home', component: HomeComponent},
+  {
+    path: 'auth',
+    loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule)
+  },
+  {path: 'home', component: HomeComponent, canActivate: [PageGuard]},
   {path: '', pathMatch: "full", redirectTo: '/home'},
   {
     path: 'admin',

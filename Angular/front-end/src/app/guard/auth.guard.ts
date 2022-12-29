@@ -1,9 +1,15 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivateChild, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivateChild,
+  Router,
+  RouterStateSnapshot,
+  UrlTree
+} from '@angular/router';
 import {Observable} from 'rxjs';
 import {CookieService} from "ngx-cookie-service";
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class AuthGuard implements CanActivateChild {
   constructor(private cookieService: CookieService, private router: Router) {
   }
@@ -14,7 +20,7 @@ export class AuthGuard implements CanActivateChild {
     const isAnonymous = !this.cookieService.check('JWT-TOKEN');
 
     if (!isAnonymous) {
-      this.router.navigateByUrl('/home').then();
+      this.router.navigateByUrl('/home');
     }
     return isAnonymous;
   }

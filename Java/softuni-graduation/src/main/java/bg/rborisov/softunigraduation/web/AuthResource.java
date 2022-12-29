@@ -13,14 +13,10 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
-import static bg.rborisov.softunigraduation.common.JwtConstants.TOKEN_PREFIX;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/auth")
 public class AuthResource extends ExceptionHandler {
     private final UserService userService;
 
@@ -48,15 +44,25 @@ public class AuthResource extends ExceptionHandler {
         return userService.register(userRegisterDto);
     }
 
-    @PostMapping("/logout")
-    public void logout() {
-        this.userService.logout();
-    }
-
     @GetMapping("/admin")
     public boolean adminPage(HttpServletRequest request) {
         String authorizationHeaders = request.getHeader(JWT_COOKIE_NAME);
 
         return this.userService.isAdmin(authorizationHeaders);
+    }
+
+    @PostMapping("/email")
+    public boolean isEmailPresent(@RequestBody String email) {
+        return this.userService.isUserWithEmailPresent(email);
+    }
+
+    @PostMapping("/username")
+    public boolean isUsernamePresent(@RequestBody String username) {
+        return this.userService.isUserWithUsernamePresent(username);
+    }
+
+    @PostMapping("/logout")
+    public void logout() {
+        this.userService.logout();
     }
 }

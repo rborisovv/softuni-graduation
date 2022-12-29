@@ -29,6 +29,9 @@
     <div class="error-messages text-danger">
       <div *ngIf="email.errors?.['required'] && email.touched">Email is required.</div>
       <div *ngIf="email.errors?.['email'] && email.touched">Please enter a valid email.</div>
+      <div *ngIf="email.errors?.['emailPresent'] && email.touched">An account with the provided email is already
+        present.
+      </div>
     </div>
   </div>
   <div class="grid-2">

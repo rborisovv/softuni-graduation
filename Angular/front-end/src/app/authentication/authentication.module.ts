@@ -8,7 +8,6 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {UserService} from "../service/user.service";
 import {SharedModule as SharedModule} from '../shared/shared.module';
 import {CookieService} from "ngx-cookie-service";
-import {StoreModule} from "@ngrx/store";
 import {AuthGuard} from "../guard/auth.guard";
 
 const routes: Routes = [
@@ -32,7 +31,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     SharedModule
   ],
-  providers: [UserService, DatePipe, CookieService, AuthGuard],
+  providers: [UserService, DatePipe, CookieService],
   exports: [LoginComponent, RegisterComponent]
 })
 export class AuthenticationModule {

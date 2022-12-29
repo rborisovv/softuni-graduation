@@ -54,6 +54,29 @@
       </div>
     </div>
   </div>
+
+  <div class="register-info">
+    <p class="text-center">
+      Don't have an account yet? <a class="ml-5" href="javascript:void(0)" routerLink="/auth/register">Register</a>
+    </p>
+  </div>
+
+
+  <div class="icon-wrapper mt-40">
+    <p class="text-center">Or Sign in with:</p>
+    <a href="javascript:void(0)">
+      <fa-icon class="facebook" [icon]="faFacebook"></fa-icon>
+    </a>
+    <a href="javascript:void(0)">
+      <fa-icon class="google" [icon]="faGoogle"></fa-icon>
+    </a>
+    <a href="javascript:void(0)">
+      <fa-icon class="github" [icon]="faGithub"></fa-icon>
+    </a>
+    <a href="javascript:void(0)">
+      <fa-icon class="twitter" [icon]="faTwitter"></fa-icon>
+    </a>
+  </div>
   <div class="form-submit">
     <button type="submit" [disabled]="loginForm.invalid">Sign in</button>
   </div>

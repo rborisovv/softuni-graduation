@@ -136,6 +136,14 @@ public class UserService {
         return user.getRole().getName().equalsIgnoreCase(RoleEnum.ADMIN.name());
     }
 
+    public boolean isUserWithEmailPresent(String email) {
+        return this.userRepository.findUserByEmail(email).isPresent();
+    }
+
+    public boolean isUserWithUsernamePresent(String username) {
+        return this.userRepository.findByUsername(username).isPresent();
+    }
+
     public void logout() {
         SecurityContextHolder.clearContext();
     }

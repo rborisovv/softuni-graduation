@@ -15,19 +15,27 @@ export class UserService {
   }
 
   public loginUser(formData: FormData): Observable<UserWelcome> {
-    return this.http.post<UserWelcome>(`${this.apiUrl}/user/login`, formData, {withCredentials: true});
+    return this.http.post<UserWelcome>(`${this.apiUrl}/auth/login`, formData, {withCredentials: true});
   }
 
   public registerUser(registerData: IUserRegisterModel) {
-    return this.http.post(`${this.apiUrl}/user/register`, registerData, {withCredentials: true});
+    return this.http.post(`${this.apiUrl}/auth/register`, registerData, {withCredentials: true});
   }
 
   public isAdmin(): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/user/admin`, {withCredentials: true});
+    return this.http.get<boolean>(`${this.apiUrl}/auth/admin`, {withCredentials: true});
+  }
+
+  public isEmailPresent(email: string): Observable<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}/auth/email`, email, {withCredentials: true});
+  }
+
+  public isUsernamePresent(username: string): Observable<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}/auth/username`, username, {withCredentials: true});
   }
 
   public logoutUser() {
-    return this.http.post(`${this.apiUrl}/user/logout`, null, {withCredentials: true});
+    return this.http.post(`${this.apiUrl}/auth/logout`, null, {withCredentials: true});
   }
 
   public createFormData(data: Object): FormData {
