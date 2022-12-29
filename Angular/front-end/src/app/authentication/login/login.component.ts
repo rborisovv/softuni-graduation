@@ -35,7 +35,18 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const allShowHidePassword = document.querySelectorAll('.password-showHide')
 
+    allShowHidePassword.forEach(item => {
+      item.addEventListener('click', () => {
+        item.classList.toggle('hide')
+        if (item.closest('.form-input').querySelector('input').type === 'password') {
+          item.closest('.form-input').querySelector('input').type = 'text'
+        } else {
+          item.closest('.form-input').querySelector('input').type = 'password'
+        }
+      })
+    })
   }
 
   ngOnDestroy() {

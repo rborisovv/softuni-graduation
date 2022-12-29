@@ -1,6 +1,6 @@
-import {Injectable, OnDestroy} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivateChild, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {Observable, Subscription} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivateChild, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {catchError, first, Observable, of, tap} from 'rxjs';
 import {UserService} from "../service/user.service";
 
 @Injectable({
@@ -9,13 +9,17 @@ import {UserService} from "../service/user.service";
 export class AdminGuard implements CanActivateChild {
 
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private router: Router) {
   }
 
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    return this.userService.isAdmin();
+    return this.userService.isAdmin().pipe(
+      catchError(() => of(this.router.parseUrl('/home'))),
+      tap(response => response || this.router.parseUrl('/home')),
+      first()
+    );
   }
 }
