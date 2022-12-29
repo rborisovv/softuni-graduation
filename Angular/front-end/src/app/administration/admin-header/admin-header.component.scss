@@ -1,6 +1,6 @@
 $font-family: 'Roboto', sans-serif;
 $font-size-base: 0.925rem;
-$base-color: #158e8d;
+$base-color: #00c5b2;
 $text-dark: #3c4250;
 $border-color: #eceef3;
 
@@ -40,7 +40,7 @@ a {
 }
 
 .cart-icon {
-  color: #158e8d;
+  color: $base-color;
   font-size: 32px;
   margin-right: 10px;
 }

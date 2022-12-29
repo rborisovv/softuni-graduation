@@ -1,5 +1,7 @@
 @import "../../../common";
 
+$base-color: #00c5b2;
+
 main > .services, h1 {
   margin-top: 40px;
 }
@@ -24,4 +26,16 @@ main > .services, h1 {
     box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
     align-items: center;
   }
+}
+
+figure {
+  transition: all 300ms ease-in-out;
+}
+
+figure:hover {
+  transform: scale(1.15);
+}
+
+figcaption > h2 {
+  color: $base-color;
 }
