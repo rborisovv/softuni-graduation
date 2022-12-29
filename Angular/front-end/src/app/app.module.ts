@@ -11,7 +11,6 @@ import {CoreModule} from "./core/core.module";
 import {JwtModule} from "@auth0/angular-jwt";
 import {XsrfInterceptor} from "./interceptor/xsrf-interceptor";
 import {StoreModule} from '@ngrx/store';
-import {loginAction} from "./store/action/auth.action";
 import {authReducer, authStatusReducer} from "./store/reducer/auth.reducer";
 
 @NgModule({
