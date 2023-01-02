@@ -2,8 +2,8 @@ import {createReducer, on} from "@ngrx/store";
 import {loginAction} from "../action/auth.action";
 
 export interface IUserState {
-  username: string,
-  email: string
+  readonly username: string,
+  readonly email: string
 }
 
 const initialState: IUserState = {
@@ -12,4 +12,6 @@ const initialState: IUserState = {
 }
 
 export const authReducer = createReducer(initialState,
-  on(loginAction, (state, {username, email}) => ({...state, username: username, email: email})));
+  on(loginAction, (state, {username, email}) => (
+    {...state, username: username, email: email})
+  ));

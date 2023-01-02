@@ -15,7 +15,6 @@ export class AdminGuard implements CanActivateChild {
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-
     return this.userService.isAdmin().pipe(
       catchError(() => of(this.router.parseUrl('/home'))),
       tap(response => response || this.router.parseUrl('/home')),

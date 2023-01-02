@@ -19,7 +19,6 @@ export class PageGuard implements CanActivate {
     if (!token) {
       this.router.navigateByUrl('/auth/login');
     }
-
     return token;
   }
 }
