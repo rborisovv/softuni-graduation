@@ -25,11 +25,15 @@
   <div id="media-control" class="form-controll">
     <div id="media-form-input" class="form-input">
       <button id="category-media" (click)="handleMediaUploadClick()">Upload Media!</button>
+
+      <ng-container *ngIf="media.value">
+        <img [src]="imageSrc" alt="">
+      </ng-container>
+      <input (change)="onMediaUpload($event)" #media id="category-media-input" type="file" accept="image/*"/>
+      <label for="category-media">Category Media</label>
       <div class="media-location">
         {{this.mediaPath}}
       </div>
-      <input (change)="onMediaUpload()" #media id="category-media-input" type="file" />
-      <label for="category-media">Category Media</label>
     </div>
   </div>
 

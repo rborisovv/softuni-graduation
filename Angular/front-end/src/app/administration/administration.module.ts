@@ -9,7 +9,7 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 import {AdminGuard} from "./admin.guard";
 import { CreateCategoryComponent } from './create-category/create-category.component';
 import {FormsModule} from "@angular/forms";
-import {AsyncPipe} from "@angular/common";
+import {AsyncPipe, CommonModule} from "@angular/common";
 
 const routes: Routes = [
   {
@@ -27,14 +27,15 @@ const routes: Routes = [
     CreateProductComponent,
     CreateCategoryComponent
   ],
-    imports: [
-        SharedModule,
-        SharedModule,
-        FontAwesomeModule,
-        RouterModule.forChild(routes),
-        FormsModule,
-        AsyncPipe
-    ],
+  imports: [
+    SharedModule,
+    SharedModule,
+    FontAwesomeModule,
+    RouterModule.forChild(routes),
+    FormsModule,
+    AsyncPipe,
+    CommonModule
+  ],
   providers: [JwtHelperService]
 })
 export class AdministrationModule {

@@ -9,14 +9,27 @@ export class CreateCategoryComponent {
 
   @ViewChild('media') mediaInput: ElementRef;
 
-  mediaPath: string = '';
+  mediaPath: string;
+  imageSrc: string | ArrayBuffer;
 
 
   public handleMediaUploadClick(): void {
     this.mediaInput.nativeElement.click();
   }
 
-  public onMediaUpload() {
+  public onMediaUpload(event: any) {
     this.mediaPath = this.mediaInput.nativeElement.value;
+    this.readURL(event);
+  }
+
+  readURL(event: any): void {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => this.imageSrc = reader.result;
+
+      reader.readAsDataURL(file);
+    }
   }
 }

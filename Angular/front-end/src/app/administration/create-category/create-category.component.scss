@@ -175,16 +175,15 @@ input:valid + label {
 }
 
 #category-media {
-  width: 250px;
+  width: 180px;
+  min-width: 180px;
   background-color: #455c91;
   color: white;
   border: none;
   font-size: 1em;
-  padding: 8px 48px;
+  padding: 8px 30px;
 
-
-  margin-right: 8px;
-  border-radius: 1em;
+  border-radius: 8px;
   border-bottom: 1px solid #c2c2c2;
 }
 
@@ -200,9 +199,10 @@ input:valid + label {
 
 #media-form-input {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
 
   padding-top: 1rem;
 }
