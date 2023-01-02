@@ -1,25 +1,15 @@
 import {createReducer, on} from "@ngrx/store";
-import {authStatus, loginAction} from "../action/auth.action";
-import {state} from "@angular/animations";
+import {loginAction} from "../action/auth.action";
 
-export interface State {
-  user?: {
-    username: string,
-    password: string,
-    role: string
-  }
+export interface IUserState {
+  username: string,
+  email: string
 }
 
-const initialState: State = {
-  user: {
-    username: '',
-    password: '',
-    role: ''
-  }
+const initialState: IUserState = {
+  username: '',
+  email: ''
 }
 
 export const authReducer = createReducer(initialState,
-  on(loginAction, (state, {user}) => user));
-
-export const authStatusReducer = createReducer(false,
-  on(authStatus, (state, {isLoggedIn}) => isLoggedIn));
+  on(loginAction, (state, {username, email}) => ({...state, username: username, email: email})));

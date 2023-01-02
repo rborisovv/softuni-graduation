@@ -9,6 +9,7 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 import {AdminGuard} from "./admin.guard";
 import { CreateCategoryComponent } from './create-category/create-category.component';
 import {FormsModule} from "@angular/forms";
+import {AsyncPipe} from "@angular/common";
 
 const routes: Routes = [
   {
@@ -31,7 +32,8 @@ const routes: Routes = [
         SharedModule,
         FontAwesomeModule,
         RouterModule.forChild(routes),
-        FormsModule
+        FormsModule,
+        AsyncPipe
     ],
   providers: [JwtHelperService]
 })

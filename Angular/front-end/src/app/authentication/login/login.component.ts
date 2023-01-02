@@ -6,7 +6,7 @@ import {Subscription} from "rxjs";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 import {Store} from "@ngrx/store";
-import {authStatus, loginAction} from "../../store/action/auth.action";
+import {loginAction} from "../../store/action/auth.action";
 import {faUser, faKey} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -64,14 +64,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     const subscription: Subscription = this.userService.loginUser(formData).subscribe({
       next: (user) => {
         this.store.dispatch(loginAction({
-          user: {
-            username: user.username,
-            email: user.email,
-            role: user.role
-          }
+          username: user.username, email: user.email
         }));
-
-        this.store.dispatch(authStatus({isLoggedIn: true}));
 
         if (user.role === 'ADMIN') {
           this.router.navigateByUrl('/admin/cockpit')

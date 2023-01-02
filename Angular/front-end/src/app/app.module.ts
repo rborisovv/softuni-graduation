@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, isDevMode} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -11,7 +11,8 @@ import {CoreModule} from "./core/core.module";
 import {JwtModule} from "@auth0/angular-jwt";
 import {XsrfInterceptor} from "./interceptor/xsrf-interceptor";
 import {StoreModule} from '@ngrx/store';
-import {authReducer, authStatusReducer} from "./store/reducer/auth.reducer";
+import {authReducer} from "./store/reducer/auth.reducer";
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {authReducer, authStatusReducer} from "./store/reducer/auth.reducer";
         skipWhenExpired: true
       }
     }),
-    StoreModule.forRoot({auth: authReducer, authStatus: authStatusReducer}, {})
+    StoreModule.forRoot({auth: authReducer}, {}),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
