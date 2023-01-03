@@ -1,27 +1,27 @@
 import {Injectable} from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivateChild,
-  Router,
-  RouterStateSnapshot,
-  UrlTree
-} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
+import {JwtHelperService} from "@auth0/angular-jwt";
 import {CookieService} from "ngx-cookie-service";
 
-@Injectable({providedIn: 'root'})
-export class AuthGuard implements CanActivateChild {
-  constructor(private cookieService: CookieService, private router: Router) {
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthGuard implements CanActivate {
+  constructor(private router: Router, private jwtService: JwtHelperService, private cookieService: CookieService) {
+
   }
 
-  canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot):
-    Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    const token = this.cookieService.get('JWT-TOKEN');
+    const isExpired = this.jwtService.isTokenExpired(token);
 
-    const isAnonymous = !this.cookieService.check('JWT-TOKEN');
-
-    if (!isAnonymous) {
-      this.router.navigateByUrl('/home');
+    if (!isExpired) {
+      return this.router.parseUrl('/home');
     }
-    return isAnonymous;
+
+    return isExpired;
   }
 }
