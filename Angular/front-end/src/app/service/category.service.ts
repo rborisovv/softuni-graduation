@@ -11,6 +11,7 @@ export class CategoryService {
   apiUrl = environment.apiHost;
 
   constructor(private http: HttpClient) {
+
   }
 
   public createCategory(formData: FormData): Observable<HttpResponse> {

@@ -70,10 +70,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.store.dispatch(loginAction({
           username: user.username, email: user.email
         }));
-
-        if (user.role === 'ADMIN') {
-          console.log(user.role);
-          this.router.navigateByUrl('/admin/cockpit');
+        if (user.roleName === 'ADMIN') {
+          this.router.navigateByUrl('/admin/cockpit').then(() => {
+            this.notifier.notify(NotificationType.SUCCESS, `Welcome, ${user.username}`);
+          })
         } else {
           this.router.navigateByUrl('/home').then(() => {
             this.notifier.notify(NotificationType.SUCCESS, `Welcome, ${user.username}`);

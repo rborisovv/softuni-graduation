@@ -52,3 +52,7 @@ public class MediaService {
         }
     }
 }
+
+//TODO: Create a validation for the media file: Must be an image only
+
+//TODO: Implement a functionality to upload images only seperated from other logic
