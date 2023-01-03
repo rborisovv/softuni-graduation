@@ -1,8 +1,6 @@
 package bg.rborisov.softunigraduation.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -24,4 +22,6 @@ public class Category extends BaseEntity implements Serializable {
     private String productNamePrefix;
     @Column(nullable = false)
     private String mediaUrl;
+    @OneToOne
+    private Media media;
 }

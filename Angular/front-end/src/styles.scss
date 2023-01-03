@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @use 'reset';
 
-
 @import '../node_modules/angular-notifier/styles.css';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
 
@@ -68,3 +67,6 @@ $base-color-white: #e4e6eb;
   align-items: baseline;
 }
 
+.notifier__notification svg {
+  vertical-align: text-top;
+}

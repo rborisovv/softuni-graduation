@@ -1,6 +1,9 @@
 package bg.rborisov.softunigraduation.web;
 
+import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.CategoryDto;
+import bg.rborisov.softunigraduation.exception.CategoryWithIdentifierExists;
+import bg.rborisov.softunigraduation.exception.MediaNotFoundException;
 import bg.rborisov.softunigraduation.service.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,19 +23,16 @@ public class CategoryResource {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CategoryDto> createCategory(@RequestParam("name") String name,
-                                                      @RequestParam("categoryIdentifier") String categoryIdentifier,
-                                                      @RequestParam(name = "productNamePrefix", required = false) String productNamePrefix,
-                                                      @RequestParam("media") MultipartFile media) {
+    public ResponseEntity<HttpResponse> createCategory(@RequestParam("name") String name,
+                                                       @RequestParam("categoryIdentifier") String categoryIdentifier,
+                                                       @RequestParam(name = "productNamePrefix", required = false) String productNamePrefix,
+                                                       @RequestParam("media") MultipartFile media) throws MediaNotFoundException, CategoryWithIdentifierExists {
 
-        CategoryDto categoryDto = CategoryDto.builder()
-                .name(name).categoryIdentifier(categoryIdentifier)
+        CategoryDto categoryDto = CategoryDto.builder().name(name)
+                .categoryIdentifier(categoryIdentifier)
                 .productNamePrefix(productNamePrefix)
-                .media(media)
-                .build();
+                .media(media).build();
 
-        this.categoryService.createCategory(categoryDto);
-
-        return null;
+        return this.categoryService.createCategory(categoryDto);
     }
 }

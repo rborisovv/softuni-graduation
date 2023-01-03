@@ -34,7 +34,7 @@ import {NotifierModule} from "angular-notifier";
         },
         vertical: {
           position: "top",
-          distance: 100,
+          distance: 110,
           gap: 10
         }
       },
@@ -53,7 +53,7 @@ import {NotifierModule} from "angular-notifier";
     }),
     JwtModule.forRoot({
       config: {
-        allowedDomains: ['http://localhost:8080/'],
+        allowedDomains: ['http://localhost:8080'],
         headerName: 'JWT-TOKEN',
         skipWhenExpired: true
       }

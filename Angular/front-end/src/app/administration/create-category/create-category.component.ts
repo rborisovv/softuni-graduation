@@ -46,11 +46,11 @@ export class CreateCategoryComponent {
 
     this.categoryService.createCategory(createFormData(category))
       .subscribe({
-        next: (category) => {
+        next: (response) => {
           this.router.navigateByUrl('/admin/cockpit').then(() => {
-            this.notifier.notify(NotificationType.SUCCESS, `Category "${category.name}" created successfully!`);
-          })
+            this.notifier.notify(NotificationType.SUCCESS, `${response.message}`);
+          });
         }
-      })
+      });
   }
 }

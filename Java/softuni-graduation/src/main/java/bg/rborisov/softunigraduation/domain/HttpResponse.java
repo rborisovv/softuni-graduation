@@ -3,12 +3,14 @@ package bg.rborisov.softunigraduation.domain;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 
+import java.io.Serializable;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class HttpResponse {
+public class HttpResponse implements Serializable {
 
     private int httpStatusCode;
 
