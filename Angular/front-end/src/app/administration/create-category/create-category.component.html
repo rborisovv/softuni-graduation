@@ -1,35 +1,35 @@
 <app-admin-header></app-admin-header>
 
-<form class="form" ngForm novalidate>
+<form #categoryForm="ngForm" class="form" (ngSubmit)="createCategory(categoryForm.value)" novalidate>
   <h3 class="form-title">Create Category</h3>
   <div class="form-controll">
     <div class="form-input">
-      <input type="text" name="category-name" id="category-name" ngModel required>
+      <input type="text" name="name" id="category-name" minlength="5" maxlength="40" ngModel required>
       <label for="category-name">Category name</label>
     </div>
   </div>
   <div class="grid-2">
     <div class="form-controll">
       <div class="form-input">
-        <input type="text" name="identifier" id="identifier" ngModel required>
+        <input type="text" name="categoryIdentifier" id="identifier" minlength="4" maxlength="10" ngModel required>
         <label for="identifier">Category Identifier</label>
       </div>
     </div>
     <div class="form-controll">
       <div class="form-input">
-        <input type="text" name="product-name-prefix" id="product-name-prefix" ngModel required>
+        <input type="text" name="productNamePrefix" id="product-name-prefix" maxlength="30" ngModel>
         <label for="product-name-prefix">Product Name Prefix</label>
       </div>
     </div>
   </div>
   <div id="media-control" class="form-controll">
     <div id="media-form-input" class="form-input">
-      <button id="category-media" (click)="handleMediaUploadClick()">Upload Media!</button>
+      <button id="category-media" type="button" (click)="handleMediaUploadClick()">Upload Media!</button>
 
       <ng-container *ngIf="media.value">
         <img [src]="imageSrc" alt="">
       </ng-container>
-      <input (change)="onMediaUpload($event)" #media id="category-media-input" type="file" accept="image/*"/>
+      <input (change)="onMediaUpload($event)" name="media" #media id="category-media-input" type="file" accept="image/*"/>
       <label for="category-media">Category Media</label>
       <div class="media-location">
         {{this.mediaPath}}

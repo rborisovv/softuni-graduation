@@ -1,4 +1,10 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
+import {CategoryService} from "../../service/category.service";
+import {Category} from "../../interface/category";
+import {Router} from "@angular/router";
+import {NotifierService} from "angular-notifier";
+import {NotificationType} from "../../enumeration/notification-enum";
+import {createFormData} from "../../service/service.index";
 
 @Component({
   selector: 'app-create-category',
@@ -6,6 +12,8 @@ import {Component, ElementRef, ViewChild} from '@angular/core';
   styleUrls: ['./create-category.component.scss']
 })
 export class CreateCategoryComponent {
+  constructor(private categoryService: CategoryService, private router: Router, private notifier: NotifierService) {
+  }
 
   @ViewChild('media') mediaInput: ElementRef;
 
@@ -31,5 +39,18 @@ export class CreateCategoryComponent {
 
       reader.readAsDataURL(file);
     }
+  }
+
+  createCategory(category: Category): void {
+    category.media = this.mediaInput.nativeElement.files[0];
+
+    this.categoryService.createCategory(createFormData(category))
+      .subscribe({
+        next: (category) => {
+          this.router.navigateByUrl('/admin/cockpit').then(() => {
+            this.notifier.notify(NotificationType.SUCCESS, `Category "${category.name}" created successfully!`);
+          })
+        }
+      })
   }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-public class UserRegisterDto {
+public class UserRegisterDto implements Serializable {
 
     @NotBlank
     @Size(min = 5, max = 30)

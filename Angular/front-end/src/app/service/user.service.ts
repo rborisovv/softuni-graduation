@@ -37,12 +37,4 @@ export class UserService {
   public logoutUser() {
     return this.http.post(`${this.apiUrl}/auth/logout`, null, {withCredentials: true});
   }
-
-  public createFormData(data: Object): FormData {
-    const formData = new FormData();
-    for (let key in data) {
-      formData.set(key, data[key]);
-    }
-    return formData;
-  }
 }

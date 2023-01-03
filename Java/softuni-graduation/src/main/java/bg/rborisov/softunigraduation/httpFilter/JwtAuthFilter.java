@@ -38,8 +38,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }
 
-
-
         String authorizationHeaders = request.getHeader(JWT_COOKIE_NAME);
 
         if (authorizationHeaders == null || !authorizationHeaders.startsWith(TOKEN_PREFIX)) {

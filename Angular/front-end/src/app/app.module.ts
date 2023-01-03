@@ -12,7 +12,8 @@ import {JwtModule} from "@auth0/angular-jwt";
 import {XsrfInterceptor} from "./interceptor/xsrf-interceptor";
 import {StoreModule} from '@ngrx/store';
 import {authReducer} from "./store/reducer/auth.reducer";
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {NotifierModule} from "angular-notifier";
 
 @NgModule({
   declarations: [
@@ -26,6 +27,26 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     AuthenticationModule,
     CoreModule,
     HttpClientModule,
+    NotifierModule.withConfig({
+      position: {
+        horizontal: {
+          position: "right"
+        },
+        vertical: {
+          position: "top",
+          distance: 100,
+          gap: 10
+        }
+      },
+      behaviour: {
+        autoHide: 5000,
+        onClick: "hide",
+        onMouseover: "pauseAutoHide",
+        showDismissButton: true,
+        stacking: 4
+      }
+
+    }),
     HttpClientXsrfModule.withOptions({
       cookieName: 'XSRF-TOKEN',
       headerName: 'X-XSRF-TOKEN'
@@ -38,7 +59,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
       }
     }),
     StoreModule.forRoot({auth: authReducer}, {}),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()})
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
@@ -48,4 +69,5 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
   bootstrap: [AppComponent]
 })
 export class AppModule {
+
 }

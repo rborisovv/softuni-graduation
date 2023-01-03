@@ -8,6 +8,9 @@ import {CookieService} from "ngx-cookie-service";
 import {Store} from "@ngrx/store";
 import {loginAction} from "../../store/action/auth.action";
 import {faUser, faKey} from '@fortawesome/free-solid-svg-icons';
+import {createFormData} from "../../service/service.index";
+import {NotifierService} from "angular-notifier";
+import {NotificationType} from "../../enumeration/notification-enum";
 
 @Component({
   selector: 'app-login',
@@ -31,7 +34,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   });
 
   constructor(private userService: UserService, private router: Router,
-              private cookieService: CookieService, private readonly store: Store) {
+              private cookieService: CookieService, private readonly store: Store,
+              private notifier: NotifierService) {
   }
 
   ngOnInit(): void {
@@ -57,7 +61,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (!this.username.value || !this.password.value) {
       return;
     }
-    const formData: FormData = this.userService.createFormData({
+    const formData: FormData = createFormData({
       'username': this.username.value,
       'password': this.password.value
     });
@@ -68,9 +72,12 @@ export class LoginComponent implements OnInit, OnDestroy {
         }));
 
         if (user.role === 'ADMIN') {
-          this.router.navigateByUrl('/admin/cockpit')
+          console.log(user.role);
+          this.router.navigateByUrl('/admin/cockpit');
         } else {
-          this.router.navigateByUrl('/home');
+          this.router.navigateByUrl('/home').then(() => {
+            this.notifier.notify(NotificationType.SUCCESS, `Welcome, ${user.username}`);
+          })
         }
       }
     });
