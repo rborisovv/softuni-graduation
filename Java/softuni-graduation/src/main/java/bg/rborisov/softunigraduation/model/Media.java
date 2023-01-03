@@ -23,4 +23,7 @@ public class Media extends BaseEntity implements Serializable {
     @Lob
     @Column(columnDefinition = "LONGBLOB", nullable = false)
     private byte[] file;
+
+    @Column(nullable = false, unique = true)
+    private String mediaUrl;
 }

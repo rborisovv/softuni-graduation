@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/media/sys_master/h4f")
+@RequestMapping("/medias/sys_master/h4f")
 public class MediaResource {
     private final MediaService mediaService;
 
