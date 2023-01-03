@@ -34,3 +34,6 @@ public class ExceptionHandler {
         return new ResponseEntity<>(httpResponse, httpStatus);
     }
 }
+
+//TODO: Adapt the exceptions into this class so that I can send HttpResponse instance to the front end
+//TODO: and print the error in a notification container

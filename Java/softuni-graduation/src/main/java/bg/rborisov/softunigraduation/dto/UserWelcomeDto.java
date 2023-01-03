@@ -10,7 +10,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-public class UserWelcomeDto  implements Serializable {
+public class UserWelcomeDto implements Serializable {
     private String username;
     private String email;
+    private String roleName;
 }
