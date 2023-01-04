@@ -34,4 +34,7 @@ public class CategoryDto implements Serializable {
     @NotNull
     @ImageValidator
     private MultipartFile media;
+
+    @Nullable
+    private String mediaUrl;
 }

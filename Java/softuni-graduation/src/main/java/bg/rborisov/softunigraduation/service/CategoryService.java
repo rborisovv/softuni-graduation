@@ -8,12 +8,13 @@ import bg.rborisov.softunigraduation.exception.CategoryWithIdentifierExists;
 import bg.rborisov.softunigraduation.exception.MediaNotFoundException;
 import bg.rborisov.softunigraduation.model.Category;
 import bg.rborisov.softunigraduation.model.Media;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.CATEGORY_BY_IDENTIFIER_EXISTS;
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.MEDIA_NOT_FOUND;
@@ -28,10 +29,13 @@ public class CategoryService {
 
     private final MediaRepository mediaRepository;
 
-    public CategoryService(MediaService mediaService, CategoryRepository categoryRepository, MediaRepository mediaRepository) {
+    private final ModelMapper modelMapper;
+
+    public CategoryService(MediaService mediaService, CategoryRepository categoryRepository, MediaRepository mediaRepository, ModelMapper modelMapper) {
         this.mediaService = mediaService;
         this.categoryRepository = categoryRepository;
         this.mediaRepository = mediaRepository;
+        this.modelMapper = modelMapper;
     }
 
     public ResponseEntity<HttpResponse> createCategory(CategoryDto categoryDto) throws CategoryWithIdentifierExists, MediaNotFoundException {
@@ -76,5 +80,17 @@ public class CategoryService {
 
     public boolean isCategoryWithNamePresent(String name) {
         return this.categoryRepository.findCategoryByName(name).isPresent();
+    }
+
+    public Set<CategoryDto> loadAllCategories() {
+        return this.categoryRepository.findAll()
+                .stream().map(category -> modelMapper.map(category, CategoryDto.class))
+                .collect(Collectors.toSet());
+    }
+
+    public CategoryDto loadCategory(String identifier) {
+        //TODO: throw exception if category not present
+        Category category = this.categoryRepository.findCategoryByCategoryIdentifier(identifier).orElseThrow();
+        return this.modelMapper.map(category, CategoryDto.class);
     }
 }
