@@ -18,6 +18,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -32,7 +33,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 
-import static bg.rborisov.softunigraduation.common.ExceptionMessages.USER_NOT_FOUND;
+import static bg.rborisov.softunigraduation.common.ExceptionMessages.USERNAME_OR_PASSWORD_INCORRECT;
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.USER_WITH_USERNAME_OR_EMAIL_EXISTS;
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
 import static bg.rborisov.softunigraduation.common.JwtConstants.TOKEN_PREFIX;
@@ -71,7 +72,7 @@ public class UserService {
 
         String username = userLoginDto.getUsername();
         String password = userLoginDto.getPassword();
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new BadCredentialsException(USERNAME_OR_PASSWORD_INCORRECT));
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         Authentication authToken = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
@@ -131,7 +132,7 @@ public class UserService {
         String username = this.jwtProvider.getSubject(token);
 
         User user = this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
+                .orElseThrow(() -> new UsernameNotFoundException(USERNAME_OR_PASSWORD_INCORRECT));
 
         return user.getRole().getName().equalsIgnoreCase(RoleEnum.ADMIN.name());
     }

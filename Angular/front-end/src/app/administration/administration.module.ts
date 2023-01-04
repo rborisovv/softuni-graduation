@@ -8,7 +8,7 @@ import {CreateProductComponent} from './create-product/create-product.component'
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {AdminGuard} from "./admin.guard";
 import { CreateCategoryComponent } from './create-category/create-category.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AsyncPipe, CommonModule} from "@angular/common";
 
 const routes: Routes = [
@@ -27,15 +27,16 @@ const routes: Routes = [
     CreateProductComponent,
     CreateCategoryComponent
   ],
-  imports: [
-    SharedModule,
-    SharedModule,
-    FontAwesomeModule,
-    RouterModule.forChild(routes),
-    FormsModule,
-    AsyncPipe,
-    CommonModule
-  ],
+    imports: [
+        SharedModule,
+        SharedModule,
+        FontAwesomeModule,
+        RouterModule.forChild(routes),
+        FormsModule,
+        AsyncPipe,
+        CommonModule,
+        ReactiveFormsModule
+    ],
   providers: [JwtHelperService]
 })
 export class AdministrationModule {

@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {faFacebookF, faGithub, faGoogle, faTwitter} from "@fortawesome/free-brands-svg-icons";
 import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
-import {Subscription} from "rxjs";
+import {catchError, Subscription} from "rxjs";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 import {Store} from "@ngrx/store";
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   loginForm = new FormGroup({
     username: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(30)]),
-    password: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(50)])
+    password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)])
   });
 
   constructor(private userService: UserService, private router: Router,
@@ -65,22 +65,28 @@ export class LoginComponent implements OnInit, OnDestroy {
       'username': this.username.value,
       'password': this.password.value
     });
-    const subscription: Subscription = this.userService.loginUser(formData).subscribe({
-      next: (user) => {
-        this.store.dispatch(loginAction({
-          username: user.username, email: user.email
-        }));
-        if (user.roleName === 'ADMIN') {
-          this.router.navigateByUrl('/admin/cockpit').then(() => {
-            this.notifier.notify(NotificationType.SUCCESS, `Welcome, ${user.username}`);
-          })
-        } else {
-          this.router.navigateByUrl('/home').then(() => {
-            this.notifier.notify(NotificationType.SUCCESS, `Welcome, ${user.username}`);
-          })
+    const subscription: Subscription = this.userService.loginUser(formData)
+      .pipe(
+        catchError((err) => {
+          this.notifier.notify(NotificationType.ERROR, err.error.message);
+          throw err;
+        })
+      ).subscribe({
+        next: (user) => {
+          this.store.dispatch(loginAction({
+            username: user.username, email: user.email
+          }));
+          if (user.roleName === 'ADMIN') {
+            this.router.navigateByUrl('/admin/cockpit').then(() => {
+              this.notifier.notify(NotificationType.SUCCESS, `Welcome, ${user.username}`);
+            })
+          } else {
+            this.router.navigateByUrl('/home').then(() => {
+              this.notifier.notify(NotificationType.SUCCESS, `Welcome, ${user.username}`);
+            })
+          }
         }
-      }
-    });
+      });
 
     this.subscriptions.push(subscription);
   }

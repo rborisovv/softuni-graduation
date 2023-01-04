@@ -1,24 +1,55 @@
 <app-admin-header></app-admin-header>
 
-<form #categoryForm="ngForm" class="form" (ngSubmit)="createCategory(categoryForm.value)" novalidate>
+<form [formGroup]="createCategoryFormGroup" class="form" (ngSubmit)="createCategory()" novalidate>
   <h3 class="form-title">Create Category</h3>
   <div class="form-controll">
     <div class="form-input">
-      <input type="text" name="name" id="category-name" minlength="5" maxlength="40" ngModel required>
+      <input type="text" name="name" formControlName="name" id="category-name" required>
       <label for="category-name">Category name</label>
+    </div>
+    <div class="confirm-password-messages error-messages text-danger">
+      <div *ngIf="name.errors?.['required'] && name.touched">Category name is required.
+      </div>
+      <div *ngIf="name.errors?.['minlength'] && name.touched">The Category name must be at
+        least 5 characters long.
+      </div>
+      <div *ngIf="name.errors?.['maxlength'] && name.touched">The maximum length of the
+        Category name is 40 characters.
+      </div>
+      <div *ngIf="name.errors?.['namePresent'] && name.touched">
+        A Category with the provided Name is already present.
+      </div>
     </div>
   </div>
   <div class="grid-2">
     <div class="form-controll">
       <div class="form-input">
-        <input type="text" name="categoryIdentifier" id="identifier" minlength="4" maxlength="10" ngModel required>
+        <input type="text" name="categoryIdentifier" formControlName="identifier" id="identifier" required>
         <label for="identifier">Category Identifier</label>
+      </div>
+      <div class="confirm-password-messages error-messages text-danger">
+        <div *ngIf="identifier.errors?.['required'] && identifier.touched">Identifier is required.</div>
+        <div *ngIf="identifier.errors?.['minlength'] && identifier.touched">The Identifier must be at
+          least 4 characters long.
+        </div>
+        <div *ngIf="identifier.errors?.['maxlength'] && identifier.touched">The maximum length of the
+          Identifier is 10 characters.
+        </div>
+        <div *ngIf="identifier.errors?.['identifierPresent'] && identifier.touched">A Category with the provided
+          Identifier is already present.
+        </div>
       </div>
     </div>
     <div class="form-controll">
       <div class="form-input">
-        <input type="text" name="productNamePrefix" id="product-name-prefix" maxlength="30" ngModel>
+        <input type="text" name="productNamePrefix" formControlName="productNamePrefix" id="product-name-prefix"
+               required>
         <label for="product-name-prefix">Product Name Prefix</label>
+      </div>
+      <div class="confirm-password-messages error-messages text-danger">
+        <div *ngIf="productNamePrefix.errors?.['maxlength'] && productNamePrefix.touched">The maximum length of the
+          Product Name Prefix is 30 characters.
+        </div>
       </div>
     </div>
   </div>
@@ -29,7 +60,8 @@
       <ng-container *ngIf="media.value">
         <img [src]="imageSrc" alt="">
       </ng-container>
-      <input (change)="onMediaUpload($event)" name="media" #media id="category-media-input" type="file" accept="image/*"/>
+      <input (change)="onMediaUpload($event)" name="media" formControlName="media" #media id="category-media-input"
+             type="file" accept="image/*"/>
       <label for="category-media">Category Media</label>
       <div class="media-location">
         {{this.mediaPath}}
@@ -38,6 +70,6 @@
   </div>
 
   <div class="form-submit">
-    <button type="submit" [disabled]="categoryForm.invalid">Create</button>
+    <button type="submit" [disabled]="createCategoryFormGroup.invalid">Create</button>
   </div>
 </form>

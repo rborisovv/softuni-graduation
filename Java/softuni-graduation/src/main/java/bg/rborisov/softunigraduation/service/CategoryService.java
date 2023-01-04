@@ -69,4 +69,12 @@ public class CategoryService {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    public boolean isCategoryWithIdentifierPresent(String identifier) {
+        return this.categoryRepository.findCategoryByCategoryIdentifier(identifier).isPresent();
+    }
+
+    public boolean isCategoryWithNamePresent(String name) {
+        return this.categoryRepository.findCategoryByName(name).isPresent();
+    }
 }

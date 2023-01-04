@@ -1,6 +1,8 @@
 package bg.rborisov.softunigraduation.dto;
 
+import bg.rborisov.softunigraduation.util.validators.ImageValidator;
 import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,10 +26,12 @@ public class CategoryDto implements Serializable {
     @NonNull
     private String categoryIdentifier;
 
-    @Size(min = 30)
+    @Size(max = 30)
     @Nullable
     private String productNamePrefix;
 
     @NonNull
+    @NotNull
+    @ImageValidator
     private MultipartFile media;
 }

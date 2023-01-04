@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static bg.rborisov.softunigraduation.common.ExceptionMessages.USER_NOT_FOUND;
+import static bg.rborisov.softunigraduation.common.ExceptionMessages.USERNAME_OR_PASSWORD_INCORRECT;
 
 public class AppUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
@@ -22,7 +22,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(USERNAME_OR_PASSWORD_INCORRECT));
         return this.userDetails(user);
     }
 

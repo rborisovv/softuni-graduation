@@ -17,4 +17,12 @@ export class CategoryService {
   public createCategory(formData: FormData): Observable<HttpResponse> {
     return this.http.post<HttpResponse>(`${this.apiUrl}/category/create`, formData, {withCredentials: true});
   }
+
+  public isCategoryByIdentifierPresent(identifier: string) {
+    return this.http.post<boolean>(`${this.apiUrl}/category/identifier`, identifier, {withCredentials: true});
+  }
+
+  public isCategoryByNamePresent(name: string) {
+    return this.http.post<boolean>(`${this.apiUrl}/category/name`, name, {withCredentials: true});
+  }
 }
