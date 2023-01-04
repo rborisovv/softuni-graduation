@@ -77,6 +77,7 @@
   <div class="form-controll">
     <div class="form-input">
       <input type="text" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" name="birthdate"
+             [max]="today"
              style="cursor: default;"
              id="birthdate" required
              formControlName="birthDate">

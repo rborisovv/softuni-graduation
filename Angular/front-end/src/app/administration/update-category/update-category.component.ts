@@ -1,21 +1,56 @@
-import {ChangeDetectionStrategy, Component, ElementRef, ViewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef, OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {CategoryService} from "../../service/category.service";
-import {Category} from "../../interface/category";
-import {Router} from "@angular/router";
+import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {NotifierService} from "angular-notifier";
-import {NotificationType} from "../../enumeration/notification-enum";
-import {createFormData} from "../../service/service.index";
 import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
-import {map, Observable} from "rxjs";
+import {Category} from "../../interface/category";
+import {createFormData} from "../../service/service.index";
+import {NotificationType} from "../../enumeration/notification-enum";
+import {map, Observable, Subscription} from "rxjs";
 
 @Component({
-  selector: 'app-create-category',
-  templateUrl: './create-category.component.html',
-  styleUrls: ['./create-category.component.scss'],
+  selector: 'app-update-category',
+  templateUrl: './update-category.component.html',
+  styleUrls: ['./update-category.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CreateCategoryComponent {
-  constructor(private categoryService: CategoryService, private router: Router, private notifier: NotifierService) {
+export class UpdateCategoryComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
+
+  constructor(private categoryService: CategoryService, private router: Router, private notifier: NotifierService,
+              private activatedRoute: ActivatedRoute, private changeDetectionRef: ChangeDetectorRef) {
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(x => x.unsubscribe());
+  }
+
+  ngOnInit(): void {
+    let identifier: string = '';
+    const routerSubscription = this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+      identifier = params.get('identifier');
+    });
+
+    const subscription = this.categoryService.loadCategory(identifier)
+      .subscribe({
+        next: (response) => {
+          this.setName(response.name);
+          this.setIdentifier(response.categoryIdentifier);
+          this.setProductPrefix(response.productNamePrefix);
+          this.imageSrc = response.mediaUrl;
+          this.changeDetectionRef.markForCheck();
+        }
+      });
+
+    this.subscriptions.push(routerSubscription);
+    this.subscriptions.push(subscription);
   }
 
   createCategoryFormGroup = new FormGroup({
@@ -61,8 +96,6 @@ export class CreateCategoryComponent {
       media: this.mediaInput.nativeElement.files[0]
     }
 
-    console.log('inside')
-
     this.categoryService.createCategory(createFormData(categoryData))
       .subscribe({
         next: (response) => {
@@ -87,6 +120,18 @@ export class CreateCategoryComponent {
 
   get media() {
     return this.createCategoryFormGroup.get('media');
+  }
+
+  public setName(name: string) {
+    this.createCategoryFormGroup.controls['name'].setValue(name);
+  }
+
+  public setIdentifier(identifier: string) {
+    this.createCategoryFormGroup.controls['identifier'].setValue(identifier);
+  }
+
+  public setProductPrefix(productPrefix: string) {
+    this.createCategoryFormGroup.controls['productNamePrefix'].setValue(productPrefix);
   }
 }
 

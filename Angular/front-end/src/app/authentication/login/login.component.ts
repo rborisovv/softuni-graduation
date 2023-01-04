@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {faFacebookF, faGithub, faGoogle, faTwitter} from "@fortawesome/free-brands-svg-icons";
 import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
@@ -7,7 +7,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 import {Store} from "@ngrx/store";
 import {loginAction} from "../../store/action/auth.action";
-import {faUser, faKey} from '@fortawesome/free-solid-svg-icons';
+import {faKey, faUser} from '@fortawesome/free-solid-svg-icons';
 import {createFormData} from "../../service/service.index";
 import {NotifierService} from "angular-notifier";
 import {NotificationType} from "../../enumeration/notification-enum";
@@ -15,7 +15,8 @@ import {NotificationType} from "../../enumeration/notification-enum";
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit, OnDestroy {
 

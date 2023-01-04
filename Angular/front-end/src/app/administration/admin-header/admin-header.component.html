@@ -16,8 +16,15 @@
     <div class="navbar-menu" id="open-navbar1">
       <ul class="navbar-nav">
         <li>
+          <a href="javascript:void(0)" style="font-size: 32px;" routerLink="/home">
+            <fa-icon [icon]="faHome"></fa-icon>
+            Home
+          </a>
+        </li>
+        <li>
           <a href="javascript:void(0)" style="font-size: 32px;" (click)="logout()">
-            <fa-icon [icon]="faSignOut"></fa-icon> Logout
+            <fa-icon [icon]="faSignOut"></fa-icon>
+            Logout
           </a>
         </li>
       </ul>

@@ -1,0 +1,34 @@
+<app-admin-header></app-admin-header>
+
+<main>
+  <h1 class="text-center mt-40 mb-30">Categories</h1>
+  <div class="categories">
+    <div *ngFor="let category of categories$ | async" class="category">
+      <table>
+        <thead>
+        <tr>
+          <th>Category Image</th>
+          <th>Category Identifier</th>
+          <th>Category Name</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><img [src]="category.mediaUrl" alt=""></td>
+          <td>{{category.categoryIdentifier}}</td>
+          <td>{{category.name}}</td>
+          <td id="actions">
+            <a class="update" href="javascript:void(0)" [routerLink]="['/admin/category', category.categoryIdentifier]">
+              <fa-icon [icon]="faWrench"></fa-icon>
+            </a>
+            <a class="delete">
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>

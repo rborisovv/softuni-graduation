@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {faAngleDown, faCartShopping, faSignOut} from '@fortawesome/free-solid-svg-icons';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {faAngleDown, faCartShopping, faHome, faSignOut} from '@fortawesome/free-solid-svg-icons';
 import {CookieService} from "ngx-cookie-service";
 import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
@@ -7,7 +7,8 @@ import {Router} from "@angular/router";
 @Component({
   selector: 'app-admin-header',
   templateUrl: './admin-header.component.html',
-  styleUrls: ['./admin-header.component.scss']
+  styleUrls: ['./admin-header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminHeaderComponent implements OnInit {
 
@@ -17,8 +18,9 @@ export class AdminHeaderComponent implements OnInit {
 
   faSignOut = faSignOut;
 
-  constructor(private cookieService: CookieService, private userService: UserService,
-              private router: Router) {
+  faHome = faHome
+
+  constructor(private cookieService: CookieService, private userService: UserService, private router: Router) {
   }
 
   ngOnInit(): void {

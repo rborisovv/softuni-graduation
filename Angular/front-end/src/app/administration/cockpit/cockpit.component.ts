@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {selectUserState} from "../../store/selector/auth.selector";
 import {map, Observable} from "rxjs";
@@ -8,7 +8,8 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 @Component({
   selector: 'app-cockpit',
   templateUrl: './cockpit.component.html',
-  styleUrls: ['./cockpit.component.scss']
+  styleUrls: ['./cockpit.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CockpitComponent implements OnInit {
 

@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+@import "../../../common";
+
+h1 {
+  font-family: 'Poppins', sans-serif;
+}
+
+.categories {
+  @include flex-horizontal-center-col;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-90%);
+}
+
+.category {
+  @include flex-horizontal-center-row;
+  width: 70%;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  padding: 1rem 2rem;
+  text-align: center;
+  //border-bottom: 1px solid #ddd;
+}
+
+th {
+  font-weight: normal;
+  font-size: .875rem;
+  color: #666;
+  background: #eee;
+  /*  以下２行で見出しを固定  */
+  position: sticky;
+  top: 0;
+}
+
+img {
+  width: 60px;
+  display: block;
+  margin: 0 auto .5rem;
+}
+
+tbody tr:last-child {
+  border-bottom: 1px solid #ddd;
+}
+
+thead th {
+  font-size: 20px;
+}
+
+tbody {
+  font-size: 20px;
+}
+
+tbody td:last-child {
+  padding: 18px;
+}
+
+#actions {
+  @include flex-horizontal-center-row;
+  gap: 20px;
+  font-size: 30px;
+
+  & > .update {
+    color: #385596;
+    cursor: pointer;
+  }
+
+  & > .delete {
+    color: #dc3545;
+    cursor: pointer;
+  }
+
+  & > div {
+    transition: all 200ms ease-in-out;
+  }
+
+  & > div:hover {
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+}

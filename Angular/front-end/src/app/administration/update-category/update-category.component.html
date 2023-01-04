@@ -1,7 +1,7 @@
 <app-admin-header></app-admin-header>
 
 <form [formGroup]="createCategoryFormGroup" class="form" (ngSubmit)="createCategory()" novalidate>
-  <h3 class="form-title">Create Category</h3>
+  <h3 class="form-title">Update Category</h3>
   <div class="form-controll">
     <div class="form-input">
       <input type="text" name="name" formControlName="name" id="category-name" required>
@@ -55,10 +55,7 @@
   <div id="media-control" class="form-controll">
     <div id="media-form-input" class="form-input">
       <button id="category-media" type="button" (click)="handleMediaUploadClick()">Upload Media!</button>
-
-      <ng-container *ngIf="media.value">
-        <img [src]="imageSrc" alt="">
-      </ng-container>
+      <img [src]="imageSrc" alt="">
       <input (change)="onMediaUpload($event)" name="media" formControlName="media" #media id="category-media-input"
              type="file" accept="image/*"/>
       <label for="category-media">Category Media</label>
