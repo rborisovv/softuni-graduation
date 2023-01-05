@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface MediaRepository extends JpaRepository<Media, Long> {
     Optional<Media> findMediaByName(String name);
 
-    Optional<Media> findMediaByIdentifier(String identifier);
+    Optional<Media> findMediaByPkOfFile(String pkOfFile);
 }

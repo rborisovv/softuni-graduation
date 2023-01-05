@@ -1,5 +1,6 @@
 package bg.rborisov.softunigraduation.web;
 
+import bg.rborisov.softunigraduation.exception.MediaNotFoundException;
 import bg.rborisov.softunigraduation.service.MediaService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +17,8 @@ public class MediaResource {
         this.mediaService = mediaService;
     }
 
-    @GetMapping(value = "/{name}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public byte[] getMedia(@PathVariable String name) {
-        return this.mediaService.findMediaByName(name);
+    @GetMapping(value = "/{pkOfFile}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] getMedia(@PathVariable String pkOfFile) throws MediaNotFoundException {
+        return this.mediaService.findMediaByIdentifier(pkOfFile);
     }
 }

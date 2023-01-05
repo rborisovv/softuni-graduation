@@ -1,5 +1,6 @@
 package bg.rborisov.softunigraduation.exception;
 
+import bg.rborisov.softunigraduation.common.ExceptionMessages;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,22 @@ public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(UserWithUsernameOrEmailExists.class)
     public ResponseEntity<HttpResponse> usernameOrEmailExists() {
         return createHttpResponse(BAD_REQUEST, USER_WITH_USERNAME_OR_EMAIL_EXISTS);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<HttpResponse> categoryNotFound() {
+        return createHttpResponse(BAD_REQUEST, CATEGORY_NOT_FOUND);
+    }
+
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(CategoryWithIdentifierExists.class)
+    public ResponseEntity<HttpResponse> categoryByIdentifierExists() {
+        return createHttpResponse(BAD_REQUEST, ExceptionMessages.CATEGORY_BY_IDENTIFIER_EXISTS);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(CategoryWithNameExists.class)
+    public ResponseEntity<HttpResponse> categoryByNameExists() {
+        return createHttpResponse(BAD_REQUEST, CATEGORY_BY_NAME_EXISTS);
     }
 
     private ResponseEntity<HttpResponse> createHttpResponse(HttpStatus httpStatus, String message) {

@@ -24,32 +24,31 @@ public class MediaService {
         this.mediaRepository = mediaRepository;
     }
 
-    public MultipartFile saveFile(MultipartFile media) {
+    public void saveFile(MultipartFile media) {
+        Media mediaEntity = null;
         try {
             String mediaName = Objects.requireNonNull(media.getOriginalFilename()).replaceAll("\\s+", "-");
 
-            StringBuilder mediaNameKey = new StringBuilder();
-            mediaNameKey.append(RandomStringUtils.randomNumeric(15));
-            mediaNameKey.append(media.getOriginalFilename(), mediaName.length() - 4, mediaName.length());
+            String PK = RandomStringUtils.randomNumeric(15);
 
             String mediaUrl = ServletUriComponentsBuilder
-                    .fromCurrentContextPath().path(MEDIA_LOCATION_PATH.concat(mediaNameKey.toString().trim())).toUriString();
+                    .fromCurrentContextPath().path(MEDIA_LOCATION_PATH.concat(PK)).toUriString();
 
-            this.mediaRepository.save(new Media(mediaNameKey.toString().trim(), media.getBytes(), mediaUrl, mediaName));
+            mediaEntity = new Media(mediaName, media.getBytes(), mediaUrl, PK);
+            this.mediaRepository.save(mediaEntity);
         } catch (IOException e) {
             log.error("Temporary store of the media fails ( IOException )");
         }
-        return media;
     }
 
-    public byte[] findMediaByName(String name) {
-        try {
-            return this.mediaRepository.findMediaByName(name)
-                    .orElseThrow(() -> new MediaNotFoundException(MEDIA_NOT_FOUND)).getFile();
-        } catch (MediaNotFoundException e) {
-            log.error(MEDIA_NOT_FOUND);
-            throw new RuntimeException(e);
-        }
+    public byte[] findMediaByName(String name) throws MediaNotFoundException {
+        return this.mediaRepository.findMediaByName(name)
+                .orElseThrow(() -> new MediaNotFoundException(MEDIA_NOT_FOUND)).getFile();
+    }
+
+    public byte[] findMediaByIdentifier(String pkOfFile) throws MediaNotFoundException {
+        return this.mediaRepository.findMediaByPkOfFile(pkOfFile)
+                .orElseThrow(() -> new MediaNotFoundException(MEDIA_NOT_FOUND)).getFile();
     }
 }
 

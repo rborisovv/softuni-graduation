@@ -34,4 +34,12 @@ export class CategoryService {
   public loadCategory(identifier: string): Observable<Category> {
     return this.http.get<Category>(`${this.apiUrl}/category/${identifier}`, {withCredentials: true});
   }
+
+  public updateCategory(formData: FormData): Observable<HttpResponse> {
+    return this.http.put<HttpResponse>(`${this.apiUrl}/category/update`, formData, {withCredentials: true});
+  }
+
+  public deleteCategory(identifier: string): Observable<HttpResponse> {
+    return this.http.delete<HttpResponse>(`${this.apiUrl}/category/delete/${identifier}`, {withCredentials: true});
+  }
 }

@@ -41,7 +41,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const allShowHidePassword = document.querySelectorAll('.password-showHide')
-
     allShowHidePassword.forEach(item => {
       item.addEventListener('click', () => {
         item.classList.toggle('hide')
@@ -52,6 +51,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
       })
     })
+
+    //TODO: Remove the event listeners manually
   }
 
   ngOnDestroy() {

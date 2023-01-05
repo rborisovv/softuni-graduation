@@ -9,27 +9,25 @@ import {
 import {CategoryService} from "../../service/category.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {NotifierService} from "angular-notifier";
-import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
-import {Category} from "../../interface/category";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {createFormData} from "../../service/service.index";
 import {NotificationType} from "../../enumeration/notification-enum";
-import {map, Observable, Subscription} from "rxjs";
+import {catchError, Subscription} from "rxjs";
+import {CategoryUpdate} from "../../interface/category.update";
 
 @Component({
-  selector: 'app-update-category',
+  selector: 'app-update-categories',
   templateUrl: './update-category.component.html',
   styleUrls: ['./update-category.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UpdateCategoryComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
+  private oldName: string = '';
+  private oldCategoryIdentifier: string = '';
 
   constructor(private categoryService: CategoryService, private router: Router, private notifier: NotifierService,
-              private activatedRoute: ActivatedRoute, private changeDetectionRef: ChangeDetectorRef) {
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(x => x.unsubscribe());
+              private activatedRoute: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -37,15 +35,17 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
     const routerSubscription = this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
       identifier = params.get('identifier');
     });
+    this.oldCategoryIdentifier = identifier;
 
     const subscription = this.categoryService.loadCategory(identifier)
       .subscribe({
         next: (response) => {
+          this.oldName = response.name;
           this.setName(response.name);
-          this.setIdentifier(response.categoryIdentifier);
+          this.setIdentifier(response.identifier);
           this.setProductPrefix(response.productNamePrefix);
           this.imageSrc = response.mediaUrl;
-          this.changeDetectionRef.markForCheck();
+          this.changeDetectorRef.markForCheck();
         }
       });
 
@@ -53,11 +53,15 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
     this.subscriptions.push(subscription);
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(x => x.unsubscribe());
+  }
+
   createCategoryFormGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(5),
-      Validators.maxLength(40)], [nameValidator.validateName(this.categoryService)]),
+      Validators.maxLength(40)]),
     identifier: new FormControl('', [Validators.required,
-      Validators.minLength(4), Validators.maxLength(10)], identifierValidator.validateIdentifier(this.categoryService)),
+      Validators.minLength(4), Validators.maxLength(10)]),
     productNamePrefix: new FormControl('', [Validators.maxLength(30)]),
     media: new FormControl('')
   });
@@ -65,7 +69,7 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
   @ViewChild('media') mediaInput: ElementRef;
 
   mediaPath: string;
-  imageSrc: string | ArrayBuffer;
+  imageSrc: string;
 
 
   public handleMediaUploadClick(): void {
@@ -82,21 +86,32 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
       const file = event.target.files[0];
 
       const reader = new FileReader();
-      reader.onload = () => this.imageSrc = reader.result;
+      reader.onload = () => {
+        this.imageSrc = reader.result as string;
+        this.changeDetectorRef.markForCheck();
+      };
 
       reader.readAsDataURL(file);
     }
   }
 
-  createCategory(): void {
-    const categoryData: Category = {
+  updateCategory(): void {
+    const categoryData: CategoryUpdate = {
       name: this.name.value,
-      categoryIdentifier: this.identifier.value,
+      oldName: this.oldName,
+      identifier: this.identifier.value,
+      oldCategoryIdentifier: this.oldCategoryIdentifier,
       productNamePrefix: this.productNamePrefix.value,
       media: this.mediaInput.nativeElement.files[0]
     }
 
-    this.categoryService.createCategory(createFormData(categoryData))
+    const subscription = this.categoryService.updateCategory(createFormData(categoryData))
+      .pipe(
+        catchError((err) => {
+          this.notifier.notify(NotificationType.ERROR, err.error.message);
+          throw err;
+        })
+      )
       .subscribe({
         next: (response) => {
           this.router.navigateByUrl('/admin/cockpit').then(() => {
@@ -104,6 +119,8 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
           });
         }
       });
+
+    this.subscriptions.push(subscription);
   }
 
   get name() {
@@ -135,20 +152,4 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
   }
 }
 
-class identifierValidator {
-  static validateIdentifier(categoryService: CategoryService): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors> => {
-      return categoryService.isCategoryByIdentifierPresent(control.value)
-        .pipe(map((result: boolean) => result ? {identifierPresent: true} : null));
-    }
-  }
-}
-
-class nameValidator {
-  static validateName(categoryService: CategoryService): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors> => {
-      return categoryService.isCategoryByNamePresent(control.value)
-        .pipe(map((result: boolean) => result ? {namePresent: true} : null));
-    }
-  }
-}
+//TODO: Create validations for user input (Lower or Uppercase)

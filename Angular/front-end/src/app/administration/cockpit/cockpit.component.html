@@ -1,78 +1,43 @@
 <app-admin-header></app-admin-header>
 
 <main>
-
   <h1 class="text-center mb-30">Admin Services</h1>
-
   <h2 class="text-center mb-30">Welcome, {{username$ | async}}</h2>
 
   <div class="services text-center">
-        <div class="container">
-          <div class="row mb-30">
-            <div class="col mr-30">
-              <a href="" routerLink="/admin/create-product">
-                <figure class="service-fig">
-                  <img src="../../../assets/images/Cockpit/add-product.png" alt="">
-                  <figcaption>
-                    <h2 class="mt-20">Create Product</h2>
-                  </figcaption>
-                </figure>
-              </a>
-            </div>
-            <div class="col mr-30">
-              <a href="javascript:void(0)" routerLink="/admin/update-product">
-                <figure class="service-fig">
-                  <img src="../../../assets/images/Cockpit/update-product.png" alt="">
-                  <figcaption>
-                    <h2 class="mt-20">Update Product</h2>
-                  </figcaption>
-                </figure>
-              </a>
-            </div>
-            <div class="col">
-              <a href="" routerLink="/admin/remove-product">
-                <figure class="service-fig">
-                  <img src="../../../assets/images/Cockpit/remove-product.png" alt="">
-                  <figcaption>
-                    <h2 class="mt-20">Remove Product</h2>
-                  </figcaption>
-                </figure>
-              </a>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col mr-30">
-              <a href="" routerLink="/admin/create-category">
-                <figure class="service-fig">
-                  <img src="../../../assets/images/Cockpit/category/add-category.png" alt="">
-                  <figcaption>
-                    <h2 class="mt-20">Create Category</h2>
-                  </figcaption>
-                </figure>
-              </a>
-            </div>
-            <div class="col mr-30">
-              <a href="javascript:void(0)" routerLink="/admin/update-category">
-                <figure class="service-fig">
-                  <img src="../../../assets/images/Cockpit/category/update-category.png" alt="">
-                  <figcaption>
-                    <h2 class="mt-20">Update Category</h2>
-                  </figcaption>
-                </figure>
-              </a>
-            </div>
-            <div class="col">
-              <a href="" routerLink="/admin/remove-product">
-                <figure class="service-fig">
-                  <img src="../../../assets/images/Cockpit/category/remove-category.png" alt="">
-                  <figcaption>
-                    <h2 class="mt-20">Remove Category</h2>
-                  </figcaption>
-                </figure>
-              </a>
-            </div>
-          </div>
+    <div class="container">
+      <div class="row mb-30">
+        <div class="col mr-30">
+          <a href="" routerLink="/admin/categories">
+            <figure class="service-fig">
+              <img src="../../../assets/images/Cockpit/categories.png" alt="">
+              <figcaption>
+                <h2 class="mt-20">Categories</h2>
+              </figcaption>
+            </figure>
+          </a>
         </div>
+        <div class="col mr-30">
+          <a href="javascript:void(0)" routerLink="/admin/update-product">
+            <figure class="service-fig">
+              <img src="../../../assets/images/Cockpit/product.png" alt="">
+              <figcaption>
+                <h2 class="mt-20">Products</h2>
+              </figcaption>
+            </figure>
+          </a>
+        </div>
+        <div class="col mr-30">
+          <a href="javascript:void(0)">
+            <figure class="service-fig">
+              <img src="../../../assets/images/Cockpit/image-.png" alt="">
+              <figcaption>
+                <h2 class="mt-20">Medias</h2>
+              </figcaption>
+            </figure>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </main>

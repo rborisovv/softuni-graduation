@@ -17,11 +17,9 @@ public class Category extends BaseEntity implements Serializable {
     @Column(nullable = false, unique = true, length = 40)
     private String name;
     @Column(nullable = false, unique = true, length = 10)
-    private String categoryIdentifier;
+    private String identifier;
     @Column(length = 30)
     private String productNamePrefix;
-    @Column(nullable = false)
-    private String mediaUrl;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Media media;
 }

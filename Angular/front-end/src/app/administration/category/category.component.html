@@ -1,7 +1,10 @@
 <app-admin-header></app-admin-header>
 
 <main>
-  <h1 class="text-center mt-40 mb-30">Categories</h1>
+  <h1 class="text-center mt-40 mb-30">All Categories</h1>
+  <div class="create-btn-wrapper">
+    <a href="javascript:void(0)" routerLink="/admin/category/create" class="add-btn">Create Category</a>
+  </div>
   <div class="categories">
     <div *ngFor="let category of categories$ | async" class="category">
       <table>
@@ -16,13 +19,13 @@
         <tbody>
         <tr>
           <td><img [src]="category.mediaUrl" alt=""></td>
-          <td>{{category.categoryIdentifier}}</td>
+          <td>{{category.identifier}}</td>
           <td>{{category.name}}</td>
           <td id="actions">
-            <a class="update" href="javascript:void(0)" [routerLink]="['/admin/category', category.categoryIdentifier]">
+            <a class="update" href="javascript:void(0)" [routerLink]="['/admin/categories', category.identifier]">
               <fa-icon [icon]="faWrench"></fa-icon>
             </a>
-            <a class="delete">
+            <a class="delete" href="javascript:void(0)" (click)="deleteCategory(category.identifier)">
               <fa-icon [icon]="faTrash"></fa-icon>
             </a>
           </td>

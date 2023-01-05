@@ -28,12 +28,12 @@ main > .services, h1 {
   }
 }
 
-figure {
+img {
   transition: all 300ms ease-in-out;
 }
 
-figure:hover {
-  transform: scale(1.15);
+img:hover {
+  transform: scale(1.10);
 }
 
 figcaption > h2 {

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, ElementRef, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
 import {CategoryService} from "../../service/category.service";
 import {Category} from "../../interface/category";
 import {Router} from "@angular/router";
@@ -9,13 +9,14 @@ import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErr
 import {map, Observable} from "rxjs";
 
 @Component({
-  selector: 'app-create-category',
+  selector: 'app-create-categories',
   templateUrl: './create-category.component.html',
   styleUrls: ['./create-category.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateCategoryComponent {
-  constructor(private categoryService: CategoryService, private router: Router, private notifier: NotifierService) {
+  constructor(private categoryService: CategoryService, private router: Router,
+              private notifier: NotifierService, private changeDetectorRef: ChangeDetectorRef) {
   }
 
   createCategoryFormGroup = new FormGroup({
@@ -47,7 +48,10 @@ export class CreateCategoryComponent {
       const file = event.target.files[0];
 
       const reader = new FileReader();
-      reader.onload = () => this.imageSrc = reader.result;
+      reader.onload = () => {
+        this.imageSrc = reader.result;
+        this.changeDetectorRef.markForCheck();
+      };
 
       reader.readAsDataURL(file);
     }
@@ -56,12 +60,10 @@ export class CreateCategoryComponent {
   createCategory(): void {
     const categoryData: Category = {
       name: this.name.value,
-      categoryIdentifier: this.identifier.value,
+      identifier: this.identifier.value,
       productNamePrefix: this.productNamePrefix.value,
       media: this.mediaInput.nativeElement.files[0]
     }
-
-    console.log('inside')
 
     this.categoryService.createCategory(createFormData(categoryData))
       .subscribe({

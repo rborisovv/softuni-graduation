@@ -9,7 +9,7 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 import {AdminGuard} from "./admin.guard";
 import {CreateCategoryComponent} from './create-category/create-category.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {AsyncPipe, CommonModule} from "@angular/common";
+import {AsyncPipe, CommonModule, NgOptimizedImage} from "@angular/common";
 import {UpdateCategoryComponent} from './update-category/update-category.component';
 import {CategoryComponent} from './category/category.component';
 
@@ -18,8 +18,8 @@ const routes: Routes = [
     path: '', canActivateChild: [AdminGuard], children: [
       {path: 'cockpit', component: CockpitComponent},
       {path: 'categories', component: CategoryComponent},
-      {path: 'create-category', component: CreateCategoryComponent},
-      {path: 'category/:identifier', component: UpdateCategoryComponent}
+      {path: 'category/create', component: CreateCategoryComponent},
+      {path: 'categories/:identifier', component: UpdateCategoryComponent}
     ]
   }
 ]
@@ -41,7 +41,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     FormsModule,
     AsyncPipe,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgOptimizedImage
   ],
   providers: [JwtHelperService]
 })

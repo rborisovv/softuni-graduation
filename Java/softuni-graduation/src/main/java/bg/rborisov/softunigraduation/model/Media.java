@@ -28,5 +28,5 @@ public class Media extends BaseEntity implements Serializable {
     private String mediaUrl;
 
     @Column(nullable = false, unique = true)
-    private String identifier;
+    private String pkOfFile;
 }
