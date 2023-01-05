@@ -1,31 +1,23 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {faFacebookF, faGithub, faGoogle, faTwitter} from "@fortawesome/free-brands-svg-icons";
-import {faCalendar, faKey, faLock, faEnvelope, faAddressCard, faUser} from '@fortawesome/free-solid-svg-icons';
+import {faAddressCard, faCalendar, faEnvelope, faKey, faLock, faUser} from '@fortawesome/free-solid-svg-icons';
 import {UserService} from "../../service/user.service";
-import {map, Observable, Subscription, switchMap, tap} from "rxjs";
-import {
-  AbstractControl,
-  AsyncValidator, AsyncValidatorFn,
-  EmailValidator,
-  FormControl,
-  FormGroup,
-  ValidationErrors,
-  Validators
-} from "@angular/forms";
+import {catchError, map, Observable, Subscription} from "rxjs";
+import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {DatePipe} from "@angular/common";
-import {environment} from "../../../environments/environment.prod";
 import {Router} from "@angular/router";
 import {IUserRegisterModel} from "./IUserRegisterModel";
+import {NotificationType} from "../../enumeration/notification-enum";
+import {NotifierService} from "angular-notifier";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  url: string = '/auth/register';
   private subscriptions: Subscription[] = [];
-  private apiHost = environment.apiHost;
 
 
   faFacebook = faFacebookF;
@@ -39,7 +31,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   faEnvelope = faEnvelope;
   faCalendar = faCalendar;
 
-  constructor(private userService: UserService, private datePipe: DatePipe, private router: Router) {
+  constructor(private userService: UserService, private datePipe: DatePipe, private router: Router,
+              private notifier: NotifierService) {
   }
 
   registerForm = new FormGroup({
@@ -88,11 +81,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
       'confirmPassword': this.confirmPassword.value
     };
 
-    const subscription: Subscription = this.userService.registerUser(registerData).subscribe({
-      next: () => {
-        this.router.navigateByUrl('/login');
-      }
-    });
+    const subscription: Subscription = this.userService.registerUser(registerData)
+      .pipe(
+        catchError((err) => {
+          this.notifier.notify(NotificationType.ERROR, err.error.message);
+          throw err;
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.router.navigateByUrl('/login');
+        }
+      });
 
     this.subscriptions.push(subscription);
   }
