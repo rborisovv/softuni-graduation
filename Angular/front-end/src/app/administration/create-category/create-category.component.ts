@@ -1,4 +1,11 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import {CategoryService} from "../../service/category.service";
 import {Category} from "../../interface/category";
 import {Router} from "@angular/router";
@@ -7,31 +14,37 @@ import {NotificationType} from "../../enumeration/notification-enum";
 import {createFormData} from "../../service/service.index";
 import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {map, Observable} from "rxjs";
+import {MediaService} from "../../service/media.service";
+import {Media} from "../../interface/media";
 
 @Component({
   selector: 'app-create-categories',
   templateUrl: './create-category.component.html',
   styleUrls: ['./create-category.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class CreateCategoryComponent {
   constructor(private categoryService: CategoryService, private router: Router,
-              private notifier: NotifierService, private changeDetectorRef: ChangeDetectorRef) {
+              private notifier: NotifierService, private mediaService: MediaService,
+              private changeDetectorRef: ChangeDetectorRef) {
   }
 
   createCategoryFormGroup = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(5),
+    name: new FormControl('', [Validators.required, Validators.minLength(4),
       Validators.maxLength(40)], [nameValidator.validateName(this.categoryService)]),
     identifier: new FormControl('', [Validators.required,
       Validators.minLength(4), Validators.maxLength(10)], identifierValidator.validateIdentifier(this.categoryService)),
     productNamePrefix: new FormControl('', [Validators.maxLength(30)]),
-    media: new FormControl('')
+    media: new FormControl('', Validators.required)
   });
 
-  @ViewChild('media') mediaInput: ElementRef;
+  @ViewChild('mediaInput') mediaInput: ElementRef;
+  @ViewChild('mediaSearchInput') mediaSearchInput: ElementRef;
 
   mediaPath: string;
   imageSrc: string | ArrayBuffer;
+  filteredMedias$: Observable<Media[]>;
 
 
   public handleMediaUploadClick(): void {
@@ -55,6 +68,15 @@ export class CreateCategoryComponent {
 
       reader.readAsDataURL(file);
     }
+  }
+
+
+  public filterMediaByName(): void {
+    const mediaSearchInputElement = this.mediaSearchInput.nativeElement;
+    if (mediaSearchInputElement.value.trim() === '') {
+      return;
+    }
+      this.filteredMedias$ = this.mediaService.filterMediaByName(mediaSearchInputElement.value);
   }
 
   createCategory(): void {

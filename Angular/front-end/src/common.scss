@@ -11,3 +11,49 @@
   justify-content: center;
   align-items: center;
 }
+
+@mixin table-items {
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th,
+  td {
+    padding: 1rem 2rem;
+    text-align: center;
+    //border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    font-weight: normal;
+    font-size: .875rem;
+    color: #666;
+    background: #eee;
+    /*  以下２行で見出しを固定  */
+    position: sticky;
+    top: 0;
+  }
+
+  img {
+    width: 60px;
+    display: block;
+    margin: 0 auto .5rem;
+  }
+
+  tbody tr:last-child {
+    border-bottom: 1px solid #ddd;
+  }
+
+  thead th {
+    font-size: 20px;
+  }
+
+  tbody {
+    font-size: 20px;
+  }
+
+  tbody td:last-child {
+    padding: 18px;
+  }
+}

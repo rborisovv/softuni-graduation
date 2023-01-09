@@ -2,6 +2,7 @@ package bg.rborisov.softunigraduation.dto;
 
 import bg.rborisov.softunigraduation.util.validators.ImageValidator;
 import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,24 +15,30 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 @ToString
 public class CategoryUpdateDto {
-    @Size(min = 5, max = 40)
     @NonNull
+    @NotBlank
+    @Size(min = 4, max = 40)
     private String name;
 
-    @Size(min = 5, max = 40)
     @NonNull
+    @NotBlank
+    @Size(min = 5, max = 40)
     private String oldName;
 
-    @Size(min = 4, max = 10)
     @NonNull
+    @NotBlank
+    @Size(min = 4, max = 10)
     private String identifier;
 
     @NonNull
+    @NotBlank
     @Size(min = 4, max = 10)
     private String oldIdentifier;
 
-    @Size(max = 30)
     @Nullable
+    @NotBlank
+    @Size(max = 30)
+
     private String productNamePrefix;
 
     @Nullable

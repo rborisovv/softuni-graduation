@@ -1,0 +1,35 @@
+<app-admin-header></app-admin-header>
+
+<form [formGroup]="createMediaGroup" class="form" (ngSubmit)="createMedia()">
+  <h3 class="form-title">Create Media</h3>
+  <div class="form-controll">
+    <div class="form-input">
+      <input type="text" name="name" id="name" formControlName="name" required>
+      <label for="name">Media Name</label>
+    </div>
+    <div class="confirm-password-messages error-messages text-danger">
+      <div *ngIf="name.errors?.['required'] && name.touched">The media name is required.</div>
+      <div *ngIf="name.errors?.['namePresent'] && name.touched">A media with the provided name is already present.</div>
+    </div>
+  </div>
+  <div id="media-control" class="form-controll">
+    <div id="media-form-input" class="form-input">
+      <button id="category-media" type="button" (click)="handleMediaUploadClick()">Upload Media</button>
+      <input (change)="onMediaUpload($event)" name="media" formControlName="media" #mediaInput id="category-media-input"
+             type="file" accept="image/*"/>
+      <label for="category-media" style="padding-bottom: 12px;">Category Media</label>
+    </div>
+    <div class="confirm-password-messages error-messages text-danger">
+      <div *ngIf="media.errors?.['required'] && media.touched">The media file is required.</div>
+    </div>
+  </div>
+  <ng-container *ngIf="mediaInput.value">
+    <img [src]="imageSrc" alt="">
+  </ng-container>
+  <div class="media-location">
+    {{this.mediaPath}}
+  </div>
+  <div class="form-submit">
+    <button type="submit">Create</button>
+  </div>
+</form>

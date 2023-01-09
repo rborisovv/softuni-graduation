@@ -22,4 +22,7 @@ public class Category extends BaseEntity implements Serializable {
     private String productNamePrefix;
     @OneToOne(cascade = CascadeType.REMOVE)
     private Media media;
+
+//    @OneToMany(mappedBy = "category")
+//    public Set<Product> products;
 }

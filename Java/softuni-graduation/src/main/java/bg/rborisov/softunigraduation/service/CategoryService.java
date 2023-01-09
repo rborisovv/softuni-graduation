@@ -56,7 +56,7 @@ public class CategoryService {
             throw new CategoryWithIdentifierExists();
         }
 
-        Optional<Media> optionalMedia = this.mediaRepository.findMediaByName(mediaName);
+        Optional<Media> optionalMedia = this.mediaRepository.findMediaByName(mediaName.substring(0, mediaName.length() - 4));
 
         if (optionalMedia.isEmpty()) {
             throw new MediaNotFoundException(MEDIA_NOT_FOUND);

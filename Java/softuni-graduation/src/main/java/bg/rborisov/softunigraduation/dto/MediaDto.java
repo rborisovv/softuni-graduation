@@ -2,12 +2,11 @@ package bg.rborisov.softunigraduation.dto;
 
 import bg.rborisov.softunigraduation.util.validators.ImageValidator;
 import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.Serializable;
 
 @NoArgsConstructor
 @RequiredArgsConstructor
@@ -16,24 +15,21 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-public class CategoryDto implements Serializable {
+public class MediaDto {
 
-    @Size(min = 4, max = 40)
-    @NonNull
+    @NotBlank
+    @Size(min = 3, max = 40)
     private String name;
 
-    @Size(min = 4, max = 10)
-    @NonNull
-    private String identifier;
-
-    @Size(max = 30)
     @Nullable
-    private String productNamePrefix;
+    private String pkOfFile;
+
+
+    private String mediaUrl;
+
 
     @NonNull
     @NotNull
     @ImageValidator
-    private MultipartFile media;
-
-    private String mediaUrl;
+    private MultipartFile multipartFile;
 }

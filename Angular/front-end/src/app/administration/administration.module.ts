@@ -12,6 +12,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AsyncPipe, CommonModule, NgOptimizedImage} from "@angular/common";
 import {UpdateCategoryComponent} from './update-category/update-category.component';
 import {CategoryComponent} from './category/category.component';
+import {CreateMediaComponent} from './create-media/create-media.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
       {path: 'cockpit', component: CockpitComponent},
       {path: 'categories', component: CategoryComponent},
       {path: 'category/create', component: CreateCategoryComponent},
+      {path: 'media/create', component: CreateMediaComponent},
       {path: 'categories/:identifier', component: UpdateCategoryComponent}
     ]
   }
@@ -31,7 +33,8 @@ const routes: Routes = [
     CreateProductComponent,
     CreateCategoryComponent,
     UpdateCategoryComponent,
-    CategoryComponent
+    CategoryComponent,
+    CreateMediaComponent
   ],
   imports: [
     CommonModule,
