@@ -55,7 +55,7 @@
   <div id="media-control" class="form-controll">
     <div id="media-form-input" class="form-input">
       <button id="category-media" type="button" (click)="handleMediaUploadClick()">Upload Media!</button>
-      <img [src]="imageSrc" alt="">
+      <img [src]="imageSrc" alt="" style="width: 200px;">
       <input (change)="onMediaUpload($event)" name="media" formControlName="media" #media id="category-media-input"
              type="file" accept="image/*"/>
       <label for="category-media">Category Media</label>

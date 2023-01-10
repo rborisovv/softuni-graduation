@@ -251,4 +251,29 @@ input:valid + label {
   }
 }
 
+.modal table tr:not(:last-child) {
+  border-bottom: 1px solid #eeeeee;
+}
+
+.modal tbody tr:last-child {
+  border-bottom: 0;
+}
+
+.modal tbody tr {
+  transition: all 200ms ease-in-out;
+}
+
+@mixin selected-media {
+  background: #6eded2;
+  color: #ffffff;
+}
+
+.modal tbody tr:hover {
+  @include selected-media;
+}
+
+.selected-media {
+  @include selected-media;
+}
+
 @include table-items;

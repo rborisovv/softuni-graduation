@@ -3,5 +3,6 @@ export interface Category {
   identifier: string,
   productNamePrefix?: string,
   media: File,
-  mediaUrl?: string
+  mediaUrl?: string,
+  pkOfFile?: string
 }

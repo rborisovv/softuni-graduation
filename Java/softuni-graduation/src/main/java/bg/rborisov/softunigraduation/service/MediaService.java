@@ -40,7 +40,7 @@ public class MediaService {
             String mediaUrl = constructMediaUrl(PK, media);
 
             mediaEntity = new Media(mediaName.substring(0, mediaName.length() - 4),
-                    media.getBytes(), mediaUrl, PK);
+                    media.getBytes(), mediaUrl, PK, null);
             this.mediaRepository.save(mediaEntity);
         } catch (IOException e) {
             log.error("Temporary store of the media fails ( IOException )");
@@ -64,7 +64,7 @@ public class MediaService {
 
         String PK = RandomStringUtils.randomNumeric(15);
         String mediaUrl = constructMediaUrl(PK, mediaDto.getMultipartFile());
-        Media media = new Media(mediaDto.getName(), mediaDto.getMultipartFile().getBytes(), mediaUrl, PK);
+        Media media = new Media(mediaDto.getName(), mediaDto.getMultipartFile().getBytes(), mediaUrl, PK, null);
         this.mediaRepository.save(media);
 
         HttpResponse httpResponse = HttpResponse.builder().httpStatusCode(HttpStatus.OK.value())

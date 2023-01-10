@@ -56,13 +56,13 @@
     <div id="media-form-input" class="form-input">
       <button id="category-media" type="button" (click)="handleMediaUploadClick()">Upload Media</button>
       <button id="find-media" type="button" data-bs-toggle="modal" data-bs-target="#modal">Find Media</button>
-      <input (change)="onMediaUpload($event)" name="media" formControlName="media" #mediaInput id="category-media-input"
+      <input (change)="onMediaUpload($event)" name="media" #mediaInput id="category-media-input"
              type="file" accept="image/*"/>
       <label for="category-media">Category Media</label>
     </div>
   </div>
-  <ng-container *ngIf="mediaInput.value">
-    <img style="width: 200px;"  [src]="imageSrc" alt="">
+  <ng-container *ngIf="mediaInput.value || selectedMediaFromPickup">
+    <img id="preview-img" #previewCategoryMedia style="width: 200px;" [src]="imageSrc" alt="">
   </ng-container>
   <div class="media-location">
     {{this.mediaPath}}
@@ -95,7 +95,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let media of filteredMedias$ | async">
+            <tr #row *ngFor="let media of filteredMedias$ | async" (click)="selectCategoryMedia(row, media)">
               <td><img [src]="media.mediaUrl" alt=""></td>
               <td>{{media.pkOfFile}}</td>
               <td>{{media.name}}</td>
@@ -106,8 +106,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" id="modal-btn-save" class="btn">Save changes</button>
+        <button type="button" class="btn btn-secondary" id="modal-close-btn" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="modal-btn-save" class="btn" (click)="submitMediaSelection()">Save changes</button>
       </div>
     </div>
   </div>

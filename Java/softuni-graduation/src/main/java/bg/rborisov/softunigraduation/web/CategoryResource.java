@@ -3,10 +3,7 @@ package bg.rborisov.softunigraduation.web;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.CategoryDto;
 import bg.rborisov.softunigraduation.dto.CategoryUpdateDto;
-import bg.rborisov.softunigraduation.exception.CategoryNotFoundException;
-import bg.rborisov.softunigraduation.exception.CategoryWithIdentifierExists;
-import bg.rborisov.softunigraduation.exception.CategoryWithNameExists;
-import bg.rborisov.softunigraduation.exception.MediaNotFoundException;
+import bg.rborisov.softunigraduation.exception.*;
 import bg.rborisov.softunigraduation.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpEntity;
@@ -31,15 +28,17 @@ public class CategoryResource {
     public ResponseEntity<HttpResponse> createCategory(@RequestParam("name") String name,
                                                        @RequestParam("identifier") String identifier,
                                                        @RequestParam(name = "productNamePrefix", required = false) String productNamePrefix,
-                                                       @RequestParam("media") MultipartFile media) throws MediaNotFoundException, CategoryWithIdentifierExists {
+                                                       @RequestParam(value = "media", required = false) MultipartFile media,
+                                                       @RequestParam(value = "pkOfFile", required = false) String pkOfFile) throws MediaNotFoundException, CategoryWithIdentifierExists, CategoryWithMediaExistsException {
 
         @Valid CategoryDto categoryDto = CategoryDto.builder().name(name)
                 .identifier(identifier)
                 .productNamePrefix(productNamePrefix)
                 .media(media).build();
 
-        return this.categoryService.createCategory(categoryDto);
+        return this.categoryService.createCategory(categoryDto, pkOfFile);
     }
+
 
     @PostMapping("/identifier")
     public boolean checkCategoryByIdentifier(@RequestBody String identifier) {

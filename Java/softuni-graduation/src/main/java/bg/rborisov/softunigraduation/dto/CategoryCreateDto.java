@@ -7,8 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.Serializable;
-
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -16,8 +14,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-public class CategoryDto implements Serializable {
-
+public class CategoryCreateDto {
     @Size(min = 4, max = 40)
     @NonNull
     private String name;
@@ -30,9 +27,13 @@ public class CategoryDto implements Serializable {
     @Nullable
     private String productNamePrefix;
 
+    @NonNull
     @NotNull
     @ImageValidator
     private MultipartFile media;
 
     private String mediaUrl;
+
+    @org.springframework.lang.Nullable
+    private MediaDto selectedMediaDto;
 }

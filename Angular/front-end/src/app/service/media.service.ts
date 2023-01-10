@@ -25,4 +25,8 @@ export class MediaService {
   public createMedia(formData: FormData): Observable<HttpResponse> {
     return this.http.post<HttpResponse>(`${this.apiUrl}/media/create`, formData, {withCredentials: true});
   }
+
+  public fetchMedia(identifier: string){
+    return this.http.get(`${this.apiUrl}/media/sys_master/h4f/${identifier}.jpg`);
+  }
 }

@@ -9,4 +9,6 @@ public class ExceptionMessages {
     public static final String CATEGORY_BY_IDENTIFIER_EXISTS = "A Category with the provided Identifier already exists!";
     public static final String CATEGORY_BY_NAME_EXISTS = "A Category with the provided Name already exists!";
     public static final String CATEGORY_NOT_FOUND = "The category could not be found!";
+
+    public static final String CATEGORY_WITH_PROVIDED_MEDIA_EXISTS = "A category with the provided Media already exists!";
 }

@@ -5,12 +5,10 @@ import bg.rborisov.softunigraduation.dao.MediaRepository;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.CategoryDto;
 import bg.rborisov.softunigraduation.dto.CategoryUpdateDto;
-import bg.rborisov.softunigraduation.exception.CategoryNotFoundException;
-import bg.rborisov.softunigraduation.exception.CategoryWithIdentifierExists;
-import bg.rborisov.softunigraduation.exception.CategoryWithNameExists;
-import bg.rborisov.softunigraduation.exception.MediaNotFoundException;
+import bg.rborisov.softunigraduation.exception.*;
 import bg.rborisov.softunigraduation.model.Category;
 import bg.rborisov.softunigraduation.model.Media;
+import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -30,6 +28,7 @@ import static bg.rborisov.softunigraduation.common.Messages.*;
 import static bg.rborisov.softunigraduation.constant.FileConstant.MEDIA_LOCATION_PATH;
 
 @Service
+@Transactional
 public class CategoryService {
     private final MediaService mediaService;
     private final CategoryRepository categoryRepository;
@@ -43,23 +42,35 @@ public class CategoryService {
         this.modelMapper = modelMapper;
     }
 
-    public ResponseEntity<HttpResponse> createCategory(CategoryDto categoryDto) throws CategoryWithIdentifierExists, MediaNotFoundException {
-        this.mediaService.saveFile(categoryDto.getMedia());
-
+    public ResponseEntity<HttpResponse> createCategory(CategoryDto categoryDto, String pkOfFile) throws CategoryWithIdentifierExists, MediaNotFoundException, CategoryWithMediaExistsException {
         String name = categoryDto.getName();
-        String mediaName = Objects.requireNonNull(categoryDto.getMedia().getOriginalFilename()).replaceAll("\\s+", "-");
-        Optional<Category> optionalCategory = this.categoryRepository.findCategoryByIdentifier(name);
-
+        String mediaName;
+        Optional<Category> optionalCategory = this.categoryRepository.findCategoryByIdentifier(categoryDto.getIdentifier());
         String categoryName = categoryDto.getName();
+
+        Optional<Media> optionalMedia;
 
         if (optionalCategory.isPresent()) {
             throw new CategoryWithIdentifierExists();
         }
 
-        Optional<Media> optionalMedia = this.mediaRepository.findMediaByName(mediaName.substring(0, mediaName.length() - 4));
+        if (categoryDto.getMedia() != null) {
+            this.mediaService.saveFile(categoryDto.getMedia());
+            mediaName = Objects.requireNonNull(categoryDto.getMedia().getOriginalFilename()).replaceAll("\\s+", "-");
+            optionalMedia = this.mediaRepository.findMediaByName(mediaName.substring(0, mediaName.length() - 4));
 
-        if (optionalMedia.isEmpty()) {
-            throw new MediaNotFoundException(MEDIA_NOT_FOUND);
+            if (optionalMedia.isEmpty()) {
+                throw new MediaNotFoundException(MEDIA_NOT_FOUND);
+            }
+        } else {
+            optionalMedia = this.mediaRepository.findMediaByPkOfFile(pkOfFile);
+            if (optionalMedia.isEmpty()) {
+                throw new MediaNotFoundException();
+            }
+
+            if (optionalMedia.get().getCategory() != null) {
+                throw new CategoryWithMediaExistsException();
+            }
         }
 
         Media media = optionalMedia.get();
@@ -69,6 +80,10 @@ public class CategoryService {
                 .identifier(categoryDto.getIdentifier())
                 .productNamePrefix(categoryDto.getProductNamePrefix())
                 .media(media).build();
+
+        media.setCategory(category);
+
+        mediaRepository.save(media);
 
         this.categoryRepository.save(category);
 

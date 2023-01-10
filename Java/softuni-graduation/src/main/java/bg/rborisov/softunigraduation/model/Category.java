@@ -20,9 +20,8 @@ public class Category extends BaseEntity implements Serializable {
     private String identifier;
     @Column(length = 30)
     private String productNamePrefix;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Media media;
-
 //    @OneToMany(mappedBy = "category")
 //    public Set<Product> products;
 }

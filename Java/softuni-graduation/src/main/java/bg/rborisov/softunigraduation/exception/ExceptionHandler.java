@@ -49,6 +49,11 @@ public class ExceptionHandler {
         return createHttpResponse(BAD_REQUEST, CATEGORY_BY_NAME_EXISTS);
     }
 
+    @org.springframework.web.bind.annotation.ExceptionHandler(CategoryWithMediaExistsException.class)
+    public ResponseEntity<HttpResponse> categoryWithProvidedMediaExists() {
+        return createHttpResponse(BAD_REQUEST, CATEGORY_WITH_PROVIDED_MEDIA_EXISTS);
+    }
+
     private ResponseEntity<HttpResponse> createHttpResponse(HttpStatus httpStatus, String message) {
         HttpResponse httpResponse = new HttpResponse(httpStatus.value(),
                 httpStatus, httpStatus.getReasonPhrase().toUpperCase(Locale.ROOT), message);
