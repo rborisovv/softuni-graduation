@@ -5,6 +5,7 @@ import bg.rborisov.softunigraduation.dao.MediaRepository;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.CategoryDto;
 import bg.rborisov.softunigraduation.dto.CategoryUpdateDto;
+import bg.rborisov.softunigraduation.enumeration.MediaTypeEnum;
 import bg.rborisov.softunigraduation.exception.*;
 import bg.rborisov.softunigraduation.model.Category;
 import bg.rborisov.softunigraduation.model.Media;
@@ -55,7 +56,7 @@ public class CategoryService {
         }
 
         if (categoryDto.getMedia() != null) {
-            this.mediaService.saveFile(categoryDto.getMedia());
+            this.mediaService.saveFile(categoryDto.getMedia(), MediaTypeEnum.CATEGORY);
             mediaName = Objects.requireNonNull(categoryDto.getMedia().getOriginalFilename()).replaceAll("\\s+", "-");
             optionalMedia = this.mediaRepository.findMediaByName(mediaName.substring(0, mediaName.length() - 4));
 

@@ -62,7 +62,7 @@
     </div>
   </div>
   <ng-container *ngIf="mediaInput.value || selectedMediaFromPickup">
-    <img id="preview-img" #previewCategoryMedia style="width: 200px;" [src]="imageSrc" alt="">
+    <img id="preview-img" #previewCategoryMedia style="width: 200px; margin-bottom: 15px;" [src]="this.imageSrc" alt="">
   </ng-container>
   <div class="media-location">
     {{this.mediaPath}}

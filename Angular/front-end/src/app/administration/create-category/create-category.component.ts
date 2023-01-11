@@ -3,7 +3,8 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  ViewChild, ViewChildren,
+  ViewChild,
+  ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 import {CategoryService} from "../../service/category.service";
@@ -16,6 +17,8 @@ import {MediaService} from "../../service/media.service";
 import {Media} from "../../interface/media";
 import {Category} from "../../interface/category";
 import {createFormData} from "../../service/service.index";
+import {AdminSharedFunc} from "../item.index";
+import {MediaSubjectType} from "../media.subject";
 
 @Component({
   selector: 'app-create-categories',
@@ -24,10 +27,11 @@ import {createFormData} from "../../service/service.index";
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class CreateCategoryComponent {
+export class CreateCategoryComponent extends AdminSharedFunc {
   constructor(private categoryService: CategoryService, private router: Router,
               private notifier: NotifierService, private mediaService: MediaService,
-              private changeDetectorRef: ChangeDetectorRef) {
+              protected override changeDetectorRef: ChangeDetectorRef) {
+    super(changeDetectorRef);
   }
 
   createCategoryFormGroup = new FormGroup({
@@ -40,39 +44,12 @@ export class CreateCategoryComponent {
     pkOfFile: new FormControl('')
   });
 
-  @ViewChild('mediaInput') mediaInput: ElementRef;
   @ViewChild('mediaSearchInput') mediaSearchInput: ElementRef;
   @ViewChild('previewCategoryMedia') previewCategoryMedia: ElementRef;
   @ViewChildren('row') modalMediaRows: ElementRef[];
 
-  mediaPath: string;
-  imageSrc: string | ArrayBuffer;
   filteredMedias$: Observable<Media[]>;
   selectedMediaFromPickup: Media;
-
-
-  public handleMediaUploadClick(): void {
-    this.mediaInput.nativeElement.click();
-  }
-
-  public onMediaUpload(event: any) {
-    this.mediaPath = this.mediaInput.nativeElement.value;
-    this.readURL(event);
-  }
-
-  readURL(event: any): void {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imageSrc = reader.result;
-        this.changeDetectorRef.markForCheck();
-      };
-
-      reader.readAsDataURL(file);
-    }
-  }
 
 
   public filterMediaByName(): void {
@@ -80,22 +57,14 @@ export class CreateCategoryComponent {
     if (mediaSearchInputElement.value.trim() === '') {
       return;
     }
-    this.filteredMedias$ = this.mediaService.filterMediaByName(mediaSearchInputElement.value);
+    this.filteredMedias$ = this.mediaService.filterMediaByName(mediaSearchInputElement.value, MediaSubjectType.CATEGORY);
   }
 
   createCategory(): void {
-
     if (!this.mediaInput.nativeElement.files[0] && this.pkOfFIle.value === '') {
       this.notifier.notify(NotificationType.INFO, "Please select a Category media!");
-      console.log('media+' + this.media.value)
-      console.log('ok+' + this.pkOfFIle.value)
-
       return;
     }
-
-    console.log('media+' + this.media.value)
-    console.log('ok+' + this.pkOfFIle.value)
-    console.log('files' + this.mediaInput.nativeElement.files[0])
 
     const categoryData: Category = {
       name: this.name.value,
@@ -152,6 +121,7 @@ export class CreateCategoryComponent {
 
   public submitMediaSelection(): void {
     this.previewCategoryMedia.nativeElement.src = this.selectedMediaFromPickup.mediaUrl;
+    this.mediaPath = this.selectedMediaFromPickup.mediaUrl;
     document.getElementById('modal-close-btn').click();
 
     this.pkOfFIle.setValue(this.selectedMediaFromPickup.pkOfFile);

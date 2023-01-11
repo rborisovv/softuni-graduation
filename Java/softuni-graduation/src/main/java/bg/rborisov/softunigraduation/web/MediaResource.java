@@ -3,6 +3,7 @@ package bg.rborisov.softunigraduation.web;
 import bg.rborisov.softunigraduation.dao.MediaRepository;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.MediaDto;
+import bg.rborisov.softunigraduation.enumeration.MediaTypeEnum;
 import bg.rborisov.softunigraduation.exception.MediaAlreadyExistsException;
 import bg.rborisov.softunigraduation.exception.MediaNotFoundException;
 import bg.rborisov.softunigraduation.service.MediaService;
@@ -39,20 +40,23 @@ public class MediaResource {
         return this.mediaService.findMediaByPk(pkOfFile);
     }
 
-    @PostMapping("/filter")
-    public Set<MediaDto> filterMediaByName(@RequestBody String name) {
-        return this.mediaRepository.findMediaByNameLike(PERCENT + name + PERCENT)
+    @PostMapping("/filter/{subject}")
+    public Set<MediaDto> filterMediaByName(@RequestBody String name, @PathVariable String subject) {
+        return this.mediaRepository
+                .findMediaByNameAndCategoryMediaSubject(PERCENT + name + PERCENT, MediaTypeEnum.valueOf(subject))
                 .stream().map(media -> modelMapper.map(media, MediaDto.class))
                 .collect(Collectors.toSet());
     }
 
     @PostMapping("/create")
     public ResponseEntity<HttpResponse> createMedia(@RequestParam("name") String name,
-                                                    @RequestParam("file") MultipartFile file) throws MediaAlreadyExistsException, IOException {
+                                                    @RequestParam("file") MultipartFile file,
+                                                    @RequestParam("selectedTypeSubject") String typeSubject) throws MediaAlreadyExistsException, IOException {
 
         @Valid MediaDto mediaDto = MediaDto.builder()
                 .name(name)
                 .multipartFile(file)
+                .selectedTypeSubject(typeSubject)
                 .build();
         return this.mediaService.createMedia(mediaDto);
 

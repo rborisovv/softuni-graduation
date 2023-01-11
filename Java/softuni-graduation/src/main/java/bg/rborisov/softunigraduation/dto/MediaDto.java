@@ -32,4 +32,7 @@ public class MediaDto {
     @NotNull
     @ImageValidator
     private MultipartFile multipartFile;
+
+    @NotBlank
+    private String selectedTypeSubject;
 }

@@ -20,6 +20,7 @@ const routes: Routes = [
       {path: 'cockpit', component: CockpitComponent},
       {path: 'categories', component: CategoryComponent},
       {path: 'category/create', component: CreateCategoryComponent},
+      {path: 'product/create', component: CreateProductComponent},
       {path: 'media/create', component: CreateMediaComponent},
       {path: 'categories/:identifier', component: UpdateCategoryComponent}
     ]

@@ -26,8 +26,15 @@
   <ng-container *ngIf="mediaInput.value">
     <img [src]="imageSrc" alt="" style="width: 200px; margin: 0 auto;">
   </ng-container>
-  <div class="media-location">
-    {{this.mediaPath}}
+  <ng-container *ngIf="this.media.value">
+    <div class="media-location mb-15">
+      {{this.mediaPath}}
+    </div>
+  </ng-container>
+  <p class="mb-30" style="color: #c2c2c2;font-size: 14px;">Media Type</p>
+  <div class="media-subject mb-30">
+    <img #categorySelectionElement src="../../../assets/images/Cockpit/categories.png" alt="" (click)="handleTypeSelect(categoryType)">
+    <img #productSelectionElement src="../../../assets/images/Cockpit/product.png" alt="" (click)="handleTypeSelect(productType)">
   </div>
   <div class="form-submit">
     <button type="submit">Create</button>

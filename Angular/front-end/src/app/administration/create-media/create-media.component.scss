@@ -192,3 +192,21 @@ input:valid + label {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
+
+.media-location {
+  border-bottom: 1px solid #c2c2c2;
+  padding-bottom: 15px;
+}
+
+.media-subject {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #c2c2c2;
+}
+
+.media-subject img {
+  width: 100px;
+  opacity: .5;
+}

@@ -14,8 +14,8 @@ export class MediaService {
   constructor(private http: HttpClient) {
   }
 
-  public filterMediaByName(name: string): Observable<Media[]> {
-    return this.http.post<Media[]>(`${this.apiUrl}/media/filter`, name, {withCredentials: true});
+  public filterMediaByName(name: string, typeSubject: string): Observable<Media[]> {
+    return this.http.post<Media[]>(`${this.apiUrl}/media/filter/${typeSubject}`, name, {withCredentials: true});
   }
 
   public isMediaByNamePresent(name: string): Observable<boolean> {
@@ -26,7 +26,7 @@ export class MediaService {
     return this.http.post<HttpResponse>(`${this.apiUrl}/media/create`, formData, {withCredentials: true});
   }
 
-  public fetchMedia(identifier: string){
+  public fetchMedia(identifier: string) {
     return this.http.get(`${this.apiUrl}/media/sys_master/h4f/${identifier}.jpg`);
   }
 }

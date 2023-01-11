@@ -3,6 +3,7 @@ package bg.rborisov.softunigraduation.service;
 import bg.rborisov.softunigraduation.dao.MediaRepository;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.MediaDto;
+import bg.rborisov.softunigraduation.enumeration.MediaTypeEnum;
 import bg.rborisov.softunigraduation.exception.MediaAlreadyExistsException;
 import bg.rborisov.softunigraduation.exception.MediaNotFoundException;
 import bg.rborisov.softunigraduation.model.Media;
@@ -30,7 +31,7 @@ public class MediaService {
         this.mediaRepository = mediaRepository;
     }
 
-    public void saveFile(MultipartFile media) {
+    public void saveFile(MultipartFile media, MediaTypeEnum mediaTypeSubject) {
         Media mediaEntity = null;
         try {
             String mediaName = Objects.requireNonNull(media.getOriginalFilename()).replaceAll("\\s+", "-");
@@ -40,7 +41,7 @@ public class MediaService {
             String mediaUrl = constructMediaUrl(PK, media);
 
             mediaEntity = new Media(mediaName.substring(0, mediaName.length() - 4),
-                    media.getBytes(), mediaUrl, PK, null);
+                    media.getBytes(), mediaUrl, PK, null, mediaTypeSubject);
             this.mediaRepository.save(mediaEntity);
         } catch (IOException e) {
             log.error("Temporary store of the media fails ( IOException )");
@@ -64,7 +65,14 @@ public class MediaService {
 
         String PK = RandomStringUtils.randomNumeric(15);
         String mediaUrl = constructMediaUrl(PK, mediaDto.getMultipartFile());
-        Media media = new Media(mediaDto.getName(), mediaDto.getMultipartFile().getBytes(), mediaUrl, PK, null);
+        Media media = new Media();
+
+        if (mediaDto.getSelectedTypeSubject().equalsIgnoreCase("Category")) {
+            media = new Media(mediaDto.getName(), mediaDto.getMultipartFile().getBytes(), mediaUrl, PK, null, MediaTypeEnum.CATEGORY);
+        } else if (mediaDto.getSelectedTypeSubject().equalsIgnoreCase("Product")) {
+            media = new Media(mediaDto.getName(), mediaDto.getMultipartFile().getBytes(), mediaUrl, PK, null, MediaTypeEnum.PRODUCT);
+        }
+
         this.mediaRepository.save(media);
 
         HttpResponse httpResponse = HttpResponse.builder().httpStatusCode(HttpStatus.OK.value())
