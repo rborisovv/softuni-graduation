@@ -13,6 +13,7 @@ import {AsyncPipe, CommonModule, NgOptimizedImage} from "@angular/common";
 import {UpdateCategoryComponent} from './update-category/update-category.component';
 import {CategoryComponent} from './category/category.component';
 import {CreateMediaComponent} from './create-media/create-media.component';
+import {MediaComponent} from './media/media.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
       {path: 'cockpit', component: CockpitComponent},
       {path: 'categories', component: CategoryComponent},
       {path: 'category/create', component: CreateCategoryComponent},
+      {path: 'medias', component: MediaComponent},
       {path: 'product/create', component: CreateProductComponent},
       {path: 'media/create', component: CreateMediaComponent},
       {path: 'categories/:identifier', component: UpdateCategoryComponent}
@@ -35,7 +37,8 @@ const routes: Routes = [
     CreateCategoryComponent,
     UpdateCategoryComponent,
     CategoryComponent,
-    CreateMediaComponent
+    CreateMediaComponent,
+    MediaComponent
   ],
   imports: [
     CommonModule,

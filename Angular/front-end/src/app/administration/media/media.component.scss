@@ -35,6 +35,10 @@ h1 {
 
 @include table-items;
 
+tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
 #actions {
   @include flex-horizontal-center-row;
   gap: 20px;
@@ -49,6 +53,9 @@ h1 {
     color: gray;
     transition: all 150ms ease-in-out;
     cursor: pointer;
+
+    position: relative;
+    top: 7px;
   }
 
   & > .delete:hover {

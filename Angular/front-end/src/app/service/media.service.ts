@@ -29,4 +29,12 @@ export class MediaService {
   public fetchMedia(identifier: string) {
     return this.http.get(`${this.apiUrl}/media/sys_master/h4f/${identifier}.jpg`);
   }
+
+  public fetchAllMedias(): Observable<Media[]> {
+    return this.http.get<Media[]>(`${this.apiUrl}/media/findAll`, {withCredentials: true});
+  }
+
+  public deleteMedia(pk: string): Observable<HttpResponse> {
+    return this.http.delete<HttpResponse>(`${this.apiUrl}/media/delete/${pk}`, {withCredentials: true});
+  }
 }

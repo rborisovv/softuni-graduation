@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.MEDIA_NOT_FOUND;
 import static bg.rborisov.softunigraduation.common.Messages.MEDIA_CREATED_SUCCESSFULLY;
+import static bg.rborisov.softunigraduation.common.Messages.MEDIA_DELETED_SUCCESSFULLY;
 import static bg.rborisov.softunigraduation.constant.FileConstant.MEDIA_LOCATION_PATH;
 
 @Service
@@ -90,8 +91,15 @@ public class MediaService {
                         .substring(media.getOriginalFilename().length() - 4)))
                 .toUriString();
     }
+
+    public ResponseEntity<HttpResponse> deleteMedia(String pk) throws MediaNotFoundException {
+        Media media = this.mediaRepository.findMediaByPkOfFile(pk).orElseThrow(MediaNotFoundException::new);
+        this.mediaRepository.deleteById(media.getId());
+
+        HttpResponse httpResponse = new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, "",
+                String.format(MEDIA_DELETED_SUCCESSFULLY, media.getName()));
+        return new ResponseEntity<>(httpResponse, HttpStatus.OK);
+    }
 }
 
 //TODO: Create a validation for the media file: Must be an image only
-
-//TODO: Implement a functionality to upload images only seperated from other logic

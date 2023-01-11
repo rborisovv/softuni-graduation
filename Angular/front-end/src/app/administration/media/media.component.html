@@ -1,0 +1,36 @@
+<app-admin-header></app-admin-header>
+
+<main>
+  <h1 class="text-center mt-40 mb-30">All Medias</h1>
+  <div class="create-btn-wrapper">
+    <a href="javascript:void(0)" routerLink="/admin/media/create" class="add-btn">Create Media</a>
+  </div>
+  <div class="medias">
+    <div class="media">
+      <table>
+        <thead>
+        <tr>
+          <th>Media</th>
+          <th>Media Name</th>
+          <th>Media PK</th>
+          <th>Media Subject</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let media of medias$ | async">
+          <td><img [src]="media.mediaUrl" alt=""></td>
+          <td>{{media.name}}</td>
+          <td>{{media.pkOfFile}}</td>
+          <td>{{media.selectedTypeSubject | titlecase}}</td>
+          <td id="actions">
+            <a class="delete" href="javascript:void(0)" (click)="deleteCategory(media.pkOfFile)">
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>

@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 @ToString
 public class MediaDto {
-
     @NotBlank
     @Size(min = 3, max = 40)
     private String name;
@@ -24,9 +23,7 @@ public class MediaDto {
     @Nullable
     private String pkOfFile;
 
-
     private String mediaUrl;
-
 
     @NonNull
     @NotNull

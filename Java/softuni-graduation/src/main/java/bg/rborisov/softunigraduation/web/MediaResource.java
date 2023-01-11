@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -66,5 +68,22 @@ public class MediaResource {
     @PostMapping("/findByName")
     public boolean isMediaByNamePresent(@RequestBody String name) {
         return this.mediaRepository.findMediaByName(name).isPresent();
+    }
+
+    @GetMapping("/findAll")
+    public Set<MediaDto> findAllMedias() {
+        return this.mediaRepository.findAll().stream()
+                .map(media -> {
+                    MediaDto mediaDto = modelMapper.map(media, MediaDto.class);
+                    mediaDto.setSelectedTypeSubject(media.getMediaSubject().name());
+                    return mediaDto;
+                })
+                .sorted(Comparator.comparing(MediaDto::getSelectedTypeSubject))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    @DeleteMapping("/delete/{pk}")
+    public ResponseEntity<HttpResponse> deleteMedia(@PathVariable String pk) throws MediaNotFoundException {
+        return this.mediaService.deleteMedia(pk);
     }
 }
