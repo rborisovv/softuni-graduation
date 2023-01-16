@@ -29,7 +29,7 @@ public class CategoryResource {
                                                        @RequestParam("identifier") String identifier,
                                                        @RequestParam(name = "productNamePrefix", required = false) String productNamePrefix,
                                                        @RequestParam(value = "media", required = false) MultipartFile media,
-                                                       @RequestParam(value = "pkOfFile", required = false) String pkOfFile) throws MediaNotFoundException, CategoryWithIdentifierExists, CategoryWithMediaExistsException {
+                                                       @RequestParam(value = "pkOfFile", required = false) String pkOfFile) throws MediaNotFoundException, CategoryWithIdentifierExists, CategoryWithMediaExistsException, MediaByNameAlreadyExistsException, MediaBoundToCategoryExistsException {
 
         @Valid CategoryDto categoryDto = CategoryDto.builder().name(name)
                 .identifier(identifier)
@@ -79,6 +79,11 @@ public class CategoryResource {
                 .media(media).build();
 
         return this.categoryService.updateCategory(categoryDto);
+    }
+
+    @PostMapping("/filterByName")
+    public Set<CategoryDto> filterCategoriesByName(@RequestBody String name) {
+        return this.categoryService.filterByName(name);
     }
 
     @DeleteMapping("/delete/{identifier}")

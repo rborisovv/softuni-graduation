@@ -51,7 +51,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
       })
     })
-
     //TODO: Remove the event listeners manually
   }
 

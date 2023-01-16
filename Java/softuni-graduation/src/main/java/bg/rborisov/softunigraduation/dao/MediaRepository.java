@@ -1,6 +1,5 @@
 package bg.rborisov.softunigraduation.dao;
 
-import bg.rborisov.softunigraduation.enumeration.MediaTypeEnum;
 import bg.rborisov.softunigraduation.model.Media;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,8 +16,8 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
 
 
     @Query("SELECT m FROM Media m WHERE m.name LIKE ?1 AND m.mediaSubject = bg.rborisov.softunigraduation.enumeration.MediaTypeEnum.CATEGORY")
-    Set<Media> findMediaByNameAndCategoryMediaSubject(String name, MediaTypeEnum mediaSubject);
+    Set<Media> findMediaByNameAndCategoryMediaSubject(String name);
 
     @Query("SELECT m FROM Media m WHERE m.name LIKE ?1 AND m.mediaSubject = bg.rborisov.softunigraduation.enumeration.MediaTypeEnum.PRODUCT")
-    Set<Media> findMediaByNameAndProductMediaSubject(String name, MediaTypeEnum mediaSubject);
+    Set<Media> findMediaByNameAndProductMediaSubject(String name);
 }

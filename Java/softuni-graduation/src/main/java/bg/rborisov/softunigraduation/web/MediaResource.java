@@ -4,7 +4,7 @@ import bg.rborisov.softunigraduation.dao.MediaRepository;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.MediaDto;
 import bg.rborisov.softunigraduation.enumeration.MediaTypeEnum;
-import bg.rborisov.softunigraduation.exception.MediaAlreadyExistsException;
+import bg.rborisov.softunigraduation.exception.MediaByNameAlreadyExistsException;
 import bg.rborisov.softunigraduation.exception.MediaNotFoundException;
 import bg.rborisov.softunigraduation.service.MediaService;
 import jakarta.validation.Valid;
@@ -44,16 +44,17 @@ public class MediaResource {
 
     @PostMapping("/filter/{subject}")
     public Set<MediaDto> filterMediaByName(@RequestBody String name, @PathVariable String subject) {
-        return this.mediaRepository
-                .findMediaByNameAndCategoryMediaSubject(PERCENT + name + PERCENT, MediaTypeEnum.valueOf(subject))
-                .stream().map(media -> modelMapper.map(media, MediaDto.class))
-                .collect(Collectors.toSet());
+        return subject.equalsIgnoreCase(MediaTypeEnum.CATEGORY.name())
+                ? this.mediaRepository.findMediaByNameAndCategoryMediaSubject(PERCENT + name + PERCENT)
+                .stream().map(media -> modelMapper.map(media, MediaDto.class)).collect(Collectors.toSet())
+                : this.mediaRepository.findMediaByNameAndProductMediaSubject(PERCENT + name + PERCENT)
+                .stream().map(media -> modelMapper.map(media, MediaDto.class)).collect(Collectors.toSet());
     }
 
     @PostMapping("/create")
     public ResponseEntity<HttpResponse> createMedia(@RequestParam("name") String name,
                                                     @RequestParam("file") MultipartFile file,
-                                                    @RequestParam("selectedTypeSubject") String typeSubject) throws MediaAlreadyExistsException, IOException {
+                                                    @RequestParam("selectedTypeSubject") String typeSubject) throws MediaByNameAlreadyExistsException, IOException {
 
         @Valid MediaDto mediaDto = MediaDto.builder()
                 .name(name)

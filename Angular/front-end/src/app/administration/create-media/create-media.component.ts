@@ -75,7 +75,7 @@ export class CreateMediaComponent {
     }
 
     const mediaData: Media = {
-      name: this.name.value,
+      name: this.name.value.trim(),
       file: this.mediaInput.nativeElement.files[0],
       selectedTypeSubject: this.selectedType
     }

@@ -54,6 +54,16 @@ public class ExceptionHandler {
         return createHttpResponse(BAD_REQUEST, CATEGORY_WITH_PROVIDED_MEDIA_EXISTS);
     }
 
+    @org.springframework.web.bind.annotation.ExceptionHandler(MediaByNameAlreadyExistsException.class)
+    public ResponseEntity<HttpResponse> mediaByNameAlreadyExists() {
+        return createHttpResponse(BAD_REQUEST, MEDIA_BY_NAME_ALREADY_EXISTS_EXCEPTION);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(MediaBoundToCategoryExistsException.class)
+    public ResponseEntity<HttpResponse> MediaBoundToCategoryExists() {
+        return createHttpResponse(BAD_REQUEST, MEDIA_BOUND_TO_CATEGORY_EXISTS_EXCEPTION);
+    }
+
     private ResponseEntity<HttpResponse> createHttpResponse(HttpStatus httpStatus, String message) {
         HttpResponse httpResponse = new HttpResponse(httpStatus.value(),
                 httpStatus, httpStatus.getReasonPhrase().toUpperCase(Locale.ROOT), message);

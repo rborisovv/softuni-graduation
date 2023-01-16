@@ -7,7 +7,7 @@
       <input type="text" name="name" formControlName="name" id="category-name" required>
       <label for="category-name">Category name</label>
     </div>
-    <div class="confirm-password-messages error-messages text-danger">
+    <div class="name-messages error-messages text-danger">
       <div *ngIf="name.errors?.['required'] && name.touched">Category name is required.
       </div>
       <div *ngIf="name.errors?.['minlength'] && name.touched">The Category name must be at
@@ -27,7 +27,7 @@
         <input type="text" name="categoryIdentifier" formControlName="identifier" id="identifier" required>
         <label for="identifier">Category Identifier</label>
       </div>
-      <div class="confirm-password-messages error-messages text-danger">
+      <div class="identifier-messages error-messages text-danger">
         <div *ngIf="identifier.errors?.['required'] && identifier.touched">Identifier is required.</div>
         <div *ngIf="identifier.errors?.['minlength'] && identifier.touched">The Identifier must be at
           least 4 characters long.
@@ -45,7 +45,7 @@
         <input type="text" name="productNamePrefix" formControlName="productNamePrefix" id="product-name-prefix">
         <label for="product-name-prefix">Product Name Prefix</label>
       </div>
-      <div class="confirm-password-messages error-messages text-danger">
+      <div class="name-prefix-messages error-messages text-danger">
         <div *ngIf="productNamePrefix.errors?.['maxlength'] && productNamePrefix.touched">The maximum length of the
           Product Name Prefix is 30 characters.
         </div>

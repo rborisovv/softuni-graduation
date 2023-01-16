@@ -37,4 +37,8 @@ export class UserService {
   public logoutUser() {
     return this.http.post(`${this.apiUrl}/auth/logout`, null, {withCredentials: true});
   }
+
+  public obtainCsrf() {
+    return this.http.get(`${this.apiUrl}/auth/csrf`);
+  }
 }

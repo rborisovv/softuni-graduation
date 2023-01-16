@@ -12,9 +12,6 @@ public class HomeResource {
     public String home(HttpServletRequest request, HttpServletResponse response) {
 //        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
 //        response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
-//
-//        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-//        response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
 
         return "Hello";
     }

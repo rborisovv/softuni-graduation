@@ -16,57 +16,60 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {NotifierModule} from "angular-notifier";
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FontAwesomeModule,
-    SharedModule,
-    AuthenticationModule,
-    CoreModule,
-    HttpClientModule,
-    NotifierModule.withConfig({
-      position: {
-        horizontal: {
-          position: "right"
-        },
-        vertical: {
-          position: "top",
-          distance: 110,
-          gap: 10
-        }
-      },
-      behaviour: {
-        autoHide: 5000,
-        onClick: "hide",
-        onMouseover: "pauseAutoHide",
-        showDismissButton: true,
-        stacking: 4
-      }
+    declarations: [
+        AppComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FontAwesomeModule,
+        SharedModule,
+        AuthenticationModule,
+        CoreModule,
+        HttpClientModule,
+        NotifierModule.withConfig({
+            position: {
+                horizontal: {
+                    position: "right"
+                },
+                vertical: {
+                    position: "top",
+                    distance: 110,
+                    gap: 10
+                }
+            },
+            behaviour: {
+                autoHide: 5000,
+                onClick: "hide",
+                onMouseover: "pauseAutoHide",
+                showDismissButton: true,
+                stacking: 4
+            }
 
-    }),
-    HttpClientXsrfModule.withOptions({
-      cookieName: 'XSRF-TOKEN',
-      headerName: 'X-XSRF-TOKEN'
-    }),
-    JwtModule.forRoot({
-      config: {
-        allowedDomains: ['http://localhost:8080'],
-        headerName: 'JWT-TOKEN',
-        skipWhenExpired: true
-      }
-    }),
-    StoreModule.forRoot({auth: authReducer}, {}),
-    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()})
-  ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: XsrfInterceptor,
-    multi: true
-  }],
-  bootstrap: [AppComponent]
+        }),
+        HttpClientXsrfModule.withOptions({
+            cookieName: 'XSRF-TOKEN',
+            headerName: 'X-XSRF-TOKEN'
+        }),
+        JwtModule.forRoot({
+            config: {
+                allowedDomains: ['http://localhost:8080'],
+                headerName: 'JWT-TOKEN',
+                skipWhenExpired: true
+            }
+        }),
+        StoreModule.forRoot({auth: authReducer}, {}),
+        StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()})
+    ],
+    providers: [{
+        provide: HTTP_INTERCEPTORS,
+        useClass: XsrfInterceptor,
+        multi: true
+    }],
+    exports: [
+
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 

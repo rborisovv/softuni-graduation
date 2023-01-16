@@ -14,6 +14,7 @@ import {UpdateCategoryComponent} from './update-category/update-category.compone
 import {CategoryComponent} from './category/category.component';
 import {CreateMediaComponent} from './create-media/create-media.component';
 import {MediaComponent} from './media/media.component';
+import {PositiveNumberDirective} from "../directive/positive.number.directive";
 
 const routes: Routes = [
   {
@@ -38,19 +39,20 @@ const routes: Routes = [
     UpdateCategoryComponent,
     CategoryComponent,
     CreateMediaComponent,
-    MediaComponent
+    MediaComponent,
+    PositiveNumberDirective
   ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    SharedModule,
-    FontAwesomeModule,
-    RouterModule.forChild(routes),
-    FormsModule,
-    AsyncPipe,
-    ReactiveFormsModule,
-    NgOptimizedImage
-  ],
+    imports: [
+        CommonModule,
+        SharedModule,
+        SharedModule,
+        FontAwesomeModule,
+        RouterModule.forChild(routes),
+        FormsModule,
+        AsyncPipe,
+        ReactiveFormsModule,
+        NgOptimizedImage
+    ],
   providers: [JwtHelperService]
 })
 export class AdministrationModule {

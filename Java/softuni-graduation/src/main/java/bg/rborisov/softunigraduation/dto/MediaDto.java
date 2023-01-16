@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Serializable;
+
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -15,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 @ToString
-public class MediaDto {
+public class MediaDto implements Serializable {
     @NotBlank
     @Size(min = 3, max = 40)
     private String name;

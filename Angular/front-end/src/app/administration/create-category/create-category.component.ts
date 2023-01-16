@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
+  ElementRef, OnDestroy,
   ViewChild,
   ViewChildren,
   ViewEncapsulation
@@ -12,12 +12,12 @@ import {Router} from "@angular/router";
 import {NotifierService} from "angular-notifier";
 import {NotificationType} from "../../enumeration/notification-enum";
 import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
-import {catchError, map, Observable} from "rxjs";
+import {catchError, map, Observable, Subscription} from "rxjs";
 import {MediaService} from "../../service/media.service";
 import {Media} from "../../interface/media";
 import {Category} from "../../interface/category";
 import {createFormData} from "../../service/service.index";
-import {AdminSharedFunc} from "../item.index";
+import {CategorySharedFunctionality} from "../item.category.index";
 import {MediaSubjectType} from "../media.subject";
 
 @Component({
@@ -27,11 +27,15 @@ import {MediaSubjectType} from "../media.subject";
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class CreateCategoryComponent extends AdminSharedFunc {
+export class CreateCategoryComponent extends CategorySharedFunctionality implements OnDestroy {
   constructor(private categoryService: CategoryService, private router: Router,
               private notifier: NotifierService, private mediaService: MediaService,
               protected override changeDetectorRef: ChangeDetectorRef) {
     super(changeDetectorRef);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(x => x.unsubscribe());
   }
 
   createCategoryFormGroup = new FormGroup({
@@ -51,6 +55,8 @@ export class CreateCategoryComponent extends AdminSharedFunc {
   filteredMedias$: Observable<Media[]>;
   selectedMediaFromPickup: Media;
 
+  subscriptions: Subscription[] = [];
+
 
   public filterMediaByName(): void {
     const mediaSearchInputElement = this.mediaSearchInput.nativeElement;
@@ -67,14 +73,14 @@ export class CreateCategoryComponent extends AdminSharedFunc {
     }
 
     const categoryData: Category = {
-      name: this.name.value,
-      identifier: this.identifier.value,
-      productNamePrefix: this.productNamePrefix.value,
+      name: this.name.value.trim(),
+      identifier: this.identifier.value.trim(),
+      productNamePrefix: this.productNamePrefix.value.trim(),
       media: this.mediaInput.nativeElement.files[0],
       pkOfFile: this.pkOfFIle.value
     }
 
-    this.categoryService.createCategory(createFormData(categoryData))
+    const subscription = this.categoryService.createCategory(createFormData(categoryData))
       .pipe(
         catchError((error) => {
           this.notifier.notify(NotificationType.ERROR, error.error.message);
@@ -88,6 +94,8 @@ export class CreateCategoryComponent extends AdminSharedFunc {
           });
         }
       });
+
+    this.subscriptions.push(subscription);
   }
 
   get name() {
@@ -110,6 +118,11 @@ export class CreateCategoryComponent extends AdminSharedFunc {
     return this.createCategoryFormGroup.get('pkOfFile');
   }
 
+  protected override onMediaUpload(event: any) {
+    super.onMediaUpload(event);
+    this.selectedMediaFromPickup = null;
+  }
+
   public selectCategoryMedia(selectedRow: HTMLTableRowElement, media: Media): void {
     this.modalMediaRows.forEach(x => {
       x.nativeElement.closest('tr').classList.remove('selected-media');
@@ -125,6 +138,8 @@ export class CreateCategoryComponent extends AdminSharedFunc {
     document.getElementById('modal-close-btn').click();
 
     this.pkOfFIle.setValue(this.selectedMediaFromPickup.pkOfFile);
+    this.media.setValue('');
+    this.mediaInput.nativeElement.value = '';
   }
 }
 

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,6 +23,6 @@ public class Category extends BaseEntity implements Serializable {
     private String productNamePrefix;
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Media media;
-//    @OneToMany(mappedBy = "category")
-//    public Set<Product> products;
+    @OneToMany(mappedBy = "category")
+    public Set<Product> products;
 }

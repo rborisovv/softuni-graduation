@@ -37,6 +37,6 @@
     <img #productSelectionElement src="../../../assets/images/Cockpit/product.png" alt="" (click)="handleTypeSelect(productType)">
   </div>
   <div class="form-submit">
-    <button type="submit">Create</button>
+    <button [disabled]="this.createMediaGroup.invalid" type="submit">Create</button>
   </div>
 </form>

@@ -42,4 +42,8 @@ export class CategoryService {
   public deleteCategory(identifier: string): Observable<HttpResponse> {
     return this.http.delete<HttpResponse>(`${this.apiUrl}/category/delete/${identifier}`, {withCredentials: true});
   }
+
+  public filterCategoriesByName(name: string): Observable<Category[]> {
+    return this.http.post<Category[]>(`${this.apiUrl}/category/filterByName`, name, {withCredentials: true});
+  }
 }

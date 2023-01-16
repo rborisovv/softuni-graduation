@@ -18,13 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.CATEGORY_NOT_FOUND;
-import static bg.rborisov.softunigraduation.common.ExceptionMessages.MEDIA_NOT_FOUND;
 import static bg.rborisov.softunigraduation.common.Messages.*;
 import static bg.rborisov.softunigraduation.constant.FileConstant.MEDIA_LOCATION_PATH;
 
@@ -43,8 +40,7 @@ public class CategoryService {
         this.modelMapper = modelMapper;
     }
 
-    public ResponseEntity<HttpResponse> createCategory(CategoryDto categoryDto, String pkOfFile) throws CategoryWithIdentifierExists, MediaNotFoundException, CategoryWithMediaExistsException {
-        String name = categoryDto.getName();
+    public ResponseEntity<HttpResponse> createCategory(CategoryDto categoryDto, String pkOfFile) throws CategoryWithIdentifierExists, MediaNotFoundException, CategoryWithMediaExistsException, MediaByNameAlreadyExistsException, MediaBoundToCategoryExistsException {
         String mediaName;
         Optional<Category> optionalCategory = this.categoryRepository.findCategoryByIdentifier(categoryDto.getIdentifier());
         String categoryName = categoryDto.getName();
@@ -56,14 +52,17 @@ public class CategoryService {
         }
 
         if (categoryDto.getMedia() != null) {
-            this.mediaService.saveFile(categoryDto.getMedia(), MediaTypeEnum.CATEGORY);
+            //If new media is uploaded
             mediaName = Objects.requireNonNull(categoryDto.getMedia().getOriginalFilename()).replaceAll("\\s+", "-");
             optionalMedia = this.mediaRepository.findMediaByName(mediaName.substring(0, mediaName.length() - 4));
 
-            if (optionalMedia.isEmpty()) {
-                throw new MediaNotFoundException(MEDIA_NOT_FOUND);
+            if (optionalMedia.isPresent()) {
+                throw new MediaByNameAlreadyExistsException();
             }
+
+            this.mediaService.saveMediaForCategory(categoryDto.getMedia(), MediaTypeEnum.CATEGORY);
         } else {
+            //If existing media is selected
             optionalMedia = this.mediaRepository.findMediaByPkOfFile(pkOfFile);
             if (optionalMedia.isEmpty()) {
                 throw new MediaNotFoundException();
@@ -171,5 +170,13 @@ public class CategoryService {
         HttpResponse httpResponse = new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, "", String.format(CATEGORY_DELETED_SUCCESSFULLY, category.getName()));
 
         return new ResponseEntity<>(httpResponse, HttpStatus.OK);
+    }
+
+    public Set<CategoryDto> filterByName(String name) {
+        return this.categoryRepository.findCategoryByNameLike(name)
+                .stream()
+                .map(category -> modelMapper.map(category, CategoryDto.class))
+                .sorted(Comparator.comparing(CategoryDto::getName))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }

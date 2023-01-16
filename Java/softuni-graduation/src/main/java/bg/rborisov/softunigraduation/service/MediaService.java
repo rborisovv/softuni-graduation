@@ -4,7 +4,8 @@ import bg.rborisov.softunigraduation.dao.MediaRepository;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.MediaDto;
 import bg.rborisov.softunigraduation.enumeration.MediaTypeEnum;
-import bg.rborisov.softunigraduation.exception.MediaAlreadyExistsException;
+import bg.rborisov.softunigraduation.exception.MediaBoundToCategoryExistsException;
+import bg.rborisov.softunigraduation.exception.MediaByNameAlreadyExistsException;
 import bg.rborisov.softunigraduation.exception.MediaNotFoundException;
 import bg.rborisov.softunigraduation.model.Media;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.MEDIA_NOT_FOUND;
 import static bg.rborisov.softunigraduation.common.Messages.MEDIA_CREATED_SUCCESSFULLY;
@@ -32,18 +34,23 @@ public class MediaService {
         this.mediaRepository = mediaRepository;
     }
 
-    public void saveFile(MultipartFile media, MediaTypeEnum mediaTypeSubject) {
-        Media mediaEntity = null;
+    public void saveMediaForCategory(MultipartFile media, MediaTypeEnum mediaTypeSubject) throws MediaBoundToCategoryExistsException {
         try {
-            String mediaName = Objects.requireNonNull(media.getOriginalFilename()).replaceAll("\\s+", "-");
+            String originalFileName = Objects.requireNonNull(media.getOriginalFilename()).replaceAll("\\s+", "-");
+            String mediaName = originalFileName.substring(0, originalFileName.length() - 4);
+
+            Optional<Media> optionalMedia = this.mediaRepository.findMediaByName(mediaName);
+
+            if (optionalMedia.isPresent() && optionalMedia.get().getCategory() != null) {
+                throw new MediaBoundToCategoryExistsException();
+            }
 
             String PK = RandomStringUtils.randomNumeric(15);
-
             String mediaUrl = constructMediaUrl(PK, media);
 
-            mediaEntity = new Media(mediaName.substring(0, mediaName.length() - 4),
-                    media.getBytes(), mediaUrl, PK, null, mediaTypeSubject);
+            Media mediaEntity = new Media(mediaName, media.getBytes(), mediaUrl, PK, null, mediaTypeSubject);
             this.mediaRepository.save(mediaEntity);
+
         } catch (IOException e) {
             log.error("Temporary store of the media fails ( IOException )");
         }
@@ -59,18 +66,18 @@ public class MediaService {
                 .orElseThrow(() -> new MediaNotFoundException(MEDIA_NOT_FOUND)).getFile();
     }
 
-    public ResponseEntity<HttpResponse> createMedia(MediaDto mediaDto) throws MediaAlreadyExistsException, IOException {
+    public ResponseEntity<HttpResponse> createMedia(MediaDto mediaDto) throws MediaByNameAlreadyExistsException, IOException {
         if (this.mediaRepository.findMediaByName(mediaDto.getName()).isPresent()) {
-            throw new MediaAlreadyExistsException();
+            throw new MediaByNameAlreadyExistsException();
         }
 
         String PK = RandomStringUtils.randomNumeric(15);
         String mediaUrl = constructMediaUrl(PK, mediaDto.getMultipartFile());
         Media media = new Media();
 
-        if (mediaDto.getSelectedTypeSubject().equalsIgnoreCase("Category")) {
+        if (mediaDto.getSelectedTypeSubject().equalsIgnoreCase(MediaTypeEnum.CATEGORY.name())) {
             media = new Media(mediaDto.getName(), mediaDto.getMultipartFile().getBytes(), mediaUrl, PK, null, MediaTypeEnum.CATEGORY);
-        } else if (mediaDto.getSelectedTypeSubject().equalsIgnoreCase("Product")) {
+        } else if (mediaDto.getSelectedTypeSubject().equalsIgnoreCase(MediaTypeEnum.PRODUCT.name())) {
             media = new Media(mediaDto.getName(), mediaDto.getMultipartFile().getBytes(), mediaUrl, PK, null, MediaTypeEnum.PRODUCT);
         }
 

@@ -1,11 +1,12 @@
 import {ChangeDetectorRef, Component, ElementRef, ViewChild} from "@angular/core";
 
 @Component({
-  template: 'CreateCategoryComponent'
+  template: 'CreateProductComponent'
 })
-export abstract class AdminSharedFunc {
+export abstract class ProductSharedFunctionality {
 
   protected constructor(protected changeDetectorRef: ChangeDetectorRef) {
+
   }
 
   @ViewChild('mediaInput') mediaInput: ElementRef;
@@ -16,6 +17,7 @@ export abstract class AdminSharedFunc {
 
   protected handleMediaUploadClick(): void {
     this.mediaInput.nativeElement.click();
+    document.getElementById('modal-close-btn').click();
   }
 
   protected onMediaUpload(event: any) {
