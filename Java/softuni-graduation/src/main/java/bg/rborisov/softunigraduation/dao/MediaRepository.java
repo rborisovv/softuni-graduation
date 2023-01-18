@@ -14,10 +14,6 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
 
     Optional<Media> findMediaByPkOfFile(String pkOfFile);
 
-
-    @Query("SELECT m FROM Media m WHERE m.name LIKE ?1 AND m.mediaSubject = bg.rborisov.softunigraduation.enumeration.MediaTypeEnum.CATEGORY")
-    Set<Media> findMediaByNameAndCategoryMediaSubject(String name);
-
-    @Query("SELECT m FROM Media m WHERE m.name LIKE ?1 AND m.mediaSubject = bg.rborisov.softunigraduation.enumeration.MediaTypeEnum.PRODUCT")
-    Set<Media> findMediaByNameAndProductMediaSubject(String name);
+    @Query("SELECT m FROM Media m WHERE m.name LIKE ?1")
+    Set<Media> findMediaByNameLike(String name);
 }

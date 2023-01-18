@@ -3,8 +3,9 @@ package bg.rborisov.softunigraduation.exception;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class MediaBoundToCategoryExistsException extends Exception {
-    public MediaBoundToCategoryExistsException(String message) {
+public class ProductNotFoundException extends Exception {
+
+    public ProductNotFoundException(String message) {
         super(message);
     }
 }

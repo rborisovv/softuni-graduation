@@ -20,9 +20,8 @@ import java.io.Serializable;
 public class MediaDto implements Serializable {
     @NotBlank
     @Size(min = 3, max = 40)
-    private String name;
-
     @Nullable
+    private String name;
     private String pkOfFile;
 
     private String mediaUrl;
@@ -31,7 +30,4 @@ public class MediaDto implements Serializable {
     @NotNull
     @ImageValidator
     private MultipartFile multipartFile;
-
-    @NotBlank
-    private String selectedTypeSubject;
 }

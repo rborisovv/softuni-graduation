@@ -18,7 +18,6 @@ import {Media} from "../../interface/media";
 import {Category} from "../../interface/category";
 import {createFormData} from "../../service/service.index";
 import {CategorySharedFunctionality} from "../item.category.index";
-import {MediaSubjectType} from "../media.subject";
 
 @Component({
   selector: 'app-create-categories',
@@ -63,7 +62,7 @@ export class CreateCategoryComponent extends CategorySharedFunctionality impleme
     if (mediaSearchInputElement.value.trim() === '') {
       return;
     }
-    this.filteredMedias$ = this.mediaService.filterMediaByName(mediaSearchInputElement.value, MediaSubjectType.CATEGORY);
+    this.filteredMedias$ = this.mediaService.filterMediaByName(mediaSearchInputElement.value);
   }
 
   createCategory(): void {

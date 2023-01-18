@@ -15,6 +15,8 @@ import {CategoryComponent} from './category/category.component';
 import {CreateMediaComponent} from './create-media/create-media.component';
 import {MediaComponent} from './media/media.component';
 import {PositiveNumberDirective} from "../directive/positive.number.directive";
+import {ProductComponent} from './product/product.component';
+import { UpdateProductComponent } from './update-product/update-product.component';
 
 const routes: Routes = [
   {
@@ -23,6 +25,7 @@ const routes: Routes = [
       {path: 'categories', component: CategoryComponent},
       {path: 'category/create', component: CreateCategoryComponent},
       {path: 'medias', component: MediaComponent},
+      {path: 'products', component: ProductComponent},
       {path: 'product/create', component: CreateProductComponent},
       {path: 'media/create', component: CreateMediaComponent},
       {path: 'categories/:identifier', component: UpdateCategoryComponent}
@@ -40,19 +43,21 @@ const routes: Routes = [
     CategoryComponent,
     CreateMediaComponent,
     MediaComponent,
-    PositiveNumberDirective
+    PositiveNumberDirective,
+    ProductComponent,
+    UpdateProductComponent
   ],
-    imports: [
-        CommonModule,
-        SharedModule,
-        SharedModule,
-        FontAwesomeModule,
-        RouterModule.forChild(routes),
-        FormsModule,
-        AsyncPipe,
-        ReactiveFormsModule,
-        NgOptimizedImage
-    ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    SharedModule,
+    FontAwesomeModule,
+    RouterModule.forChild(routes),
+    FormsModule,
+    AsyncPipe,
+    ReactiveFormsModule,
+    NgOptimizedImage
+  ],
   providers: [JwtHelperService]
 })
 export class AdministrationModule {

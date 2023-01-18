@@ -5,5 +5,7 @@ export interface Product {
   description: string,
   media?: File,
   pkOfFile?: string,
-  categoryIdentifier: string
+  mediaUrl?: string,
+  categoryIdentifier: string,
+  categoryMediaUrl?: string
 }

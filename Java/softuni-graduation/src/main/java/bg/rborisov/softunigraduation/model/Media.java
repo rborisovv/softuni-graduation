@@ -1,6 +1,5 @@
 package bg.rborisov.softunigraduation.model;
 
-import bg.rborisov.softunigraduation.enumeration.MediaTypeEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,11 +26,4 @@ public class Media extends BaseEntity implements Serializable {
 
     @Column(nullable = false, unique = true)
     private String pkOfFile;
-
-    @OneToOne
-    private Category category;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, updatable = false)
-    private MediaTypeEnum mediaSubject;
 }

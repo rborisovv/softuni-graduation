@@ -18,9 +18,6 @@ export class CreateMediaComponent {
               private router: Router, private notifier: NotifierService) {
   }
 
-  readonly categoryType: string = "CATEGORY";
-  readonly productType: string = 'PRODUCT';
-
   @ViewChild('mediaInput') mediaInput: ElementRef;
   @ViewChild('mediaSearchInput') mediaSearchInput: ElementRef;
   @ViewChild('categorySelectionElement') categorySelectionElement: ElementRef;
@@ -28,7 +25,6 @@ export class CreateMediaComponent {
 
   mediaPath: string;
   imageSrc: string | ArrayBuffer;
-  selectedType: string;
 
   createMediaGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(4),
@@ -69,15 +65,9 @@ export class CreateMediaComponent {
   }
 
   createMedia() {
-    if (this.selectedType === '' || this.selectedType === undefined) {
-      this.notifier.notify(NotificationType.INFO, "You must select a Media Type!");
-      return;
-    }
-
     const mediaData: Media = {
       name: this.name.value.trim(),
-      file: this.mediaInput.nativeElement.files[0],
-      selectedTypeSubject: this.selectedType
+      file: this.mediaInput.nativeElement.files[0]
     }
 
     this.mediaService.createMedia(createFormData(mediaData))
@@ -88,21 +78,6 @@ export class CreateMediaComponent {
           });
         }
       });
-  }
-
-  public handleTypeSelect(selection: string) {
-    this.selectedType = selection;
-    this.designSelectionTypes(selection);
-  }
-
-  private designSelectionTypes(selection: string) {
-    if (selection === this.categoryType) {
-      this.categorySelectionElement.nativeElement.style.opacity = 1;
-      this.productSelectionElement.nativeElement.style.opacity = .5;
-    } else if (selection === this.productType) {
-      this.productSelectionElement.nativeElement.style.opacity = 1;
-      this.categorySelectionElement.nativeElement.style.opacity = .5;
-    }
   }
 }
 

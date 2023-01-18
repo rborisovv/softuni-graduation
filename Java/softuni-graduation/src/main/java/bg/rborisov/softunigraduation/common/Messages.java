@@ -7,4 +7,6 @@ public class Messages {
     public static final String CATEGORY_DELETED_SUCCESSFULLY = "The category \"%s\" was deleted successfully!";
     public static final String MEDIA_CREATED_SUCCESSFULLY = "The media was successfully created!";
     public static final String MEDIA_DELETED_SUCCESSFULLY = "The media \"%s\" was deleted successfully!";
+    public static final String PRODUCT_CREATED_SUCCESSFULLY = "The product \"%s\" was created successfully!";
+    public static final String PRODUCT_DELETED_SUCCESSFULLY = "The product \"%s\" was deleted successfully!";
 }

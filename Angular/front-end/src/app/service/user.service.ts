@@ -18,8 +18,8 @@ export class UserService {
     return this.http.post<UserWelcome>(`${this.apiUrl}/auth/login`, formData, {withCredentials: true});
   }
 
-  public registerUser(registerData: IUserRegisterModel) {
-    return this.http.post(`${this.apiUrl}/auth/register`, registerData, {withCredentials: true});
+  public registerUser(registerData: IUserRegisterModel): Observable<IUserRegisterModel> {
+    return this.http.post<IUserRegisterModel>(`${this.apiUrl}/auth/register`, registerData, {withCredentials: true});
   }
 
   public isAdmin(): Observable<boolean> {
@@ -28,10 +28,6 @@ export class UserService {
 
   public isEmailPresent(email: string): Observable<boolean> {
     return this.http.post<boolean>(`${this.apiUrl}/auth/email`, email, {withCredentials: true});
-  }
-
-  public isUsernamePresent(username: string): Observable<boolean> {
-    return this.http.post<boolean>(`${this.apiUrl}/auth/username`, username, {withCredentials: true});
   }
 
   public logoutUser() {

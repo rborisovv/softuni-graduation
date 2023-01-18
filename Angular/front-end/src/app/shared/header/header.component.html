@@ -1,51 +1,380 @@
-<nav class="navbar">
-  <div class="container">
-
-    <div class="navbar-header">
-      <button class="navbar-toggler" data-toggle="open-navbar1">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <a class="logo-wrapper" href="javascript:void(0)" routerLink="/home">
+<header>
+  <nav class="nav">
+    <div class="nav__elements">
+      <div class="nav__logo mb-20 mt-30">
         <fa-icon [icon]="faCart"></fa-icon>
-        <h2>eCart</h2>
-      </a>
+        eCart
+      </div>
+      <div class="nav__cart">CART</div>
     </div>
+    <ul class="nav__groups">
+      <li class="nav__group"><a class="nav__group__link">Bread</a>
+        <ul class="nav__group__dropdown">
+          <div class="multi-column">
+            <div class="product-list-wrapper">
+              <ul class="product-list multi" data-type="table">
+                <li class="product-list__title title">Freshly baked</li>
+                <li class="product-list__link"><a>Writing desks</a></li>
+                <li class="product-list__link"><a>Hipster desks</a></li>
+                <li class="product-list__link"><a>Corner desks</a></li>
+                <li class="product-list__link"><a>Floating desks</a></li>
+                <li class="product-list__link"><a>Executive desks</a></li>
+              </ul>
+              <div class="category-img__wrapper">
+                <img src="http://localhost:8080/media/sys_master/h4f/175833181404354.png" alt="">
+              </div>
+            </div>
+            <div class="product-list-wrapper pl-15 pr-15">
+              <ul class="product-list multi" data-type="chair">
+                <li class="product-list__title title">Bakery products</li>
+                <li class="product-list__link"><a>Ergonomic chairs</a></li>
+                <li class="product-list__link"><a>Swivel chairs</a></li>
+                <li class="product-list__link"><a>Armchairs</a></li>
+                <li class="product-list__link"><a>Kneeling chairs</a></li>
+                <li class="product-list__link"><a>Chaise lounges</a></li>
+              </ul>
+              <div class="category-img__wrapper">
+                <img src="http://localhost:8080/media/sys_master/h4f/625916874428608.png" alt="">
+              </div>
+            </div>
+            <div class="product-list-wrapper pl-15 pr-15">
+              <ul class="product-list multi" data-type="support">
+                <li class="product-list__title title">Arabic breads</li>
+                <li class="product-list__link"><a>Footstools</a></li>
+                <li class="product-list__link"><a>Ottomans</a></li>
+                <li class="product-list__link"><a>Coffee tables</a></li>
+                <li class="product-list__link"><a>Shelving Units</a></li>
+                <li class="product-list__link"><a>Bookcases</a></li>
+              </ul>
+              <div class="category-img__wrapper">
+                <img src="http://localhost:8080/media/sys_master/h4f/967044939513603.png" alt="">
+              </div>
+            </div>
+            <div class="product-list-wrapper pl-15 pr-15">
+              <ul class="product-list multi" data-type="support">
+                <li class="product-list__title title">Sandwitch buns</li>
+                <li class="product-list__link"><a>Footstools</a></li>
+                <li class="product-list__link"><a>Ottomans</a></li>
+                <li class="product-list__link"><a>Coffee tables</a></li>
+                <li class="product-list__link"><a>Shelving Units</a></li>
+                <li class="product-list__link"><a>Bookcases</a></li>
+              </ul>
+              <div class="category-img__wrapper">
+                <img src="http://localhost:8080/media/sys_master/h4f/563677989732803.png" alt="">
+              </div>
+            </div>
+<!--            <ul class="article-list">-->
+<!--              <li class="article-list__title title">For Your Inspiration</li>-->
+<!--              <li class="article-list__link"><a>Are You Really A Millenial If You't Shop At Ikea?</a></li>-->
+<!--              <li class="article-list__link"><a>The Latest Trend: Purchasing Tables from Hipster Cafes</a></li>-->
+<!--              <li class="article-list__link"><a>15 Uncomfortable but Instagram-Worthy Chairs For Your Home Office</a>-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--            <img class="product-image" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/567707/nav-table.jpg"-->
+<!--                 data-match="table"/><img class="product-image"-->
+<!--                                          src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/567707/nav-chair.jpg"-->
+<!--                                          data-match="chair"/><img class="product-image"-->
+<!--                                                                   src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/567707/nav-support.jpg"-->
+<!--                                                                   data-match="support"/>-->
+          </div>
+        </ul>
+      </li>
+      <li class="nav__group"><a class="nav__group__link">Fruits and Vegetables</a>
+        <ul class="nav__group__dropdown">
+          <div class="multi-column">
+            <ul class="product-list" data-type="floor">
+              <li class="product-list__title title">Floor Covers</li>
+              <li class="product-list__link"><a>Area rugs</a></li>
+              <li class="product-list__link"><a>Door mats</a></li>
+              <li class="product-list__link"><a>Hallway runners</a></li>
+              <li class="product-list__link"><a>Fake grass</a></li>
+            </ul>
+            <ul class="product-list" data-type="wall">
+              <li class="product-list__title title">Wall Covers</li>
+              <li class="product-list__link"><a>Wall art</a></li>
+              <li class="product-list__link"><a>#basic quotes</a></li>
+              <li class="product-list__link"><a>Nature wallpapers</a></li>
+              <li class="product-list__link"><a>Memo boards</a></li>
+              <li class="product-list__link"><a>Chalk boards</a></li>
+            </ul>
+            <ul class="product-list" data-type="window">
+              <li class="product-list__title title">Window Capes</li>
+              <li class="product-list__link"><a>Curtains</a></li>
+              <li class="product-list__link"><a>Tapestries</a></li>
+              <li class="product-list__link"><a>Hanging flowers</a></li>
+              <li class="product-list__link"><a>Herb gardens</a></li>
+            </ul>
+            <ul class="product-list" data-type="cool">
+              <li class="product-list__title title">It Just Looks Cool</li>
+              <li class="product-list__link"><a>Teepees</a></li>
+              <li class="product-list__link"><a>Faerie lights</a></li>
+              <li class="product-list__link"><a>Easels</a></li>
+              <li class="product-list__link"><a>Vintage bicycles</a></li>
+            </ul>
+            <ul class="article-list">
+              <li class="article-list__title title">For Your Inspiration</li>
+              <li class="article-list__link"><a>Do the Eat, Pray, Love: Fake Grass For Your Office</a></li>
+              <li class="article-list__link"><a>Do You Really Work Better When You're Stepping On A White, Fluffy
+                Rug?</a></li>
+              <li class="article-list__link"><a>Yoga Mats: An Exercise Tool and An Office Rug? Win!</a></li>
+            </ul>
+          </div>
+        </ul>
+      </li>
+      <li class="nav__group"><a class="nav__group__link">Meat and fish</a>
+        <ul class="nav__group__dropdown">
+          <div class="multi-column">
+            <ul class="product-list" data-type="plant">
+              <li class="product-list__title title">Plants</li>
+              <li class="product-list__link"><a>Succulents</a></li>
+              <li class="product-list__link"><a>Large plants</a></li>
+              <li class="product-list__link"><a>Lucky charm plants</a></li>
+              <li class="product-list__link"><a>Solar-powered plants</a></li>
+              <li class="product-list__link"><a>Crochet succulents</a></li>
+            </ul>
+            <ul class="product-list" data-type="buddy">
+              <li class="product-list__title title">Buddies</li>
+              <li class="product-list__link"><a>Giant plush toys</a></li>
+              <li class="product-list__link"><a>Celebrity cutouts</a></li>
+              <li class="product-list__link"><a>Mirrors</a></li>
+            </ul>
+            <ul class="product-list" data-type="items">
+              <li class="product-list__title title">For The Table</li>
+              <li class="product-list__link"><a>Origami</a></li>
+              <li class="product-list__link"><a>Figurines</a></li>
+              <li class="product-list__link"><a>Candles</a></li>
+              <li class="product-list__link"><a>Pixar lamps</a></li>
+            </ul>
+            <ul class="product-list" data-type="pets">
+              <li class="product-list__title title">For The Pets</li>
+              <li class="product-list__link"><a>Pet beds</a></li>
+              <li class="product-list__link"><a>Pet houses</a></li>
+              <li class="product-list__link"><a>Cat trees & condos</a></li>
+              <li class="product-list__link"><a>Bunny hutches</a></li>
+            </ul>
+            <ul class="article-list">
+              <li class="article-list__title title">For Your Inspiration</li>
+              <li class="article-list__link"><a>Why Pets Make The Best Colleagues Ever! (They Don't Talk, That's
+                Why)</a></li>
+              <li class="article-list__link"><a>Your Succulent Plants Die Too Easily? Try Crochet Plants Instead</a>
+              </li>
+              <li class="article-list__link"><a>[Quiz] Which Eeveevolution Is Your Work Soulmate?</a></li>
+            </ul>
+          </div>
+        </ul>
+      </li>
+      <li class="nav__group"><a class="nav__group__link">Dairy and eggs</a>
+        <ul class="nav__group__dropdown">
+          <div class="multi-column">
+            <ul class="product-list" data-type="plant">
+              <li class="product-list__title title">Plants</li>
+              <li class="product-list__link"><a>Succulents</a></li>
+              <li class="product-list__link"><a>Large plants</a></li>
+              <li class="product-list__link"><a>Lucky charm plants</a></li>
+              <li class="product-list__link"><a>Solar-powered plants</a></li>
+              <li class="product-list__link"><a>Crochet succulents</a></li>
+            </ul>
+            <ul class="product-list" data-type="buddy">
+              <li class="product-list__title title">Buddies</li>
+              <li class="product-list__link"><a>Giant plush toys</a></li>
+              <li class="product-list__link"><a>Celebrity cutouts</a></li>
+              <li class="product-list__link"><a>Mirrors</a></li>
+            </ul>
+            <ul class="product-list" data-type="items">
+              <li class="product-list__title title">For The Table</li>
+              <li class="product-list__link"><a>Origami</a></li>
+              <li class="product-list__link"><a>Figurines</a></li>
+              <li class="product-list__link"><a>Candles</a></li>
+              <li class="product-list__link"><a>Pixar lamps</a></li>
+            </ul>
+            <ul class="product-list" data-type="pets">
+              <li class="product-list__title title">For The Pets</li>
+              <li class="product-list__link"><a>Pet beds</a></li>
+              <li class="product-list__link"><a>Pet houses</a></li>
+              <li class="product-list__link"><a>Cat trees & condos</a></li>
+              <li class="product-list__link"><a>Bunny hutches</a></li>
+            </ul>
+            <ul class="article-list">
+              <li class="article-list__title title">For Your Inspiration</li>
+              <li class="article-list__link"><a>Why Pets Make The Best Colleagues Ever! (They Don't Talk, That's
+                Why)</a></li>
+              <li class="article-list__link"><a>Your Succulent Plants Die Too Easily? Try Crochet Plants Instead</a>
+              </li>
+              <li class="article-list__link"><a>[Quiz] Which Eeveevolution Is Your Work Soulmate?</a></li>
+            </ul>
+          </div>
+        </ul>
+      </li>
+      <li class="nav__group"><a class="nav__group__link">Packaged foods</a>
+        <ul class="nav__group__dropdown">
+          <div class="multi-column">
+            <ul class="product-list" data-type="plant">
+              <li class="product-list__title title">Plants</li>
+              <li class="product-list__link"><a>Succulents</a></li>
+              <li class="product-list__link"><a>Large plants</a></li>
+              <li class="product-list__link"><a>Lucky charm plants</a></li>
+              <li class="product-list__link"><a>Solar-powered plants</a></li>
+              <li class="product-list__link"><a>Crochet succulents</a></li>
+            </ul>
+            <ul class="product-list" data-type="buddy">
+              <li class="product-list__title title">Buddies</li>
+              <li class="product-list__link"><a>Giant plush toys</a></li>
+              <li class="product-list__link"><a>Celebrity cutouts</a></li>
+              <li class="product-list__link"><a>Mirrors</a></li>
+            </ul>
+            <ul class="product-list" data-type="items">
+              <li class="product-list__title title">For The Table</li>
+              <li class="product-list__link"><a>Origami</a></li>
+              <li class="product-list__link"><a>Figurines</a></li>
+              <li class="product-list__link"><a>Candles</a></li>
+              <li class="product-list__link"><a>Pixar lamps</a></li>
+            </ul>
+            <ul class="product-list" data-type="pets">
+              <li class="product-list__title title">For The Pets</li>
+              <li class="product-list__link"><a>Pet beds</a></li>
+              <li class="product-list__link"><a>Pet houses</a></li>
+              <li class="product-list__link"><a>Cat trees & condos</a></li>
+              <li class="product-list__link"><a>Bunny hutches</a></li>
+            </ul>
+            <ul class="article-list">
+              <li class="article-list__title title">For Your Inspiration</li>
+              <li class="article-list__link"><a>Why Pets Make The Best Colleagues Ever! (They Don't Talk, That's
+                Why)</a></li>
+              <li class="article-list__link"><a>Your Succulent Plants Die Too Easily? Try Crochet Plants Instead</a>
+              </li>
+              <li class="article-list__link"><a>[Quiz] Which Eeveevolution Is Your Work Soulmate?</a></li>
+            </ul>
+          </div>
+        </ul>
+      </li>
+      <li class="nav__group"><a class="nav__group__link">Bio</a>
+        <ul class="nav__group__dropdown">
+          <div class="multi-column">
+            <ul class="product-list" data-type="plant">
+              <li class="product-list__title title">Plants</li>
+              <li class="product-list__link"><a>Succulents</a></li>
+              <li class="product-list__link"><a>Large plants</a></li>
+              <li class="product-list__link"><a>Lucky charm plants</a></li>
+              <li class="product-list__link"><a>Solar-powered plants</a></li>
+              <li class="product-list__link"><a>Crochet succulents</a></li>
+            </ul>
+            <ul class="product-list" data-type="buddy">
+              <li class="product-list__title title">Buddies</li>
+              <li class="product-list__link"><a>Giant plush toys</a></li>
+              <li class="product-list__link"><a>Celebrity cutouts</a></li>
+              <li class="product-list__link"><a>Mirrors</a></li>
+            </ul>
+            <ul class="product-list" data-type="items">
+              <li class="product-list__title title">For The Table</li>
+              <li class="product-list__link"><a>Origami</a></li>
+              <li class="product-list__link"><a>Figurines</a></li>
+              <li class="product-list__link"><a>Candles</a></li>
+              <li class="product-list__link"><a>Pixar lamps</a></li>
+            </ul>
+            <ul class="product-list" data-type="pets">
+              <li class="product-list__title title">For The Pets</li>
+              <li class="product-list__link"><a>Pet beds</a></li>
+              <li class="product-list__link"><a>Pet houses</a></li>
+              <li class="product-list__link"><a>Cat trees & condos</a></li>
+              <li class="product-list__link"><a>Bunny hutches</a></li>
+            </ul>
+            <ul class="article-list">
+              <li class="article-list__title title">For Your Inspiration</li>
+              <li class="article-list__link"><a>Why Pets Make The Best Colleagues Ever! (They Don't Talk, That's
+                Why)</a></li>
+              <li class="article-list__link"><a>Your Succulent Plants Die Too Easily? Try Crochet Plants Instead</a>
+              </li>
+              <li class="article-list__link"><a>[Quiz] Which Eeveevolution Is Your Work Soulmate?</a></li>
+            </ul>
+          </div>
+        </ul>
+      </li>
+      <li class="nav__group"><a class="nav__group__link">Frozen food</a>
+        <ul class="nav__group__dropdown">
+          <div class="multi-column">
+            <ul class="product-list" data-type="plant">
+              <li class="product-list__title title">Plants</li>
+              <li class="product-list__link"><a>Succulents</a></li>
+              <li class="product-list__link"><a>Large plants</a></li>
+              <li class="product-list__link"><a>Lucky charm plants</a></li>
+              <li class="product-list__link"><a>Solar-powered plants</a></li>
+              <li class="product-list__link"><a>Crochet succulents</a></li>
+            </ul>
+            <ul class="product-list" data-type="buddy">
+              <li class="product-list__title title">Buddies</li>
+              <li class="product-list__link"><a>Giant plush toys</a></li>
+              <li class="product-list__link"><a>Celebrity cutouts</a></li>
+              <li class="product-list__link"><a>Mirrors</a></li>
+            </ul>
+            <ul class="product-list" data-type="items">
+              <li class="product-list__title title">For The Table</li>
+              <li class="product-list__link"><a>Origami</a></li>
+              <li class="product-list__link"><a>Figurines</a></li>
+              <li class="product-list__link"><a>Candles</a></li>
+              <li class="product-list__link"><a>Pixar lamps</a></li>
+            </ul>
+            <ul class="product-list" data-type="pets">
+              <li class="product-list__title title">For The Pets</li>
+              <li class="product-list__link"><a>Pet beds</a></li>
+              <li class="product-list__link"><a>Pet houses</a></li>
+              <li class="product-list__link"><a>Cat trees & condos</a></li>
+              <li class="product-list__link"><a>Bunny hutches</a></li>
+            </ul>
+            <ul class="article-list">
+              <li class="article-list__title title">For Your Inspiration</li>
+              <li class="article-list__link"><a>Why Pets Make The Best Colleagues Ever! (They Don't Talk, That's
+                Why)</a></li>
+              <li class="article-list__link"><a>Your Succulent Plants Die Too Easily? Try Crochet Plants Instead</a>
+              </li>
+              <li class="article-list__link"><a>[Quiz] Which Eeveevolution Is Your Work Soulmate?</a></li>
+            </ul>
+          </div>
+        </ul>
+      </li>
+      <li class="nav__group"><a class="nav__group__link">Drinks</a>
+        <ul class="nav__group__dropdown">
+          <div class="multi-column">
+            <ul class="product-list" data-type="plant">
+              <li class="product-list__title title">Plants</li>
+              <li class="product-list__link"><a>Succulents</a></li>
+              <li class="product-list__link"><a>Large plants</a></li>
+              <li class="product-list__link"><a>Lucky charm plants</a></li>
+              <li class="product-list__link"><a>Solar-powered plants</a></li>
+              <li class="product-list__link"><a>Crochet succulents</a></li>
+            </ul>
+            <ul class="product-list" data-type="buddy">
+              <li class="product-list__title title">Buddies</li>
+              <li class="product-list__link"><a>Giant plush toys</a></li>
+              <li class="product-list__link"><a>Celebrity cutouts</a></li>
+              <li class="product-list__link"><a>Mirrors</a></li>
+            </ul>
+            <ul class="product-list" data-type="items">
+              <li class="product-list__title title">For The Table</li>
+              <li class="product-list__link"><a>Origami</a></li>
+              <li class="product-list__link"><a>Figurines</a></li>
+              <li class="product-list__link"><a>Candles</a></li>
+              <li class="product-list__link"><a>Pixar lamps</a></li>
+            </ul>
+            <ul class="product-list" data-type="pets">
+              <li class="product-list__title title">For The Pets</li>
+              <li class="product-list__link"><a>Pet beds</a></li>
+              <li class="product-list__link"><a>Pet houses</a></li>
+              <li class="product-list__link"><a>Cat trees & condos</a></li>
+              <li class="product-list__link"><a>Bunny hutches</a></li>
+            </ul>
+            <ul class="article-list">
+              <li class="article-list__title title">For Your Inspiration</li>
+              <li class="article-list__link"><a>Why Pets Make The Best Colleagues Ever! (They Don't Talk, That's
+                Why)</a></li>
+              <li class="article-list__link"><a>Your Succulent Plants Die Too Easily? Try Crochet Plants Instead</a>
+              </li>
+              <li class="article-list__link"><a>[Quiz] Which Eeveevolution Is Your Work Soulmate?</a></li>
+            </ul>
+          </div>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</header>
 
-    <div class="navbar-menu" id="open-navbar1">
-      <ul class="navbar-nav">
-        <li class="active"><a href="javascript:void(0)" routerLink="/home">Home</a></li>
-        <li class="navbar-dropdown">
-          <a href="javascript:void(0)" class="dropdown-toggler" data-dropdown="my-dropdown-id">
-            Categories <i class="fa fa-angle-down"></i> <fa-icon [icon]="faAngleDown"></fa-icon>
-          </a>
-          <ul class="dropdown" id="my-dropdown-id">
-            <li><a href="#">Actions</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li class="separator"></li>
-            <li><a href="#">Seprated link</a></li>
-            <li class="separator"></li>
-            <li><a href="#">One more seprated link.</a></li>
-          </ul>
-        </li>
-        <li class="navbar-dropdown">
-          <a href="javascript:void(0)" class="dropdown-toggler" data-dropdown="services">
-            Services <i class="fa fa-angle-down"></i> <fa-icon [icon]="faAngleDown"></fa-icon>
-          </a>
-          <ul class="dropdown" id="services">
-            <li><a href="#">Some category</a></li>
-            <li><a href="#">Some another category</a></li>
-            <li class="separator"></li>
-            <li><a href="#">Seprated link</a></li>
-            <li class="separator"></li>
-            <li><a href="#">One more seprated link.</a></li>
-          </ul>
-        </li>
-        <li><a href="javascript:void(0)" routerLink="/admin/cockpit">About</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#" (click)="onLogout($event)">Sign out</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+

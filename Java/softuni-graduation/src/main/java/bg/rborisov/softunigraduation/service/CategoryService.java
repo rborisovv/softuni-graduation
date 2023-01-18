@@ -5,17 +5,16 @@ import bg.rborisov.softunigraduation.dao.MediaRepository;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.CategoryDto;
 import bg.rborisov.softunigraduation.dto.CategoryUpdateDto;
-import bg.rborisov.softunigraduation.enumeration.MediaTypeEnum;
 import bg.rborisov.softunigraduation.exception.*;
 import bg.rborisov.softunigraduation.model.Category;
 import bg.rborisov.softunigraduation.model.Media;
+import bg.rborisov.softunigraduation.util.AbstractMediaUrlBuilder;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.*;
@@ -23,11 +22,10 @@ import java.util.stream.Collectors;
 
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.CATEGORY_NOT_FOUND;
 import static bg.rborisov.softunigraduation.common.Messages.*;
-import static bg.rborisov.softunigraduation.constant.FileConstant.MEDIA_LOCATION_PATH;
 
 @Service
 @Transactional
-public class CategoryService {
+public class CategoryService extends AbstractMediaUrlBuilder {
     private final MediaService mediaService;
     private final CategoryRepository categoryRepository;
     private final MediaRepository mediaRepository;
@@ -40,7 +38,7 @@ public class CategoryService {
         this.modelMapper = modelMapper;
     }
 
-    public ResponseEntity<HttpResponse> createCategory(CategoryDto categoryDto, String pkOfFile) throws CategoryWithIdentifierExists, MediaNotFoundException, CategoryWithMediaExistsException, MediaByNameAlreadyExistsException, MediaBoundToCategoryExistsException {
+    public ResponseEntity<HttpResponse> createCategory(CategoryDto categoryDto, String pkOfFile) throws CategoryWithIdentifierExists, MediaNotFoundException, MediaByNameAlreadyExistsException, IOException {
         String mediaName;
         Optional<Category> optionalCategory = this.categoryRepository.findCategoryByIdentifier(categoryDto.getIdentifier());
         String categoryName = categoryDto.getName();
@@ -60,32 +58,29 @@ public class CategoryService {
                 throw new MediaByNameAlreadyExistsException();
             }
 
-            this.mediaService.saveMediaForCategory(categoryDto.getMedia(), MediaTypeEnum.CATEGORY);
+            this.mediaService.saveMedia(categoryDto.getMedia().getName(), categoryDto.getMedia());
+
         } else {
             //If existing media is selected
             optionalMedia = this.mediaRepository.findMediaByPkOfFile(pkOfFile);
+
             if (optionalMedia.isEmpty()) {
                 throw new MediaNotFoundException();
             }
 
-            if (optionalMedia.get().getCategory() != null) {
-                throw new CategoryWithMediaExistsException();
-            }
+            Media media = optionalMedia.get();
+
+            Category category = Category.builder()
+                    .name(categoryName)
+                    .identifier(categoryDto.getIdentifier())
+                    .productNamePrefix(categoryDto.getProductNamePrefix())
+                    .media(media).build();
+
+            this.categoryRepository.save(category);
+
+            mediaRepository.save(media);
         }
 
-        Media media = optionalMedia.get();
-
-        Category category = Category.builder()
-                .name(categoryName)
-                .identifier(categoryDto.getIdentifier())
-                .productNamePrefix(categoryDto.getProductNamePrefix())
-                .media(media).build();
-
-        media.setCategory(category);
-
-        mediaRepository.save(media);
-
-        this.categoryRepository.save(category);
 
         HttpResponse response = new HttpResponse(HttpStatus.OK.value(),
                 HttpStatus.OK, "", String.format(String.format(CATEGORY_CREATED, categoryName)));
@@ -130,7 +125,6 @@ public class CategoryService {
             }
         }
 
-
         Category category = this.categoryRepository.findCategoryByIdentifier(categoryDto.getOldIdentifier())
                 .orElseThrow(() -> new CategoryNotFoundException(CATEGORY_NOT_FOUND));
 
@@ -139,8 +133,8 @@ public class CategoryService {
         category.setProductNamePrefix(categoryDto.getProductNamePrefix());
         if (categoryDto.getMedia() != null) {
             String PK = RandomStringUtils.randomNumeric(15);
-            String mediaUrl = ServletUriComponentsBuilder
-                    .fromCurrentContextPath().path(MEDIA_LOCATION_PATH.concat(PK)).toUriString();
+
+            String mediaUrl = super.constructMediaUrl(PK, categoryDto.getMedia());
 
             Media mediaEntity = category.getMedia();
             mediaEntity.setPkOfFile(PK);

@@ -2,13 +2,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef, OnDestroy,
-  ViewChild, ViewChildren,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+  ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 import {ProductSharedFunctionality} from "../item.product.index";
 import {Media} from "../../interface/media";
-import {MediaSubjectType} from "../media.subject";
 import {catchError, map, Observable, Subscription} from "rxjs";
 import {MediaService} from "../../service/media.service";
 import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
@@ -20,6 +21,7 @@ import {Product} from "../../interface/product";
 import {NotificationType} from "../../enumeration/notification-enum";
 import {NotifierService} from "angular-notifier";
 import {Router} from "@angular/router";
+import {createFormData} from "../../service/service.index";
 
 @Component({
   selector: 'app-create-product',
@@ -85,7 +87,7 @@ export class CreateProductComponent extends ProductSharedFunctionality implement
     if (mediaSearchInputElement.value.trim() === '') {
       return;
     }
-    this.filteredMedias$ = this.mediaService.filterMediaByName(mediaSearchInputElement.value, MediaSubjectType.PRODUCT);
+    this.filteredMedias$ = this.mediaService.filterMediaByName(mediaSearchInputElement.value);
   }
 
   public filterCategory($event: Event): void {
@@ -142,12 +144,12 @@ export class CreateProductComponent extends ProductSharedFunctionality implement
       identifier: this.identifier.value,
       price: this.price.value,
       description: this.description.value,
-      media: this.media.value ? this.media.value : null,
+      media: (<HTMLInputElement>document.getElementById('product-media-input')).files[0],
       pkOfFile: this.pkOfFile.value,
       categoryIdentifier: this.selectedCategoryFromPickup.identifier
     };
 
-    const subscription = this.productService.createProduct(product)
+    const subscription = this.productService.createProduct(createFormData(product))
       .pipe(
         catchError((err) => {
           this.notifier.notify(NotificationType.ERROR, err.err.message);

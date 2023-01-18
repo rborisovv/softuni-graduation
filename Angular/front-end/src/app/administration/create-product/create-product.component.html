@@ -63,12 +63,12 @@
 
     <div id="media-control" class="form-controll">
       <div id="media-form-input" class="form-input">
-        <button id="find-media" type="button" data-bs-toggle="modal" data-bs-target="#modal">Find Media</button>
+        <button id="find-media" type="button" data-bs-toggle="modal" data-bs-target="#modal">Media</button>
         <button id="find-category" type="button" data-bs-toggle="modal" data-bs-target="#category-modal">Category
         </button>
         <input (change)="onMediaUpload($event)" name="media" #mediaInput id="product-media-input"
                type="file" accept="image/*"/>
-        <label for="product-media">Category Media</label>
+        <label for="product-media">Product Relations</label>
       </div>
     </div>
     <ng-container *ngIf="mediaInput.value || selectedMediaFromPickup">

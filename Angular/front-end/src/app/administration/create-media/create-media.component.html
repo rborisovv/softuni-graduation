@@ -31,11 +31,6 @@
       {{this.mediaPath}}
     </div>
   </ng-container>
-  <p class="mb-30" style="color: #c2c2c2;font-size: 14px;">Media Type</p>
-  <div class="media-subject mb-30">
-    <img #categorySelectionElement src="../../../assets/images/Cockpit/categories.png" alt="" (click)="handleTypeSelect(categoryType)">
-    <img #productSelectionElement src="../../../assets/images/Cockpit/product.png" alt="" (click)="handleTypeSelect(productType)">
-  </div>
   <div class="form-submit">
     <button [disabled]="this.createMediaGroup.invalid" type="submit">Create</button>
   </div>

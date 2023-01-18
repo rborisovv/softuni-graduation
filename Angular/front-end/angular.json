@@ -29,9 +29,6 @@
             ],
             "styles": [
               "src/styles.scss"
-            ],
-            "scripts": [
-              "src/assets/javascript/navbar.js"
             ]
           },
           "configurations": {

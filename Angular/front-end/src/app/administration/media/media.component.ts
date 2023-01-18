@@ -32,7 +32,7 @@ export class MediaComponent implements OnInit, OnDestroy {
     const subscription = this.mediaService.deleteMedia(pkOfFile)
       .pipe(
         catchError((err) => {
-          this.notifier.notify(NotificationType.ERROR, err.error.message);
+          this.notifier.notify(NotificationType.WARNING, err.error.message);
           throw err;
         })
       )

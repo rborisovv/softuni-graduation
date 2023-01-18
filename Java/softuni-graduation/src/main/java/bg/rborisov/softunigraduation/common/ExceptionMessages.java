@@ -9,7 +9,9 @@ public class ExceptionMessages {
     public static final String CATEGORY_BY_IDENTIFIER_EXISTS = "A Category with the provided Identifier already exists!";
     public static final String CATEGORY_BY_NAME_EXISTS = "A Category with the provided Name already exists!";
     public static final String CATEGORY_NOT_FOUND = "The category could not be found!";
-    public static final String CATEGORY_WITH_PROVIDED_MEDIA_EXISTS = "A category with the provided Media already exists!";
-    public static final String MEDIA_BY_NAME_ALREADY_EXISTS_EXCEPTION = "A media with the provided name already exists!";
-    public static final String MEDIA_BOUND_TO_CATEGORY_EXISTS_EXCEPTION = "A media with the provided name is already attached in a category!";
+    public static final String MEDIA_BY_NAME_ALREADY_EXISTS = "A media with the provided name already exists!";
+    public static final String PRODUCT_WITHOUT_CATEGORY = "The product does not have a category specified!";
+    public static final String PRODUCT_WITHOUT_MEDIA = "The product does not have a media specified!";
+    public static final String OBJECT_CONTAINS_EXTERNAL_RELATIONS = "The object contains external relations with other entities. Please ensure those entities are removed before trying this again!";
+    public static final String PRODUCT_COULD_NOT_BE_FOUND = "This product could not be found!";
 }

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -32,8 +33,15 @@ public class ProductDto implements Serializable {
     private BigDecimal price;
 
     @Nullable
-    private bg.rborisov.softunigraduation.model.Media Media;
+    private MultipartFile Media;
+    @Nullable
+    private String pkOfFile;
+
+    private String mediaUrl;
 
     @Nullable
     private String categoryIdentifier;
+
+    @Nullable
+    private String categoryMediaUrl;
 }

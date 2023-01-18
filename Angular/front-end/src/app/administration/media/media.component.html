@@ -13,7 +13,6 @@
           <th>Media</th>
           <th>Media Name</th>
           <th>Media PK</th>
-          <th>Media Subject</th>
           <th>Actions</th>
         </tr>
         </thead>
@@ -22,7 +21,6 @@
           <td><img [src]="media.mediaUrl" alt=""></td>
           <td>{{media.name}}</td>
           <td>{{media.pkOfFile}}</td>
-          <td>{{media.selectedTypeSubject | titlecase}}</td>
           <td id="actions">
             <a class="delete" href="javascript:void(0)" (click)="deleteCategory(media.pkOfFile)">
               <fa-icon [icon]="faTrash"></fa-icon>

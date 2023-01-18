@@ -29,7 +29,7 @@ public class CategoryResource {
                                                        @RequestParam("identifier") String identifier,
                                                        @RequestParam(name = "productNamePrefix", required = false) String productNamePrefix,
                                                        @RequestParam(value = "media", required = false) MultipartFile media,
-                                                       @RequestParam(value = "pkOfFile", required = false) String pkOfFile) throws MediaNotFoundException, CategoryWithIdentifierExists, CategoryWithMediaExistsException, MediaByNameAlreadyExistsException, MediaBoundToCategoryExistsException {
+                                                       @RequestParam(value = "pkOfFile", required = false) String pkOfFile) throws MediaNotFoundException, CategoryWithIdentifierExists, MediaByNameAlreadyExistsException, IOException {
 
         @Valid CategoryDto categoryDto = CategoryDto.builder().name(name)
                 .identifier(identifier)

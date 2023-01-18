@@ -23,7 +23,15 @@ export class ProductService {
     return this.http.post<boolean>(`${this.apiUrl}/product/findByIdentifier`, identifier, {withCredentials: true});
   }
 
-  public createProduct(product: Product): Observable<HttpResponse> {
+  public createProduct(product: FormData): Observable<HttpResponse> {
     return this.http.post<HttpResponse>(`${this.apiUrl}/product/create`, product, {withCredentials: true});
+  }
+
+  public loadAllProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/product/findAll`, {withCredentials: true});
+  }
+
+  public deleteProduct(identifier: string): Observable<HttpResponse> {
+    return this.http.delete<HttpResponse>(`${this.apiUrl}/product/delete/${identifier}`, {withCredentials: true});
   }
 }

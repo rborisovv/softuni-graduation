@@ -8,7 +8,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.FIELD)
+@Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {ImageFileValidator.class})
 public @interface ImageValidator {

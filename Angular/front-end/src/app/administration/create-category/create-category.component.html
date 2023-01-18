@@ -64,9 +64,11 @@
   <ng-container *ngIf="mediaInput.value || selectedMediaFromPickup">
     <img id="preview-img" #previewCategoryMedia style="width: 200px; margin-bottom: 15px;" [src]="this.imageSrc" alt="">
   </ng-container>
-  <div class="media-location">
-    {{this.mediaPath}}
-  </div>
+  <ng-container *ngIf="this.mediaPath">
+    <div class="media-location">
+      {{this.mediaPath}}
+    </div>
+  </ng-container>
   <div class="form-submit">
     <button type="submit" [disabled]="createCategoryFormGroup.invalid">Create</button>
   </div>

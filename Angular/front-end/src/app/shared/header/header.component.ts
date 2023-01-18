@@ -1,12 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {faAngleDown, faCartShopping} from '@fortawesome/free-solid-svg-icons';
 import {UserService} from "../../service/user.service";
 import {CookieService} from "ngx-cookie-service";
 import {Router} from "@angular/router";
-
-declare function loadNavbar(): any;
-
-declare function handleSmallScreens(): any;
 
 @Component({
   selector: 'app-header',
@@ -14,7 +10,7 @@ declare function handleSmallScreens(): any;
   styleUrls: ['./header.component.scss']
 })
 
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   faAngleDown = faAngleDown;
 
   faCart = faCartShopping;
@@ -22,11 +18,6 @@ export class HeaderComponent implements OnInit {
   constructor(private userService: UserService,
               private cookieService: CookieService,
               private router: Router) {
-  }
-
-  ngOnInit(): void {
-    loadNavbar();
-    handleSmallScreens();
   }
 
   onLogout(event: Event): void {

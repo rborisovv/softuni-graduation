@@ -6,7 +6,7 @@
     <a href="javascript:void(0)" routerLink="/admin/category/create" class="add-btn">Create Category</a>
   </div>
   <div class="categories">
-    <div *ngFor="let category of categories$ | async" class="category">
+    <div class="category">
       <table>
         <thead>
         <tr>
@@ -17,7 +17,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
+        <tr *ngFor="let category of categories$ | async">
           <td><img [src]="category.mediaUrl" alt=""></td>
           <td>{{category.identifier}}</td>
           <td>{{category.name}}</td>

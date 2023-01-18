@@ -1,0 +1,43 @@
+<app-admin-header></app-admin-header>
+
+<main>
+  <h1 class="text-center mt-40 mb-30">All Products</h1>
+  <div class="create-btn-wrapper">
+    <a href="javascript:void(0)" routerLink="/admin/product/create" class="add-btn">Create Product</a>
+  </div>
+  <div class="products">
+    <div class="product">
+      <table>
+        <thead>
+        <tr>
+          <th>Product Image</th>
+          <th>Product Name</th>
+          <th>Product Identifier</th>
+          <th>Product price</th>
+          <th>Product Description</th>
+          <th>Category</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let product of products$ | async">
+          <td><img [src]="product.mediaUrl" alt=""></td>
+          <td>{{product.name}}</td>
+          <td>{{product.identifier}}</td>
+          <td>{{product.price | currency}}</td>
+          <td>{{product.description ? product.description : '< empty >'}}</td>
+          <td><img [src]="product.categoryMediaUrl" alt=""></td>
+          <td id="actions">
+            <a class="update" href="javascript:void(0)" [routerLink]="['/admin/products', product.identifier]">
+              <fa-icon [icon]="faWrench"></fa-icon>
+            </a>
+            <a class="delete" href="javascript:void(0)" (click)="deleteProduct(product.identifier)">
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
