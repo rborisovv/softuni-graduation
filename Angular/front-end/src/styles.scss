@@ -110,3 +110,9 @@ $base-color-white: #e4e6eb;
 .notifier__notification svg {
   vertical-align: text-top;
 }
+
+.nav-link__active {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 2px;
+}

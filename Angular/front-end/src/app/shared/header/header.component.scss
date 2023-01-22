@@ -1,16 +1,6 @@
 $font-family: 'Roboto', sans-serif;
 $base-color: #00c5b2;
 
-body {
-  background: #f4f6f3;
-  font-family: 'Ibarra Real Nova', sans-serif;
-  line-height: 1.4;
-}
-
-* {
-  box-sizing: border-box;
-}
-
 a {
   color: #767A7F;
 }
@@ -21,9 +11,9 @@ a {
   top: 0;
   position: relative;
   font-size: 1.2rem;
-  padding: .7rem;
+  padding: .8rem;
 
-  max-width: 1250px;
+  max-width: 1355px;
   margin: 0 auto;
 
   & .nav__logo {
@@ -84,16 +74,6 @@ a {
 
   }
 
-  &__cart {
-    display: inline-block;
-    font: 700 1.1rem Oswald;
-    letter-spacing: .02rem;
-    text-transform: uppercase;
-    color: #f9f9f9;
-    padding: 1.2rem;
-    align-self: center;
-  }
-
   &__groups {
     display: flex;
     justify-content: center;
@@ -130,13 +110,21 @@ a {
       width: 100%;
     }
   }
+
+  &__group:hover {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+    text-decoration-thickness: 2px;
+    text-decoration-color: #ffffff;
+  }
 }
 
 .product-list-wrapper {
   display: flex;
   min-width: 306.5px;
-  min-height: 250px;
+  min-height: 277px;
   max-height: 250px;
+  padding-right: 1rem;
   border-right: 1px solid #d8d8d8;
   border-bottom: 1px solid #d8d8d8;
   align-items: center;
@@ -191,6 +179,7 @@ a {
 
     .product-list__link {
       font-size: 15px;
+      width: 205px;
     }
   }
 }

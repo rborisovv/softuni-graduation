@@ -40,10 +40,11 @@ public class ProductService {
     private ModelMapper modelMapper;
 
     public ResponseEntity<HttpResponse> createProduct(ProductDto productDto) throws AbsentCategoryProductException, AbsentMediaOnProductException,
-            MediaByNameAlreadyExistsException, IOException, MediaNotFoundException, CategoryNotFoundException {
+            MediaByNameAlreadyExistsException, IOException, CategoryNotFoundException {
 
         String categoryIdentifier = productDto.getCategoryIdentifier();
         @ImageValidator MultipartFile multipartFile = productDto.getMedia();
+        //TODO: Fix media upload when creating a new product
         String pkOfFile = productDto.getPkOfFile();
 
         if (multipartFile == null && (pkOfFile == null || StringUtils.isBlank(pkOfFile))) {

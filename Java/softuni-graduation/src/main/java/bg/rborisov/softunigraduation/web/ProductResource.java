@@ -41,9 +41,9 @@ public class ProductResource {
     public ResponseEntity<HttpResponse> createProduct(@RequestParam("name") String name,
                                                       @RequestParam("identifier") String identifier,
                                                       @RequestParam("price") BigDecimal price,
-                                                      @RequestParam("description") String description,
-                                                      @RequestParam("media") MultipartFile multipartFile,
-                                                      @RequestParam("pkOfFile") String pkOfFile,
+                                                      @RequestParam(value = "description", required = false) String description,
+                                                      @RequestParam(value = "media", required = false) MultipartFile multipartFile,
+                                                      @RequestParam(value = "pkOfFile", required = false) String pkOfFile,
                                                       @RequestParam("categoryIdentifier") String categoryIdentifier) throws AbsentMediaOnProductException,
             AbsentCategoryProductException, MediaByNameAlreadyExistsException, MediaNotFoundException, CategoryNotFoundException, IOException {
 
