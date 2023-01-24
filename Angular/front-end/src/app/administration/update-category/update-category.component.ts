@@ -12,7 +12,7 @@ import {NotifierService} from "angular-notifier";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {createFormData} from "../../service/service.index";
 import {NotificationType} from "../../enumeration/notification-enum";
-import {catchError, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {CategoryUpdate} from "../../interface/category.update";
 
 @Component({
@@ -106,12 +106,6 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
     }
 
     const subscription = this.categoryService.updateCategory(createFormData(categoryData))
-      .pipe(
-        catchError((err) => {
-          this.notifier.notify(NotificationType.ERROR, err.error.message);
-          throw err;
-        })
-      )
       .subscribe({
         next: (response) => {
           this.router.navigateByUrl('/admin/cockpit').then(() => {

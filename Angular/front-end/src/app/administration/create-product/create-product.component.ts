@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import {ProductSharedFunctionality} from "../item.product.index";
 import {Media} from "../../interface/media";
-import {catchError, map, Observable, Subscription} from "rxjs";
+import {map, Observable, Subscription} from "rxjs";
 import {MediaService} from "../../service/media.service";
 import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {ProductService} from "../../service/product.service";
@@ -150,12 +150,7 @@ export class CreateProductComponent extends ProductSharedFunctionality implement
     };
 
     const subscription = this.productService.createProduct(createFormData(product))
-      .pipe(
-        catchError((err) => {
-          this.notifier.notify(NotificationType.ERROR, err.err.message);
-          throw err;
-        })
-      ).subscribe({
+      .subscribe({
         next: (response) => {
           this.router.navigateByUrl('/admin/cockpit').then(() => {
             this.notifier.notify(NotificationType.SUCCESS, `${response.message}`);

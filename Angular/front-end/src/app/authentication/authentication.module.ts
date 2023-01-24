@@ -34,5 +34,6 @@ const routes: Routes = [
   providers: [UserService, DatePipe, CookieService],
   exports: [LoginComponent, RegisterComponent]
 })
+
 export class AuthenticationModule {
 }

@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {MediaService} from "../../service/media.service";
 import {NotifierService} from "angular-notifier";
-import {catchError, Observable, Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {Media} from "../../interface/media";
 import {faTrash} from '@fortawesome/free-solid-svg-icons';
 import {Router} from "@angular/router";
@@ -30,12 +30,6 @@ export class MediaComponent implements OnInit, OnDestroy {
 
   public deleteCategory(pkOfFile: string) {
     const subscription = this.mediaService.deleteMedia(pkOfFile)
-      .pipe(
-        catchError((err) => {
-          this.notifier.notify(NotificationType.WARNING, err.error.message);
-          throw err;
-        })
-      )
       .subscribe({
         next: (response) => {
           this.router.navigateByUrl('/admin/cockpit')

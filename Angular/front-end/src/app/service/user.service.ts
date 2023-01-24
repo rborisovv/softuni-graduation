@@ -9,29 +9,27 @@ import {IUserRegisterModel} from "../authentication/register/IUserRegisterModel"
 export class UserService {
   private apiUrl: string = environment.apiHost;
 
-  public username: string = '';
-
   constructor(private http: HttpClient) {
   }
 
   public loginUser(formData: FormData): Observable<UserWelcome> {
-    return this.http.post<UserWelcome>(`${this.apiUrl}/auth/login`, formData, {withCredentials: true});
+    return this.http.post<UserWelcome>(`${this.apiUrl}/auth/login`, formData);
   }
 
   public registerUser(registerData: IUserRegisterModel): Observable<IUserRegisterModel> {
-    return this.http.post<IUserRegisterModel>(`${this.apiUrl}/auth/register`, registerData, {withCredentials: true});
+    return this.http.post<IUserRegisterModel>(`${this.apiUrl}/auth/register`, registerData);
   }
 
   public isAdmin(): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/auth/admin`, {withCredentials: true});
+    return this.http.get<boolean>(`${this.apiUrl}/auth/admin`);
   }
 
   public isEmailPresent(email: string): Observable<boolean> {
-    return this.http.post<boolean>(`${this.apiUrl}/auth/email`, email, {withCredentials: true});
+    return this.http.post<boolean>(`${this.apiUrl}/auth/email`, email);
   }
 
   public logoutUser() {
-    return this.http.post(`${this.apiUrl}/auth/logout`, null, {withCredentials: true});
+    return this.http.post(`${this.apiUrl}/auth/logout`, null);
   }
 
   public obtainCsrf() {

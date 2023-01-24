@@ -16,34 +16,34 @@ export class CategoryService {
   }
 
   public createCategory(formData: FormData): Observable<HttpResponse> {
-    return this.http.post<HttpResponse>(`${this.apiUrl}/category/create`, formData, {withCredentials: true});
+    return this.http.post<HttpResponse>(`${this.apiUrl}/category/create`, formData);
   }
 
   public isCategoryByIdentifierPresent(identifier: string) {
-    return this.http.post<boolean>(`${this.apiUrl}/category/identifier`, identifier, {withCredentials: true});
+    return this.http.post<boolean>(`${this.apiUrl}/category/identifier`, identifier);
   }
 
   public isCategoryByNamePresent(name: string) {
-    return this.http.post<boolean>(`${this.apiUrl}/category/name`, name, {withCredentials: true});
+    return this.http.post<boolean>(`${this.apiUrl}/category/name`, name);
   }
 
   public loadAllCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${this.apiUrl}/category/all`, {withCredentials: true});
+    return this.http.get<Category[]>(`${this.apiUrl}/category/all`);
   }
 
   public loadCategory(identifier: string): Observable<Category> {
-    return this.http.get<Category>(`${this.apiUrl}/category/${identifier}`, {withCredentials: true});
+    return this.http.get<Category>(`${this.apiUrl}/category/${identifier}`);
   }
 
   public updateCategory(formData: FormData): Observable<HttpResponse> {
-    return this.http.put<HttpResponse>(`${this.apiUrl}/category/update`, formData, {withCredentials: true});
+    return this.http.put<HttpResponse>(`${this.apiUrl}/category/update`, formData);
   }
 
   public deleteCategory(identifier: string): Observable<HttpResponse> {
-    return this.http.delete<HttpResponse>(`${this.apiUrl}/category/delete/${identifier}`, {withCredentials: true});
+    return this.http.delete<HttpResponse>(`${this.apiUrl}/category/delete/${identifier}`);
   }
 
   public filterCategoriesByName(name: string): Observable<Category[]> {
-    return this.http.post<Category[]>(`${this.apiUrl}/category/filterByName`, name, {withCredentials: true});
+    return this.http.post<Category[]>(`${this.apiUrl}/category/filterByName`, name);
   }
 }

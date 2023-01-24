@@ -12,7 +12,7 @@ import {Router} from "@angular/router";
 import {NotifierService} from "angular-notifier";
 import {NotificationType} from "../../enumeration/notification-enum";
 import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
-import {catchError, map, Observable, Subscription} from "rxjs";
+import {map, Observable, Subscription} from "rxjs";
 import {MediaService} from "../../service/media.service";
 import {Media} from "../../interface/media";
 import {Category} from "../../interface/category";
@@ -80,12 +80,6 @@ export class CreateCategoryComponent extends CategorySharedFunctionality impleme
     }
 
     const subscription = this.categoryService.createCategory(createFormData(categoryData))
-      .pipe(
-        catchError((error) => {
-          this.notifier.notify(NotificationType.ERROR, error.error.message);
-          throw error;
-        })
-      )
       .subscribe({
         next: (response) => {
           this.router.navigateByUrl('/admin/cockpit').then(() => {

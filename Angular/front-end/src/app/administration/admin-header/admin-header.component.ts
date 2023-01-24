@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {faAngleDown, faCartShopping, faHome, faSignOut} from '@fortawesome/free-solid-svg-icons';
+import {faCartShopping, faHome, faSignOut} from '@fortawesome/free-solid-svg-icons';
 import {CookieService} from "ngx-cookie-service";
 import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
@@ -11,8 +11,6 @@ import {Router} from "@angular/router";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminHeaderComponent implements OnInit {
-
-  faAngleDown = faAngleDown;
 
   faCart = faCartShopping;
 

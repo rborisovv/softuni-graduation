@@ -15,15 +15,15 @@ export class MediaService {
   }
 
   public filterMediaByName(name: string): Observable<Media[]> {
-    return this.http.post<Media[]>(`${this.apiUrl}/media/filter`, name, {withCredentials: true});
+    return this.http.post<Media[]>(`${this.apiUrl}/media/filter`, name);
   }
 
   public isMediaByNamePresent(name: string): Observable<boolean> {
-    return this.http.post<boolean>(`${this.apiUrl}/media/findByName`, name, {withCredentials: true});
+    return this.http.post<boolean>(`${this.apiUrl}/media/findByName`, name);
   }
 
   public createMedia(formData: FormData): Observable<HttpResponse> {
-    return this.http.post<HttpResponse>(`${this.apiUrl}/media/create`, formData, {withCredentials: true});
+    return this.http.post<HttpResponse>(`${this.apiUrl}/media/create`, formData);
   }
 
   public fetchMedia(identifier: string) {
@@ -31,10 +31,10 @@ export class MediaService {
   }
 
   public fetchAllMedias(): Observable<Media[]> {
-    return this.http.get<Media[]>(`${this.apiUrl}/media/findAll`, {withCredentials: true});
+    return this.http.get<Media[]>(`${this.apiUrl}/media/findAll`);
   }
 
   public deleteMedia(pk: string): Observable<HttpResponse> {
-    return this.http.delete<HttpResponse>(`${this.apiUrl}/media/delete/${pk}`, {withCredentials: true});
+    return this.http.delete<HttpResponse>(`${this.apiUrl}/media/delete/${pk}`);
   }
 }

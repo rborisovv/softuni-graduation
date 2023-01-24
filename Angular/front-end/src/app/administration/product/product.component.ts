@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductService} from "../../service/product.service";
-import {catchError, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {Product} from "../../interface/product";
 import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
 import {NotifierService} from "angular-notifier";
@@ -29,10 +29,6 @@ export class ProductComponent implements OnInit {
 
   public deleteProduct(identifier: string): void {
     this.productService.deleteProduct(identifier)
-      .pipe(catchError((err) => {
-        this.notifier.notify(NotificationType.ERROR, err.err.message);
-        throw err;
-      }))
       .subscribe({
         next: (response) => {
           this.router.navigateByUrl('/admin/cockpit').then(() => {

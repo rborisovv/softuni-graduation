@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {CategoryService} from "../../service/category.service";
-import {catchError, Observable, Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {Category} from 'src/app/interface/category';
 import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
 import {NotifierService} from "angular-notifier";
@@ -32,12 +32,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   public deleteCategory(identifier: string) {
     const subscription = this.categoryService.deleteCategory(identifier)
-      .pipe(
-        catchError((err) => {
-          this.notifier.notify(NotificationType.ERROR, err.error.message);
-          throw err;
-        })
-      )
       .subscribe({
         next: (response) => {
           this.router.navigateByUrl('/admin/cockpit').then(() => {

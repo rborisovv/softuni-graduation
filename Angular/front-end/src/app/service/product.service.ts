@@ -16,22 +16,22 @@ export class ProductService {
   }
 
   public isProductByNamePresent(name: string): Observable<boolean> {
-    return this.http.post<boolean>(`${this.apiUrl}/product/findByName`, name, {withCredentials: true});
+    return this.http.post<boolean>(`${this.apiUrl}/product/findByName`, name);
   }
 
   public isProductByIdentifierPresent(identifier: string): Observable<boolean> {
-    return this.http.post<boolean>(`${this.apiUrl}/product/findByIdentifier`, identifier, {withCredentials: true});
+    return this.http.post<boolean>(`${this.apiUrl}/product/findByIdentifier`, identifier);
   }
 
   public createProduct(product: FormData): Observable<HttpResponse> {
-    return this.http.post<HttpResponse>(`${this.apiUrl}/product/create`, product, {withCredentials: true});
+    return this.http.post<HttpResponse>(`${this.apiUrl}/product/create`, product);
   }
 
   public loadAllProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/product/findAll`, {withCredentials: true});
+    return this.http.get<Product[]>(`${this.apiUrl}/product/findAll`);
   }
 
   public deleteProduct(identifier: string): Observable<HttpResponse> {
-    return this.http.delete<HttpResponse>(`${this.apiUrl}/product/delete/${identifier}`, {withCredentials: true});
+    return this.http.delete<HttpResponse>(`${this.apiUrl}/product/delete/${identifier}`);
   }
 }
