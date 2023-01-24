@@ -1,7 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Store} from "@ngrx/store";
-import {HttpClient} from "@angular/common/http";
-import {UserService} from "../../service/user.service";
 
 @Component({
   selector: 'app-home',
@@ -10,11 +7,10 @@ import {UserService} from "../../service/user.service";
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private readonly store: Store, private http: HttpClient,
-              private userService: UserService) {
+  constructor() {
   }
 
   ngOnInit(): void {
-    this.userService.obtainCsrf().subscribe();
+
   }
 }

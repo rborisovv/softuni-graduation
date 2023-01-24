@@ -9,6 +9,8 @@ import {UserService} from "../service/user.service";
 import {SharedModule as SharedModule} from '../shared/shared.module';
 import {CookieService} from "ngx-cookie-service";
 import {AuthGuard} from "../guard/auth.guard";
+import {EffectsModule} from "@ngrx/effects";
+import {AuthEffects} from "../store/effect/auth.effect";
 
 const routes: Routes = [
   {
@@ -29,7 +31,8 @@ const routes: Routes = [
     FontAwesomeModule,
     RouterModule.forChild(routes),
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    EffectsModule.forFeature(AuthEffects)
   ],
   providers: [UserService, DatePipe, CookieService],
   exports: [LoginComponent, RegisterComponent]

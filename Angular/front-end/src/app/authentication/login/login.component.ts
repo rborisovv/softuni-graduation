@@ -1,16 +1,13 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {faFacebookF, faGithub, faGoogle, faTwitter} from "@fortawesome/free-brands-svg-icons";
 import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
-import {Subscription} from "rxjs";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 import {Store} from "@ngrx/store";
-import {loginAction} from "../../store/action/auth.action";
 import {faKey, faUser} from '@fortawesome/free-solid-svg-icons';
 import {createFormData} from "../../service/service.index";
-import {NotifierService} from "angular-notifier";
-import {NotificationType} from "../../enumeration/notification-enum";
+import {loginAction} from "../../store/action/auth.action";
 
 @Component({
   selector: 'app-login',
@@ -18,9 +15,7 @@ import {NotificationType} from "../../enumeration/notification-enum";
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginComponent implements OnInit, OnDestroy {
-
-  private subscriptions: Subscription[] = [];
+export class LoginComponent implements OnInit {
 
   faFacebook = faFacebookF;
   faTwitter = faTwitter;
@@ -35,8 +30,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   });
 
   constructor(private userService: UserService, private router: Router,
-              private cookieService: CookieService, private readonly store: Store,
-              private notifier: NotifierService) {
+              private cookieService: CookieService, private readonly store: Store) {
   }
 
   ngOnInit(): void {
@@ -54,10 +48,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     //TODO: Remove the event listeners manually
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
   public onLogin() {
     if (!this.username.value || !this.password.value) {
       return;
@@ -66,20 +56,22 @@ export class LoginComponent implements OnInit, OnDestroy {
       'username': this.username.value,
       'password': this.password.value
     });
-    const subscription: Subscription = this.userService.loginUser(formData)
-      .subscribe({
-        next: (user) => {
-          this.store.dispatch(loginAction({
-            username: user.username, email: user.email
-          }));
+    // const subscription: Subscription = this.userService.loginUser(formData)
+    //   .subscribe({
+    //     next: (user) => {
+    //       this.store.dispatch(loginAction({
+    //         username: user.username, email: user.email
+    //       }));
+    //
+    //       this.router.navigateByUrl(user.roleName === 'ADMIN' ? '/admin/cockpit' : '/home').then(() => {
+    //         this.notifier.notify(NotificationType.SUCCESS, `Welcome, ${user.username}`);
+    //       })
+    //     }
+    //   });
 
-          this.router.navigateByUrl(user.roleName === 'ADMIN' ? '/admin/cockpit' : '/home').then(() => {
-            this.notifier.notify(NotificationType.SUCCESS, `Welcome, ${user.username}`);
-          })
-        }
-      });
+    // this.subscriptions.push(subscription);
 
-    this.subscriptions.push(subscription);
+    this.store.dispatch(loginAction({formData: formData}));
   }
 
   get username() {

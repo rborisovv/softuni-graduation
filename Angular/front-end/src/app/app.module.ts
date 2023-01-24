@@ -11,12 +11,12 @@ import {CoreModule} from "./core/core.module";
 import {JwtModule} from "@auth0/angular-jwt";
 import {XsrfInterceptor} from "./interceptor/xsrf.interceptor";
 import {StoreModule} from '@ngrx/store';
-import {authReducer} from "./store/reducer/auth.reducer";
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {NotifierModule} from "angular-notifier";
 import {EffectsModule} from "@ngrx/effects";
 import {HeadersDecoratorInterceptor} from "./interceptor/headers.decorator.interceptor";
 import {ErrorHandlerInterceptor} from "./interceptor/error.handler.interceptor";
+import {authReducer} from "./store/reducer/auth.reducer";
 
 @NgModule({
   declarations: [
