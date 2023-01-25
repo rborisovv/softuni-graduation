@@ -1,6 +1,6 @@
 <app-admin-header></app-admin-header>
 
-<form [formGroup]="createCategoryFormGroup" class="form" (ngSubmit)="updateCategory()" novalidate>
+<form [formGroup]="updateCategoryFormGroup" class="form" (ngSubmit)="updateCategory()" novalidate>
   <h3 class="form-title">Update Category</h3>
   <div class="form-controll">
     <div class="form-input">
@@ -60,12 +60,12 @@
              type="file" accept="image/*"/>
       <label for="category-media">Category Media</label>
       <div class="media-location">
-        {{this.mediaPath}}
+        {{mediaPath || imageSrc}}
       </div>
     </div>
   </div>
 
   <div class="form-submit">
-    <button type="submit" [disabled]="createCategoryFormGroup.invalid">Update</button>
+    <button type="submit" [disabled]="updateCategoryFormGroup.invalid">Update</button>
   </div>
 </form>

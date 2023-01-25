@@ -1,11 +1,10 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {MediaService} from "../../service/media.service";
-import {NotifierService} from "angular-notifier";
-import {Observable, Subscription} from "rxjs";
+import {Observable} from "rxjs";
 import {Media} from "../../interface/media";
 import {faTrash} from '@fortawesome/free-solid-svg-icons';
-import {Router} from "@angular/router";
-import {NotificationType} from "../../enumeration/notification-enum";
+import {Store} from "@ngrx/store";
+import {deleteMediaAction} from "../../store/action/media.action";
 
 @Component({
   selector: 'app-media',
@@ -13,15 +12,11 @@ import {NotificationType} from "../../enumeration/notification-enum";
   styleUrls: ['./media.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MediaComponent implements OnInit, OnDestroy {
-  constructor(private mediaService: MediaService, private notifier: NotifierService,
-              private router: Router) {
+export class MediaComponent implements OnInit {
+  constructor(private mediaService: MediaService, private readonly store: Store) {
   }
 
-  private subscriptions: Subscription[] = [];
-
   faTrash = faTrash;
-
   medias$: Observable<Media[]>;
 
   ngOnInit(): void {
@@ -29,20 +24,6 @@ export class MediaComponent implements OnInit, OnDestroy {
   }
 
   public deleteCategory(pkOfFile: string) {
-    const subscription = this.mediaService.deleteMedia(pkOfFile)
-      .subscribe({
-        next: (response) => {
-          this.router.navigateByUrl('/admin/cockpit')
-            .then(() => {
-              this.notifier.notify(NotificationType.SUCCESS, response.message);
-            });
-        }
-      });
-
-    this.subscriptions.push(subscription);
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(x => x.unsubscribe());
+    this.store.dispatch(deleteMediaAction({pk: pkOfFile}));
   }
 }

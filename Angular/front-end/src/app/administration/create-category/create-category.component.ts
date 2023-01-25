@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef, OnDestroy,
+  ElementRef,
   ViewChild,
   ViewChildren,
   ViewEncapsulation
@@ -12,12 +12,14 @@ import {Router} from "@angular/router";
 import {NotifierService} from "angular-notifier";
 import {NotificationType} from "../../enumeration/notification-enum";
 import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
-import {map, Observable, Subscription} from "rxjs";
+import {map, Observable} from "rxjs";
 import {MediaService} from "../../service/media.service";
 import {Media} from "../../interface/media";
 import {Category} from "../../interface/category";
 import {createFormData} from "../../service/service.index";
 import {CategorySharedFunctionality} from "../item.category.index";
+import {Store} from "@ngrx/store";
+import {createCategoryAction} from "../../store/action/category.action";
 
 @Component({
   selector: 'app-create-categories',
@@ -26,15 +28,12 @@ import {CategorySharedFunctionality} from "../item.category.index";
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class CreateCategoryComponent extends CategorySharedFunctionality implements OnDestroy {
+export class CreateCategoryComponent extends CategorySharedFunctionality {
   constructor(private categoryService: CategoryService, private router: Router,
               private notifier: NotifierService, private mediaService: MediaService,
-              protected override changeDetectorRef: ChangeDetectorRef) {
+              protected override changeDetectorRef: ChangeDetectorRef,
+              private readonly store: Store) {
     super(changeDetectorRef);
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(x => x.unsubscribe());
   }
 
   createCategoryFormGroup = new FormGroup({
@@ -53,8 +52,6 @@ export class CreateCategoryComponent extends CategorySharedFunctionality impleme
 
   filteredMedias$: Observable<Media[]>;
   selectedMediaFromPickup: Media;
-
-  subscriptions: Subscription[] = [];
 
 
   public filterMediaByName(): void {
@@ -79,16 +76,7 @@ export class CreateCategoryComponent extends CategorySharedFunctionality impleme
       pkOfFile: this.pkOfFIle.value
     }
 
-    const subscription = this.categoryService.createCategory(createFormData(categoryData))
-      .subscribe({
-        next: (response) => {
-          this.router.navigateByUrl('/admin/cockpit').then(() => {
-            this.notifier.notify(NotificationType.SUCCESS, `${response.message}`);
-          });
-        }
-      });
-
-    this.subscriptions.push(subscription);
+    this.store.dispatch(createCategoryAction({formData: createFormData(categoryData)}));
   }
 
   get name() {

@@ -28,7 +28,7 @@ export class AuthEffects {
           .pipe(
             map(user => loginActionSuccess({username: user.username, email: user.email})),
             tap((user) => {
-              this.router.navigateByUrl('/home').then(() => {
+              this.router.navigateByUrl('/admin/cockpit').then(() => {
                 this.notifier.notify(NotificationType.SUCCESS, LOGIN_SUCCESS + user.username);
               });
             }),

@@ -56,20 +56,6 @@ export class LoginComponent implements OnInit {
       'username': this.username.value,
       'password': this.password.value
     });
-    // const subscription: Subscription = this.userService.loginUser(formData)
-    //   .subscribe({
-    //     next: (user) => {
-    //       this.store.dispatch(loginAction({
-    //         username: user.username, email: user.email
-    //       }));
-    //
-    //       this.router.navigateByUrl(user.roleName === 'ADMIN' ? '/admin/cockpit' : '/home').then(() => {
-    //         this.notifier.notify(NotificationType.SUCCESS, `Welcome, ${user.username}`);
-    //       })
-    //     }
-    //   });
-
-    // this.subscriptions.push(subscription);
 
     this.store.dispatch(loginAction({formData: formData}));
   }

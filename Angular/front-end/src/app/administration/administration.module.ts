@@ -16,7 +16,11 @@ import {CreateMediaComponent} from './create-media/create-media.component';
 import {MediaComponent} from './media/media.component';
 import {PositiveNumberDirective} from "../directive/positive.number.directive";
 import {ProductComponent} from './product/product.component';
-import { UpdateProductComponent } from './update-product/update-product.component';
+import {UpdateProductComponent} from './update-product/update-product.component';
+import {EffectsModule} from "@ngrx/effects";
+import {CategoryEffects} from "../store/effect/category.effect";
+import {MediaEffects} from "../store/effect/media.effect";
+import {ProductEffects} from "../store/effect/product.effect";
 
 const routes: Routes = [
   {
@@ -56,7 +60,8 @@ const routes: Routes = [
     FormsModule,
     AsyncPipe,
     ReactiveFormsModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    EffectsModule.forFeature(CategoryEffects, MediaEffects, ProductEffects)
   ],
   providers: [JwtHelperService]
 })

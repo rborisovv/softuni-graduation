@@ -3,9 +3,8 @@ import {ProductService} from "../../service/product.service";
 import {Observable} from "rxjs";
 import {Product} from "../../interface/product";
 import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
-import {NotifierService} from "angular-notifier";
-import {NotificationType} from "../../enumeration/notification-enum";
-import {Router} from "@angular/router";
+import {Store} from "@ngrx/store";
+import {deleteProductAction} from "../../store/action/product.action";
 
 @Component({
   selector: 'app-product',
@@ -19,8 +18,7 @@ export class ProductComponent implements OnInit {
   products$: Observable<Product[]>;
 
   constructor(private readonly productService: ProductService,
-              private readonly notifier: NotifierService,
-              private readonly router: Router) {
+              private readonly store: Store) {
   }
 
   ngOnInit(): void {
@@ -28,13 +26,6 @@ export class ProductComponent implements OnInit {
   }
 
   public deleteProduct(identifier: string): void {
-    this.productService.deleteProduct(identifier)
-      .subscribe({
-        next: (response) => {
-          this.router.navigateByUrl('/admin/cockpit').then(() => {
-            this.notifier.notify(NotificationType.SUCCESS, response.message);
-          });
-        }
-      });
+    this.store.dispatch(deleteProductAction({identifier: identifier}));
   }
 }

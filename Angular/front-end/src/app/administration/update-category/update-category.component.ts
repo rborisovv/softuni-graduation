@@ -11,9 +11,10 @@ import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {NotifierService} from "angular-notifier";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {createFormData} from "../../service/service.index";
-import {NotificationType} from "../../enumeration/notification-enum";
 import {Subscription} from "rxjs";
 import {CategoryUpdate} from "../../interface/category.update";
+import {Store} from "@ngrx/store";
+import {updateCategoryAction} from "../../store/action/category.action";
 
 @Component({
   selector: 'app-update-categories',
@@ -27,7 +28,8 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
   private oldCategoryIdentifier: string = '';
 
   constructor(private categoryService: CategoryService, private router: Router, private notifier: NotifierService,
-              private activatedRoute: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef) {
+              private activatedRoute: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef,
+              private readonly store: Store) {
   }
 
   ngOnInit(): void {
@@ -57,7 +59,7 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(x => x.unsubscribe());
   }
 
-  createCategoryFormGroup = new FormGroup({
+  updateCategoryFormGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(5),
       Validators.maxLength(40)]),
     identifier: new FormControl('', [Validators.required,
@@ -105,45 +107,36 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
       media: this.mediaInput.nativeElement.files[0]
     }
 
-    const subscription = this.categoryService.updateCategory(createFormData(categoryData))
-      .subscribe({
-        next: (response) => {
-          this.router.navigateByUrl('/admin/cockpit').then(() => {
-            this.notifier.notify(NotificationType.SUCCESS, `${response.message}`);
-          });
-        }
-      });
-
-    this.subscriptions.push(subscription);
+    this.store.dispatch(updateCategoryAction({formData: createFormData(categoryData)}));
   }
 
   get name() {
-    return this.createCategoryFormGroup.get('name');
+    return this.updateCategoryFormGroup.get('name');
   }
 
   get identifier() {
-    return this.createCategoryFormGroup.get('identifier');
+    return this.updateCategoryFormGroup.get('identifier');
   }
 
   get productNamePrefix() {
-    return this.createCategoryFormGroup.get('productNamePrefix');
+    return this.updateCategoryFormGroup.get('productNamePrefix');
   }
 
   get media() {
-    return this.createCategoryFormGroup.get('media');
+    return this.updateCategoryFormGroup.get('media');
   }
 
   public setName(name: string) {
-    this.createCategoryFormGroup.controls['name'].setValue(name);
+    this.updateCategoryFormGroup.controls['name'].setValue(name);
   }
 
   public setIdentifier(identifier: string) {
-    this.createCategoryFormGroup.controls['identifier'].setValue(identifier);
+    this.updateCategoryFormGroup.controls['identifier'].setValue(identifier);
   }
 
   public setProductPrefix(productPrefix: string) {
-    this.createCategoryFormGroup.controls['productNamePrefix'].setValue(productPrefix);
+    this.updateCategoryFormGroup.controls['productNamePrefix'].setValue(productPrefix);
   }
 }
 
-//TODO: Create validations for user input (Lower or Uppercase)
+//TODO: Create validations for user input (Lower or Uppercase)//

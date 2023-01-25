@@ -3,10 +3,9 @@ import {map, Observable} from "rxjs";
 import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {MediaService} from "../../service/media.service";
 import {createFormData} from "../../service/service.index";
-import {NotificationType} from "../../enumeration/notification-enum";
 import {Media} from "../../interface/media";
-import {Router} from "@angular/router";
-import {NotifierService} from "angular-notifier";
+import {Store} from "@ngrx/store";
+import {createMediaAction} from "../../store/action/media.action";
 
 @Component({
   selector: 'app-create-media',
@@ -15,7 +14,7 @@ import {NotifierService} from "angular-notifier";
 })
 export class CreateMediaComponent {
   constructor(private changeDetectorRef: ChangeDetectorRef, private mediaService: MediaService,
-              private router: Router, private notifier: NotifierService) {
+              private readonly store: Store) {
   }
 
   @ViewChild('mediaInput') mediaInput: ElementRef;
@@ -70,14 +69,7 @@ export class CreateMediaComponent {
       file: this.mediaInput.nativeElement.files[0]
     }
 
-    this.mediaService.createMedia(createFormData(mediaData))
-      .subscribe({
-        next: (response) => {
-          this.router.navigateByUrl('/admin/cockpit').then(() => {
-            this.notifier.notify(NotificationType.SUCCESS, `${response.message}`);
-          });
-        }
-      });
+    this.store.dispatch(createMediaAction({formData: createFormData(mediaData)}));
   }
 }
 

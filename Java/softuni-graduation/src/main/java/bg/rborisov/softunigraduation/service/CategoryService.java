@@ -58,7 +58,9 @@ public class CategoryService extends AbstractMediaUrlBuilder {
                 throw new MediaByNameAlreadyExistsException();
             }
 
-            this.mediaService.saveMedia(categoryDto.getMedia().getName(), categoryDto.getMedia());
+            this.mediaService.saveMedia(categoryDto.getMedia().getOriginalFilename(), categoryDto.getMedia());
+
+            optionalMedia = this.mediaRepository.findMediaByName(categoryDto.getMedia().getOriginalFilename());
 
         } else {
             //If existing media is selected
@@ -69,18 +71,16 @@ public class CategoryService extends AbstractMediaUrlBuilder {
             }
 
             Media media = optionalMedia.get();
-
-            Category category = Category.builder()
-                    .name(categoryName)
-                    .identifier(categoryDto.getIdentifier())
-                    .productNamePrefix(categoryDto.getProductNamePrefix())
-                    .media(media).build();
-
-            this.categoryRepository.save(category);
-
             mediaRepository.save(media);
         }
 
+        Category category = Category.builder()
+                .name(categoryName)
+                .identifier(categoryDto.getIdentifier())
+                .productNamePrefix(categoryDto.getProductNamePrefix())
+                .media(optionalMedia.get()).build();
+
+        this.categoryRepository.save(category);
 
         HttpResponse response = new HttpResponse(HttpStatus.OK.value(),
                 HttpStatus.OK, "", String.format(String.format(CATEGORY_CREATED, categoryName)));
