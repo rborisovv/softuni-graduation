@@ -45,7 +45,7 @@ public class ProductResource {
                                                       @RequestParam(value = "media", required = false) MultipartFile multipartFile,
                                                       @RequestParam(value = "pkOfFile", required = false) String pkOfFile,
                                                       @RequestParam("categoryIdentifier") String categoryIdentifier) throws AbsentMediaOnProductException,
-            AbsentCategoryProductException, MediaByNameAlreadyExistsException, MediaNotFoundException, CategoryNotFoundException, IOException {
+            AbsentCategoryProductException, MediaByNameAlreadyExistsException, CategoryNotFoundException, IOException {
 
         @Valid ProductDto productDto = ProductDto.builder()
                 .name(name).identifier(identifier)
