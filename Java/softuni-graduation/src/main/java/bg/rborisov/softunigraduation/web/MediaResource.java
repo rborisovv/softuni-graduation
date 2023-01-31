@@ -35,7 +35,7 @@ public class MediaResource {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping(value = "/sys_master/h4f/{pkOfFile}.{ext}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/*/h4f/{pkOfFile}.*", produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] getMedia(@PathVariable String pkOfFile) throws MediaNotFoundException {
         return this.mediaService.findMediaByPk(pkOfFile);
     }
