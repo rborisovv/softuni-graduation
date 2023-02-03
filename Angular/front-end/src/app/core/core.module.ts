@@ -4,15 +4,23 @@ import {SharedModule as SharedModule} from "../shared/shared.module";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {XsrfInterceptor} from "../interceptor/xsrf.interceptor";
 import {CommonModule} from "@angular/common";
+import {CategoryComponent} from './category/category.component';
+import {RouterModule, Routes} from "@angular/router";
+
+const routes: Routes = [
+  {path: ':name/c/:category', component: CategoryComponent}
+];
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    CategoryComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule.forChild(routes)
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

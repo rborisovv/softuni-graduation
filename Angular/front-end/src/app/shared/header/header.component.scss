@@ -71,7 +71,48 @@ a {
 
   &__elements {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
+  #searchbar {
+    & > input {
+      width: 600px;
+      height: 50px;
+      padding: 15px 50px 15px 15px;
+
+      border: 1px solid #c6c6c6;
+      border-radius: 10px;
+      outline: none;
+      font-size: 20px;
+    }
+
+    & > button {
+      position: relative;
+      right: 40px;
+      bottom: 1px;
+      background: none;
+      border: none;
+
+      & > fa-icon {
+        font-size: 22px;
+      }
+    }
+  }
+
+  .user-items {
+    display: flex;
+    gap: 1rem;
+
+    transition: all 300ms ease-in-out;
+  }
+
+  .user-items:hover {
+    cursor: pointer;
+  }
+
+  .user-items > fa-icon {
+    font-size: 40px;
   }
 
   &__groups {

@@ -1,5 +1,5 @@
 import {Component, OnDestroy} from '@angular/core';
-import {faCartShopping} from '@fortawesome/free-solid-svg-icons';
+import {faCartShopping, faHeart, faMagnifyingGlass, faShoppingBasket} from '@fortawesome/free-solid-svg-icons';
 import {UserService} from "../../service/user.service";
 import {CookieService} from "ngx-cookie-service";
 import {Router} from "@angular/router";
@@ -14,6 +14,9 @@ import {Subscription} from "rxjs";
 export class HeaderComponent implements OnDestroy {
 
   faCart = faCartShopping;
+  faBasket = faShoppingBasket;
+  faHeart = faHeart;
+  faGlass = faMagnifyingGlass;
 
   const
   subscriptions: Subscription[] = [];

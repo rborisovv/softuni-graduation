@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
+import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from "./core/home/home.component";
 import {environment} from "../environments/environment";
 import {PageGuard} from "./guard/page.guard";
@@ -18,7 +18,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {enableTracing: !environment.production})],
+  imports: [RouterModule.forRoot(routes, {
+    enableTracing: !environment.production,
+    scrollPositionRestoration: "top",
+    preloadingStrategy: PreloadAllModules
+  })],
   exports: [RouterModule],
   providers: []
 })
