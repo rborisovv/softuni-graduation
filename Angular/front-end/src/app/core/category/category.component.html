@@ -3,7 +3,12 @@
 <main>
   <app-breadcrumb [breadcrumb]="breadcrumb"></app-breadcrumb>
   <ng-container *ngIf="category">
-    <h2 class="mb-20 mt-20 text-green">{{category.name}}</h2>
+    <div class="child-categories">
+
+    </div>
+  </ng-container>
+  <ng-container *ngIf="category">
+    <h2 class="mb-20 mt-50 text-green">{{category.name}}</h2>
   </ng-container>
   <div class="category-products">
     <div class="product">

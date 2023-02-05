@@ -21,7 +21,8 @@ public class Category extends BaseEntity implements Serializable {
     @Column(nullable = false, unique = true, length = 10)
     private String identifier;
     @ManyToOne
-    private Category superCategoryIdentifier;
+    private Category superCategory;
+
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Media media;
     @OneToMany(mappedBy = "category")

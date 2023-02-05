@@ -2,12 +2,16 @@
   <nav class="nav">
     <div class="nav__elements">
       <div class="nav__logo mb-20 mt-30">
-        <fa-icon [icon]="faCart"></fa-icon>
-        eCart
+        <a href="javascript:void(0)" routerLink="/home">
+          <fa-icon [icon]="faCart"></fa-icon>
+          eCart
+        </a>
       </div>
       <div id="searchbar">
         <input type="text" placeholder="Search">
-        <button class="search-btn"><fa-icon [icon]="faGlass"></fa-icon></button>
+        <button class="search-btn">
+          <fa-icon [icon]="faGlass"></fa-icon>
+        </button>
       </div>
       <div class="user-items">
         <fa-icon [icon]="faHeart" style="color: #d60026;"></fa-icon>
@@ -15,13 +19,15 @@
       </div>
     </div>
     <ul class="nav__groups">
-      <li class="nav__group"><a href="javascript:void(0)" routerLink="/c/P1000" class="nav__group__link">Bread</a>
+      <li class="nav__group"><a href="javascript:void(0)" routerLink="/bread/c/P1000" class="nav__group__link">Bread</a>
         <ul class="nav__group__dropdown">
           <div class="multi-column">
             <div class="product-list-wrapper">
               <ul class="product-list multi" data-type="table">
-                <li class="product-list__title title"><a href="javascript:void(0)" routerLink="/c/1001">Freshly baked</a></li>
-                <li class="product-list__link"><a href="javascript:void(0)" routerLink="/c/1002">Baguettes and burger buns</a></li>
+                <li class="product-list__title title"><a href="javascript:void(0)" routerLink="/freshly-baked/c/P1001">Freshly
+                  baked</a></li>
+                <li class="product-list__link"><a href="javascript:void(0)" routerLink="/c/1002">Baguettes and burger
+                  buns</a></li>
                 <li class="product-list__link"><a>Pastry breakfast</a></li>
                 <li class="product-list__link"><a>Bread bakery</a></li>
               </ul>

@@ -42,8 +42,8 @@
     </div>
     <div class="form-controll">
       <div class="form-input">
-        <input type="text" name="superCategoryIdentifier" formControlName="superCategoryIdentifier" id="super-category-identifier">
-        <label for="super-category-identifier">Super Category</label>
+        <input type="text" name="superCategory" formControlName="superCategory" id="super-category">
+        <label for="super-category">Super Category</label>
       </div>
       <div class="name-prefix-messages error-messages text-danger">
         <div *ngIf="superCategory.errors?.['minlength'] && superCategory.touched">The minimum length of the

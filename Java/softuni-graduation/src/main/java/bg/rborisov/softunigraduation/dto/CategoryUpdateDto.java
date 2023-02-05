@@ -39,7 +39,7 @@ public class CategoryUpdateDto implements Serializable {
 
     @NotBlank
     @Size(min = 4, max = 30)
-    private String superCategoryIdentifier;
+    private String superCategory;
 
     @Nullable
     @ImageValidator

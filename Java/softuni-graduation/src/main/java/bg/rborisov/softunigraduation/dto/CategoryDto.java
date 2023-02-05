@@ -34,7 +34,7 @@ public class CategoryDto implements Serializable {
 
     @Size(min = 4, max = 30)
     @NotBlank
-    private String superCategoryIdentifier;
+    private String superCategory;
 
     @NotNull
     @ImageValidator

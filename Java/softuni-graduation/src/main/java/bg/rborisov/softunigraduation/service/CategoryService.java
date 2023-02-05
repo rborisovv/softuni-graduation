@@ -12,7 +12,6 @@ import bg.rborisov.softunigraduation.util.AbstractMediaUrlBuilder;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.actuate.endpoint.web.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -80,9 +79,9 @@ public class CategoryService extends AbstractMediaUrlBuilder {
                 .identifier(categoryDto.getIdentifier())
                 .media(optionalMedia.get()).build();
 
-        String superCategoryIdentifier = categoryDto.getSuperCategoryIdentifier();
+        String superCategoryIdentifier = categoryDto.getSuperCategory();
 
-        setSuperCategory(category, superCategoryIdentifier);
+        setSuperAndChildCategories(category, superCategoryIdentifier);
 
         this.categoryRepository.save(category);
 
@@ -135,8 +134,8 @@ public class CategoryService extends AbstractMediaUrlBuilder {
         category.setName(categoryDto.getName());
         category.setIdentifier(categoryDto.getIdentifier());
 
-        String superCategoryIdentifier = categoryDto.getSuperCategoryIdentifier();
-        setSuperCategory(category, superCategoryIdentifier);
+        String superCategoryIdentifier = categoryDto.getSuperCategory();
+        setSuperAndChildCategories(category, superCategoryIdentifier);
         if (categoryDto.getMedia() != null) {
             String PK = RandomStringUtils.randomNumeric(15);
 
@@ -161,11 +160,12 @@ public class CategoryService extends AbstractMediaUrlBuilder {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    private void setSuperCategory(Category category, String superCategoryIdentifier) throws CategoryNotFoundException {
+    private void setSuperAndChildCategories(Category category, String superCategoryIdentifier) throws CategoryNotFoundException {
         if (superCategoryIdentifier != null && !superCategoryIdentifier.equalsIgnoreCase("null")) {
             Category superCategory = this.categoryRepository.findCategoryByIdentifier(superCategoryIdentifier)
                     .orElseThrow(CategoryNotFoundException::new);
-            category.setSuperCategoryIdentifier(superCategory);
+
+            category.setSuperCategory(superCategory);
         }
     }
 
@@ -195,7 +195,7 @@ public class CategoryService extends AbstractMediaUrlBuilder {
 
         while (parentCategory != null && !parentCategory.getName().equalsIgnoreCase("ROOT")) {
             reversedBreadcrumb.put(parentCategory.getName(), parentCategory.getIdentifier());
-            parentCategory = parentCategory.getSuperCategoryIdentifier();
+            parentCategory = parentCategory.getSuperCategory();
         }
         Map<String, String> breadcrumb = new LinkedHashMap<>();
         reverseBreadcrumb(reversedBreadcrumb, breadcrumb);
@@ -213,5 +213,12 @@ public class CategoryService extends AbstractMediaUrlBuilder {
             String value = reversedBreadcrumb.get(key);
             breadcrumb.put(key, value);
         }
+    }
+
+    public CategoryUpdateDto loadCategoryToUpdate(String identifier) {
+        Category category = this.categoryRepository.findCategoryByIdentifier(identifier).orElseThrow();
+        CategoryUpdateDto updatedCategory = this.modelMapper.map(category, CategoryUpdateDto.class);
+        updatedCategory.setSuperCategory(category.getSuperCategory().getIdentifier());
+        return updatedCategory;
     }
 }

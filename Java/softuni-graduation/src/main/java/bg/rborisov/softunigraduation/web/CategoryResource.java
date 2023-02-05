@@ -27,14 +27,14 @@ public class CategoryResource {
     @PostMapping("/create")
     public ResponseEntity<HttpResponse> createCategory(@RequestParam("name") String name,
                                                        @RequestParam("identifier") String identifier,
-                                                       @RequestParam(name = "superCategoryIdentifier") String superCategoryIdentifier,
+                                                       @RequestParam(name = "superCategory") String superCategory,
                                                        @RequestParam(value = "media", required = false) MultipartFile media,
                                                        @RequestParam(value = "pkOfFile", required = false) String pkOfFile)
             throws MediaNotFoundException, CategoryWithIdentifierExists, MediaByNameAlreadyExistsException, IOException, CategoryNotFoundException {
 
         @Valid CategoryDto categoryDto = CategoryDto.builder().name(name)
                 .identifier(identifier)
-                .superCategoryIdentifier(superCategoryIdentifier)
+                .superCategory(superCategory)
                 .media(media).build();
 
         return this.categoryService.createCategory(categoryDto, pkOfFile);
@@ -68,19 +68,24 @@ public class CategoryResource {
         return this.categoryService.loadCategoryWithBreadCrumb(identifier);
     }
 
+    @GetMapping("/update/{identifier}")
+    public CategoryUpdateDto categoryUpdateDto(@PathVariable String identifier) {
+        return this.categoryService.loadCategoryToUpdate(identifier);
+    }
+
     @PutMapping("/update")
     public HttpEntity<HttpResponse> updateCategory(@RequestParam("name") String name,
                                                    @RequestParam("oldName") String oldName,
                                                    @RequestParam("identifier") String identifier,
                                                    @RequestParam("oldCategoryIdentifier") String oldCategoryIdentifier,
-                                                   @RequestParam(name = "superCategoryIdentifier") String superCategoryIdentifier,
+                                                   @RequestParam(name = "superCategory") String superCategory,
                                                    @RequestParam(value = "media", required = false) MultipartFile media)
             throws CategoryNotFoundException, IOException, CategoryWithIdentifierExists, CategoryWithNameExists {
 
         CategoryUpdateDto categoryDto = CategoryUpdateDto.builder().name(name)
                 .oldName(oldName)
                 .identifier(identifier)
-                .superCategoryIdentifier(superCategoryIdentifier)
+                .superCategory(superCategory)
                 .oldIdentifier(oldCategoryIdentifier)
                 .media(media).build();
 

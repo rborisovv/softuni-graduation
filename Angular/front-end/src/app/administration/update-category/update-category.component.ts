@@ -39,13 +39,13 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
     });
     this.oldCategoryIdentifier = identifier;
 
-    const subscription = this.categoryService.loadCategory(identifier)
+    const subscription = this.categoryService.loadCategoryToUpdate(identifier)
       .subscribe({
         next: (response) => {
           this.oldName = response.name;
           this.setName(response.name);
           this.setIdentifier(response.identifier);
-          this.setSuperCategoryIdentifier(response.superCategoryIdentifier);
+          this.setSuperCategory(response.superCategory);
           this.imageSrc = response.mediaUrl;
           this.changeDetectorRef.markForCheck();
         }
@@ -64,7 +64,7 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
       Validators.maxLength(40)]),
     identifier: new FormControl('', [Validators.required,
       Validators.minLength(4), Validators.maxLength(10)]),
-    superCategoryIdentifier: new FormControl('', [Validators.maxLength(30)]),
+    superCategory: new FormControl('', [Validators.maxLength(30)]),
     media: new FormControl('')
   });
 
@@ -103,7 +103,7 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
       oldName: this.oldName,
       identifier: this.identifier.value,
       oldCategoryIdentifier: this.oldCategoryIdentifier,
-      superCategoryIdentifier: this.superCategoryIdentifier.value,
+      superCategory: this.superCategory.value,
       media: this.mediaInput.nativeElement.files[0]
     }
 
@@ -118,8 +118,8 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
     return this.updateCategoryFormGroup.get('identifier');
   }
 
-  get superCategoryIdentifier() {
-    return this.updateCategoryFormGroup.get('superCategoryIdentifier');
+  get superCategory() {
+    return this.updateCategoryFormGroup.get('superCategory');
   }
 
   get media() {
@@ -134,8 +134,8 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
     this.updateCategoryFormGroup.controls['identifier'].setValue(identifier);
   }
 
-  public setSuperCategoryIdentifier(superCategoryIdentifier: string) {
-    this.updateCategoryFormGroup.controls['superCategoryIdentifier'].setValue(superCategoryIdentifier);
+  public setSuperCategory(superCategory: string) {
+    this.updateCategoryFormGroup.controls['superCategory'].setValue(superCategory);
   }
 }
 

@@ -50,4 +50,8 @@ export class CategoryService {
   loadCategoryWithBreadcrumb(identifier: string): Observable<Category> {
     return this.http.get<Category>(`${this.apiUrl}/category/c/${identifier}`);
   }
+
+  loadCategoryToUpdate(identifier: string) {
+    return this.http.get<Category>(`${this.apiUrl}/category/update/${identifier}`);
+  }
 }

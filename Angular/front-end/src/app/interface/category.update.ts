@@ -3,7 +3,7 @@ export interface CategoryUpdate {
   oldName: string,
   identifier: string,
   oldCategoryIdentifier: string,
-  superCategoryIdentifier: string,
+  superCategory: string,
   media: File,
   mediaUrl?: string
 }
