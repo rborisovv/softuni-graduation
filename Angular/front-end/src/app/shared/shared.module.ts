@@ -6,22 +6,28 @@ import {UserService} from "../service/user.service";
 import {CookieService} from "ngx-cookie-service";
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {AuthHeaderComponent} from './auth-header/auth-header.component';
+import {BreadcrumbComponent} from './breadcrumb/breadcrumb.component';
+import {CommonModule, KeyValuePipe} from "@angular/common";
 
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
-    AuthHeaderComponent
+    AuthHeaderComponent,
+    BreadcrumbComponent
   ],
   imports: [
+    CommonModule,
     FontAwesomeModule,
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    KeyValuePipe
   ],
   exports: [
     HeaderComponent,
-    AuthHeaderComponent
+    AuthHeaderComponent,
+    BreadcrumbComponent
   ],
   providers: [
     UserService, CookieService

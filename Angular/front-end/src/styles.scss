@@ -116,3 +116,11 @@ $base-color-white: #e4e6eb;
   text-underline-offset: 5px;
   text-decoration-thickness: 2px;
 }
+
+.category-nav__active {
+  color: black !important;
+}
+
+.text-green {
+  color: $base-color-green;
+}

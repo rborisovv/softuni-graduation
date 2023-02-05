@@ -1,1 +1,13 @@
 <app-header></app-header>
+
+<main>
+  <app-breadcrumb [breadcrumb]="breadcrumb"></app-breadcrumb>
+  <ng-container *ngIf="category">
+    <h2 class="mb-20 mt-20 text-green">{{category.name}}</h2>
+  </ng-container>
+  <div class="category-products">
+    <div class="product">
+
+    </div>
+  </div>
+</main>

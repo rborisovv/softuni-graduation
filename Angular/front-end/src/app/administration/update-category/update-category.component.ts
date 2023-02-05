@@ -11,7 +11,7 @@ import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {NotifierService} from "angular-notifier";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {createFormData} from "../../service/service.index";
-import {Subscription} from "rxjs";
+import {Subscription, take} from "rxjs";
 import {CategoryUpdate} from "../../interface/category.update";
 import {Store} from "@ngrx/store";
 import {updateCategoryAction} from "../../store/action/category.action";
@@ -34,7 +34,7 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     let identifier: string = '';
-    const routerSubscription = this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+    const routerSubscription = this.activatedRoute.paramMap.pipe(take(1)).subscribe((params: ParamMap) => {
       identifier = params.get('identifier');
     });
     this.oldCategoryIdentifier = identifier;
@@ -45,7 +45,7 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
           this.oldName = response.name;
           this.setName(response.name);
           this.setIdentifier(response.identifier);
-          this.setProductPrefix(response.productNamePrefix);
+          this.setSuperCategoryIdentifier(response.superCategoryIdentifier);
           this.imageSrc = response.mediaUrl;
           this.changeDetectorRef.markForCheck();
         }
@@ -64,7 +64,7 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
       Validators.maxLength(40)]),
     identifier: new FormControl('', [Validators.required,
       Validators.minLength(4), Validators.maxLength(10)]),
-    productNamePrefix: new FormControl('', [Validators.maxLength(30)]),
+    superCategoryIdentifier: new FormControl('', [Validators.maxLength(30)]),
     media: new FormControl('')
   });
 
@@ -103,7 +103,7 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
       oldName: this.oldName,
       identifier: this.identifier.value,
       oldCategoryIdentifier: this.oldCategoryIdentifier,
-      productNamePrefix: this.productNamePrefix.value,
+      superCategoryIdentifier: this.superCategoryIdentifier.value,
       media: this.mediaInput.nativeElement.files[0]
     }
 
@@ -118,8 +118,8 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
     return this.updateCategoryFormGroup.get('identifier');
   }
 
-  get productNamePrefix() {
-    return this.updateCategoryFormGroup.get('productNamePrefix');
+  get superCategoryIdentifier() {
+    return this.updateCategoryFormGroup.get('superCategoryIdentifier');
   }
 
   get media() {
@@ -134,8 +134,8 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
     this.updateCategoryFormGroup.controls['identifier'].setValue(identifier);
   }
 
-  public setProductPrefix(productPrefix: string) {
-    this.updateCategoryFormGroup.controls['productNamePrefix'].setValue(productPrefix);
+  public setSuperCategoryIdentifier(superCategoryIdentifier: string) {
+    this.updateCategoryFormGroup.controls['superCategoryIdentifier'].setValue(superCategoryIdentifier);
   }
 }
 

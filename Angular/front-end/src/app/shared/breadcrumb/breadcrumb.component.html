@@ -1,0 +1,14 @@
+<nav class="mt-20 mb-20" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item" aria-current="page">
+      <a href="javascript:void(0)" routerLink="/home" routerLinkActive="category-nav__active">Home</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page" *ngFor="let link of breadcrumb | keyvalue: originalOrder">
+      <a href="javascript:void(0)"
+         routerLinkActive="category-nav__active"
+         routerLink="/{{link.key.toString().toLowerCase().trim().replaceAll(' ', '-')}}/c/{{link.value}}">
+        {{link.key}}
+      </a>
+    </li>
+  </ol>
+</nav>

@@ -41,7 +41,7 @@ export class CreateCategoryComponent extends CategorySharedFunctionality {
       Validators.maxLength(40)], [nameValidator.validateName(this.categoryService)]),
     identifier: new FormControl('', [Validators.required,
       Validators.minLength(4), Validators.maxLength(10)], identifierValidator.validateIdentifier(this.categoryService)),
-    productNamePrefix: new FormControl('', [Validators.maxLength(30)]),
+    superCategoryIdentifier: new FormControl('', [Validators.maxLength(30), Validators.minLength(4)]),
     media: new FormControl(undefined),
     pkOfFile: new FormControl('')
   });
@@ -71,7 +71,7 @@ export class CreateCategoryComponent extends CategorySharedFunctionality {
     const categoryData: Category = {
       name: this.name.value.trim(),
       identifier: this.identifier.value.trim(),
-      productNamePrefix: this.productNamePrefix.value.trim(),
+      superCategoryIdentifier: this.superCategory.value.trim(),
       media: this.mediaInput.nativeElement.files[0],
       pkOfFile: this.pkOfFIle.value
     }
@@ -87,8 +87,8 @@ export class CreateCategoryComponent extends CategorySharedFunctionality {
     return this.createCategoryFormGroup.get('identifier');
   }
 
-  get productNamePrefix() {
-    return this.createCategoryFormGroup.get('productNamePrefix');
+  get superCategory() {
+    return this.createCategoryFormGroup.get('superCategoryIdentifier');
   }
 
   get media() {

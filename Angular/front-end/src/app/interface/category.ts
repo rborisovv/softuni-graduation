@@ -1,8 +1,12 @@
+import {Product} from "./product";
+
 export interface Category {
   name: string,
   identifier: string,
-  productNamePrefix?: string,
+  superCategoryIdentifier: string,
   media: File,
   mediaUrl?: string,
-  pkOfFile?: string
+  pkOfFile?: string,
+  products?: Product[],
+  breadcrumb?: object
 }

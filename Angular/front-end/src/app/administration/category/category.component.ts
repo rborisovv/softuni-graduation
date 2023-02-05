@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CategoryService} from "../../service/category.service";
 import {Observable} from "rxjs";
 import {Category} from 'src/app/interface/category';
@@ -9,8 +9,7 @@ import {deleteCategoryAction} from "../../store/action/category.action";
 @Component({
   selector: 'app-categories',
   templateUrl: './category.component.html',
-  styleUrls: ['./category.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./category.component.scss']
 })
 export class CategoryComponent implements OnInit {
 
@@ -28,5 +27,6 @@ export class CategoryComponent implements OnInit {
 
   public deleteCategory(identifier: string) {
     this.store.dispatch(deleteCategoryAction({identifier}));
+    //TODO: Fix deleting category does not detect the change
   }
 }

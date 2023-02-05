@@ -42,11 +42,14 @@
     </div>
     <div class="form-controll">
       <div class="form-input">
-        <input type="text" name="productNamePrefix" formControlName="productNamePrefix" id="product-name-prefix">
-        <label for="product-name-prefix">Product Name Prefix</label>
+        <input type="text" name="superCategoryIdentifier" formControlName="superCategoryIdentifier" id="super-category-identifier">
+        <label for="super-category-identifier">Super Category</label>
       </div>
-      <div class="confirm-password-messages error-messages text-danger">
-        <div *ngIf="productNamePrefix.errors?.['maxlength'] && productNamePrefix.touched">The maximum length of the
+      <div class="category-messages error-messages text-danger">
+        <div *ngIf="superCategoryIdentifier.errors?.['minlength'] && superCategoryIdentifier.touched">The minimum length of the
+          Super Category is 4 characters.
+        </div>
+        <div *ngIf="superCategoryIdentifier.errors?.['maxlength'] && superCategoryIdentifier.touched">The maximum length of the
           Product Name Prefix is 30 characters.
         </div>
       </div>

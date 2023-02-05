@@ -46,4 +46,8 @@ export class CategoryService {
   public filterCategoriesByName(name: string): Observable<Category[]> {
     return this.http.post<Category[]>(`${this.apiUrl}/category/filterByName`, name);
   }
+
+  loadCategoryWithBreadcrumb(identifier: string): Observable<Category> {
+    return this.http.get<Category>(`${this.apiUrl}/category/c/${identifier}`);
+  }
 }

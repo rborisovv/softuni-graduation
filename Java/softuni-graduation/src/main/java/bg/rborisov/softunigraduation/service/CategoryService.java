@@ -12,6 +12,7 @@ import bg.rborisov.softunigraduation.util.AbstractMediaUrlBuilder;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.actuate.endpoint.web.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class CategoryService extends AbstractMediaUrlBuilder {
         this.modelMapper = modelMapper;
     }
 
-    public ResponseEntity<HttpResponse> createCategory(CategoryDto categoryDto, String pkOfFile) throws CategoryWithIdentifierExists, MediaNotFoundException, MediaByNameAlreadyExistsException, IOException {
+    public ResponseEntity<HttpResponse> createCategory(CategoryDto categoryDto, String pkOfFile) throws CategoryWithIdentifierExists, MediaNotFoundException, MediaByNameAlreadyExistsException, IOException, CategoryNotFoundException {
         String mediaName;
         Optional<Category> optionalCategory = this.categoryRepository.findCategoryByIdentifier(categoryDto.getIdentifier());
         String categoryName = categoryDto.getName();
@@ -77,8 +78,11 @@ public class CategoryService extends AbstractMediaUrlBuilder {
         Category category = Category.builder()
                 .name(categoryName)
                 .identifier(categoryDto.getIdentifier())
-                .productNamePrefix(categoryDto.getProductNamePrefix())
                 .media(optionalMedia.get()).build();
+
+        String superCategoryIdentifier = categoryDto.getSuperCategoryIdentifier();
+
+        setSuperCategory(category, superCategoryIdentifier);
 
         this.categoryRepository.save(category);
 
@@ -130,7 +134,9 @@ public class CategoryService extends AbstractMediaUrlBuilder {
 
         category.setName(categoryDto.getName());
         category.setIdentifier(categoryDto.getIdentifier());
-        category.setProductNamePrefix(categoryDto.getProductNamePrefix());
+
+        String superCategoryIdentifier = categoryDto.getSuperCategoryIdentifier();
+        setSuperCategory(category, superCategoryIdentifier);
         if (categoryDto.getMedia() != null) {
             String PK = RandomStringUtils.randomNumeric(15);
 
@@ -155,6 +161,14 @@ public class CategoryService extends AbstractMediaUrlBuilder {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    private void setSuperCategory(Category category, String superCategoryIdentifier) throws CategoryNotFoundException {
+        if (superCategoryIdentifier != null && !superCategoryIdentifier.equalsIgnoreCase("null")) {
+            Category superCategory = this.categoryRepository.findCategoryByIdentifier(superCategoryIdentifier)
+                    .orElseThrow(CategoryNotFoundException::new);
+            category.setSuperCategoryIdentifier(superCategory);
+        }
+    }
+
     public ResponseEntity<HttpResponse> deleteCategory(String identifier) throws CategoryNotFoundException {
         Category category = this.categoryRepository.findCategoryByIdentifier(identifier)
                 .orElseThrow(CategoryNotFoundException::new);
@@ -172,5 +186,32 @@ public class CategoryService extends AbstractMediaUrlBuilder {
                 .map(category -> modelMapper.map(category, CategoryDto.class))
                 .sorted(Comparator.comparing(CategoryDto::getName))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public CategoryDto loadCategoryWithBreadCrumb(String identifier) {
+        Category category = this.categoryRepository.findCategoryByIdentifier(identifier).orElseThrow();
+        Map<String, String> reversedBreadcrumb = new LinkedHashMap<>();
+        Category parentCategory = category;
+
+        while (parentCategory != null && !parentCategory.getName().equalsIgnoreCase("ROOT")) {
+            reversedBreadcrumb.put(parentCategory.getName(), parentCategory.getIdentifier());
+            parentCategory = parentCategory.getSuperCategoryIdentifier();
+        }
+        Map<String, String> breadcrumb = new LinkedHashMap<>();
+        reverseBreadcrumb(reversedBreadcrumb, breadcrumb);
+        CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
+        categoryDto.setBreadcrumb(breadcrumb);
+
+        return categoryDto;
+    }
+
+    private static void reverseBreadcrumb(Map<String, String> reversedBreadcrumb, Map<String, String> breadcrumb) {
+        List<String> reversedKeys = new ArrayList<>(reversedBreadcrumb.keySet());
+        Collections.reverse(reversedKeys);
+
+        for (String key : reversedKeys) {
+            String value = reversedBreadcrumb.get(key);
+            breadcrumb.put(key, value);
+        }
     }
 }
