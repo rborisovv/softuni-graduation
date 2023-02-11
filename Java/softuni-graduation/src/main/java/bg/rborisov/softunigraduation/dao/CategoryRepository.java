@@ -16,4 +16,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query("SELECT c FROM Category as c WHERE c.identifier LIKE ?1 OR c.name like ?1")
     Set<Category> findCategoryByNameLike(String name);
+
+    @Query("SELECT c FROM Category as c ORDER BY c.identifier")
+    Set<Category> findAllCategories();
 }

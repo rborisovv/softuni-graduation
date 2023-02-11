@@ -14,8 +14,18 @@
         </button>
       </div>
       <div class="user-items">
-        <fa-icon [icon]="faHeart" style="color: #d60026;"></fa-icon>
-        <fa-icon [icon]="faBasket" style="color: #c29161;"></fa-icon>
+        <a *ngIf="roleIsAdmin()" href="javascript:void(0)" routerLink="/admin/cockpit">
+          <fa-icon [icon]="faUserSecret"></fa-icon>
+        </a>
+        <a href="javascript:void(0)">
+          <fa-icon [icon]="faHeart" style="color: #d60026;"></fa-icon>
+        </a>
+        <a href="javascript:void(0)">
+          <fa-icon [icon]="faBasket" style="color: #c29161;"></fa-icon>
+        </a>
+        <a href="javascript:void(0)" (click)="onLogout($event)">
+          <fa-icon [icon]="faSignOut"></fa-icon>
+        </a>
       </div>
     </div>
     <ul class="nav__groups">
@@ -91,26 +101,53 @@
           <div class="multi-column">
             <div class="product-list-wrapper">
               <ul class="product-list multi" data-type="table">
-                <li class="product-list__title title"><a href="javascript:void(0)"
-                                                         routerLink="/fruits/c/P2001">Fruits</a></li>
-                <li class="product-list__link"><a>Bananas and tropical fruits</a></li>
-                <li class="product-list__link"><a>Apples and Pears</a></li>
-                <li class="product-list__link"><a>Strawberries and forest fruits</a></li>
-                <li class="product-list__link"><a>Citrus</a></li>
-                <li class="product-list__link"><a>Grapes and Kiwi</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/fruits/c/P2001">Fruits</a></li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/bananas-and-tropical-fruits/c/P2002">
+                    Bananas and tropical fruits</a>
+                </li>
+                <li class="product-list__link"><a href="javascript:void(0)" routerLink="/apples-and-pears/c/P2003">
+                  Apples and Pears</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/strawberries-and-forest-fruits/c/P2004">
+                    Strawberries and forest fruits
+                  </a>
+                </li>
+                <li class="product-list__link"><a href="javascript:void(0)" routerLink="/citrus/c/P2005">Citrus</a></li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/grapes-and-kiwi/c/P2006">Grapes and Kiwi</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
-                <img src="http://localhost:8080/media/sys_master/h4f/454266974012196.png" alt="">
+                <img src="http://localhost:8080/media/sys_master/h4f/734576489739008.png" alt="">
               </div>
             </div>
             <div class="product-list-wrapper pl-15 pr-15">
               <ul class="product-list multi" data-type="chair">
-                <li class="product-list__title title">Vegetables</li>
-                <li class="product-list__link"><a>Tomatoes</a></li>
-                <li class="product-list__link"><a>Cucumbers and artichoke</a></li>
-                <li class="product-list__link"><a>Salads</a></li>
-                <li class="product-list__link"><a>Carrots and root vegetables</a></li>
-                <li class="product-list__link"><a>Potatoes</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/vegetables/c/P2100">Vegetables</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/tomatoes/c/P2101">Tomatoes</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/cucumbers-and-artichoke/c/P2102">
+                    Cucumbers and artichoke
+                  </a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/salads/c/P2103">Salads</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/carrots-and-root-vegetables/c/P2104">
+                    Carrots and root vegetables
+                  </a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/potatoes/c/P2105">Potatoes</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/616016759888586.png" alt="">
@@ -118,9 +155,15 @@
             </div>
             <div class="product-list-wrapper pl-15 pr-15">
               <ul class="product-list multi" data-type="support">
-                <li class="product-list__title title">Mushrooms</li>
-                <li class="product-list__link"><a>Fresh mushrooms</a></li>
-                <li class="product-list__link"><a>Dried mushrooms</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/mushrooms/c/P2300">Mushrooms</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/fresh-mushrooms/c/P2301">Fresh mushrooms</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/dried-mushrooms/c/P2302">Dried mushrooms</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/069213693746787.png" alt="">
@@ -128,7 +171,9 @@
             </div>
             <div class="product-list-wrapper pl-15 pr-15">
               <ul class="product-list multi" data-type="support">
-                <li class="product-list__title title">Fresh herbs</li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/fresh-herbs/c/P2400">Fresh herbs</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/553425945826270.png" alt="">
@@ -137,16 +182,27 @@
           </div>
         </ul>
       </li>
-      <li class="nav__group"><a class="nav__group__link">Meat and fish</a>
+      <li class="nav__group">
+        <a class="nav__group__link" href="javascript:void(0)" routerLink="/meat-and-fish/c/P3000">Meat and fish</a>
         <ul class="nav__group__dropdown">
           <div class="multi-column">
             <div class="product-list-wrapper">
               <ul class="product-list multi" data-type="table">
-                <li class="product-list__title title">Fresh fish</li>
-                <li class="product-list__link"><a>Wild catch</a></li>
-                <li class="product-list__link"><a>Fillets</a></li>
-                <li class="product-list__link"><a>Cutlets</a></li>
-                <li class="product-list__link"><a>Seafood</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/fresh-fish/c/P3001">Fresh fish</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/wild-catch/c/P3002">Wild catch</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/fillets/c/P3003">Fillets</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/cutlets/c/P3004">Cutlets</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/seafood/c/P3005">Seafood</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/432457440246504.png" alt="">
@@ -154,12 +210,26 @@
             </div>
             <div class="product-list-wrapper pl-15 pr-15">
               <ul class="product-list multi" data-type="chair">
-                <li class="product-list__title title">Chicken meat</li>
-                <li class="product-list__link"><a>Chickens</a></li>
-                <li class="product-list__link"><a>Fillets and steaks</a></li>
-                <li class="product-list__link"><a>Marinated chicken meat</a></li>
-                <li class="product-list__link"><a>Chicken subproducts</a></li>
-                <li class="product-list__link"><a>Breaded chicken products</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/chicken-meat/c/P3100">Chicken meat</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/chickens/c/P3101">Chickens</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/fillets-and-steaks/c/P3102">Fillets and steaks</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/marinated-chicken-meat/c/P3103">Marinated chicken meat</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/chicken-subproducts/c/P3104">Chicken subproducts</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/breaded-chicken-products/c/P3105">
+                    Breaded chicken products
+                  </a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/759483471687376.png" alt="">
@@ -167,12 +237,24 @@
             </div>
             <div class="product-list-wrapper pl-15 pr-15">
               <ul class="product-list multi" data-type="support">
-                <li class="product-list__title title">Pork meat</li>
-                <li class="product-list__link"><a>Whole pieces of pork</a></li>
-                <li class="product-list__link"><a>Steaks and chopped meat</a></li>
-                <li class="product-list__link"><a>Marinated pork meat</a></li>
-                <li class="product-list__link"><a>Bacon and lard</a></li>
-                <li class="product-list__link"><a>Pork subproducts</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/pork-meat/c/P3200">Pork meat</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/whole-pieces-of-pork/c/P3201">Whole pieces of pork</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/steaks-and-chopped-meat/c/P3202">Steaks and chopped meat</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="//c/">Marinated pork meat</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="//c/">Bacon and lard</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="//c/">Pork subproducts</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/294937129633791.png" alt="">

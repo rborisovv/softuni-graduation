@@ -106,7 +106,7 @@ public class CategoryService extends AbstractMediaUrlBuilder {
                     categoryDto.setMediaUrl(category.getMedia().getMediaUrl());
                     return categoryDto;
                 })
-                .collect(Collectors.toSet());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public CategoryDto loadCategory(String identifier) {
@@ -136,20 +136,23 @@ public class CategoryService extends AbstractMediaUrlBuilder {
 
         String superCategoryIdentifier = categoryDto.getSuperCategory();
         setSuperAndChildCategories(category, superCategoryIdentifier);
+        //TODO: Fix the name of the upper method
         if (categoryDto.getMedia() != null) {
             String PK = RandomStringUtils.randomNumeric(15);
 
             String mediaUrl = super.constructMediaUrl(PK, categoryDto.getMedia());
 
-            Media mediaEntity = category.getMedia();
+            Media mediaEntity = new Media();
             mediaEntity.setPkOfFile(PK);
             mediaEntity.setFile(categoryDto.getMedia().getBytes());
             mediaEntity.setMediaUrl(mediaUrl);
             mediaEntity.setName(categoryDto.getMedia().getOriginalFilename());
 
             mediaRepository.save(mediaEntity);
+            category.setMedia(null);
             category.setMedia(mediaEntity);
         }
+
 
         this.categoryRepository.save(category);
 

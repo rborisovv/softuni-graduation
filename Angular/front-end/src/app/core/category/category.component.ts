@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {take} from "rxjs";
+import {Observable, take} from "rxjs";
 import {Category} from 'src/app/interface/category';
 import {CategoryService} from "../../service/category.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
@@ -10,8 +10,7 @@ import {ActivatedRoute, ParamMap, Router} from "@angular/router";
   styleUrls: ['./category.component.scss']
 })
 export class CategoryComponent implements OnInit {
-  category: Category;
-  breadcrumb: object;
+  category$: Observable<Category>;
 
   constructor(private readonly categoryService: CategoryService, private router: Router, private route: ActivatedRoute) {
   }
@@ -26,23 +25,9 @@ export class CategoryComponent implements OnInit {
     this.route.paramMap.subscribe(
       (params: ParamMap) => {
         const category = params.get('category');
-
-        this.categoryService.loadCategoryWithBreadcrumb(category).pipe(take(1))
-          .subscribe({
-            next: (category) => {
-              this.category = category;
-              this.breadcrumb = category.breadcrumb;
-            }
-          });
+        this.category$ = this.categoryService.loadCategoryWithBreadcrumb(category);
       });
 
-
-    this.categoryService.loadCategoryWithBreadcrumb(identifier).pipe(take(1))
-      .subscribe({
-        next: (category) => {
-          this.category = category;
-          this.breadcrumb = category.breadcrumb;
-        }
-      });
+    this.category$ = this.categoryService.loadCategory(identifier);
   }
 }

@@ -3,6 +3,7 @@
 <main>
   <h1 class="text-center mt-40 mb-30">All Medias</h1>
   <div class="create-btn-wrapper">
+    <h3>Total Medias: <span *ngIf="medias$ | async as medias">{{medias.length}}</span></h3>
     <a href="javascript:void(0)" routerLink="/admin/media/create" class="add-btn">Create Media</a>
   </div>
   <div class="medias">

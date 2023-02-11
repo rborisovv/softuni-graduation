@@ -1,15 +1,19 @@
 <app-header></app-header>
 
 <main>
-  <app-breadcrumb [breadcrumb]="breadcrumb"></app-breadcrumb>
-  <ng-container *ngIf="category">
-    <div class="child-categories">
-
-    </div>
-  </ng-container>
-  <ng-container *ngIf="category">
-    <h2 class="mb-20 mt-50 text-green">{{category.name}}</h2>
-  </ng-container>
+  <div class="category-data">
+    <ng-container *ngIf="category$ | async as category">
+      <div class="breadcrumb-wrapper">
+        <app-breadcrumb [breadcrumb]="category.breadcrumb"></app-breadcrumb>
+        <h2 class="mb-20 mt-50 text-green">{{category.name}}</h2>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="category$ | async as category">
+      <div class="category-img-wrapper">
+        <img [src]="category.mediaUrl" alt="">
+      </div>
+    </ng-container>
+  </div>
   <div class="category-products">
     <div class="product">
 

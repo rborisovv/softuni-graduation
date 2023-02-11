@@ -6,6 +6,8 @@ h1 {
 }
 
 .create-btn-wrapper {
+  @include create-btn-wrapper;
+
   width: 70%;
   margin: 0 auto 1.5rem auto;
   text-align: right;

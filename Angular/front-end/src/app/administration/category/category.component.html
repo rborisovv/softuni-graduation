@@ -3,6 +3,7 @@
 <main>
   <h1 class="text-center mt-40 mb-30">All Categories</h1>
   <div class="create-btn-wrapper">
+    <h3>Total Categories: <span *ngIf="categories$ | async as categories">{{categories.length}}</span></h3>
     <a href="javascript:void(0)" routerLink="/admin/category/create" class="add-btn">Create Category</a>
   </div>
   <div class="categories">

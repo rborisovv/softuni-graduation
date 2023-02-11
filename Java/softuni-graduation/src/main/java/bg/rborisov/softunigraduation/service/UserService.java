@@ -6,6 +6,7 @@ import bg.rborisov.softunigraduation.dto.UserLoginDto;
 import bg.rborisov.softunigraduation.dto.UserRegisterDto;
 import bg.rborisov.softunigraduation.dto.UserWelcomeDto;
 import bg.rborisov.softunigraduation.enumeration.RoleEnum;
+import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
 import bg.rborisov.softunigraduation.model.Role;
 import bg.rborisov.softunigraduation.model.User;
@@ -143,6 +144,10 @@ public class UserService {
 
     public boolean isUserWithUsernamePresent(String username) {
         return this.userRepository.findByUsername(username).isPresent();
+    }
+
+    public User findUserByUsername(String username) throws UserNotFoundException {
+        return this.userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
     }
 
     public void logout() {

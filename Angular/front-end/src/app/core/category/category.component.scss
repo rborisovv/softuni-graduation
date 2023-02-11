@@ -2,3 +2,13 @@ main {
   max-width: 1329px;
   margin: 0 auto;
 }
+
+.category-data {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+
+  & img {
+    width: 125px;
+  }
+}

@@ -1,5 +1,7 @@
 package bg.rborisov.softunigraduation.util;
 
+import bg.rborisov.softunigraduation.exception.UserNotFoundException;
+import bg.rborisov.softunigraduation.service.UserService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -7,6 +9,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,11 +29,14 @@ import static java.util.Arrays.stream;
 public class JwtProvider {
     private final UserDetailsService userDetailsService;
 
+    private final UserService userService;
+
     @Value("${jwt.secret}")
     private String secret;
 
-    public JwtProvider(UserDetailsService userDetailsService) {
+    public JwtProvider(UserDetailsService userDetailsService, @Lazy UserService userService) {
         this.userDetailsService = userDetailsService;
+        this.userService = userService;
     }
 
     public String generateToken() {
@@ -44,10 +50,19 @@ public class JwtProvider {
                     .withIssuedAt(new Date())
                     .withSubject(username)
                     .withArrayClaim(AUTHORITIES, claims)
+                    .withClaim(ROLE, getRole(username))
                     .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
             throw new JWTCreationException(exception.getMessage(), exception.getCause());
+        }
+    }
+
+    private String getRole(String username) {
+        try {
+            return this.userService.findUserByUsername(username).getRole().getName();
+        } catch (UserNotFoundException ex) {
+            throw new JWTCreationException(ex.getMessage(), ex);
         }
     }
 
