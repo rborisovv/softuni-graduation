@@ -17,6 +17,9 @@
         <a *ngIf="roleIsAdmin()" href="javascript:void(0)" routerLink="/admin/cockpit">
           <fa-icon [icon]="faUserSecret"></fa-icon>
         </a>
+        <a *ngIf="!roleIsAdmin()" href="javascript:void(0)">
+          <fa-icon [icon]="faUserAlt"></fa-icon>
+        </a>
         <a href="javascript:void(0)">
           <fa-icon [icon]="faHeart" style="color: #d60026;"></fa-icon>
         </a>
@@ -247,13 +250,13 @@
                   <a href="javascript:void(0)" routerLink="/steaks-and-chopped-meat/c/P3202">Steaks and chopped meat</a>
                 </li>
                 <li class="product-list__link">
-                  <a href="javascript:void(0)" routerLink="//c/">Marinated pork meat</a>
+                  <a href="javascript:void(0)" routerLink="/marinated-pork-meat/c/P3203">Marinated pork meat</a>
                 </li>
                 <li class="product-list__link">
-                  <a href="javascript:void(0)" routerLink="//c/">Bacon and lard</a>
+                  <a href="javascript:void(0)" routerLink="/bacon-and-lard/c/P3204">Bacon and lard</a>
                 </li>
                 <li class="product-list__link">
-                  <a href="javascript:void(0)" routerLink="//c/">Pork subproducts</a>
+                  <a href="javascript:void(0)" routerLink="/pork-subproducts/c/P3205">Pork subproducts</a>
                 </li>
               </ul>
               <div class="category-img__wrapper">
@@ -262,12 +265,23 @@
             </div>
             <div class="product-list-wrapper pl-15 pr-15">
               <ul class="product-list multi" data-type="support">
-                <li class="product-list__title title">Veal and beef meat</li>
-                <li class="product-list__link"><a>Whole pieces of veal and beef</a></li>
-                <li class="product-list__link"><a>Chopped meat and ribs</a></li>
-                <li class="product-list__link"><a>Steaks and beef meat</a></li>
-                <li class="product-list__link"><a>Organic beef meat</a></li>
-                <li class="product-list__link"><a>Beef subproducts</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/veal-and-beef-meat/c/P3300">Veal and beef meat</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/whole-pieces-of-veal-and-beef/c/P3301">
+                    Whole pieces of veal and beef
+                  </a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/chopped-meat-and-ribs/c/P3302">Chopped meat and ribs</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/steaks-and-beef-meat/c/P3303">Steaks and beef meat</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-beef-meat/c/P3304">Organic beef meat</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/052481145093772.png" alt="">
@@ -276,15 +290,20 @@
           </div>
         </ul>
       </li>
-      <li class="nav__group"><a class="nav__group__link">Dairy and eggs</a>
+      <li class="nav__group"><a class="nav__group__link" routerLink="/dairy-and-eggs/c/P4000">Dairy and eggs</a>
         <ul class="nav__group__dropdown">
           <div class="multi-column">
             <div class="product-list-wrapper">
               <ul class="product-list multi" data-type="table">
-                <li class="product-list__title title">Eggs</li>
-                <li class="product-list__link"><a>Eggs</a></li>
-                <li class="product-list__link"><a>Organic eggs</a></li>
-                <li class="product-list__link"><a>Pasteurized eggs</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/eggs/c/P4001">Eggs</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-eggs/c/P4002">Organic eggs</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/pasteurized-eggs/c/P4003">Pasteurized eggs</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/907772119784971.png" alt="">
@@ -292,11 +311,18 @@
             </div>
             <div class="product-list-wrapper pl-15 pr-15">
               <ul class="product-list multi" data-type="chair">
-                <li class="product-list__title title">Fresh milk</li>
-                <li class="product-list__link"><a>Fresh milk</a></li>
-                <li class="product-list__link"><a>UHT Milk</a></li>
-                <li class="product-list__link"><a>Organic milk</a></li>
-                <li class="product-list__link"><a>Lactose free milk</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/fresh-milk/c/P4100">Fresh milk</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/uht-milk/c/P4101">UHT Milk</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-milk/c/P4102">Organic milk</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/lactose-free-milk/c/P4103">Lactose free milk</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/818023124913348.png" alt="">
@@ -304,12 +330,26 @@
             </div>
             <div class="product-list-wrapper pl-15 pr-15">
               <ul class="product-list multi" data-type="support">
-                <li class="product-list__title title">Yoghurt</li>
-                <li class="product-list__link"><a>Cow milk</a></li>
-                <li class="product-list__link"><a>Sheep, goat and buffalo milk</a></li>
-                <li class="product-list__link"><a>Strained yoghurt</a></li>
-                <li class="product-list__link"><a>Organic milk</a></li>
-                <li class="product-list__link"><a>Lactose free milk</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/yoghurt/c/P4200">Yoghurt</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/cow-milk/c/P4201">Cow milk</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/sheep-goat-buffalo-milk/c/P4202">
+                    Sheep, goat and buffalo milk
+                  </a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/strained-yoghurt/c/P4203">Strained yoghurt</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-milk/c/P4102">Organic milk</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/lactose-free-milk/c/P4103">Lactose free milk</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/208440294829251.png" alt="">
@@ -317,11 +357,23 @@
             </div>
             <div class="product-list-wrapper pl-15 pr-15">
               <ul class="product-list multi" data-type="support">
-                <li class="product-list__title title">Gourmet cheeses</li>
-                <li class="product-list__link"><a>Parmesan and other hard cheeses</a></li>
-                <li class="product-list__link"><a>Gouda and emmental</a></li>
-                <li class="product-list__link"><a>Brie and camembert</a></li>
-                <li class="product-list__link"><a>Blue cheeses</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/gourmet-cheeses/c/P4300">Gourmet cheeses</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/parmesan-and-other-hard-cheeses/c/P4301">
+                    Parmesan and other hard cheeses
+                  </a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/gouda-and-emmental/c/P4302">Gouda and emmental</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/brie-and-camembert/c/P4303">Brie and camembert</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/blue-cheeses/c/P4304">Blue cheeses</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/130656225303475.png" alt="">
@@ -330,15 +382,24 @@
           </div>
         </ul>
       </li>
-      <li class="nav__group"><a class="nav__group__link">Packaged foods</a>
+      <li class="nav__group">
+        <a class="nav__group__link" href="javascript:void(0)" routerLink="/packaged-foods/c/P5000">Packaged foods</a>
         <ul class="nav__group__dropdown">
           <div class="multi-column">
             <div class="product-list-wrapper">
               <ul class="product-list multi" data-type="table">
-                <li class="product-list__title title">Rice and Beans</li>
-                <li class="product-list__link"><a>Rice</a></li>
-                <li class="product-list__link"><a>Beans</a></li>
-                <li class="product-list__link"><a>Other grains and seeds</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/rice-and-beans/c/P5001">Rice and Beans</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/rice/c/P5002">Rice</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/beans/c/P5003">Beans</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/other-grains-and-seeds/c/P5004">Other grains and seeds</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/740399247883583.png" alt="">
@@ -346,12 +407,24 @@
             </div>
             <div class="product-list-wrapper pl-15 pr-15">
               <ul class="product-list multi" data-type="chair">
-                <li class="product-list__title title">Sauce</li>
-                <li class="product-list__link"><a>Pasta sauces</a></li>
-                <li class="product-list__link"><a>Pesto sauces</a></li>
-                <li class="product-list__link"><a>Ketchup</a></li>
-                <li class="product-list__link"><a>Mayonnaise</a></li>
-                <li class="product-list__link"><a>Mustard</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/sauce/c/P5100">Sauce</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/pasta-sauces/c/P5101">Pasta sauces</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/pesto-sauces/c/P5102">Pesto sauces</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/ketchup/c/P5103">Ketchup</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/mayonnaise/c/P5104">Mayonnaise</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/mustard/c/P5105">Mustard</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/728044974054028.png" alt="">
@@ -359,11 +432,18 @@
             </div>
             <div class="product-list-wrapper pl-15 pr-15">
               <ul class="product-list multi" data-type="support">
-                <li class="product-list__title title">Pasta</li>
-                <li class="product-list__link"><a>Pasta</a></li>
-                <li class="product-list__link"><a>Spaghetti</a></li>
-                <li class="product-list__link"><a>Lasagna</a></li>
-                <li class="product-list__link"><a>Instant</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/pasta/c/P5200">Pasta</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/spaghetti/c/P5201">Spaghetti</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/lasagna/c/P5202">Lasagna</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/instant/c/P5203">Instant</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/862439549479564.png" alt="">
@@ -371,11 +451,23 @@
             </div>
             <div class="product-list-wrapper pl-15 pr-15">
               <ul class="product-list multi" data-type="support">
-                <li class="product-list__title title">Breakfast cereals</li>
-                <li class="product-list__link"><a>Cornflakes</a></li>
-                <li class="product-list__link"><a>Muesli</a></li>
-                <li class="product-list__link"><a>Cereals</a></li>
-                <li class="product-list__link"><a>Granola and crunchy muesli</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/breakfast-cereals/c/P5300">Breakfast cereals</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/cornflakes/c/P5301">Cornflakes</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/muesli/c/P5302">Muesli</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/cereals/c/P5303">Cereals</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/granola-and-crunchy-muesli/c/P5304">
+                    Granola and crunchy muesli
+                  </a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/757534473036019.png" alt="">
@@ -384,15 +476,18 @@
           </div>
         </ul>
       </li>
-      <li class="nav__group"><a class="nav__group__link">BIO</a>
+      <li class="nav__group">
+        <a class="nav__group__link" href="javascript:void(0)" routerLink="/bio/c/P6000">BIO</a>
         <ul class="nav__group__dropdown">
           <div class="multi-column">
             <div class="product-list-wrapper">
               <ul class="product-list multi" data-type="table">
-                <li class="product-list__title title">Organic bread</li>
-                <li class="product-list__link"><a>Organic bread and bakery products</a></li>
-                <li class="product-list__link"><a>Organic rusks</a></li>
-                <li class="product-list__link"><a>Organic fresh pasta and crusts</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/organic-bread/c/P6001">Organic bread</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-rusks/c/P6002">Organic rusks</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/846824096923289.png" alt="">
@@ -400,10 +495,17 @@
             </div>
             <div class="product-list-wrapper pl-15 pr-15">
               <ul class="product-list multi" data-type="chair">
-                <li class="product-list__title title">Organic fruits</li>
-                <li class="product-list__link"><a>Organic frozen fruits</a></li>
-                <li class="product-list__link"><a>Organic dried fruits</a></li>
-                <li class="product-list__link"><a>Organic seeds</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/organic-fruits/c/P6100">Organic fruits</a></li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-frozen-fruits/c/P6101">Organic frozen fruits</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-dried-fruits/c/P6102">Organic dried fruits</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-seeds/c/P6103">Organic seeds</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/223720049686569.png" alt="">
@@ -411,11 +513,23 @@
             </div>
             <div class="product-list-wrapper pl-15 pr-15">
               <ul class="product-list multi" data-type="support">
-                <li class="product-list__title title">Organic meat</li>
-                <li class="product-list__link"><a>Organic fresh meat</a></li>
-                <li class="product-list__link"><a>Organic vegan meat substitutes</a></li>
-                <li class="product-list__link"><a>Organic sausages</a></li>
-                <li class="product-list__link"><a>Organic eggs</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/organic-meat/c/P6200">Organic meat</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-fresh-meat/c/P6201">Organic fresh meat</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-vegan-meat-substitutes/c/P6202">
+                    Organic vegan meat substitutes
+                  </a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-sausages/c/P6203">Organic sausages</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-eggs/c/P4002">Organic eggs</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/380075914348469.png" alt="">
@@ -423,11 +537,21 @@
             </div>
             <div class="product-list-wrapper pl-15 pr-15">
               <ul class="product-list multi" data-type="support">
-                <li class="product-list__title title">BIO Drinks</li>
-                <li class="product-list__link"><a>Organic coffee</a></li>
-                <li class="product-list__link"><a>Organic tea</a></li>
-                <li class="product-list__link"><a>Organic drinks</a></li>
-                <li class="product-list__link"><a>Organic alcohol drinks</a></li>
+                <li class="product-list__title title">
+                  <a href="javascript:void(0)" routerLink="/bio-drinks/c/P6300">BIO Drinks</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-coffee/c/P6301">Organic coffee</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-tea/c/P6302">Organic tea</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-drinks/c/P6303">Organic drinks</a>
+                </li>
+                <li class="product-list__link">
+                  <a href="javascript:void(0)" routerLink="/organic-alcohol-drinks/c/P6304">Organic alcohol drinks</a>
+                </li>
               </ul>
               <div class="category-img__wrapper">
                 <img src="http://localhost:8080/media/sys_master/h4f/623258733042354.png" alt="">

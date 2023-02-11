@@ -27,7 +27,5 @@ export class CategoryComponent implements OnInit {
         const category = params.get('category');
         this.category$ = this.categoryService.loadCategoryWithBreadcrumb(category);
       });
-
-    this.category$ = this.categoryService.loadCategory(identifier);
   }
 }

@@ -1,11 +1,10 @@
 import {Component, OnDestroy} from '@angular/core';
-import {faCartShopping, faHeart, faMagnifyingGlass, faShoppingBasket, faSignOut, faUserSecret} from '@fortawesome/free-solid-svg-icons';
+import {faCartShopping, faHeart, faMagnifyingGlass, faShoppingBasket, faSignOut, faUserAlt, faUserSecret} from '@fortawesome/free-solid-svg-icons';
 import {UserService} from "../../service/user.service";
 import {CookieService} from "ngx-cookie-service";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {Jwt} from "../../authentication/Jwt";
-import {JwtHelperService} from "@auth0/angular-jwt";
 
 @Component({
   selector: 'app-header',
@@ -21,8 +20,8 @@ export class HeaderComponent implements OnDestroy {
   faGlass = faMagnifyingGlass;
   faUserSecret = faUserSecret;
   faSignOut = faSignOut;
+  faUserAlt = faUserAlt;
 
-  const
   subscriptions: Subscription[] = [];
 
   constructor(private userService: UserService,

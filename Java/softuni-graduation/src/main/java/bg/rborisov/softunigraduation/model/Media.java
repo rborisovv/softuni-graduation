@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,4 +27,7 @@ public class Media extends BaseEntity implements Serializable {
 
     @Column(nullable = false, unique = true)
     private String pkOfFile;
+
+    @Column
+    private LocalDate creationTime;
 }

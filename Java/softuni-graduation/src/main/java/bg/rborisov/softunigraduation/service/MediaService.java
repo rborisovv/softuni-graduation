@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.MEDIA_NOT_FOUND;
 import static bg.rborisov.softunigraduation.common.Messages.MEDIA_DELETED_SUCCESSFULLY;
@@ -47,7 +50,10 @@ public class MediaService extends AbstractMediaUrlBuilder {
 
         String PK = RandomStringUtils.randomNumeric(15);
         String mediaUrl = super.constructMediaUrl(PK, multipartFile);
-        Media media = new Media(name, multipartFile.getBytes(), mediaUrl, PK);
+        LocalDate creationTime = LocalDate.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        creationTime.format(dateTimeFormatter);
+        Media media = new Media(name, multipartFile.getBytes(), mediaUrl, PK, creationTime);
         return this.mediaRepository.save(media);
     }
 
