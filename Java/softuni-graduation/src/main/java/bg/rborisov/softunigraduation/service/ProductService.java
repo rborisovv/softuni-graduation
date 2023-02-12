@@ -115,7 +115,7 @@ public class ProductService {
         HttpResponse httpResponse = HttpResponse.builder()
                 .httpStatusCode(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
-                .reason(null)
+                .reason("")
                 .message(String.format(PRODUCT_DELETED_SUCCESSFULLY, product.getName()))
                 .build();
 

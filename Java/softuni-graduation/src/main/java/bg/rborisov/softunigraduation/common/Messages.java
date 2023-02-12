@@ -9,4 +9,6 @@ public class Messages {
     public static final String MEDIA_DELETED_SUCCESSFULLY = "The media \"%s\" was deleted successfully!";
     public static final String PRODUCT_CREATED_SUCCESSFULLY = "The product \"%s\" was created successfully!";
     public static final String PRODUCT_DELETED_SUCCESSFULLY = "The product \"%s\" was deleted successfully!";
+    public static final String PRODUCT_SUCCESSFULLY_ADDED_TO_FAVOURITES = "The product \"%s\" was successfully added to favourites!";
+    public static final String PRODUCT_ALREADY_ADDED_TO_FAVOURITES = "This product is already added in the favourites list.";
 }

@@ -1,23 +1,30 @@
 package bg.rborisov.softunigraduation.service;
 
+import bg.rborisov.softunigraduation.dao.ProductRepository;
 import bg.rborisov.softunigraduation.dao.RoleRepository;
 import bg.rborisov.softunigraduation.dao.UserRepository;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.UserLoginDto;
 import bg.rborisov.softunigraduation.dto.UserRegisterDto;
 import bg.rborisov.softunigraduation.dto.UserWelcomeDto;
+import bg.rborisov.softunigraduation.enumeration.NotificationStatus;
 import bg.rborisov.softunigraduation.enumeration.RoleEnum;
+import bg.rborisov.softunigraduation.exception.ProductNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
+import bg.rborisov.softunigraduation.model.Product;
 import bg.rborisov.softunigraduation.model.Role;
 import bg.rborisov.softunigraduation.model.User;
 import bg.rborisov.softunigraduation.util.JwtProvider;
 import jakarta.servlet.http.Cookie;
+import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -33,17 +40,20 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
-import static bg.rborisov.softunigraduation.common.ExceptionMessages.USERNAME_OR_PASSWORD_INCORRECT;
-import static bg.rborisov.softunigraduation.common.ExceptionMessages.USER_WITH_USERNAME_OR_EMAIL_EXISTS;
+import static bg.rborisov.softunigraduation.common.ExceptionMessages.*;
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
 import static bg.rborisov.softunigraduation.common.JwtConstants.TOKEN_PREFIX;
+import static bg.rborisov.softunigraduation.common.Messages.PRODUCT_ALREADY_ADDED_TO_FAVOURITES;
+import static bg.rborisov.softunigraduation.common.Messages.PRODUCT_SUCCESSFULLY_ADDED_TO_FAVOURITES;
 import static bg.rborisov.softunigraduation.constant.SecurityConstant.COOKIE_MAX_AGE;
 import static org.springframework.http.HttpStatus.OK;
 
 @Service
+@Transactional
 public class UserService {
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
@@ -53,9 +63,10 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final Validator validator;
+    private final ProductRepository productRepository;
 
     public UserService(JwtProvider jwtProvider, UserDetailsService userDetailsService, AuthenticationManager authenticationManager, ModelMapper modelMapper,
-                       UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, Validator validator) {
+                       UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, Validator validator, ProductRepository productRepository) {
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
         this.authenticationManager = authenticationManager;
@@ -64,6 +75,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.validator = validator;
+        this.productRepository = productRepository;
     }
 
     public ResponseEntity<UserWelcomeDto> login(UserLoginDto userLoginDto) {
@@ -156,8 +168,39 @@ public class UserService {
         SecurityContextHolder.clearContext();
     }
 
-    public ResponseEntity<HttpResponse> addToFavourites(String productIdentifier, Principal principal) {
-        System.out.println();
-        return null;
+    public ResponseEntity<HttpResponse> addToFavourites(String productIdentifier, Principal principal) throws ProductNotFoundException {
+        String username = principal.getName();
+        User user = this.userRepository.findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException(USERNAME_NOT_FOUND));
+
+        Optional<Product> optionalProduct = this.productRepository.findProductByIdentifier(productIdentifier);
+
+        if (optionalProduct.isEmpty()) {
+            throw new ProductNotFoundException(PRODUCT_COULD_NOT_BE_FOUND);
+        }
+
+        Product product = optionalProduct.get();
+
+        if (!user.getFavouriteProducts().contains(product)) {
+            user.getFavouriteProducts().add(product);
+        } else {
+            HttpResponse httpResponse = HttpResponse.builder()
+                    .httpStatusCode(OK.value())
+                    .httpStatus(OK)
+                    .reason("")
+                    .message(PRODUCT_ALREADY_ADDED_TO_FAVOURITES)
+                    .notificationStatus(NotificationStatus.INFO.name().toLowerCase(Locale.ROOT))
+                    .build();
+            return new ResponseEntity<>(httpResponse, HttpStatus.OK);
+        }
+
+        HttpResponse httpResponse = new HttpResponse();
+        httpResponse.setHttpStatus(HttpStatus.OK);
+        httpResponse.setHttpStatusCode(HttpStatus.OK.value());
+        httpResponse.setReason("");
+        httpResponse.setNotificationStatus(NotificationStatus.SUCCESS.name().toLowerCase(Locale.ROOT));
+        httpResponse.setMessage(String.format(PRODUCT_SUCCESSFULLY_ADDED_TO_FAVOURITES, product.getName()));
+
+        return new ResponseEntity<>(httpResponse, HttpStatus.OK);
     }
 }

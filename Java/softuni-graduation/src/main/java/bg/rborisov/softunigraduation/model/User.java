@@ -2,6 +2,7 @@ package bg.rborisov.softunigraduation.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -52,5 +53,6 @@ public class User extends BaseEntity implements Serializable {
     private Boolean isLocked;
 
     @OneToMany
+    @ColumnDefault("null")
     private Set<Product> favouriteProducts;
 }

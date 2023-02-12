@@ -1,6 +1,7 @@
 package bg.rborisov.softunigraduation.web;
 
 import bg.rborisov.softunigraduation.domain.HttpResponse;
+import bg.rborisov.softunigraduation.exception.ProductNotFoundException;
 import bg.rborisov.softunigraduation.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ public class UserResource {
     }
 
     @PostMapping("/addToFavourites")
-    public ResponseEntity<HttpResponse> addToFavourites(@RequestBody String productIdentifier, Principal principal) {
+    public ResponseEntity<HttpResponse> addToFavourites(@RequestBody String productIdentifier, Principal principal) throws ProductNotFoundException {
         return this.userService.addToFavourites(productIdentifier, principal);
     }
 }

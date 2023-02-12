@@ -3,7 +3,6 @@ import {NotifierService} from "angular-notifier";
 import {UserService} from "../../service/user.service";
 import {addToFavourites, addToFavouritesFail, addToFavouritesSuccess} from "../action/user.action";
 import {catchError, exhaustMap, map, of, tap} from "rxjs";
-import {NotificationType} from "../../enumeration/notification-enum";
 import {Injectable} from "@angular/core";
 
 @Injectable()
@@ -21,7 +20,8 @@ export class UserEffects {
             map(response => addToFavouritesSuccess({httpResponse: response})),
             tap((response) => {
               //todo: Add to number of favourite products
-              this.notifier.notify(NotificationType.SUCCESS, response.httpResponse.message);
+              console.log(response.httpResponse.notificationStatus)
+              this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
             }),
             catchError(error => of(addToFavouritesFail({error: error})))
           );
