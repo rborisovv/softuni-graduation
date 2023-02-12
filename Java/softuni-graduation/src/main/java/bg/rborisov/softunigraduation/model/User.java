@@ -1,13 +1,11 @@
 package bg.rborisov.softunigraduation.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -52,4 +50,7 @@ public class User extends BaseEntity implements Serializable {
 
     @Column(name = "is_locked", nullable = false)
     private Boolean isLocked;
+
+    @OneToMany
+    private Set<Product> favouriteProducts;
 }

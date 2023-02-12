@@ -3,6 +3,9 @@ import {Observable, take} from "rxjs";
 import {Category} from 'src/app/interface/category';
 import {CategoryService} from "../../service/category.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
+import {faHeart} from '@fortawesome/free-regular-svg-icons';
+import {Store} from "@ngrx/store";
+import {addToFavourites} from "../../store/action/user.action";
 
 @Component({
   selector: 'app-category',
@@ -12,7 +15,10 @@ import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 export class CategoryComponent implements OnInit {
   category$: Observable<Category>;
 
-  constructor(private readonly categoryService: CategoryService, private router: Router, private route: ActivatedRoute) {
+  faHeart = faHeart;
+
+  constructor(private readonly categoryService: CategoryService, private router: Router, private route: ActivatedRoute,
+              private readonly store: Store) {
   }
 
   ngOnInit(): void {
@@ -27,5 +33,9 @@ export class CategoryComponent implements OnInit {
         const category = params.get('category');
         this.category$ = this.categoryService.loadCategoryWithBreadcrumb(category);
       });
+  }
+
+  public addToFavourites(identifier: string) {
+    this.store.dispatch(addToFavourites({identifier}));
   }
 }

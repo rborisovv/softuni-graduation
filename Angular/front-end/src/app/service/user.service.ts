@@ -4,6 +4,7 @@ import {environment} from "../../environments/environment.prod";
 import {Observable} from "rxjs";
 import {UserWelcome} from "../interface/user.welcome";
 import {IUserRegisterModel} from "../authentication/register/IUserRegisterModel";
+import {HttpResponse} from "../interface/http.response";
 
 @Injectable()
 export class UserService {
@@ -34,5 +35,9 @@ export class UserService {
 
   public obtainCsrf() {
     return this.http.get(`${this.apiUrl}/auth/csrf`);
+  }
+
+  addToFavourites(identifier: string): Observable<HttpResponse> {
+    return this.http.post<HttpResponse>(`${this.apiUrl}/user/addToFavourites`, identifier);
   }
 }

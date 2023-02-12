@@ -18,7 +18,7 @@ import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthResource extends ExceptionHandler {
+public class AuthResource {
     private final UserService userService;
 
     private final JwtProvider jwtProvider;

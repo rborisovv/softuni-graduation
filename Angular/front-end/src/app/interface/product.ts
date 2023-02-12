@@ -4,6 +4,8 @@ export interface Product {
   price: number,
   description: string,
   media?: File,
+  stockLevel: number,
+  showBuyButton: boolean,
   pkOfFile?: string,
   mediaUrl?: string,
   categoryIdentifier: string,

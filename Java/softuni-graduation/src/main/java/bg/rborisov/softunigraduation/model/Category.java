@@ -2,6 +2,7 @@ package bg.rborisov.softunigraduation.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -12,7 +13,6 @@ import java.util.Set;
 @Builder
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "categories")
 public class Category extends BaseEntity implements Serializable {
@@ -22,12 +22,10 @@ public class Category extends BaseEntity implements Serializable {
     private String identifier;
     @ManyToOne
     private Category superCategory;
-
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Media media;
     @OneToMany(mappedBy = "category")
     public Set<Product> products;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -11,6 +11,7 @@ import bg.rborisov.softunigraduation.model.Media;
 import bg.rborisov.softunigraduation.model.Product;
 import bg.rborisov.softunigraduation.util.validators.ImageValidator;
 import jakarta.annotation.Resource;
+import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -22,10 +23,12 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.Optional;
 
 import static bg.rborisov.softunigraduation.common.Messages.*;
 
 @Service
+@Transactional
 public class ProductService {
 
     @Resource
@@ -40,12 +43,13 @@ public class ProductService {
     private ModelMapper modelMapper;
 
     public ResponseEntity<HttpResponse> createProduct(ProductDto productDto) throws AbsentCategoryProductException, AbsentMediaOnProductException,
-            MediaByNameAlreadyExistsException, IOException, CategoryNotFoundException {
+            MediaByNameAlreadyExistsException, IOException, CategoryNotFoundException, MediaNotFoundException {
 
         String categoryIdentifier = productDto.getCategoryIdentifier();
         @ImageValidator MultipartFile multipartFile = productDto.getMedia();
         //TODO: Fix media upload when creating a new product
         String pkOfFile = productDto.getPkOfFile();
+        Optional<Media> optionalMedia;
 
         if (multipartFile == null && (pkOfFile == null || StringUtils.isBlank(pkOfFile))) {
             throw new AbsentMediaOnProductException();
@@ -56,12 +60,29 @@ public class ProductService {
         }
 
         assert multipartFile != null;
-        String mediaName = Objects.requireNonNull(multipartFile.getOriginalFilename());
 
-        Media media = this.mediaService.saveMedia(mediaName
-                .substring(mediaName.length() - 4), multipartFile);
+        //TODO: Fix this duplicate code here and in category Service
+        if (productDto.getMedia() != null) {
+            String mediaName = Objects.requireNonNull(multipartFile.getOriginalFilename());
+            optionalMedia = this.mediaRepository.findMediaByName(mediaName.substring(0, mediaName.length() - 4));
 
-        this.mediaRepository.save(media);
+            if (optionalMedia.isPresent()) {
+                throw new MediaByNameAlreadyExistsException();
+            }
+
+            this.mediaService.saveMedia(productDto.getMedia().getOriginalFilename(), productDto.getMedia());
+            optionalMedia = this.mediaRepository.findMediaByName(productDto.getMedia().getOriginalFilename());
+
+        } else {
+            //If existing media is selected
+            optionalMedia = this.mediaRepository.findMediaByPkOfFile(pkOfFile);
+            if (optionalMedia.isEmpty()) {
+                throw new MediaNotFoundException();
+            }
+
+            Media media = optionalMedia.get();
+            mediaRepository.save(media);
+        }
 
         Category category = categoryRepository.findCategoryByIdentifier(productDto.getCategoryIdentifier())
                 .orElseThrow(CategoryNotFoundException::new);
@@ -69,7 +90,7 @@ public class ProductService {
 
         Product product = this.modelMapper.map(productDto, Product.class);
 
-        product.setMedia(media);
+        product.setMedia(optionalMedia.get());
         product.setCategory(category);
         product.setCreationTime(LocalDate.parse(LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)));
 
@@ -81,6 +102,8 @@ public class ProductService {
                 .reason("")
                 .message(String.format(PRODUCT_CREATED_SUCCESSFULLY, productDto.getName()))
                 .build();
+
+        category.getProducts().add(product);
 
         return new ResponseEntity<>(httpResponse, HttpStatus.OK);
     }

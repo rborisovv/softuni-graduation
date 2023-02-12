@@ -5,7 +5,7 @@
     <ng-container *ngIf="category$ | async as category">
       <div class="breadcrumb-wrapper">
         <app-breadcrumb [breadcrumb]="category.breadcrumb"></app-breadcrumb>
-        <h2 class="mb-20 mt-50 text-green">{{category.name}}</h2>
+        <h2 class="mb-50 mt-50 text-green">{{category.name}}</h2>
       </div>
     </ng-container>
     <ng-container *ngIf="category$ | async as category">
@@ -14,9 +14,22 @@
       </div>
     </ng-container>
   </div>
-  <div class="category-products">
-    <div class="product">
-
+  <ng-container *ngIf="category$ | async as category">
+    <div class="category-products">
+      <div class="product" *ngFor="let product of category.products">
+        <div class="product-img__wrapper">
+          <img class="mb-30" [src]="product.mediaUrl" alt="">
+          <a href="javascript:void(0)" (click)="addToFavourites(product.identifier)">
+            <fa-icon class="fs-3" [icon]="faHeart" style="color: #c4c5c4;"></fa-icon>
+          </a>
+        </div>
+        <div class="product-description text-center">
+          <h6 class="product-name mb-30">{{product.name}}</h6>
+          <p class="product-expire-date mb-20">Best before: <span>09/03/2023</span></p>
+          <p class="product-price fs-2 mb-40">{{product.price | currency}} <span>lv.</span></p>
+          <a *ngIf="product.showBuyButton" class="add-to-basket" href="javascript:void(0)">Add to Basket</a>
+        </div>
+      </div>
     </div>
-  </div>
+  </ng-container>
 </main>

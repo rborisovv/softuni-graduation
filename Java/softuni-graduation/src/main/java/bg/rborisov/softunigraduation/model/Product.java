@@ -6,13 +6,13 @@ import lombok.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "products")
 public class Product extends BaseEntity implements Serializable {
@@ -26,6 +26,10 @@ public class Product extends BaseEntity implements Serializable {
     private BigDecimal price;
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Media Media;
+    @Column(nullable = false)
+    private Integer stockLevel;
+    @Column(nullable = false)
+    private Boolean showBuyButton;
     @ManyToOne
     private Category category;
     private LocalDate creationTime;

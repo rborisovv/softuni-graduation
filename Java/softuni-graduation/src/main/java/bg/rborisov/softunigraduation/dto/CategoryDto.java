@@ -19,9 +19,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Getter
 @Setter
-@ToString
 public class CategoryDto implements Serializable {
 
     @Size(min = 4, max = 40)
@@ -43,7 +43,7 @@ public class CategoryDto implements Serializable {
     private String mediaUrl;
 
     @Nullable
-    private Set<Product> products;
+    private Set<ProductDto> products;
 
     @Nullable
     private Map<String, String> breadcrumb;

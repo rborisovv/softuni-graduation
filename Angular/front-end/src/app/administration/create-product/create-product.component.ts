@@ -60,6 +60,8 @@ export class CreateProductComponent extends ProductSharedFunctionality implement
     description: new FormControl(''),
     price: new FormControl(0, [Validators.required, positiveNumberValidator]),
     media: new FormControl(undefined),
+    stockLevel: new FormControl(10, [Validators.required, positiveNumberValidator]),
+    showBuyButton: new FormControl(true, [Validators.required]),
     pkOfFile: new FormControl('')
   });
 
@@ -106,6 +108,14 @@ export class CreateProductComponent extends ProductSharedFunctionality implement
     return this.createProductFormGroup.get('media');
   }
 
+  get stockLevel() {
+    return this.createProductFormGroup.get('stockLevel');
+  }
+
+  get showBuyButton() {
+    return this.createProductFormGroup.get('showBuyButton');
+  }
+
   get pkOfFile() {
     return this.createProductFormGroup.get('pkOfFile');
   }
@@ -145,6 +155,8 @@ export class CreateProductComponent extends ProductSharedFunctionality implement
       price: this.price.value,
       description: this.description.value,
       media: (<HTMLInputElement>document.getElementById('product-media-input')).files[0],
+      stockLevel: this.stockLevel.value,
+      showBuyButton: Boolean(this.showBuyButton.value),
       pkOfFile: this.pkOfFile.value,
       categoryIdentifier: this.selectedCategoryFromPickup.identifier
     };

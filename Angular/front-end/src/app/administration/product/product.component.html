@@ -14,7 +14,7 @@
           <th>Product Name</th>
           <th>Product Identifier</th>
           <th>Product price</th>
-          <th>Product Description</th>
+          <th>Stock Level</th>
           <th>Category</th>
           <th>Actions</th>
         </tr>
@@ -25,7 +25,7 @@
           <td>{{product.name}}</td>
           <td>{{product.identifier}}</td>
           <td>{{product.price | currency}}</td>
-          <td>{{product.description ? product.description : '< empty >'}}</td>
+          <td>{{product.stockLevel}}</td>
           <td><img [src]="product.categoryMediaUrl" alt=""></td>
           <td id="actions">
             <a class="update" href="javascript:void(0)" [routerLink]="['/admin/products', product.identifier]">

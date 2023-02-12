@@ -7,6 +7,9 @@ import {CommonModule} from "@angular/common";
 import {CategoryComponent} from './category/category.component';
 import {RouterModule, Routes} from "@angular/router";
 import {PageGuard} from "../guard/page.guard";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {EffectsModule} from "@ngrx/effects";
+import {UserEffects} from "../store/effect/user.effect";
 
 const routes: Routes = [
   {path: ':name/c/:category', component: CategoryComponent, canActivate: [PageGuard]}
@@ -21,7 +24,9 @@ const routes: Routes = [
     CommonModule,
     SharedModule,
     HttpClientModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    FontAwesomeModule,
+    EffectsModule.forFeature(UserEffects)
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

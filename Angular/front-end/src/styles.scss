@@ -3,6 +3,7 @@
 
 @import '../node_modules/angular-notifier/styles.css';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+@import "../node_modules/tippy.js/dist/tippy.css";
 
 $base-color-green: #00c5b2;
 $base-color-white: #e4e6eb;
@@ -61,6 +62,18 @@ $base-color-white: #e4e6eb;
 
 .mb-30 {
   margin-bottom: 30px !important;
+}
+
+.mb-35 {
+  margin-bottom: 35px !important;
+}
+
+.mb-40 {
+  margin-bottom: 40px !important;
+}
+
+.mb-50 {
+  margin-bottom: 50px !important;
 }
 
 .mr-25 {

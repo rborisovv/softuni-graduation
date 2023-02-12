@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,13 +44,16 @@ public class ProductResource {
                                                       @RequestParam("price") BigDecimal price,
                                                       @RequestParam(value = "description", required = false) String description,
                                                       @RequestParam(value = "media", required = false) MultipartFile multipartFile,
+                                                      @RequestParam(value = "stockLevel") Integer stockLevel,
+                                                      @RequestParam(value = "showBuyButton") Boolean showBuyButton,
                                                       @RequestParam(value = "pkOfFile", required = false) String pkOfFile,
                                                       @RequestParam("categoryIdentifier") String categoryIdentifier) throws AbsentMediaOnProductException,
-            AbsentCategoryProductException, MediaByNameAlreadyExistsException, CategoryNotFoundException, IOException {
+            AbsentCategoryProductException, MediaByNameAlreadyExistsException, CategoryNotFoundException, IOException, MediaNotFoundException {
 
         @Valid ProductDto productDto = ProductDto.builder()
                 .name(name).identifier(identifier)
-                .price(price).description(description).Media(multipartFile)
+                .price(price).description(description).media(multipartFile)
+                .stockLevel(stockLevel).showBuyButton(showBuyButton)
                 .pkOfFile(pkOfFile).categoryIdentifier(categoryIdentifier).build();
 
         return this.productService.createProduct(productDto);
@@ -57,14 +61,14 @@ public class ProductResource {
 
     @GetMapping("/findAll")
     public Set<ProductDto> findAllProducts() {
-        return this.productRepository.findAll().stream()
+        return this.productRepository.findAllProducts().stream()
                 .map(product -> {
                     ProductDto productDto = modelMapper.map(product, ProductDto.class);
                     productDto.setMediaUrl(product.getMedia().getMediaUrl());
                     productDto.setCategoryMediaUrl(product.getCategory().getMedia().getMediaUrl());
                     return productDto;
                 })
-                .collect(Collectors.toSet());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @DeleteMapping("/delete/{identifier}")

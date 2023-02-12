@@ -2,6 +2,7 @@ package bg.rborisov.softunigraduation.dto;
 
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -13,9 +14,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Getter
 @Setter
-@ToString
 public class ProductDto implements Serializable {
 
     @NotBlank
@@ -33,7 +34,15 @@ public class ProductDto implements Serializable {
     private BigDecimal price;
 
     @Nullable
-    private MultipartFile Media;
+    private MultipartFile media;
+
+    @NotNull
+    @PositiveOrZero
+    private Integer stockLevel;
+
+    @NotNull
+    private Boolean showBuyButton;
+
     @Nullable
     private String pkOfFile;
 

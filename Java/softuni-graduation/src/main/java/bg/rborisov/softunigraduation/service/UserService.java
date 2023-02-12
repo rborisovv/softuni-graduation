@@ -2,6 +2,7 @@ package bg.rborisov.softunigraduation.service;
 
 import bg.rborisov.softunigraduation.dao.RoleRepository;
 import bg.rborisov.softunigraduation.dao.UserRepository;
+import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.UserLoginDto;
 import bg.rborisov.softunigraduation.dto.UserRegisterDto;
 import bg.rborisov.softunigraduation.dto.UserWelcomeDto;
@@ -30,6 +31,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
@@ -152,5 +154,10 @@ public class UserService {
 
     public void logout() {
         SecurityContextHolder.clearContext();
+    }
+
+    public ResponseEntity<HttpResponse> addToFavourites(String productIdentifier, Principal principal) {
+        System.out.println();
+        return null;
     }
 }

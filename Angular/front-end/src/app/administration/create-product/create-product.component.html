@@ -21,10 +21,45 @@
         </div>
       </div>
     </div>
+
     <div class="grid-2">
       <div class="form-controll">
         <div class="form-input">
-          <input formControlName="identifier" type="text" name="productName" id="product-identifier" required>
+          <input formControlName="stockLevel" prePositiveNumber type="text" name="stockLevel" id="product-stock-level"
+                 required>
+          <label for="product-stock-level">Product Stock Level</label>
+        </div>
+        <div class="stock-level-messages error-messages text-danger">
+          <div *ngIf="stockLevel.errors?.['required'] && stockLevel.touched">Product Stock level is required.</div>
+          <div *ngIf="stockLevel.errors?.['nonPositive'] && stockLevel.touched">
+            Product Stock level must be a positive number.
+          </div>
+        </div>
+      </div>
+      <div class="form-controll">
+        <div class="form-input">
+          <input formControlName="showBuyButton" type="text" name="showBuyButton" id="show-buy-btn" required>
+          <label for="show-buy-btn">Product Show Buy Button</label>
+        </div>
+        <div class="show-buy-btn-messages error-messages text-danger">
+          <div *ngIf="showBuyButton.errors?.['required'] && showBuyButton.touched">Product Show Buy Button is
+            required.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-controll">
+      <div class="form-input">
+        <input formControlName="description" type="text" name="price" id="description">
+        <label for="description">Description</label>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="form-controll">
+        <div class="form-input">
+          <input formControlName="identifier" type="text" name="identifier" id="product-identifier" required>
           <label for="product-identifier">Product Identifier</label>
         </div>
         <div class="identifier-messages error-messages text-danger">
@@ -45,19 +80,12 @@
           <input formControlName="price" prePositiveNumber type="text" name="price" id="price" required>
           <label for="price">Product Price</label>
         </div>
-        <div class="identifier-messages error-messages text-danger">
+        <div class="price-messages error-messages text-danger">
           <div *ngIf="price.errors?.['required'] && price.touched">Product Identifier is required.</div>
           <div *ngIf="price.errors?.['nonPositive'] && price.touched">
-            The price must be a positive number.
+            Price must be a positive number.
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="form-controll">
-      <div class="form-input">
-        <input formControlName="description" type="text" name="price" id="description">
-        <label for="price">Description</label>
       </div>
     </div>
 
