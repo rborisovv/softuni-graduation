@@ -36,7 +36,7 @@ export class HeaderComponent implements OnDestroy {
         this.cookieService.delete('XSRF-TOKEN', "/", "localhost", false, "Lax");
         this.cookieService.delete('X-XSRF-JWT', "/", "localhost", false, "Lax");
         this.cookieService.delete('JWT-TOKEN', "/", "localhost", false, "Lax");
-        this.router.navigateByUrl("/login");
+        this.router.navigateByUrl("/auth/login");
       }
     });
 

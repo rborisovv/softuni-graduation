@@ -4,6 +4,7 @@ import bg.rborisov.softunigraduation.dao.ProductRepository;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.ProductDto;
 import bg.rborisov.softunigraduation.exception.*;
+import bg.rborisov.softunigraduation.model.Product;
 import bg.rborisov.softunigraduation.service.ProductService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
