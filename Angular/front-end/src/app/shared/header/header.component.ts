@@ -1,15 +1,34 @@
-import {Component, OnDestroy} from '@angular/core';
-import {faCartShopping, faHeart, faMagnifyingGlass, faShoppingBasket, faSignOut, faUserAlt, faUserSecret} from '@fortawesome/free-solid-svg-icons';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
+import {
+  faCartShopping,
+  faHeart,
+  faMagnifyingGlass,
+  faShoppingBasket,
+  faSignOut,
+  faTrash,
+  faUserAlt,
+  faUserSecret
+} from '@fortawesome/free-solid-svg-icons';
 import {UserService} from "../../service/user.service";
 import {CookieService} from "ngx-cookie-service";
 import {Router} from "@angular/router";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {Jwt} from "../../authentication/Jwt";
+import {Product} from "../../interface/product";
+import {Store} from "@ngrx/store";
+import {removeFromFavourites} from "../../store/action/user.action";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class HeaderComponent implements OnDestroy {
@@ -21,12 +40,19 @@ export class HeaderComponent implements OnDestroy {
   faUserSecret = faUserSecret;
   faSignOut = faSignOut;
   faUserAlt = faUserAlt;
+  faTrash = faTrash;
 
   subscriptions: Subscription[] = [];
 
+  favouriteProducts$: Observable<Product[]>;
+
+  @ViewChild('products') products: ElementRef;
+
   constructor(private userService: UserService,
               private cookieService: CookieService,
-              private router: Router) {
+              private router: Router,
+              private readonly store: Store,
+              private readonly renderer: Renderer2) {
   }
 
   onLogout(event: Event): void {
@@ -51,5 +77,14 @@ export class HeaderComponent implements OnDestroy {
     const jwtToken = Jwt.obtainJwtHeader();
     let decodedJwt = JSON.parse(window.atob(jwtToken.split('.')[1]));
     return decodedJwt.role === 'ADMIN';
+  }
+
+  fetchFavouriteProducts(): void {
+    this.favouriteProducts$ = this.userService.loadFavouriteProducts();
+  }
+
+  removeProductFromFavourites(productRef: HTMLDivElement, identifier: string): void {
+    this.store.dispatch(removeFromFavourites({identifier}));
+    this.renderer.removeChild(this.products.nativeElement, productRef);
   }
 }

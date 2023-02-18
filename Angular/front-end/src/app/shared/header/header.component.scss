@@ -1,6 +1,8 @@
 $font-family: 'Roboto', sans-serif;
 $base-color: #00c5b2;
 
+@import "../../../common";
+
 a {
   color: inherit;
 }
@@ -358,4 +360,54 @@ a {
   &[data-type="pets"]:hover ~ .product-image[data-match="pets"] {
     opacity: 1;
   }
+}
+
+#favourites-modal .modal-dialog {
+  max-width: unset;
+  width: 1000px;
+}
+
+.modal-content {
+  max-height: 725px;
+  overflow-y: scroll;
+}
+
+.products > .product:not(:last-child) {
+  border-bottom: 1px solid #c8c8c8;
+}
+
+.modal-body .product {
+  @include flex-horizontal-center-row;
+  justify-content: space-between;
+
+  & .product-media {
+    width: 100px;
+  }
+
+  & .product-price {
+    font-weight: 700;
+  }
+}
+
+@include add-to-basket;
+
+.product-attributes {
+  @include flex-horizontal-center-row;
+}
+
+.remove-fav {
+  @include flex-horizontal-center-row;
+  justify-content: flex-start;
+  gap: 1rem;
+  color: #ababab;
+  transition: all 150ms ease-in-out;
+}
+
+.remove-fav:hover {
+  color: #d60026;
+}
+
+.fav-list-empty__message {
+  padding: 1rem;
+  text-align: center;
 }

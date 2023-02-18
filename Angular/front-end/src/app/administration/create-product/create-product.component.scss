@@ -214,16 +214,7 @@ input:valid + label {
 }
 
 #modal-btn-save, #category-modal-btn-save {
-  width: 147px;
-  min-width: 140px;
-  background-color: #455c91;
-  color: white;
-  border: none;
-  font-size: 1em;
-  padding: 8px 25px;
-
-  border-radius: 8px;
-  border-bottom: 1px solid #c2c2c2;
+  @include modal-save-btn;
 }
 
 #product-media:active {

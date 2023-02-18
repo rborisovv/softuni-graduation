@@ -65,3 +65,35 @@
   gap: 2rem;
   align-items: center;
 }
+
+@mixin modal-save-btn {
+  width: 147px;
+  min-width: 140px;
+  background-color: #455c91;
+  color: white;
+  border: none;
+  font-size: 1em;
+  padding: 8px 25px;
+
+  border-radius: 8px;
+  border-bottom: 1px solid #c2c2c2;
+}
+
+@mixin add-to-basket {
+  .add-to-basket {
+    text-decoration: none;
+    color: #000;
+    font-weight: 600;
+    border: 1px solid #979797;
+    box-shadow: 0 6px 12px 0 #0000000f;
+    padding: 8px 12px;
+    border-radius: 24px;
+    transition: all 100ms ease-in-out;
+
+    &:hover {
+      background: #00c5b2;
+      color: #ffffff;
+      border: 1px solid #00c5b2;
+    }
+  }
+}

@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {UserWelcome} from "../interface/user.welcome";
 import {IUserRegisterModel} from "../authentication/register/IUserRegisterModel";
 import {HttpResponse} from "../interface/http.response";
+import {Product} from "../interface/product";
 
 @Injectable()
 export class UserService {
@@ -39,5 +40,13 @@ export class UserService {
 
   addToFavourites(identifier: string): Observable<HttpResponse> {
     return this.http.post<HttpResponse>(`${this.apiUrl}/user/addToFavourites`, identifier);
+  }
+
+  loadFavouriteProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/user/favourites`);
+  }
+
+  removeFromFavourites(identifier: string): Observable<HttpResponse> {
+    return this.http.post<HttpResponse>(`${this.apiUrl}/user/removeFromFavourites`, identifier);
   }
 }

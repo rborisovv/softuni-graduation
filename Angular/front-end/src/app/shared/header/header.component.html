@@ -20,7 +20,8 @@
         <a *ngIf="!roleIsAdmin()" href="javascript:void(0)">
           <fa-icon [icon]="faUserAlt"></fa-icon>
         </a>
-        <a href="javascript:void(0)">
+        <a href="javascript:void(0)" (click)="fetchFavouriteProducts()" data-bs-toggle="modal"
+           data-bs-target="#favourites-modal">
           <fa-icon [icon]="faHeart" style="color: #d60026;"></fa-icon>
         </a>
         <a href="javascript:void(0)">
@@ -668,3 +669,39 @@
     </ul>
   </nav>
 </header>
+
+<!-- Modal -->
+<div class="modal fade" id="favourites-modal" tabindex="-1" aria-labelledby="favourites-modal-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-3" id="favourites-modal-label">Favourite Products</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="(favouriteProducts$ | async)?.length === 0">
+          <h2 class="fav-list-empty__message">No products present in the Favourites list!</h2>
+        </ng-container>
+        <div *ngIf="favouriteProducts$ | async" class="products" #products>
+          <div class="product" *ngFor="let product of favouriteProducts$ | async" #productRef>
+            <div class="product-attributes">
+              <img class="product-media" [src]="product.mediaUrl" alt="">
+              <div class="name-wrapper">
+                <h4 class="product-name">{{product.name}}</h4>
+                <a class="remove-fav mt-10 fs-6" href="javascript:void(0)"
+                   (click)="removeProductFromFavourites(productRef, product.identifier)">
+                  <span>Remove</span>
+                  <fa-icon [icon]="faTrash"></fa-icon>
+                </a>
+              </div>
+            </div>
+            <div class="product-actions mb-40">
+              <p class="product-price fs-2 mb-20 mt-20">{{product.price | currency}} <span>lv.</span></p>
+              <a class="add-to-basket" href="javascript:void(0)">Add to Basket</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
