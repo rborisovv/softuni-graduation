@@ -1,7 +1,8 @@
 import {
+  ChangeDetectionStrategy,
   Component,
-  ElementRef,
-  OnDestroy,
+  ElementRef, Input,
+  OnDestroy, OnInit,
   Renderer2,
   ViewChild
 } from '@angular/core';
@@ -28,10 +29,10 @@ import {removeFromFavourites} from "../../store/action/user.action";
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class HeaderComponent implements OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   faCart = faCartShopping;
   faBasket = faShoppingBasket;
@@ -53,6 +54,10 @@ export class HeaderComponent implements OnDestroy {
               private router: Router,
               private readonly store: Store,
               private readonly renderer: Renderer2) {
+  }
+
+  ngOnInit(): void {
+    this.favouriteProducts$ = this.userService.loadFavouriteProducts();
   }
 
   onLogout(event: Event): void {
@@ -77,10 +82,6 @@ export class HeaderComponent implements OnDestroy {
     const jwtToken = Jwt.obtainJwtHeader();
     let decodedJwt = JSON.parse(window.atob(jwtToken.split('.')[1]));
     return decodedJwt.role === 'ADMIN';
-  }
-
-  fetchFavouriteProducts(): void {
-    this.favouriteProducts$ = this.userService.loadFavouriteProducts();
   }
 
   removeProductFromFavourites(productRef: HTMLDivElement, identifier: string): void {

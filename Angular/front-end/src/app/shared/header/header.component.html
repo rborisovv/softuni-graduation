@@ -20,9 +20,11 @@
         <a *ngIf="!roleIsAdmin()" href="javascript:void(0)">
           <fa-icon [icon]="faUserAlt"></fa-icon>
         </a>
-        <a href="javascript:void(0)" (click)="fetchFavouriteProducts()" data-bs-toggle="modal"
-           data-bs-target="#favourites-modal">
+        <a class="fav-btn" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#favourites-modal">
           <fa-icon [icon]="faHeart" style="color: #d60026;"></fa-icon>
+          <ng-container *ngIf="favouriteProducts$ | async as products">
+            <span class="fav-items__count">{{products.length}}</span>
+          </ng-container>
         </a>
         <a href="javascript:void(0)">
           <fa-icon [icon]="faBasket" style="color: #c29161;"></fa-icon>
