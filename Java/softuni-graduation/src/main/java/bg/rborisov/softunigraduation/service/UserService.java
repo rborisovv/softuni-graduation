@@ -4,6 +4,7 @@ import bg.rborisov.softunigraduation.dao.ProductRepository;
 import bg.rborisov.softunigraduation.dao.RoleRepository;
 import bg.rborisov.softunigraduation.dao.UserRepository;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
+import bg.rborisov.softunigraduation.dto.ProductDto;
 import bg.rborisov.softunigraduation.dto.UserLoginDto;
 import bg.rborisov.softunigraduation.dto.UserRegisterDto;
 import bg.rborisov.softunigraduation.dto.UserWelcomeDto;
@@ -40,15 +41,13 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.*;
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
 import static bg.rborisov.softunigraduation.common.JwtConstants.TOKEN_PREFIX;
-import static bg.rborisov.softunigraduation.common.Messages.PRODUCT_ALREADY_ADDED_TO_FAVOURITES;
-import static bg.rborisov.softunigraduation.common.Messages.PRODUCT_SUCCESSFULLY_ADDED_TO_FAVOURITES;
+import static bg.rborisov.softunigraduation.common.Messages.*;
 import static bg.rborisov.softunigraduation.constant.SecurityConstant.COOKIE_MAX_AGE;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -202,5 +201,34 @@ public class UserService {
         httpResponse.setMessage(String.format(PRODUCT_SUCCESSFULLY_ADDED_TO_FAVOURITES, product.getName()));
 
         return new ResponseEntity<>(httpResponse, HttpStatus.OK);
+    }
+
+    public Set<ProductDto> loadFavouriteProducts(Principal principal) {
+        String username = principal.getName();
+        return this.userRepository.loadFavouriteProducts(username).stream()
+                .map(product -> this.modelMapper.map(product, ProductDto.class))
+                .sorted(Comparator.comparing(ProductDto::getCategoryIdentifier).thenComparing(ProductDto::getPrice))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public ResponseEntity<HttpResponse> removeFromFavourites(String identifier, Principal principal) throws UserNotFoundException, ProductNotFoundException {
+        String username = principal.getName();
+        User user = this.userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        Product product = productRepository.findProductByIdentifier(identifier).orElseThrow(ProductNotFoundException::new);
+        String productName = product.getName();
+        boolean isRemoved = user.getFavouriteProducts().remove(product);
+        HttpResponse httpResponse = new HttpResponse();
+
+        httpResponse.setHttpStatus(isRemoved ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+        httpResponse.setHttpStatusCode(isRemoved ? HttpStatus.OK.value() : HttpStatus.BAD_REQUEST.value());
+        httpResponse.setNotificationStatus(isRemoved ?
+                NotificationStatus.SUCCESS.name().toLowerCase(Locale.ROOT) :
+                NotificationStatus.ERROR.name().toLowerCase(Locale.ROOT));
+        httpResponse.setMessage(isRemoved ?
+                String.format(PRODUCT_REMOVED_FROM_FAVOURITES, productName) :
+                String.format(PRODUCT_NOT_REMOVED_FROM_FAVOURITES, productName)
+        );
+
+        return new ResponseEntity<>(httpResponse, isRemoved ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
 }
