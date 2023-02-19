@@ -189,7 +189,7 @@ public class UserService {
             return new ResponseEntity<>(httpResponse, HttpStatus.OK);
         }
 
-        FavouritesHttpResponse httpResponse = constructHttpResponse(HttpStatus.OK, PRODUCT_SUCCESSFULLY_ADDED_TO_FAVOURITES,
+        FavouritesHttpResponse httpResponse = constructHttpResponse(HttpStatus.OK, String.format(PRODUCT_SUCCESSFULLY_ADDED_TO_FAVOURITES, product.getName()),
                 NotificationStatus.SUCCESS.name(), this.loadFavouriteProducts(principal));
 
         return new ResponseEntity<>(httpResponse, HttpStatus.OK);

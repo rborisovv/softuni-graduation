@@ -23,7 +23,7 @@ import {
 import {UserService} from "../../service/user.service";
 import {CookieService} from "ngx-cookie-service";
 import {Router} from "@angular/router";
-import {Observable, Subscription, tap} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {Jwt} from "../../authentication/Jwt";
 import {Product} from "../../interface/product";
 import {Store} from "@ngrx/store";
@@ -99,9 +99,6 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   removeProductFromFavourites(productRef: HTMLDivElement, identifier: string): void {
     this.store.dispatch(removeFromFavourites({identifier}));
     this.renderer.removeChild(this.products.nativeElement, productRef);
-    this.store.select(selectFavouriteProductsState)
-      .pipe(tap((fav) => {
-        console.log(fav)
-      })).subscribe();
+    this.favouriteProducts$ = this.store.select(selectFavouriteProductsState);
   }
 }
