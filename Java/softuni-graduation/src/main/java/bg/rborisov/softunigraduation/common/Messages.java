@@ -11,6 +11,6 @@ public class Messages {
     public static final String PRODUCT_DELETED_SUCCESSFULLY = "The product \"%s\" was deleted successfully!";
     public static final String PRODUCT_SUCCESSFULLY_ADDED_TO_FAVOURITES = "The product \"%s\" was successfully added to favourites!";
     public static final String PRODUCT_ALREADY_ADDED_TO_FAVOURITES = "This product is already added in the favourites list.";
-    public static final String PRODUCT_REMOVED_FROM_FAVOURITES = "The product %s was successfully removed from favourites list!";
-    public static final String PRODUCT_NOT_REMOVED_FROM_FAVOURITES = "There was a problem removing product %s from favourites!";
+    public static final String PRODUCT_REMOVED_FROM_FAVOURITES = "The product \"%s\" was successfully removed from favourites list!";
+    public static final String PRODUCT_NOT_REMOVED_FROM_FAVOURITES = "There was a problem removing product \"%s\" from favourites!";
 }
