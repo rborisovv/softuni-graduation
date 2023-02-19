@@ -183,23 +183,14 @@ public class UserService {
         if (!user.getFavouriteProducts().contains(product)) {
             user.getFavouriteProducts().add(product);
         } else {
-            HttpResponse httpResponse = HttpResponse.builder()
-                    .httpStatusCode(OK.value())
-                    .httpStatus(OK)
-                    .reason("")
-                    .message(PRODUCT_ALREADY_ADDED_TO_FAVOURITES)
-                    .notificationStatus(NotificationStatus.INFO.name().toLowerCase(Locale.ROOT))
-                    .build();
+            FavouritesHttpResponse httpResponse = constructHttpResponse(HttpStatus.OK, PRODUCT_ALREADY_ADDED_TO_FAVOURITES,
+                    NotificationStatus.INFO.name(), this.loadFavouriteProducts(principal));
+
             return new ResponseEntity<>(httpResponse, HttpStatus.OK);
         }
 
-        FavouritesHttpResponse httpResponse = new FavouritesHttpResponse();
-        httpResponse.setHttpStatus(HttpStatus.OK);
-        httpResponse.setHttpStatusCode(HttpStatus.OK.value());
-        httpResponse.setReason("");
-        httpResponse.setNotificationStatus(NotificationStatus.SUCCESS.name().toLowerCase(Locale.ROOT));
-        httpResponse.setMessage(String.format(PRODUCT_SUCCESSFULLY_ADDED_TO_FAVOURITES, product.getName()));
-        httpResponse.setFavouriteProducts(this.loadFavouriteProducts(principal));
+        FavouritesHttpResponse httpResponse = constructHttpResponse(HttpStatus.OK, PRODUCT_SUCCESSFULLY_ADDED_TO_FAVOURITES,
+                NotificationStatus.SUCCESS.name(), this.loadFavouriteProducts(principal));
 
         return new ResponseEntity<>(httpResponse, HttpStatus.OK);
     }
@@ -218,18 +209,31 @@ public class UserService {
         Product product = productRepository.findProductByIdentifier(identifier).orElseThrow(ProductNotFoundException::new);
         String productName = product.getName();
         boolean isRemoved = user.getFavouriteProducts().remove(product);
-        HttpResponse httpResponse = new HttpResponse();
 
-        httpResponse.setHttpStatus(isRemoved ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
-        httpResponse.setHttpStatusCode(isRemoved ? HttpStatus.OK.value() : HttpStatus.BAD_REQUEST.value());
-        httpResponse.setNotificationStatus(isRemoved ?
-                NotificationStatus.SUCCESS.name().toLowerCase(Locale.ROOT) :
-                NotificationStatus.ERROR.name().toLowerCase(Locale.ROOT));
-        httpResponse.setMessage(isRemoved ?
-                String.format(PRODUCT_REMOVED_FROM_FAVOURITES, productName) :
-                String.format(PRODUCT_NOT_REMOVED_FROM_FAVOURITES, productName)
-        );
+        if (!isRemoved) {
+            FavouritesHttpResponse httpResponse = constructHttpResponse(HttpStatus.BAD_REQUEST,
+                    String.format(PRODUCT_NOT_REMOVED_FROM_FAVOURITES, productName),
+                    NotificationStatus.ERROR.name(), loadFavouriteProducts(principal));
 
-        return new ResponseEntity<>(httpResponse, isRemoved ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(httpResponse, HttpStatus.BAD_REQUEST);
+        }
+
+        FavouritesHttpResponse httpResponse = constructHttpResponse(HttpStatus.OK,
+                String.format(PRODUCT_REMOVED_FROM_FAVOURITES, productName),
+                NotificationStatus.SUCCESS.name(), loadFavouriteProducts(principal));
+
+        return new ResponseEntity<>(httpResponse, HttpStatus.OK);
+    }
+
+    private FavouritesHttpResponse constructHttpResponse(HttpStatus httpStatus, String message, String notificationStatus, Set<ProductDto> favouriteProducts) {
+        FavouritesHttpResponse httpResponse = new FavouritesHttpResponse();
+        httpResponse.setHttpStatus(httpStatus);
+        httpResponse.setHttpStatusCode(httpStatus.value());
+        httpResponse.setNotificationStatus(notificationStatus.toLowerCase(Locale.ROOT));
+        httpResponse.setReason("");
+        httpResponse.setMessage(message);
+        httpResponse.setFavouriteProducts(favouriteProducts);
+
+        return httpResponse;
     }
 }

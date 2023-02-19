@@ -5,5 +5,5 @@ export const selectFavouriteProducts = createFeatureSelector<IFavouriteProductsS
 
 export const selectFavouriteProductsState = createSelector(
   selectFavouriteProducts, (favouriteProducts) => {
-    return favouriteProducts
+    return favouriteProducts.favouriteProducts
   });

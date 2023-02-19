@@ -23,7 +23,7 @@ import {
 import {UserService} from "../../service/user.service";
 import {CookieService} from "ngx-cookie-service";
 import {Router} from "@angular/router";
-import {map, Observable, Subscription} from "rxjs";
+import {Observable, Subscription, tap} from "rxjs";
 import {Jwt} from "../../authentication/Jwt";
 import {Product} from "../../interface/product";
 import {Store} from "@ngrx/store";
@@ -69,6 +69,7 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.favouriteProducts$ = changes['renewedFavouriteProducts'].currentValue;
+    console.log('inside')
   }
 
   onLogout(event: Event): void {
@@ -98,11 +99,9 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   removeProductFromFavourites(productRef: HTMLDivElement, identifier: string): void {
     this.store.dispatch(removeFromFavourites({identifier}));
     this.renderer.removeChild(this.products.nativeElement, productRef);
-    this.favouriteProducts$ = this.store.select(selectFavouriteProductsState)
-      .pipe(
-        map((favouriteProducts) => {
-          return favouriteProducts.favouriteProducts;
-        })
-      )
+    this.store.select(selectFavouriteProductsState)
+      .pipe(tap((fav) => {
+        console.log(fav)
+      })).subscribe();
   }
 }

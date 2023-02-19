@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {map, Observable, take} from "rxjs";
+import {Observable, take} from "rxjs";
 import {Category} from 'src/app/interface/category';
 import {CategoryService} from "../../service/category.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
@@ -42,10 +42,6 @@ export class CategoryComponent implements OnInit {
 
   public addToFavourites(identifier: string) {
     this.store.dispatch(addToFavourites({identifier}));
-    this.favouriteProducts$ = this.store.select(selectFavouriteProductsState).pipe(
-      map((favouriteProducts) => {
-        return favouriteProducts.favouriteProducts;
-      })
-    );
+    this.favouriteProducts$ = this.store.select(selectFavouriteProductsState);
   }
 }
