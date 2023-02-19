@@ -16,16 +16,16 @@ import java.io.Serializable;
 public class HttpResponse implements Serializable {
 
     @NonNull
-    private int httpStatusCode;
+    protected int httpStatusCode;
 
     @NonNull
-    private HttpStatus httpStatus;
+    protected HttpStatus httpStatus;
 
     @NonNull
-    private String reason;
+    protected String reason;
 
     @NonNull
-    private String message;
+    protected String message;
 
-    private String notificationStatus;
+    protected String notificationStatus;
 }

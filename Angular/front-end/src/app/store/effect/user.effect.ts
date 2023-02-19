@@ -4,16 +4,17 @@ import {UserService} from "../../service/user.service";
 import {
   addToFavourites,
   addToFavouritesFail,
-  addToFavouritesSuccess,
+  addToFavouritesSuccess, fetchRenewedFavouriteProducts,
   removeFromFavourites, removeFromFavouritesFail, removeFromFavouritesSuccess
 } from "../action/user.action";
 import {catchError, exhaustMap, map, of, tap} from "rxjs";
 import {Injectable} from "@angular/core";
+import {Store} from "@ngrx/store";
 
 @Injectable()
 export class UserEffects {
   constructor(private readonly actions$: Actions, private userService: UserService,
-              private readonly notifier: NotifierService) {
+              private readonly notifier: NotifierService, private store: Store) {
   }
 
   addToFavourites$ = createEffect(() => {
@@ -25,6 +26,7 @@ export class UserEffects {
             map(response => addToFavouritesSuccess({httpResponse: response})),
             tap((response) => {
               this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
+              this.store.dispatch(fetchRenewedFavouriteProducts({httpResponse: response.httpResponse}));
             }),
             catchError(error => of(addToFavouritesFail({error: error})))
           );
@@ -41,6 +43,7 @@ export class UserEffects {
             map(response => removeFromFavouritesSuccess({httpResponse: response})),
             tap((response) => {
               this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
+              this.store.dispatch(fetchRenewedFavouriteProducts({httpResponse: response.httpResponse}));
             }),
             catchError(error => of(removeFromFavouritesFail({error: error})))
           );

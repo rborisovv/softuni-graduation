@@ -1,9 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef, Input,
-  OnDestroy, OnInit,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
   Renderer2,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import {
@@ -19,11 +23,12 @@ import {
 import {UserService} from "../../service/user.service";
 import {CookieService} from "ngx-cookie-service";
 import {Router} from "@angular/router";
-import {Observable, Subscription} from "rxjs";
+import {map, Observable, Subscription} from "rxjs";
 import {Jwt} from "../../authentication/Jwt";
 import {Product} from "../../interface/product";
 import {Store} from "@ngrx/store";
 import {removeFromFavourites} from "../../store/action/user.action";
+import {selectFavouriteProductsState} from "../../store/selector/user.selector";
 
 @Component({
   selector: 'app-header',
@@ -32,7 +37,7 @@ import {removeFromFavourites} from "../../store/action/user.action";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
 
   faCart = faCartShopping;
   faBasket = faShoppingBasket;
@@ -47,6 +52,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   favouriteProducts$: Observable<Product[]>;
 
+  @Input() renewedFavouriteProducts: Observable<Product[]>;
+
   @ViewChild('products') products: ElementRef;
 
   constructor(private userService: UserService,
@@ -58,6 +65,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.favouriteProducts$ = this.userService.loadFavouriteProducts();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.favouriteProducts$ = changes['renewedFavouriteProducts'].currentValue;
   }
 
   onLogout(event: Event): void {
@@ -87,5 +98,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   removeProductFromFavourites(productRef: HTMLDivElement, identifier: string): void {
     this.store.dispatch(removeFromFavourites({identifier}));
     this.renderer.removeChild(this.products.nativeElement, productRef);
+    this.favouriteProducts$ = this.store.select(selectFavouriteProductsState)
+      .pipe(
+        map((favouriteProducts) => {
+          return favouriteProducts.favouriteProducts;
+        })
+      )
   }
 }

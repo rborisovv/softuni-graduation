@@ -1,12 +1,13 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {Observable, take} from "rxjs";
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {map, Observable, take} from "rxjs";
 import {Category} from 'src/app/interface/category';
 import {CategoryService} from "../../service/category.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {faHeart} from '@fortawesome/free-regular-svg-icons';
 import {Store} from "@ngrx/store";
 import {addToFavourites} from "../../store/action/user.action";
-import {UserService} from "../../service/user.service";
+import {selectFavouriteProductsState} from "../../store/selector/user.selector";
+import {Product} from "../../interface/product";
 
 @Component({
   selector: 'app-category',
@@ -16,6 +17,8 @@ import {UserService} from "../../service/user.service";
 })
 export class CategoryComponent implements OnInit {
   category$: Observable<Category>;
+
+  favouriteProducts$: Observable<Product[]>;
 
   faHeart = faHeart;
 
@@ -39,5 +42,10 @@ export class CategoryComponent implements OnInit {
 
   public addToFavourites(identifier: string) {
     this.store.dispatch(addToFavourites({identifier}));
+    this.favouriteProducts$ = this.store.select(selectFavouriteProductsState).pipe(
+      map((favouriteProducts) => {
+        return favouriteProducts.favouriteProducts;
+      })
+    );
   }
 }

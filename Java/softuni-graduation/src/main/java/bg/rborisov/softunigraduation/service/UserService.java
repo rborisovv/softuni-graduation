@@ -3,6 +3,7 @@ package bg.rborisov.softunigraduation.service;
 import bg.rborisov.softunigraduation.dao.ProductRepository;
 import bg.rborisov.softunigraduation.dao.RoleRepository;
 import bg.rborisov.softunigraduation.dao.UserRepository;
+import bg.rborisov.softunigraduation.domain.FavouritesHttpResponse;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.ProductDto;
 import bg.rborisov.softunigraduation.dto.UserLoginDto;
@@ -25,7 +26,6 @@ import jakarta.validation.Validator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -193,12 +193,13 @@ public class UserService {
             return new ResponseEntity<>(httpResponse, HttpStatus.OK);
         }
 
-        HttpResponse httpResponse = new HttpResponse();
+        FavouritesHttpResponse httpResponse = new FavouritesHttpResponse();
         httpResponse.setHttpStatus(HttpStatus.OK);
         httpResponse.setHttpStatusCode(HttpStatus.OK.value());
         httpResponse.setReason("");
         httpResponse.setNotificationStatus(NotificationStatus.SUCCESS.name().toLowerCase(Locale.ROOT));
         httpResponse.setMessage(String.format(PRODUCT_SUCCESSFULLY_ADDED_TO_FAVOURITES, product.getName()));
+        httpResponse.setFavouriteProducts(this.loadFavouriteProducts(principal));
 
         return new ResponseEntity<>(httpResponse, HttpStatus.OK);
     }

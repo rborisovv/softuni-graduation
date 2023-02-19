@@ -5,6 +5,8 @@ export const addToFavourites = createAction('[Favourites] Add to Favourites', pr
 
 export const addToFavouritesSuccess = createAction('[Favourites] Add to Favourites', props<{ httpResponse: HttpResponse }>());
 
+export const fetchRenewedFavouriteProducts = createAction('[Favourites] Fetch Renewed Products', props<{ httpResponse: HttpResponse }>());
+
 export const addToFavouritesFail = createAction('[Favourites] Add to Favourites', props<{ error: Error }>());
 
 export const removeFromFavourites = createAction('[Favourites] Remove from Favourites', props<{ identifier: string }>());
