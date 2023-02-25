@@ -3,7 +3,6 @@ package bg.rborisov.softunigraduation.web;
 import bg.rborisov.softunigraduation.dto.UserLoginDto;
 import bg.rborisov.softunigraduation.dto.UserRegisterDto;
 import bg.rborisov.softunigraduation.dto.UserWelcomeDto;
-import bg.rborisov.softunigraduation.exception.ExceptionHandler;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
 import bg.rborisov.softunigraduation.service.UserService;
 import bg.rborisov.softunigraduation.util.JwtProvider;
@@ -13,6 +12,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
 
@@ -31,7 +32,7 @@ public class AuthResource {
     @PostMapping("/login")
     public ResponseEntity<UserWelcomeDto> login(@RequestParam String username,
                                                 @RequestParam String password,
-                                                HttpServletResponse response) {
+                                                HttpServletResponse response) throws IOException {
         @Valid UserLoginDto userLoginDto = UserLoginDto.builder().username(username).password(password).build();
         ResponseEntity<UserWelcomeDto> responseEntity = userService.login(userLoginDto);
 

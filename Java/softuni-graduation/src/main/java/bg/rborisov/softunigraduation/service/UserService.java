@@ -18,6 +18,7 @@ import bg.rborisov.softunigraduation.model.Product;
 import bg.rborisov.softunigraduation.model.Role;
 import bg.rborisov.softunigraduation.model.User;
 import bg.rborisov.softunigraduation.util.JwtProvider;
+import bg.rborisov.softunigraduation.util.logger.AuthLogger;
 import jakarta.servlet.http.Cookie;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
@@ -39,6 +40,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.*;
@@ -77,7 +79,7 @@ public class UserService {
         this.productRepository = productRepository;
     }
 
-    public ResponseEntity<UserWelcomeDto> login(UserLoginDto userLoginDto) {
+    public ResponseEntity<UserWelcomeDto> login(UserLoginDto userLoginDto) throws IOException {
         Set<ConstraintViolation<UserLoginDto>> violations = validator.validate(userLoginDto);
 
         if (!violations.isEmpty()) {
@@ -97,6 +99,8 @@ public class UserService {
 
 
         UserWelcomeDto userWelcomeDto = modelMapper.map(user, UserWelcomeDto.class);
+        AuthLogger authLogger = new AuthLogger();
+        authLogger.log(String.format("User %s successfully logged in!", user.getUsername()));
         return new ResponseEntity<>(userWelcomeDto, OK);
     }
 
