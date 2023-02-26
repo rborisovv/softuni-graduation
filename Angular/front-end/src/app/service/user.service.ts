@@ -46,7 +46,15 @@ export class UserService {
     return this.http.get<Product[]>(`${this.apiUrl}/user/favourites`);
   }
 
+  loadBasketProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/user/basket`);
+  }
+
   removeFromFavourites(identifier: string): Observable<HttpResponse> {
     return this.http.post<HttpResponse>(`${this.apiUrl}/user/removeFromFavourites`, identifier);
+  }
+
+  addToBasket(identifier: string): Observable<HttpResponse> {
+    return this.http.post<HttpResponse>(`${this.apiUrl}/user/addToBasket`, identifier);
   }
 }

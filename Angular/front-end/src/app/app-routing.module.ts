@@ -14,7 +14,8 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./administration/administration.module').then(m => m.AdministrationModule)
-  }
+  },
+  {path: '', loadChildren: () => import('./checkout/checkout.module').then(m => m.CheckoutModule)},
 ];
 
 @NgModule({

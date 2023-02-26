@@ -34,4 +34,14 @@ public class UserResource {
     public ResponseEntity<HttpResponse> removeProductFromFavourites(@RequestBody String identifier, Principal principal) throws UserNotFoundException, ProductNotFoundException {
         return this.userService.removeFromFavourites(identifier, principal);
     }
+
+    @PostMapping("/addToBasket")
+    public ResponseEntity<HttpResponse> addToCart(@RequestBody String identifier, Principal principal) throws ProductNotFoundException, UserNotFoundException {
+        return this.userService.addToBasket(identifier, principal);
+    }
+
+    @GetMapping("/basket")
+    public Set<ProductDto> loadBasket(Principal principal) throws UserNotFoundException {
+        return this.userService.loadBasket(principal);
+    }
 }

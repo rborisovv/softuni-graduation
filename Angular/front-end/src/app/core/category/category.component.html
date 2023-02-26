@@ -1,4 +1,4 @@
-<app-header [renewedFavouriteProducts]="favouriteProducts$"></app-header>
+<app-header [renewedFavouriteProducts]="favouriteProducts$" [renewedBasketProducts]="basketProducts$"></app-header>
 
 <main>
   <div class="category-data">
@@ -27,7 +27,8 @@
           <h6 class="product-name mb-30">{{product.name}}</h6>
           <p class="product-expire-date mb-20">Best before: <span>09/03/2023</span></p>
           <p class="product-price fs-2 mb-40">{{product.price | currency}} <span>lv.</span></p>
-          <a *ngIf="product.showBuyButton" class="add-to-basket" href="javascript:void(0)">Add to Basket</a>
+          <a *ngIf="product.showBuyButton" (click)="addToBasket(product.identifier)" class="add-to-basket"
+             href="javascript:void(0)">Add to Basket</a>
         </div>
       </div>
     </div>

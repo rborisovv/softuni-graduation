@@ -52,7 +52,11 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "is_locked", nullable = false)
     private Boolean isLocked;
 
-    @OneToMany
+    @ManyToMany
     @ColumnDefault("null")
     private Set<Product> favouriteProducts;
+
+    @ManyToMany
+    @ColumnDefault("null")
+    private Set<Product> basketProducts;
 }

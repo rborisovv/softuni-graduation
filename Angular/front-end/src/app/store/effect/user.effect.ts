@@ -2,9 +2,10 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {NotifierService} from "angular-notifier";
 import {UserService} from "../../service/user.service";
 import {
+  addToBasket, addToBasketFail, addToBasketSuccess,
   addToFavourites,
   addToFavouritesFail,
-  addToFavouritesSuccess, fetchRenewedFavouriteProducts,
+  addToFavouritesSuccess, fetchRenewedBasketProducts, fetchRenewedFavouriteProducts,
   removeFromFavourites, removeFromFavouritesFail, removeFromFavouritesSuccess
 } from "../action/user.action";
 import {catchError, exhaustMap, map, of, tap} from "rxjs";
@@ -46,6 +47,23 @@ export class UserEffects {
               this.store.dispatch(fetchRenewedFavouriteProducts({httpResponse: response.httpResponse}));
             }),
             catchError(error => of(removeFromFavouritesFail({error: error})))
+          );
+      }))
+    )
+  });
+
+  addToBasket$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(addToBasket),
+      exhaustMap((({identifier}) => {
+        return this.userService.addToBasket(identifier)
+          .pipe(
+            map(response => addToBasketSuccess({httpResponse: response})),
+            tap((response) => {
+              this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
+              this.store.dispatch(fetchRenewedBasketProducts({httpResponse: response.httpResponse}));
+            }),
+            catchError(error => of(addToBasketFail({error: error})))
           );
       }))
     )

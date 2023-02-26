@@ -17,7 +17,7 @@ import {EffectsModule} from "@ngrx/effects";
 import {HeadersDecoratorInterceptor} from "./interceptor/headers.decorator.interceptor";
 import {ErrorHandlerInterceptor} from "./interceptor/error.handler.interceptor";
 import {authReducer} from "./store/reducer/auth.reducer";
-import {favouriteProductsReducer} from "./store/reducer/user.reducer";
+import {basketProductsReducer, favouriteProductsReducer} from "./store/reducer/user.reducer";
 
 @NgModule({
   declarations: [
@@ -62,7 +62,10 @@ import {favouriteProductsReducer} from "./store/reducer/user.reducer";
         skipWhenExpired: true
       }
     }),
-    StoreModule.forRoot({auth: authReducer, favouriteProducts: favouriteProductsReducer}, {}),
+    StoreModule.forRoot({
+        auth: authReducer, favouriteProducts: favouriteProductsReducer,
+        basketProducts: basketProductsReducer
+      }, {}),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
     EffectsModule.forRoot([])
   ],
@@ -82,7 +85,6 @@ import {favouriteProductsReducer} from "./store/reducer/user.reducer";
       useClass: HeadersDecoratorInterceptor,
       multi: true
     }],
-  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

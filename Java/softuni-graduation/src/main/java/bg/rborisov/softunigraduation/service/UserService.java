@@ -3,6 +3,7 @@ package bg.rborisov.softunigraduation.service;
 import bg.rborisov.softunigraduation.dao.ProductRepository;
 import bg.rborisov.softunigraduation.dao.RoleRepository;
 import bg.rborisov.softunigraduation.dao.UserRepository;
+import bg.rborisov.softunigraduation.domain.BasketHttpResponse;
 import bg.rborisov.softunigraduation.domain.FavouritesHttpResponse;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.ProductDto;
@@ -190,16 +191,19 @@ public class UserService {
         if (!user.getFavouriteProducts().contains(product)) {
             user.getFavouriteProducts().add(product);
         } else {
-            FavouritesHttpResponse httpResponse = constructHttpResponse(HttpStatus.OK, PRODUCT_ALREADY_ADDED_TO_FAVOURITES,
-                    NotificationStatus.INFO.name(), this.loadFavouriteProducts(principal));
+            HttpResponse response = constructHttpResponse(OK,
+                    PRODUCT_ALREADY_ADDED_TO_FAVOURITES, NotificationStatus.INFO.name());
 
-            return new ResponseEntity<>(httpResponse, HttpStatus.OK);
+            FavouritesHttpResponse favouritesHttpResponse = this.modelMapper.map(response, FavouritesHttpResponse.class);
+            favouritesHttpResponse.setFavouriteProducts(loadFavouriteProducts(principal));
+            return new ResponseEntity<>(favouritesHttpResponse, HttpStatus.OK);
         }
+        HttpResponse response = constructHttpResponse(OK, String.format(PRODUCT_SUCCESSFULLY_ADDED_TO_FAVOURITES, product.getName()),
+                NotificationStatus.SUCCESS.name());
 
-        FavouritesHttpResponse httpResponse = constructHttpResponse(HttpStatus.OK, String.format(PRODUCT_SUCCESSFULLY_ADDED_TO_FAVOURITES, product.getName()),
-                NotificationStatus.SUCCESS.name(), this.loadFavouriteProducts(principal));
-
-        return new ResponseEntity<>(httpResponse, HttpStatus.OK);
+        FavouritesHttpResponse favouritesHttpResponse = this.modelMapper.map(response, FavouritesHttpResponse.class);
+        favouritesHttpResponse.setFavouriteProducts(loadFavouriteProducts(principal));
+        return new ResponseEntity<>(favouritesHttpResponse, HttpStatus.OK);
     }
 
     public Set<ProductDto> loadFavouriteProducts(Principal principal) {
@@ -218,29 +222,76 @@ public class UserService {
         boolean isRemoved = user.getFavouriteProducts().remove(product);
 
         if (!isRemoved) {
-            FavouritesHttpResponse httpResponse = constructHttpResponse(HttpStatus.BAD_REQUEST,
-                    String.format(PRODUCT_NOT_REMOVED_FROM_FAVOURITES, productName),
-                    NotificationStatus.ERROR.name(), loadFavouriteProducts(principal));
 
-            return new ResponseEntity<>(httpResponse, HttpStatus.BAD_REQUEST);
+            HttpResponse response = constructHttpResponse(HttpStatus.BAD_REQUEST,
+                    String.format(PRODUCT_NOT_REMOVED_FROM_FAVOURITES, productName),
+                    NotificationStatus.ERROR.name());
+
+            FavouritesHttpResponse favouritesHttpResponse = this.modelMapper.map(response, FavouritesHttpResponse.class);
+            favouritesHttpResponse.setFavouriteProducts(loadFavouriteProducts(principal));
+
+            return new ResponseEntity<>(favouritesHttpResponse, HttpStatus.BAD_REQUEST);
         }
 
-        FavouritesHttpResponse httpResponse = constructHttpResponse(HttpStatus.OK,
+        HttpResponse httpResponse = constructHttpResponse(OK,
                 String.format(PRODUCT_REMOVED_FROM_FAVOURITES, productName),
-                NotificationStatus.SUCCESS.name(), loadFavouriteProducts(principal));
+                NotificationStatus.SUCCESS.name());
+
+        FavouritesHttpResponse favouritesHttpResponse = this.modelMapper.map(httpResponse, FavouritesHttpResponse.class);
+        favouritesHttpResponse.setFavouriteProducts(loadFavouriteProducts(principal));
+
 
         return new ResponseEntity<>(httpResponse, HttpStatus.OK);
     }
 
-    private FavouritesHttpResponse constructHttpResponse(HttpStatus httpStatus, String message, String notificationStatus, Set<ProductDto> favouriteProducts) {
-        FavouritesHttpResponse httpResponse = new FavouritesHttpResponse();
-        httpResponse.setHttpStatus(httpStatus);
-        httpResponse.setHttpStatusCode(httpStatus.value());
-        httpResponse.setNotificationStatus(notificationStatus.toLowerCase(Locale.ROOT));
-        httpResponse.setReason("");
-        httpResponse.setMessage(message);
-        httpResponse.setFavouriteProducts(favouriteProducts);
+    private HttpResponse constructHttpResponse(HttpStatus httpStatus, String message, String notificationStatus) {
+        HttpResponse response = new HttpResponse();
+        response.setHttpStatus(httpStatus);
+        response.setHttpStatusCode(httpStatus.value());
+        response.setNotificationStatus(notificationStatus.toLowerCase(Locale.ROOT));
+        response.setReason("");
+        response.setMessage(message);
 
-        return httpResponse;
+        return response;
+    }
+
+    public ResponseEntity<HttpResponse> addToBasket(final String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException {
+        if (identifier.isBlank()) {
+            throw new IllegalArgumentException();
+        }
+
+        User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(UserNotFoundException::new);
+        Product product = this.productRepository.findProductByIdentifier(identifier).orElseThrow(ProductNotFoundException::new);
+
+        if (user.getBasketProducts().contains(product)) {
+            HttpResponse httpResponse = constructHttpResponse(
+                    OK, String.format(PRODUCT_ALREADY_ADDED_TO_BASKET, product.getName()),
+                    NotificationStatus.INFO.name().toLowerCase(Locale.ROOT)
+            );
+
+            BasketHttpResponse basketHttpResponse = this.modelMapper.map(httpResponse, BasketHttpResponse.class);
+            basketHttpResponse.setBasketProducts(loadBasket(principal));
+            return new ResponseEntity<>(basketHttpResponse, HttpStatus.OK);
+        }
+
+        user.getBasketProducts().add(product);
+
+        HttpResponse httpResponse = constructHttpResponse(
+                OK, String.format(PRODUCT_SUCCESSFULLY_ADDED_TO_BASKET, product.getName()),
+                NotificationStatus.SUCCESS.name().toLowerCase(Locale.ROOT)
+        );
+
+        BasketHttpResponse basketHttpResponse = this.modelMapper.map(httpResponse, BasketHttpResponse.class);
+        basketHttpResponse.setBasketProducts(loadBasket(principal));
+        return new ResponseEntity<>(basketHttpResponse, HttpStatus.OK);
+    }
+
+    public Set<ProductDto> loadBasket(Principal principal) throws UserNotFoundException {
+        return this.userRepository.findByUsername(principal.getName())
+                .orElseThrow(UserNotFoundException::new).getBasketProducts()
+                .stream().map(product -> this.modelMapper.map(product, ProductDto.class))
+                .sorted(Comparator.comparing(ProductDto::getCategoryIdentifier).thenComparing(ProductDto::getPrice))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+
     }
 }

@@ -5,8 +5,11 @@ import {CategoryService} from "../../service/category.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {faHeart} from '@fortawesome/free-regular-svg-icons';
 import {Store} from "@ngrx/store";
-import {addToFavourites} from "../../store/action/user.action";
-import {selectFavouriteProductsState} from "../../store/selector/user.selector";
+import {addToBasket, addToFavourites} from "../../store/action/user.action";
+import {
+  selectBasketProductsState,
+  selectFavouriteProductsState
+} from "../../store/selector/user.selector";
 import {Product} from "../../interface/product";
 
 @Component({
@@ -19,6 +22,8 @@ export class CategoryComponent implements OnInit {
   category$: Observable<Category>;
 
   favouriteProducts$: Observable<Product[]>;
+
+  basketProducts$: Observable<Product[]>;
 
   faHeart = faHeart;
 
@@ -42,6 +47,13 @@ export class CategoryComponent implements OnInit {
 
   public addToFavourites(identifier: string) {
     this.store.dispatch(addToFavourites({identifier}));
+    this.favouriteProducts$ = this.store.select(selectFavouriteProductsState);
+    this.basketProducts$ = this.store.select(selectBasketProductsState);
+  }
+
+  public addToBasket(identifier: string) {
+    this.store.dispatch(addToBasket({identifier}));
+    this.basketProducts$ = this.store.select(selectBasketProductsState);
     this.favouriteProducts$ = this.store.select(selectFavouriteProductsState);
   }
 }

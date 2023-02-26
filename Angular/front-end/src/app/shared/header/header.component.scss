@@ -412,10 +412,10 @@ a {
   text-align: center;
 }
 
-.fav-btn {
+.fav-btn, .basket-btn {
   position: relative;
 
-  & .fav-items__count {
+  & .fav-items__count, .basket-items__count {
     position: absolute;
     left: 75px;
     font-weight: 600;

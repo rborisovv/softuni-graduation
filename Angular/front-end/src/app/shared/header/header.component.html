@@ -26,8 +26,11 @@
             <span class="fav-items__count">{{products.length}}</span>
           </ng-container>
         </a>
-        <a href="javascript:void(0)">
+        <a class="basket-btn" href="javascript:void(0)" routerLink="/cart">
           <fa-icon [icon]="faBasket" style="color: #c29161;"></fa-icon>
+          <ng-container *ngIf="basketProducts$ | async as products">
+            <span class="basket-items__count">{{products.length}}</span>
+          </ng-container>
         </a>
         <a href="javascript:void(0)" (click)="onLogout($event)">
           <fa-icon [icon]="faSignOut"></fa-icon>

@@ -6,5 +6,6 @@ export interface HttpResponse {
   reason: string,
   message: string,
   notificationStatus?: string,
-  favouriteProducts?: Product[]
+  favouriteProducts?: Product[],
+  basketProducts?: Product[]
 }
