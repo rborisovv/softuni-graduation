@@ -9,6 +9,7 @@ import bg.rborisov.softunigraduation.dto.ProductDto;
 import bg.rborisov.softunigraduation.dto.UserLoginDto;
 import bg.rborisov.softunigraduation.dto.UserRegisterDto;
 import bg.rborisov.softunigraduation.dto.UserWelcomeDto;
+import bg.rborisov.softunigraduation.enumeration.LoggerStatus;
 import bg.rborisov.softunigraduation.enumeration.NotificationStatus;
 import bg.rborisov.softunigraduation.enumeration.RoleEnum;
 import bg.rborisov.softunigraduation.exception.ProductNotFoundException;
@@ -24,6 +25,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -55,6 +57,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @Service
 @Transactional
+@Slf4j
 public class UserService {
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
@@ -100,7 +103,7 @@ public class UserService {
 
         UserWelcomeDto userWelcomeDto = modelMapper.map(user, UserWelcomeDto.class);
         AuthLogger authLogger = new AuthLogger();
-        authLogger.log(String.format("User %s successfully logged in!", user.getUsername()));
+        authLogger.log(String.format("User %s successfully logged in!", user.getUsername()), LoggerStatus.INFO);
         return new ResponseEntity<>(userWelcomeDto, OK);
     }
 
