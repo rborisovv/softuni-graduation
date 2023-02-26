@@ -14,18 +14,13 @@ import java.io.Serializable;
 @Setter
 @ToString
 public class HttpResponse implements Serializable {
-
     @NonNull
     protected int httpStatusCode;
-
     @NonNull
     protected HttpStatus httpStatus;
-
     @NonNull
     protected String reason;
-
     @NonNull
     protected String message;
-
     protected String notificationStatus;
 }
