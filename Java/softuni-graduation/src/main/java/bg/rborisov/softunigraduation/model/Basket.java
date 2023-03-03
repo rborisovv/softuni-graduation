@@ -5,7 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -24,5 +24,8 @@ public class Basket extends BaseEntity implements Serializable {
     @ColumnDefault("null")
     private Set<Product> products;
 
-    private LocalDateTime creationDate;
+    @ElementCollection
+    private Map<Product, Integer> ProductQuantity;
+
+    private String creationDate;
 }

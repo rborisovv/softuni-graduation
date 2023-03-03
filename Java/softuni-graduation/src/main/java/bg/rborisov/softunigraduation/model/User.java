@@ -54,11 +54,6 @@ public class User extends BaseEntity implements Serializable {
     @ManyToMany
     @ColumnDefault("null")
     private Set<Product> favouriteProducts;
-
-    @ManyToMany
-    @ColumnDefault("null")
-    private Set<Product> basketProducts;
-
     @OneToOne
     private Basket basket;
 }

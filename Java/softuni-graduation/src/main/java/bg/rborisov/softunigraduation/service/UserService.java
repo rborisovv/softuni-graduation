@@ -1,9 +1,6 @@
 package bg.rborisov.softunigraduation.service;
 
-import bg.rborisov.softunigraduation.dao.BasketRepository;
-import bg.rborisov.softunigraduation.dao.ProductRepository;
-import bg.rborisov.softunigraduation.dao.RoleRepository;
-import bg.rborisov.softunigraduation.dao.UserRepository;
+import bg.rborisov.softunigraduation.dao.*;
 import bg.rborisov.softunigraduation.domain.BasketHttpResponse;
 import bg.rborisov.softunigraduation.domain.FavouritesHttpResponse;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
@@ -17,10 +14,7 @@ import bg.rborisov.softunigraduation.enumeration.RoleEnum;
 import bg.rborisov.softunigraduation.exception.ProductNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
-import bg.rborisov.softunigraduation.model.Basket;
-import bg.rborisov.softunigraduation.model.Product;
-import bg.rborisov.softunigraduation.model.Role;
-import bg.rborisov.softunigraduation.model.User;
+import bg.rborisov.softunigraduation.model.*;
 import bg.rborisov.softunigraduation.util.JwtProvider;
 import bg.rborisov.softunigraduation.util.logger.AuthLogger;
 import jakarta.servlet.http.Cookie;
@@ -73,8 +67,10 @@ public class UserService {
     private final ProductRepository productRepository;
     private final BasketRepository basketRepository;
 
-    public UserService(JwtProvider jwtProvider, UserDetailsService userDetailsService, AuthenticationManager authenticationManager, ModelMapper modelMapper,
-                       UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, Validator validator, ProductRepository productRepository, BasketRepository basketRepository) {
+    public UserService(JwtProvider jwtProvider, UserDetailsService userDetailsService, AuthenticationManager authenticationManager,
+                       ModelMapper modelMapper, UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       RoleRepository roleRepository, Validator validator, ProductRepository productRepository,
+                       BasketRepository basketRepository) {
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
         this.authenticationManager = authenticationManager;
@@ -260,6 +256,7 @@ public class UserService {
     }
 
     public ResponseEntity<HttpResponse> addToBasket(final String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException {
+        //TODO: Find a way to add quantity to ordered Products
         if (identifier.isBlank()) {
             throw new IllegalArgumentException();
         }
@@ -281,10 +278,13 @@ public class UserService {
 
         if (basket == null) {
             basket = new Basket();
+            basket.setProductQuantity(new HashMap<>());
             basket.setProducts(new HashSet<>());
         }
 
         basket.getProducts().add(product);
+        basket.getProductQuantity().put(product, 1);
+
         this.basketRepository.save(basket);
         user.setBasket(basket);
 
@@ -322,7 +322,14 @@ public class UserService {
         Product product = this.productRepository.findProductByIdentifier(identifier).orElseThrow(ProductNotFoundException::new);
         User user = this.userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
 
-        user.getBasket().getProducts().remove(product);
+        Basket basket = user.getBasket();
+        basket.getProducts().remove(product);
+        basket.getProductQuantity().remove(product);
+
+        if (basket.getProducts() == null || basket.getProducts().isEmpty()) {
+            user.setBasket(null);
+            this.basketRepository.delete(basket);
+        }
 
         HttpResponse httpResponse = constructHttpResponse(HttpStatus.OK,
                 String.format(PRODUCT_REMOVED_FROM_BASKET, product.getName()), NotificationStatus.SUCCESS.name());

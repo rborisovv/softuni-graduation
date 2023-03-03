@@ -36,7 +36,7 @@ public class UserResource {
     }
 
     @PostMapping("/addToBasket")
-    public ResponseEntity<HttpResponse> addToCart(@RequestBody String identifier, Principal principal) throws ProductNotFoundException, UserNotFoundException {
+    public ResponseEntity<HttpResponse> addToCart(@RequestBody final String identifier, Principal principal) throws ProductNotFoundException, UserNotFoundException {
         return this.userService.addToBasket(identifier, principal);
     }
 
