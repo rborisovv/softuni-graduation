@@ -13,7 +13,6 @@ import java.util.Set;
 @Builder
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity implements Serializable {
@@ -59,4 +58,7 @@ public class User extends BaseEntity implements Serializable {
     @ManyToMany
     @ColumnDefault("null")
     private Set<Product> basketProducts;
+
+    @OneToOne
+    private Basket basket;
 }

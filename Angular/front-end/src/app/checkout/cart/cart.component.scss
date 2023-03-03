@@ -1,3 +1,5 @@
+@import "../../../common";
+
 @mixin size($point) {
   @if $point == lg-device {
     @media (min-width: 1024px) and (max-width: 1600px) {
@@ -47,40 +49,17 @@
   }
 }
 
-body {
-  font-family: "Jost", sans-serif;
-  font-size: 14px;
-  font-weight: 300;
-  color: #34302d;
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  background: linear-gradient(45deg, #ab5d6d, #913e4e),
-  linear-gradient(45deg, #b26172, #ae5545);
-  background-size: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  min-width: 360px;
-  @include size(sm-device) {
-    align-items: baseline;
-  }
-  @include size(md-device) {
-    align-items: baseline;
-  }
-}
-
 .cart_wrapper {
   max-width: 1330px;
   width: 100%;
   max-height: 800px;
+  overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
   background-color: white;
   box-shadow: 0 6px 32px rgba(0, 0, 0, 0.4);
   margin: auto;
-  overflow: hidden;
+  //overflow: hidden;
   @include size(md-device) {
     max-height: 1000px;
   }
@@ -368,29 +347,14 @@ body {
             }
           }
         }
-
-        .subtotal {
-          width: calc(50% - 80px);
-          flex: 0 0 calc(50% - 50px);
-          text-align: right;
-          font-size: 16px;
-          @include size(sm-device) {
-            width: 50%;
-            flex: 0 0 50%;
-          }
-
-          label {
-            margin-right: 15px;
-          }
-        }
       }
     }
   }
 
   // cart_details
-  .cart_details {
+  .product-summary {
     background: linear-gradient(45deg, #303030, #4b4643);
-    padding: 30px 40px;
+    //padding: 30px 40px;
     width: 330px;
     flex: 0 0 330px;
     box-shadow: -8px 0px 32px rgba(0, 0, 0, 0.36);
@@ -405,7 +369,11 @@ body {
       padding: 30px;
     }
 
-    .cart_title {
+    .product-summary__products {
+      padding: 30px 40px;
+    }
+
+    .product-summary__title {
       font-size: 22px;
       color: #f1c40f;
       font-weight: 400;
@@ -415,178 +383,59 @@ body {
       }
     }
 
-    .form_row {
-      display: flex;
-      flex-wrap: wrap;
+    .product-summary__image img {
+      width: 100px;
+      height: 100px;
+      border-radius: 100px;
+    }
+
+    .product-summary__price {
+      color: #ffffff;
+    }
+
+    .btn {
+      position: relative;
+      width: calc(100%);
+      height: 65px;
+      margin: 25px -40px 0 -40px;
+      background-color: #f1c40f;
+      border: none;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      color: #333;
+      font-size: 15px;
+      font-weight: 400;
+      transition: all 0.3s linear;
+
+      &:hover {
+        background-color: darken($color: #f1c40f, $amount: 4);
+      }
+
+      &:active {
+        box-shadow: inset 0 0 28px 0 rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    .product-row {
+      @include flex-horizontal-center-row();
+      justify-content: space-between;
       @include size(md-device) {
         margin-bottom: 40px;
       }
+    }
 
-      .form_group {
-        display: flex;
-        flex-wrap: wrap;
-        margin: 0 0 35px;
-        padding: 0 10px;
-        width: 100%;
-        @include size(md-device) {
-          &:nth-child(2) {
-            width: 50%;
-          }
-          &:nth-child(3) {
-            width: 30% !important;
-            flex: 0 0 30% !important;
-          }
-          &:nth-child(4) {
-            width: 20% !important;
-            flex: 0 0 20% !important;
-          }
-        }
+    .subtotal {
+      @include flex-horizontal-center-row();
+      justify-content: flex-end;
+      align-items: flex-end;
+      margin-right: 20px;
+      flex: 0 0 calc(50% - 50px);
+      text-align: right;
+      color: #ffffff;
+      font-size: 16px;
 
-        &.w_75 {
-          width: 65%;
-          flex: 0 0 65%;
-        }
-
-        &.w_25 {
-          width: 35%;
-          flex: 0 0 35%;
-        }
-
-        .input_label {
-          color: #f3f3f3;
-          font-weight: 300;
-          font-size: 16px;
-          width: 100%;
-          flex: 0 0 100%;
-          letter-spacing: 0.5px;
-        }
-
-        .input {
-          width: 100%;
-          flex: 0 0 100%;
-          background-color: transparent;
-          border: none;
-          outline: none;
-          color: #eee;
-          font-size: 16px;
-          font-weight: 400;
-          letter-spacing: 0.5px;
-          border-bottom: solid 2px #999;
-          height: 32px;
-          transition: all 0.3s linear;
-
-          &::placeholder {
-            font-size: 16px;
-            font-weight: 400;
-            color: rgba(255, 255, 255, 0.1);
-            transition: all 0.2s linear;
-          }
-
-          &:focus {
-            &::placeholder {
-              opacity: 0;
-            }
-          }
-        }
-
-        &.cart_type {
-          justify-content: space-between;
-          @include size(md-device) {
-            justify-content: left;
-          }
-
-          .type {
-            width: calc(100% / 3 - 15px);
-            padding: 0;
-            margin-top: 5px;
-            cursor: pointer;
-            transition: all 0.3s linear;
-            @include size(md-device) {
-              width: 75px;
-            }
-
-            &:hover {
-              svg {
-                fill: #bbb;
-              }
-            }
-
-            svg {
-              width: 42px;
-              fill: #7f7a76;
-              transition: all 0.3s linear;
-            }
-
-            &.paypal {
-              svg {
-                width: 62px;
-                margin-top: -10px;
-              }
-            }
-          }
-
-          input {
-            display: none;
-
-            &#master {
-              &:checked ~ {
-                .master {
-                  svg {
-                    fill: #f4f4f4;
-                  }
-                }
-              }
-            }
-
-            &#visa {
-              &:checked ~ {
-                .visa {
-                  svg {
-                    fill: #f4f4f4;
-                  }
-                }
-              }
-            }
-
-            &#paypal {
-              &:checked ~ {
-                .paypal {
-                  svg {
-                    fill: #f4f4f4;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-
-      .btn {
-        width: calc(100%);
-        height: 65px;
-        margin: 0px -40px;
-        background-color: #f1c40f;
-        border: none;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-        color: #333;
-        font-size: 15px;
-        font-weight: 400;
-        position: absolute;
-        bottom: 0;
-        transition: all 0.3s linear;
-        @include size(sm-device) {
-          position: static;
-          margin: auto;
-        }
-
-        &:hover {
-          background-color: darken($color: #f1c40f, $amount: 4);
-        }
-
-        &:active {
-          box-shadow: inset 0 0 28px 0 rgba(0, 0, 0, 0.3);
-        }
+      label {
+        margin-right: 15px;
       }
     }
   }

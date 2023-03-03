@@ -13,18 +13,18 @@ import {selectBasketProductsState} from "../../store/selector/user.selector";
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
-  loadBasketProducts$: Observable<Product[]>;
+  renewedBasketProducts$: Observable<Product[]>;
 
   constructor(private readonly userService: UserService, protected readonly location: Location,
               private readonly store: Store) {
   }
 
   ngOnInit(): void {
-    this.loadBasketProducts$ = this.userService.loadBasketProducts();
+    this.renewedBasketProducts$ = this.userService.loadBasketProducts();
   }
 
   removeProductFromBasket(identifier: string) {
     this.store.dispatch(removeFromBasket({identifier}));
-    this.loadBasketProducts$ = this.store.select(selectBasketProductsState);
+    this.renewedBasketProducts$ = this.store.select(selectBasketProductsState);
   }
 }

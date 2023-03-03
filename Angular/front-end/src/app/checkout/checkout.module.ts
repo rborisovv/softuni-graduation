@@ -6,6 +6,7 @@ import {PageGuard} from "../guard/page.guard";
 import {SharedModule} from "../shared/shared.module";
 import {AppModule} from "../app.module";
 import {CartBalancePipe} from "../pipes/cart.balance.pipe";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 const routes: Routes = [
   {
@@ -23,7 +24,8 @@ const routes: Routes = [
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
-        SharedModule
+        SharedModule,
+        FontAwesomeModule
     ]
 })
 export class CheckoutModule {

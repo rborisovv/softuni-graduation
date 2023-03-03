@@ -15,4 +15,5 @@ public class Messages {
     public static final String PRODUCT_NOT_REMOVED_FROM_FAVOURITES = "There was a problem removing product \"%s\" from favourites!";
     public static final String PRODUCT_SUCCESSFULLY_ADDED_TO_BASKET = "The product \"%s\" was successfully added to basket!";
     public static final String PRODUCT_ALREADY_ADDED_TO_BASKET = "The product \"%s\" is already added to basket!";
+    public static final String PRODUCT_REMOVED_FROM_BASKET = "The product \"%s\" was successfully removed from basket!";
 }

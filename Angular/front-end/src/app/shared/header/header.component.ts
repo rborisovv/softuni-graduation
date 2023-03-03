@@ -72,15 +72,9 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['renewedFavouriteProducts'] && changes['renewedFavouriteProducts'].previousValue !== changes['renewedFavouriteProducts'].currentValue) {
       this.favouriteProducts$ = changes['renewedFavouriteProducts'].currentValue;
-      // this.basketProducts$ = this.store.select(selectBasketProductsState);
-      // this.favouriteProducts$.subscribe((x) => console.log('favourites' + x));
-      // this.basketProducts$.subscribe((x) => console.log('basket' + x));
     }
     if (changes['renewedBasketProducts'] && changes['renewedBasketProducts'].previousValue !== changes['renewedBasketProducts'].currentValue) {
       this.basketProducts$ = changes['renewedBasketProducts'].currentValue;
-      // this.favouriteProducts$ = this.store.select(selectFavouriteProductsState);
-      // this.favouriteProducts$.subscribe((x) => console.log('favourites' + x));
-      // this.basketProducts$.subscribe((x) => console.log('basket' + x));
     }
 
     //TODO: Find why only one counter is display upon clicking one of the items

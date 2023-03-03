@@ -1,5 +1,6 @@
 package bg.rborisov.softunigraduation.service;
 
+import bg.rborisov.softunigraduation.dao.BasketRepository;
 import bg.rborisov.softunigraduation.dao.ProductRepository;
 import bg.rborisov.softunigraduation.dao.RoleRepository;
 import bg.rborisov.softunigraduation.dao.UserRepository;
@@ -16,6 +17,7 @@ import bg.rborisov.softunigraduation.enumeration.RoleEnum;
 import bg.rborisov.softunigraduation.exception.ProductNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
+import bg.rborisov.softunigraduation.model.Basket;
 import bg.rborisov.softunigraduation.model.Product;
 import bg.rborisov.softunigraduation.model.Role;
 import bg.rborisov.softunigraduation.model.User;
@@ -69,9 +71,10 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final Validator validator;
     private final ProductRepository productRepository;
+    private final BasketRepository basketRepository;
 
     public UserService(JwtProvider jwtProvider, UserDetailsService userDetailsService, AuthenticationManager authenticationManager, ModelMapper modelMapper,
-                       UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, Validator validator, ProductRepository productRepository) {
+                       UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, Validator validator, ProductRepository productRepository, BasketRepository basketRepository) {
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
         this.authenticationManager = authenticationManager;
@@ -81,6 +84,7 @@ public class UserService {
         this.roleRepository = roleRepository;
         this.validator = validator;
         this.productRepository = productRepository;
+        this.basketRepository = basketRepository;
     }
 
     public ResponseEntity<UserWelcomeDto> login(UserLoginDto userLoginDto) throws IOException {
@@ -263,18 +267,26 @@ public class UserService {
         User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(UserNotFoundException::new);
         Product product = this.productRepository.findProductByIdentifier(identifier).orElseThrow(ProductNotFoundException::new);
 
-        if (user.getBasketProducts().contains(product)) {
+        if (user.getBasket() != null && user.getBasket().getProducts().contains(product)) {
             HttpResponse httpResponse = constructHttpResponse(
                     OK, String.format(PRODUCT_ALREADY_ADDED_TO_BASKET, product.getName()),
-                    NotificationStatus.INFO.name().toLowerCase(Locale.ROOT)
-            );
+                    NotificationStatus.INFO.name().toLowerCase(Locale.ROOT));
 
             BasketHttpResponse basketHttpResponse = this.modelMapper.map(httpResponse, BasketHttpResponse.class);
             basketHttpResponse.setBasketProducts(loadBasket(principal));
             return new ResponseEntity<>(basketHttpResponse, HttpStatus.OK);
         }
 
-        user.getBasketProducts().add(product);
+        Basket basket = user.getBasket();
+
+        if (basket == null) {
+            basket = new Basket();
+            basket.setProducts(new HashSet<>());
+        }
+
+        basket.getProducts().add(product);
+        this.basketRepository.save(basket);
+        user.setBasket(basket);
 
         HttpResponse httpResponse = constructHttpResponse(
                 OK, String.format(PRODUCT_SUCCESSFULLY_ADDED_TO_BASKET, product.getName()),
@@ -287,11 +299,37 @@ public class UserService {
     }
 
     public Set<ProductDto> loadBasket(Principal principal) throws UserNotFoundException {
-        return this.userRepository.findByUsername(principal.getName())
-                .orElseThrow(UserNotFoundException::new).getBasketProducts()
+        User user = this.userRepository.findByUsername(principal.getName())
+                .orElseThrow(UserNotFoundException::new);
+
+        return loadSortedUserBasketProducts(user);
+    }
+
+    private Set<ProductDto> loadSortedUserBasketProducts(User user) {
+        if (user.getBasket() == null || user.getBasket().getProducts().isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        return user.getBasket().getProducts()
                 .stream().map(product -> this.modelMapper.map(product, ProductDto.class))
                 .sorted(Comparator.comparing(ProductDto::getCategoryIdentifier).thenComparing(ProductDto::getPrice))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
 
+    public ResponseEntity<HttpResponse> removeFromBasket(final String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException {
+        String username = principal.getName();
+
+        Product product = this.productRepository.findProductByIdentifier(identifier).orElseThrow(ProductNotFoundException::new);
+        User user = this.userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+
+        user.getBasket().getProducts().remove(product);
+
+        HttpResponse httpResponse = constructHttpResponse(HttpStatus.OK,
+                String.format(PRODUCT_REMOVED_FROM_BASKET, product.getName()), NotificationStatus.SUCCESS.name());
+        BasketHttpResponse response = this.modelMapper.map(httpResponse, BasketHttpResponse.class);
+
+        Set<ProductDto> userBasketProducts = loadSortedUserBasketProducts(user);
+        response.setBasketProducts(userBasketProducts);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

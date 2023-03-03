@@ -44,4 +44,9 @@ public class UserResource {
     public Set<ProductDto> loadBasket(Principal principal) throws UserNotFoundException {
         return this.userService.loadBasket(principal);
     }
+
+    @PostMapping("/removeFromBasket")
+    public ResponseEntity<HttpResponse> removeFromBasket(@RequestBody final String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException {
+        return this.userService.removeFromBasket(identifier, principal);
+    }
 }
