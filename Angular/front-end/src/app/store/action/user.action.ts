@@ -19,6 +19,6 @@ export const addToBasket = createAction('[Basket] Add to Basket', props<{ identi
 
 export const addToBasketSuccess = createAction('[Basket] Add to Basket', props<{ httpResponse: HttpResponse }>());
 
-export const addToBasketFail = createAction('[Favourites] Add to Basket', props<{ error: Error }>());
+export const addToBasketFail = createAction('[Basket] Add to Basket', props<{ error: Error }>());
 
-export const fetchRenewedBasketProducts = createAction('[Favourites] Fetch Renewed Products', props<{ httpResponse: HttpResponse }>());
+export const fetchRenewedBasketProducts = createAction('[Basket] Fetch Renewed Products', props<{ httpResponse: HttpResponse }>());

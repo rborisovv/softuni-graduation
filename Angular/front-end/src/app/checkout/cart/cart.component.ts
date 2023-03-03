@@ -18,4 +18,8 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     this.loadBasketProducts$ = this.userService.loadBasketProducts();
   }
+
+  removeProductFromBasket(identifier: string) {
+
+  }
 }

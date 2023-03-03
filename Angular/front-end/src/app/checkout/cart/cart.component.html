@@ -34,7 +34,7 @@
             <label>{{product.price | currency}} lv.</label>
           </div>
           <div class="td_item item_remove">
-            <span class="material-icons-outlined">close</span>
+            <span (click)="removeProductFromBasket(product.identifier)" class="material-icons-outlined">close</span>
           </div>
         </div>
 
