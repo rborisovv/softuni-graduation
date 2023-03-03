@@ -57,4 +57,8 @@ export class UserService {
   addToBasket(identifier: string): Observable<HttpResponse> {
     return this.http.post<HttpResponse>(`${this.apiUrl}/user/addToBasket`, identifier);
   }
+
+  removeFromBasket(identifier: string): Observable<HttpResponse> {
+    return this.http.post<HttpResponse>(`${this.apiUrl}/user/removeFromBasket`, identifier);
+  }
 }

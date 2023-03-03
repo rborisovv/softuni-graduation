@@ -2,11 +2,19 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {NotifierService} from "angular-notifier";
 import {UserService} from "../../service/user.service";
 import {
-  addToBasket, addToBasketFail, addToBasketSuccess,
+  addToBasket,
+  addToBasketFail,
+  addToBasketSuccess,
   addToFavourites,
   addToFavouritesFail,
-  addToFavouritesSuccess, fetchRenewedBasketProducts, fetchRenewedFavouriteProducts,
-  removeFromFavourites, removeFromFavouritesFail, removeFromFavouritesSuccess
+  addToFavouritesSuccess,
+  fetchRenewedBasketProducts,
+  fetchRenewedFavouriteProducts,
+  removeFromBasket,
+  removeFromBasketFail, removeFromBasketSuccess,
+  removeFromFavourites,
+  removeFromFavouritesFail,
+  removeFromFavouritesSuccess
 } from "../action/user.action";
 import {catchError, exhaustMap, map, of, tap} from "rxjs";
 import {Injectable} from "@angular/core";
@@ -64,6 +72,23 @@ export class UserEffects {
               this.store.dispatch(fetchRenewedBasketProducts({httpResponse: response.httpResponse}));
             }),
             catchError(error => of(addToBasketFail({error: error})))
+          );
+      }))
+    )
+  });
+
+  removeFromBasket$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(removeFromBasket),
+      exhaustMap((({identifier}) => {
+        return this.userService.removeFromBasket(identifier)
+          .pipe(
+            map(response => removeFromBasketSuccess({httpResponse: response})),
+            tap((response) => {
+              this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
+              this.store.dispatch(fetchRenewedBasketProducts({httpResponse: response.httpResponse}));
+            }),
+            catchError(error => of(removeFromBasketFail({error: error})))
           );
       }))
     )
