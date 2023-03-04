@@ -702,7 +702,7 @@
             </div>
             <div class="product-actions mb-40">
               <p class="product-price fs-2 mb-20 mt-20">{{product.price | currency}} <span>lv.</span></p>
-              <a class="add-to-basket" href="javascript:void(0)">Add to Basket</a>
+              <a class="add-to-basket" href="javascript:void(0)" (click)="addProductToBasket(product.identifier)">Add to Basket</a>
             </div>
           </div>
         </div>

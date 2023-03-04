@@ -27,8 +27,8 @@ import {Observable, Subscription} from "rxjs";
 import {Jwt} from "../../authentication/Jwt";
 import {Product} from "../../interface/product";
 import {Store} from "@ngrx/store";
-import {removeFromFavourites} from "../../store/action/user.action";
-import {selectFavouriteProductsState} from "../../store/selector/user.selector";
+import {addToBasket, removeFromFavourites} from "../../store/action/user.action";
+import {selectBasketProductsState, selectFavouriteProductsState} from "../../store/selector/user.selector";
 
 @Component({
   selector: 'app-header',
@@ -52,8 +52,8 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   favouriteProducts$: Observable<Product[]>;
   basketProducts$: Observable<Product[]>;
 
-  @Input() renewedFavouriteProducts: Observable<Product[]>;
-  @Input() renewedBasketProducts: Observable<Product[]>;
+  @Input() renewedFavouriteProducts$  : Observable<Product[]>;
+  @Input() renewedBasketProducts$: Observable<Product[]>;
 
   @ViewChild('products') products: ElementRef;
 
@@ -108,5 +108,10 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
     this.store.dispatch(removeFromFavourites({identifier}));
     this.renderer.removeChild(this.products.nativeElement, productRef);
     this.favouriteProducts$ = this.store.select(selectFavouriteProductsState);
+  }
+
+  addProductToBasket(identifier: string) {
+    this.store.dispatch(addToBasket({identifier}));
+    this.basketProducts$ = this.store.select(selectBasketProductsState);
   }
 }
