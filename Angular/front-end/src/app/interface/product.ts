@@ -9,5 +9,6 @@ export interface Product {
   pkOfFile?: string,
   mediaUrl?: string,
   categoryIdentifier: string,
-  categoryMediaUrl?: string
+  categoryMediaUrl?: string,
+  categoryName?: string
 }

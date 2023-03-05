@@ -24,7 +24,7 @@
 }
 
 .material-icons-outlined {
-  font-family: "Material Icons Outlined";
+  font-family: "Material Icons Outlined", serif;
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
@@ -205,6 +205,11 @@
             font-size: 16px;
             color: #666;
             transition: all 0.3s linear;
+
+            &.item-category__img img {
+              width: 60px;
+            }
+
             @include size(sm-device) {
               padding: 5px;
             }
@@ -400,8 +405,7 @@
       margin: 25px -40px 0 -40px;
       background-color: #f1c40f;
       border: none;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
+      border-radius: 0;
       color: #333;
       font-size: 15px;
       font-weight: 400;

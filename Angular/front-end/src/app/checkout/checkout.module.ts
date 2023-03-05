@@ -4,7 +4,6 @@ import {CartComponent} from './cart/cart.component';
 import {RouterModule, Routes} from "@angular/router";
 import {PageGuard} from "../guard/page.guard";
 import {SharedModule} from "../shared/shared.module";
-import {AppModule} from "../app.module";
 import {CartBalancePipe} from "../pipes/cart.balance.pipe";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 

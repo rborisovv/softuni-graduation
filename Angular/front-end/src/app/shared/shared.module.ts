@@ -8,6 +8,7 @@ import {RouterLink, RouterLinkActive} from "@angular/router";
 import {AuthHeaderComponent} from './auth-header/auth-header.component';
 import {BreadcrumbComponent} from './breadcrumb/breadcrumb.component';
 import {CommonModule, KeyValuePipe} from "@angular/common";
+import {UrlNormalizerPipe} from "../pipes/url.normalizer.pipe";
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import {CommonModule, KeyValuePipe} from "@angular/common";
     HeaderComponent,
     FooterComponent,
     AuthHeaderComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    UrlNormalizerPipe
   ],
   imports: [
     CommonModule,
@@ -24,12 +26,13 @@ import {CommonModule, KeyValuePipe} from "@angular/common";
     RouterLinkActive,
     KeyValuePipe
   ],
-    exports: [
-        HeaderComponent,
-        AuthHeaderComponent,
-        BreadcrumbComponent,
-        FooterComponent
-    ],
+  exports: [
+    HeaderComponent,
+    AuthHeaderComponent,
+    BreadcrumbComponent,
+    FooterComponent,
+    UrlNormalizerPipe
+  ],
   providers: [
     UserService, CookieService
   ]

@@ -17,8 +17,11 @@
             <label class="main">{{product.name}}</label>
             <label class="sub">Ref number: {{product.identifier}}</label>
           </div>
-          <div class="td_item item_color">
-            <label>Blue</label>
+          <div class="td_item item-category__img">
+            <a href="javascript:void(0)"
+               routerLink="/{{product.categoryName | urlNormalizer}}/c/{{product.categoryIdentifier}}">
+              <img [src]="product.categoryMediaUrl" alt="">
+            </a>
           </div>
           <div class="td_item item_qty">
             <select>
