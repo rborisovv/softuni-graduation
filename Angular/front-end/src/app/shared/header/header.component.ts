@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   favouriteProducts$: Observable<Product[]>;
   basketProducts$: Observable<Product[]>;
 
-  @Input() renewedFavouriteProducts$  : Observable<Product[]>;
+  @Input() renewedFavouriteProducts$: Observable<Product[]>;
   @Input() renewedBasketProducts$: Observable<Product[]>;
 
   @ViewChild('products') products: ElementRef;
@@ -70,12 +70,14 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['renewedFavouriteProducts'] && changes['renewedFavouriteProducts'].previousValue !== changes['renewedFavouriteProducts'].currentValue) {
-      this.favouriteProducts$ = changes['renewedFavouriteProducts'].currentValue;
+    if (changes['renewedFavouriteProducts$'] && changes['renewedFavouriteProducts$'].previousValue !== changes['renewedFavouriteProducts$'].currentValue) {
+      this.favouriteProducts$ = changes['renewedFavouriteProducts$'].currentValue;
     }
-    if (changes['renewedBasketProducts'] && changes['renewedBasketProducts'].previousValue !== changes['renewedBasketProducts'].currentValue) {
-      this.basketProducts$ = changes['renewedBasketProducts'].currentValue;
+    if (changes['renewedBasketProducts$'] && changes['renewedBasketProducts$'].previousValue !== changes['renewedBasketProducts$'].currentValue) {
+      this.basketProducts$ = changes['renewedBasketProducts$'].currentValue;
     }
+
+    console.log(changes)
 
     //TODO: Find why only one counter is display upon clicking one of the items
   }

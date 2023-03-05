@@ -17,7 +17,7 @@ export const removeFromFavouritesFail = createAction('[Favourites] Remove from F
 
 export const addToBasket = createAction('[Basket] Add to Basket', props<{ identifier: string }>());
 
-export const addToBasketSuccess = createAction('[Basket] Add to Basket', props<{ httpResponse: HttpResponse }>());
+export const addToBasketSuccess = createAction('[Basket] Add to Basket ', props<{ httpResponse: HttpResponse }>());
 
 export const addToBasketFail = createAction('[Basket] Add to Basket', props<{ error: Error }>());
 

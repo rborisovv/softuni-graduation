@@ -25,7 +25,7 @@ public class Basket extends BaseEntity implements Serializable {
     private Set<Product> products;
 
     @ElementCollection
-    private Map<Product, Integer> ProductQuantity;
+    private Map<Product, Integer> productQuantity;
 
     private String creationDate;
 }
