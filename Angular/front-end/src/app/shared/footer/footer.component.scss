@@ -10,10 +10,10 @@ footer {
 }
 
 .social-media-footer {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
+  @include flex-horizontal-center-row();
   gap: 1em;
+
+  padding-top: 0.5em;
 }
 
 .social-media-footer > a {
@@ -30,10 +30,6 @@ footer > p > span {
   font-size: 1.2em;
   font-weight: bold;
   color: #008e7d;
-}
-
-.social-media-footer {
-  padding-top: 1em;
 }
 
 p {

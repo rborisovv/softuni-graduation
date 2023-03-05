@@ -6,8 +6,8 @@ import {map, Observable} from "rxjs";
   name: 'cartBalance'
 })
 export class CartBalancePipe implements PipeTransform {
-  transform(value: Observable<Product[]>, ...args: unknown[]): Observable<number> {
-    return value.pipe(
+  transform(products$: Observable<Product[]>, ...args: unknown[]): Observable<number> {
+    return products$.pipe(
       map(x => {
         let totalSum = 0;
         x.forEach(x => totalSum += x.price);
