@@ -48,6 +48,8 @@ public class ProductDto implements Serializable {
 
     private String mediaUrl;
 
+    private String categoryName;
+
     @Nullable
     private String categoryIdentifier;
 
