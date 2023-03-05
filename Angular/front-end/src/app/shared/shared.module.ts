@@ -24,11 +24,12 @@ import {CommonModule, KeyValuePipe} from "@angular/common";
     RouterLinkActive,
     KeyValuePipe
   ],
-  exports: [
-    HeaderComponent,
-    AuthHeaderComponent,
-    BreadcrumbComponent
-  ],
+    exports: [
+        HeaderComponent,
+        AuthHeaderComponent,
+        BreadcrumbComponent,
+        FooterComponent
+    ],
   providers: [
     UserService, CookieService
   ]
