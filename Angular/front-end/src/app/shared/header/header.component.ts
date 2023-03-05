@@ -77,8 +77,6 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
       this.basketProducts$ = changes['renewedBasketProducts$'].currentValue;
     }
 
-    console.log(changes)
-
     //TODO: Find why only one counter is display upon clicking one of the items
   }
 

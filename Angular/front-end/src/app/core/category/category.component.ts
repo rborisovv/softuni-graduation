@@ -48,12 +48,10 @@ export class CategoryComponent implements OnInit {
   public addToFavourites(identifier: string) {
     this.store.dispatch(addToFavourites({identifier}));
     this.favouriteProducts$ = this.store.select(selectFavouriteProductsState);
-    this.basketProducts$ = this.store.select(selectBasketProductsState);
   }
 
   public addToBasket(identifier: string) {
     this.store.dispatch(addToBasket({identifier}));
     this.basketProducts$ = this.store.select(selectBasketProductsState);
-    this.favouriteProducts$ = this.store.select(selectFavouriteProductsState);
   }
 }
