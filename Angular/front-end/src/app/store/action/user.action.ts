@@ -1,5 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { HttpResponse } from "../../interface/http.response";
+import { Checkout } from "../../interface/checkout";
 
 export const addToFavourites = createAction('[Favourites] Add to Favourites', props<{ identifier: string }>());
 
@@ -34,3 +35,9 @@ export const updateBasketProductQuantity = createAction('[Basket] Update Basket 
 export const updateBasketProductQuantitySuccess = createAction('[Basket] Update Basket Product Quantity Success', props<{ httpResponse: HttpResponse }>());
 
 export const updateBasketProductQuantityFail = createAction('[Basket] Update Basket Product Quantity Fail', props<{ error: Error }>());
+
+export const submitCheckoutFlow = createAction('[Checkout] Submit Checkout Flow', props<{ checkout: Checkout }>());
+
+export const submitCheckoutFlowSuccess = createAction('[Checkout] Submit Checkout Success');
+
+export const submitCheckoutFlowFail = createAction('[Checkout] Submit Checkout Flow', props<{ error: Error }>());

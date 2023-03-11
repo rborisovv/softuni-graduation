@@ -6,6 +6,8 @@ import { UserWelcome } from "../interface/user.welcome";
 import { IUserRegisterModel } from "../authentication/register/IUserRegisterModel";
 import { HttpResponse } from "../interface/http.response";
 import { Product } from "../interface/product";
+import { Checkout } from "../interface/checkout";
+import { Order } from "../interface/order";
 
 @Injectable()
 export class UserService {
@@ -64,5 +66,13 @@ export class UserService {
 
   updateBasketProductQuantity(identifier: string, quantity: number): Observable<HttpResponse> {
     return this.http.post<HttpResponse>(`${this.apiUrl}/user/updateBasketProduct`, { identifier, quantity });
+  }
+
+  submitCheckoutFlow(checkout: Checkout): Observable<Order> {
+    return this.http.post<Order>(`${this.apiUrl}/user/submitCheckoutFlow`, checkout);
+  }
+
+  fetchCheckoutDataIfPresent(): Observable<Checkout> {
+    return this.http.get<Checkout>(`${this.apiUrl}/user/fetchCheckoutData`);
   }
 }

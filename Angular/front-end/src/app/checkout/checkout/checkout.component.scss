@@ -23,6 +23,8 @@
   src: url(https://fonts.gstatic.com/s/materialiconsoutlined/v54/gok-H7zzDkdnRel8-DQ6KAXJ69wP1tGnf4ZGhUce.woff2) format("woff2");
 }
 
+@include checkout-flow-form-style();
+
 .material-icons-outlined {
   font-family: "Material Icons Outlined", serif;
   font-weight: normal;
@@ -107,9 +109,7 @@
       }
 
       .cart_responsive {
-        overflow-x: auto;
-        overflow-y: auto;
-        max-height: 380px;
+        @include flex-horizontal-center-row();
         @include size(md-device) {
           max-height: 380px;
         }

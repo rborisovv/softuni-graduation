@@ -24,34 +24,63 @@
             </a>
           </div>
           <div class="td_item item_qty">
-            <select [value]="product.quantity" (change)="changeQuantityForProduct(product.identifier, $event)">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="more">More</option>
-
-              <!-- TODO: make a basketProductEntityModel so it has stock level and renewed basket products
-              will be of that type so you can easily change the quantity and then send it upon checkout is clicked.
-              The store should probably also keep basketProductEntityModel types (think of that)-->
-            </select>
-
+            <p>{{product.quantity}}</p>
           </div>
           <div class="td_item item_price">
             <label>{{product.price | currency}} lv.</label>
           </div>
-          <div class="td_item item_remove">
-            <span (click)="removeProductFromBasket(product.identifier)" class="material-icons-outlined">close</span>
-          </div>
         </div>
+
+        <form class="form">
+          <h3 class="form-title text-left">Client Details</h3>
+          <div class="grid-2">
+            <div class="form-controll">
+              <div class="form-input">
+                <input type="text" [value]="checkoutData.firstName" name="first_name" id="first_name" required>
+                <label for="first_name">First Name</label>
+              </div>
+            </div>
+            <div class="form-controll">
+              <div class="form-input">
+                <input type="text" [value]="checkoutData.lastName" name="last_name" id="last_name" required>
+                <label for="last_name">Last Name</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-controll">
+            <div class="form-input">
+              <input type="email" [value]="checkoutData.email" name="email" id="email" required>
+              <label for="email" style="bottom: 100%;">E-mail</label>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="form-controll">
+              <div class="form-input">
+                <input type="text" name="first_name" disabled value="Bulgaria" id="country" required>
+                <label style="bottom: 100%;" for="country">Country</label>
+              </div>
+            </div>
+            <div class="form-controll">
+              <div class="form-input">
+                <input type="text" name="last_name" [value]="checkoutData.city" id="city" required>
+                <label for="city">City / Village</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-controll">
+            <div class="form-input">
+              <input type="email" name="email" [value]="checkoutData.address" id="address" required>
+              <label for="address" style="bottom: 100%;">Address</label>
+            </div>
+          </div>
+        </form>
 
       </div>
       <div class="footer">
         <div class="back_cart">
           <a href="javascript:void(0)" (click)="this.location.back();">
             <span class="material-icons-outlined">west</span>
-            Back to Shop
+            Checkout
           </a>
         </div>
       </div>
@@ -77,7 +106,8 @@
       <strong class="fs-4">{{renewedBasketProducts$ | cartBalance | async | currency}} lv.</strong>
     </div>
 
-    <button *ngIf="products.length > 0" (click)="this.router.navigate(['/checkout'])" class="btn">Checkout</button>
+    <button *ngIf="products.length > 0" (click)="this.router.navigate(['/checkout'])" class="btn">Finalize Order
+    </button>
 
   </div>
 </section>

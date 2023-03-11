@@ -6,6 +6,7 @@ import { Location } from "@angular/common";
 import { Store } from "@ngrx/store";
 import { removeFromBasket, updateBasketProductQuantity } from "../../store/action/user.action";
 import { selectBasketProductsState } from "../../store/selector/user.selector";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-cart',
@@ -16,7 +17,7 @@ export class CartComponent implements OnInit {
   renewedBasketProducts$: Observable<Product[]>;
 
   constructor(private readonly userService: UserService, protected readonly location: Location,
-              private readonly store: Store) {
+              private readonly store: Store, public readonly router: Router) {
   }
 
   ngOnInit(): void {

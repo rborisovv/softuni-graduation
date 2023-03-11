@@ -1,27 +1,16 @@
 package bg.rborisov.softunigraduation.service;
 
-import bg.rborisov.softunigraduation.dao.BasketRepository;
-import bg.rborisov.softunigraduation.dao.ProductRepository;
-import bg.rborisov.softunigraduation.dao.RoleRepository;
-import bg.rborisov.softunigraduation.dao.UserRepository;
+import bg.rborisov.softunigraduation.dao.*;
 import bg.rborisov.softunigraduation.domain.BasketHttpResponse;
 import bg.rborisov.softunigraduation.domain.FavouritesHttpResponse;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
-import bg.rborisov.softunigraduation.dto.ProductDto;
-import bg.rborisov.softunigraduation.dto.UserLoginDto;
-import bg.rborisov.softunigraduation.dto.UserRegisterDto;
-import bg.rborisov.softunigraduation.dto.UserWelcomeDto;
-import bg.rborisov.softunigraduation.enumeration.LoggerStatus;
-import bg.rborisov.softunigraduation.enumeration.NotificationStatus;
-import bg.rborisov.softunigraduation.enumeration.RoleEnum;
+import bg.rborisov.softunigraduation.dto.*;
+import bg.rborisov.softunigraduation.enumeration.*;
 import bg.rborisov.softunigraduation.exception.BasketNotFoundException;
 import bg.rborisov.softunigraduation.exception.ProductNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
-import bg.rborisov.softunigraduation.model.Basket;
-import bg.rborisov.softunigraduation.model.Product;
-import bg.rborisov.softunigraduation.model.Role;
-import bg.rborisov.softunigraduation.model.User;
+import bg.rborisov.softunigraduation.model.*;
 import bg.rborisov.softunigraduation.util.JwtProvider;
 import bg.rborisov.softunigraduation.util.logger.AuthLogger;
 import jakarta.servlet.http.Cookie;
@@ -73,11 +62,12 @@ public class UserService {
     private final Validator validator;
     private final ProductRepository productRepository;
     private final BasketRepository basketRepository;
+    private final OrderRepository orderRepository;
 
     public UserService(JwtProvider jwtProvider, UserDetailsService userDetailsService, AuthenticationManager authenticationManager,
                        ModelMapper modelMapper, UserRepository userRepository, PasswordEncoder passwordEncoder,
                        RoleRepository roleRepository, Validator validator, ProductRepository productRepository,
-                       BasketRepository basketRepository) {
+                       BasketRepository basketRepository, OrderRepository orderRepository) {
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
         this.authenticationManager = authenticationManager;
@@ -88,6 +78,7 @@ public class UserService {
         this.validator = validator;
         this.productRepository = productRepository;
         this.basketRepository = basketRepository;
+        this.orderRepository = orderRepository;
     }
 
     public ResponseEntity<UserWelcomeDto> login(UserLoginDto userLoginDto) throws IOException {
@@ -364,5 +355,30 @@ public class UserService {
         basketHttpResponse.setBasketProducts(basketProducts);
 
         return new ResponseEntity<>(basketHttpResponse, HttpStatus.OK);
+    }
+
+    public void submitCheckoutFlow(Principal principal, CheckoutDto checkoutDto) throws UserNotFoundException {
+        User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(UserNotFoundException::new);
+        Order order = user.getOrder() == null ? this.modelMapper.map(checkoutDto, Order.class) : user.getOrder();
+        Basket basket = user.getBasket();
+        this.modelMapper.map(checkoutDto, order);
+        order.setOrderStatus(OrderStatus.INITIAL);
+        order.setCountry(CountryEnum.BULGARIA.name());
+        order.setBasket(basket);
+        order.setUser(user);
+        user.setOrder(order);
+
+        this.orderRepository.save(order);
+        this.userRepository.save(user);
+    }
+
+    public ResponseEntity<CheckoutDto> fetchCheckoutDataIfPresent(Principal principal) throws UserNotFoundException {
+        User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(UserNotFoundException::new);
+        Order order = user.getOrder();
+        if (user.getOrder() == null) {
+            return new ResponseEntity<>(new CheckoutDto(), HttpStatus.OK);
+        }
+        CheckoutDto checkoutDto = this.modelMapper.map(order, CheckoutDto.class);
+        return new ResponseEntity<>(checkoutDto, HttpStatus.OK);
     }
 }

@@ -1,6 +1,6 @@
-import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {NotifierService} from "angular-notifier";
-import {UserService} from "../../service/user.service";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { NotifierService } from "angular-notifier";
+import { UserService } from "../../service/user.service";
 import {
   addToBasket,
   addToBasketFail,
@@ -15,33 +15,35 @@ import {
   removeFromBasketSuccess,
   removeFromFavourites,
   removeFromFavouritesFail,
-  removeFromFavouritesSuccess,
+  removeFromFavouritesSuccess, submitCheckoutFlow, submitCheckoutFlowFail, submitCheckoutFlowSuccess,
   updateBasketProductQuantity,
   updateBasketProductQuantityFail,
   updateBasketProductQuantitySuccess
 } from "../action/user.action";
-import {catchError, exhaustMap, map, of, tap} from "rxjs";
-import {Injectable} from "@angular/core";
-import {Store} from "@ngrx/store";
+import { catchError, exhaustMap, map, of, tap } from "rxjs";
+import { Injectable } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { Router } from "@angular/router";
 
 @Injectable()
 export class UserEffects {
   constructor(private readonly actions$: Actions, private userService: UserService,
-              private readonly notifier: NotifierService, private store: Store) {
+              private readonly notifier: NotifierService, private store: Store,
+              private readonly router: Router) {
   }
 
   addToFavourites$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(addToFavourites),
-      exhaustMap((({identifier}) => {
+      exhaustMap((({ identifier }) => {
         return this.userService.addToFavourites(identifier)
           .pipe(
-            map(response => addToFavouritesSuccess({httpResponse: response})),
+            map(response => addToFavouritesSuccess({ httpResponse: response })),
             tap((response) => {
               this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
-              this.store.dispatch(fetchRenewedFavouriteProducts({httpResponse: response.httpResponse}));
+              this.store.dispatch(fetchRenewedFavouriteProducts({ httpResponse: response.httpResponse }));
             }),
-            catchError(error => of(addToFavouritesFail({error: error})))
+            catchError(error => of(addToFavouritesFail({ error: error })))
           );
       }))
     )
@@ -50,15 +52,15 @@ export class UserEffects {
   removeFromFavourites$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(removeFromFavourites),
-      exhaustMap((({identifier}) => {
+      exhaustMap((({ identifier }) => {
         return this.userService.removeFromFavourites(identifier)
           .pipe(
-            map(response => removeFromFavouritesSuccess({httpResponse: response})),
+            map(response => removeFromFavouritesSuccess({ httpResponse: response })),
             tap((response) => {
               this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
-              this.store.dispatch(fetchRenewedFavouriteProducts({httpResponse: response.httpResponse}));
+              this.store.dispatch(fetchRenewedFavouriteProducts({ httpResponse: response.httpResponse }));
             }),
-            catchError(error => of(removeFromFavouritesFail({error: error})))
+            catchError(error => of(removeFromFavouritesFail({ error: error })))
           );
       }))
     )
@@ -67,15 +69,15 @@ export class UserEffects {
   addToBasket$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(addToBasket),
-      exhaustMap((({identifier}) => {
+      exhaustMap((({ identifier }) => {
         return this.userService.addToBasket(identifier)
           .pipe(
-            map(response => addToBasketSuccess({httpResponse: response})),
+            map(response => addToBasketSuccess({ httpResponse: response })),
             tap((response) => {
               this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
-              this.store.dispatch(fetchRenewedBasketProducts({httpResponse: response.httpResponse}));
+              this.store.dispatch(fetchRenewedBasketProducts({ httpResponse: response.httpResponse }));
             }),
-            catchError(error => of(addToBasketFail({error: error})))
+            catchError(error => of(addToBasketFail({ error: error })))
           );
       }))
     )
@@ -84,15 +86,15 @@ export class UserEffects {
   removeFromBasket$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(removeFromBasket),
-      exhaustMap((({identifier}) => {
+      exhaustMap((({ identifier }) => {
         return this.userService.removeFromBasket(identifier)
           .pipe(
-            map(response => removeFromBasketSuccess({httpResponse: response})),
+            map(response => removeFromBasketSuccess({ httpResponse: response })),
             tap((response) => {
               this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
-              this.store.dispatch(fetchRenewedBasketProducts({httpResponse: response.httpResponse}));
+              this.store.dispatch(fetchRenewedBasketProducts({ httpResponse: response.httpResponse }));
             }),
-            catchError(error => of(removeFromBasketFail({error: error})))
+            catchError(error => of(removeFromBasketFail({ error: error })))
           );
       }))
     )
@@ -101,14 +103,30 @@ export class UserEffects {
   updateBasketProductQuantity = createEffect(() => {
     return this.actions$.pipe(
       ofType(updateBasketProductQuantity),
-      exhaustMap((({identifier, quantity}) => {
+      exhaustMap((({ identifier, quantity }) => {
         return this.userService.updateBasketProductQuantity(identifier, quantity)
           .pipe(
-            map(response => updateBasketProductQuantitySuccess({httpResponse: response})),
+            map(response => updateBasketProductQuantitySuccess({ httpResponse: response })),
             tap((response) => {
-              this.store.dispatch(fetchRenewedBasketProducts({httpResponse: response.httpResponse}));
+              this.store.dispatch(fetchRenewedBasketProducts({ httpResponse: response.httpResponse }));
             }),
-            catchError(error => of(updateBasketProductQuantityFail({error: error})))
+            catchError(error => of(updateBasketProductQuantityFail({ error: error })))
+          );
+      }))
+    )
+  });
+
+  submitCheckoutFlow = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(submitCheckoutFlow),
+      exhaustMap((({ checkout }) => {
+        return this.userService.submitCheckoutFlow(checkout)
+          .pipe(
+            map(() => submitCheckoutFlowSuccess),
+            tap(() => {
+              this.router.navigateByUrl('/finalize-order');
+            }),
+            catchError(error => of(submitCheckoutFlowFail({ error: error })))
           );
       }))
     )

@@ -1,10 +1,12 @@
 package bg.rborisov.softunigraduation.web;
 
 import bg.rborisov.softunigraduation.domain.HttpResponse;
+import bg.rborisov.softunigraduation.dto.CheckoutDto;
 import bg.rborisov.softunigraduation.dto.ProductDto;
 import bg.rborisov.softunigraduation.exception.BasketNotFoundException;
 import bg.rborisov.softunigraduation.exception.ProductNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
+import bg.rborisov.softunigraduation.model.Order;
 import bg.rborisov.softunigraduation.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,5 +57,15 @@ public class UserResource {
     @PostMapping("/updateBasketProduct")
     public ResponseEntity<HttpResponse> updateBasketProduct(final Principal principal, final @RequestBody Map<String, String> productParams) throws ProductNotFoundException, UserNotFoundException, BasketNotFoundException {
         return this.userService.updateBasketProduct(principal, productParams);
+    }
+
+    @PostMapping("/submitCheckoutFlow")
+    public void submitCheckoutFlow(final Principal principal, final @RequestBody CheckoutDto checkoutDto) throws UserNotFoundException {
+        this.userService.submitCheckoutFlow(principal, checkoutDto);
+    }
+
+    @GetMapping("/fetchCheckoutData")
+    public ResponseEntity<CheckoutDto> fetchCheckoutDataIfPresent(final Principal principal) throws UserNotFoundException {
+        return this.userService.fetchCheckoutDataIfPresent(principal);
     }
 }

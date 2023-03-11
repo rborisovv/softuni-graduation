@@ -44,7 +44,6 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "birth_date", nullable = false, updatable = false)
     private LocalDate birthDate;
 
-
     @Column(name = "image_url")
     private String imageUrl;
 
@@ -54,6 +53,10 @@ public class User extends BaseEntity implements Serializable {
     @ManyToMany
     @ColumnDefault("null")
     private Set<Product> favouriteProducts;
+
     @OneToOne
     private Basket basket;
+
+    @OneToOne
+    private Order order;
 }

@@ -1,0 +1,131 @@
+<app-header [renewedBasketProducts$]="renewedBasketProducts$"></app-header>
+
+<section class="cart_wrapper mt-25">
+  <div class="cart_lists">
+    <div class="cart_title">
+      <span class="material-icons-outlined">local_mall</span>
+      Checkout
+    </div>
+
+    <div class="cart_list_wrap">
+      <div class="cart_responsive">
+        <form class="form" [formGroup]="checkoutFormGroup" (ngSubmit)="submitCheckout()">
+          <h3 class="form-title">Client Details</h3>
+          <div class="grid-2">
+            <div class="form-controll">
+              <div class="form-input">
+                <input type="text" formControlName="firstName" name="first_name" id="first_name" required>
+                <label for="first_name">First Name</label>
+              </div>
+              <div class="error-messages text-danger">
+                <div *ngIf="firstName.errors?.['required'] && firstName.touched">First Name is required.</div>
+                <div *ngIf="firstName.errors?.['minlength'] && firstName.touched">First Name must be at least 3
+                  characters long.
+                </div>
+                <div *ngIf="firstName.errors?.['maxlength'] && firstName.touched">The maximum length of the First Name
+                  is 30
+                  characters.
+                </div>
+              </div>
+            </div>
+            <div class="form-controll">
+              <div class="form-input">
+                <input type="text" formControlName="lastName" name="last_name" id="last_name" required>
+                <label for="last_name">Last Name</label>
+              </div>
+              <div class="error-messages text-danger">
+                <div *ngIf="lastName.errors?.['required'] && lastName.touched">Last Name is required.</div>
+                <div *ngIf="lastName.errors?.['minlength'] && lastName.touched">Last Name must be at least 3 characters
+                  long.
+                </div>
+                <div *ngIf="lastName.errors?.['maxlength'] && lastName.touched">The maximum length of the Last Name is
+                  30
+                  characters.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-controll">
+            <div class="form-input">
+              <input type="email" formControlName="email" name="email" id="email" required>
+              <label for="email" style="bottom: 100%;">E-mail</label>
+            </div>
+            <div class="error-messages text-danger">
+              <div *ngIf="email.errors?.['required'] && email.touched">Email is required.</div>
+              <div *ngIf="email.errors?.['email'] && email.touched">Please provide a valid email.
+              </div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="form-controll">
+              <div class="form-input">
+                <input type="text" name="first_name" disabled value="Bulgaria" id="country" required>
+                <label style="bottom: 100%;" for="country">Country</label>
+              </div>
+            </div>
+            <div class="form-controll">
+              <div class="form-input">
+                <input type="text" name="last_name" formControlName="city" id="city" required>
+                <label for="city">City / Village</label>
+              </div>
+              <div class="error-messages text-danger">
+                <div *ngIf="city.errors?.['required'] && city.touched">City is required.</div>
+                <div *ngIf="city.errors?.['minlength'] && city.touched">City must be at least 3 characters long.
+                </div>
+                <div *ngIf="city.errors?.['maxlength'] && city.touched">The maximum length of the City is 20
+                  characters.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-controll">
+            <div class="form-input">
+              <input type="email" name="email" formControlName="address" id="address" required>
+              <label for="address" style="bottom: 100%;">Address</label>
+            </div>
+            <div class="error-messages text-danger">
+              <div *ngIf="address.errors?.['required'] && address.touched">Address is required.</div>
+              <div *ngIf="address.errors?.['minlength'] && address.touched">Address must be at least 5 characters long.
+              </div>
+              <div *ngIf="address.errors?.['maxlength'] && address.touched">The maximum length of the City is 120
+                characters.
+              </div>
+            </div>
+          </div>
+          <div class="form-submit">
+            <button type="submit">Preview Order</button>
+          </div>
+        </form>
+      </div>
+      <div class="footer">
+        <div class="back_cart">
+          <a href="javascript:void(0)" (click)="this.location.back();">
+            <span class="material-icons-outlined">west</span>
+            Cart
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="product-summary text-center" *ngIf="renewedBasketProducts$ | async as products">
+    <div class="product-summary__products">
+      <div class="product-summary__title text-center">
+        Cart Details
+      </div>
+      <div class="product-row mt-30" *ngFor="let product of products">
+        <div class="product-summary__image">
+          <img [src]="product.mediaUrl" [alt]="product.name">
+        </div>
+        <div class="product-summary__quantity">x {{product.quantity}}</div>
+        <div class="product-summary__price fs-5">{{product.price | currency}} lv.</div>
+      </div>
+    </div>
+
+    <div style="padding-bottom: 1rem;" *ngIf="products.length > 0" class="subtotal text-right">
+      <label class="fs-5">Subtotal: </label>
+      <strong class="fs-4">{{renewedBasketProducts$ | cartBalance | async | currency}} lv.</strong>
+    </div>
+
+  </div>
+</section>
