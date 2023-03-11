@@ -7,7 +7,7 @@ import {
   addToBasketSuccess,
   addToFavourites,
   addToFavouritesFail,
-  addToFavouritesSuccess,
+  addToFavouritesSuccess, createOrder, createOrderFail, createOrderSuccess,
   fetchRenewedBasketProducts,
   fetchRenewedFavouriteProducts,
   removeFromBasket,
@@ -130,5 +130,22 @@ export class UserEffects {
           );
       }))
     )
+  });
+
+  createOrder = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(createOrder),
+      exhaustMap(() => {
+        return this.userService.createOrder()
+          .pipe(
+            map((response) => createOrderSuccess({ httpResponse: response })),
+            tap((response) => {
+              this.router.navigateByUrl('/order-created').then(() => {
+                this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
+              });
+            }),
+            catchError(error => of(createOrderFail({ error: error })))
+          );
+      }));
   });
 }

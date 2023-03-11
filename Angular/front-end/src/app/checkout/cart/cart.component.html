@@ -68,7 +68,7 @@
           <img [src]="product.mediaUrl" [alt]="product.name">
         </div>
         <div class="product-summary__quantity">x {{product.quantity}}</div>
-        <div class="product-summary__price fs-5">{{product.price | currency}} lv.</div>
+        <div class="product-summary__price fs-5">{{product.price * product.quantity | currency}} lv.</div>
       </div>
     </div>
 

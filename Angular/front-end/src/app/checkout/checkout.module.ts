@@ -9,13 +9,15 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ReactiveFormsModule } from "@angular/forms";
 import { FinalizeComponent } from './finalize/finalize.component';
+import { PaymentSuccessfulComponent } from './payment-successful/payment-successful.component';
 
 const routes: Routes = [
   {
     path: '', canActivate: [PageGuard], children: [
       { path: 'cart', component: CartComponent },
       { path: 'checkout', component: CheckoutComponent },
-      { path: 'finalize-order', component: FinalizeComponent }
+      { path: 'finalize-order', component: FinalizeComponent },
+      { path: 'order-created', component: PaymentSuccessfulComponent }
     ]
   }
 ];
@@ -25,7 +27,8 @@ const routes: Routes = [
     CartComponent,
     CartBalancePipe,
     CheckoutComponent,
-    FinalizeComponent
+    FinalizeComponent,
+    PaymentSuccessfulComponent
   ],
   imports: [
     CommonModule,

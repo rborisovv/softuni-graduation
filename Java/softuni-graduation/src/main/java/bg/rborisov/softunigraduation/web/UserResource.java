@@ -68,4 +68,9 @@ public class UserResource {
     public ResponseEntity<CheckoutDto> fetchCheckoutDataIfPresent(final Principal principal) throws UserNotFoundException {
         return this.userService.fetchCheckoutDataIfPresent(principal);
     }
+
+    @PostMapping("/createOrder")
+    public ResponseEntity<HttpResponse> createOrder(final Principal principal) {
+        return this.userService.createOrder(principal);
+    }
 }

@@ -75,4 +75,8 @@ export class UserService {
   fetchCheckoutDataIfPresent(): Observable<Checkout> {
     return this.http.get<Checkout>(`${this.apiUrl}/user/fetchCheckoutData`);
   }
+
+  createOrder(): Observable<HttpResponse> {
+    return this.http.post<HttpResponse>(`${this.apiUrl}/user/createOrder`, null);
+  }
 }

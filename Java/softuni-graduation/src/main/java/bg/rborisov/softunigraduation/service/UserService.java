@@ -6,6 +6,7 @@ import bg.rborisov.softunigraduation.domain.FavouritesHttpResponse;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.*;
 import bg.rborisov.softunigraduation.enumeration.*;
+import bg.rborisov.softunigraduation.events.OrderCreatedPublisher;
 import bg.rborisov.softunigraduation.exception.BasketNotFoundException;
 import bg.rborisov.softunigraduation.exception.ProductNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
@@ -63,11 +64,12 @@ public class UserService {
     private final ProductRepository productRepository;
     private final BasketRepository basketRepository;
     private final OrderRepository orderRepository;
+    private final OrderCreatedPublisher orderCreatedPublisher;
 
     public UserService(JwtProvider jwtProvider, UserDetailsService userDetailsService, AuthenticationManager authenticationManager,
                        ModelMapper modelMapper, UserRepository userRepository, PasswordEncoder passwordEncoder,
                        RoleRepository roleRepository, Validator validator, ProductRepository productRepository,
-                       BasketRepository basketRepository, OrderRepository orderRepository) {
+                       BasketRepository basketRepository, OrderRepository orderRepository, OrderCreatedPublisher orderCreatedPublisher) {
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
         this.authenticationManager = authenticationManager;
@@ -79,6 +81,7 @@ public class UserService {
         this.productRepository = productRepository;
         this.basketRepository = basketRepository;
         this.orderRepository = orderRepository;
+        this.orderCreatedPublisher = orderCreatedPublisher;
     }
 
     public ResponseEntity<UserWelcomeDto> login(UserLoginDto userLoginDto) throws IOException {
@@ -380,5 +383,10 @@ public class UserService {
         }
         CheckoutDto checkoutDto = this.modelMapper.map(order, CheckoutDto.class);
         return new ResponseEntity<>(checkoutDto, HttpStatus.OK);
+    }
+
+    public ResponseEntity<HttpResponse> createOrder(Principal principal) {
+        this.orderCreatedPublisher.publishOrderCreation(principal);
+        return null;
     }
 }

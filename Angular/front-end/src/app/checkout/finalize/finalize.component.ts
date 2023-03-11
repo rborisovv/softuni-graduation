@@ -6,6 +6,7 @@ import { Store } from "@ngrx/store";
 import { Location } from "@angular/common";
 import { UserService } from "../../service/user.service";
 import { Checkout } from "../../interface/checkout";
+import { createOrder } from "../../store/action/user.action";
 
 @Component({
   selector: 'app-finalize',
@@ -25,5 +26,9 @@ export class FinalizeComponent implements OnInit {
     this.renewedBasketProducts$ = this.userService.loadBasketProducts();
     this.userService.fetchCheckoutDataIfPresent().pipe(take(1))
       .subscribe(data => this.checkoutData = data);
+  }
+
+  createOrder() {
+    this.store.dispatch(createOrder());
   }
 }
