@@ -1,5 +1,5 @@
-import {createAction, props} from "@ngrx/store";
-import {HttpResponse} from "../../interface/http.response";
+import { createAction, props } from "@ngrx/store";
+import { HttpResponse } from "../../interface/http.response";
 
 export const addToFavourites = createAction('[Favourites] Add to Favourites', props<{ identifier: string }>());
 
@@ -28,3 +28,9 @@ export const removeFromBasket = createAction('[Basket] Remove From Basket', prop
 export const removeFromBasketSuccess = createAction('[Basket] Remove From Basket', props<{ httpResponse: HttpResponse }>());
 
 export const removeFromBasketFail = createAction('[Basket] Remove From Basket', props<{ error: Error }>());
+
+export const updateBasketProductQuantity = createAction('[Basket] Update Basket Product Quantity', props<{ identifier: string, quantity: number }>());
+
+export const updateBasketProductQuantitySuccess = createAction('[Basket] Update Basket Product Quantity Success', props<{ httpResponse: HttpResponse }>());
+
+export const updateBasketProductQuantityFail = createAction('[Basket] Update Basket Product Quantity Fail', props<{ error: Error }>());

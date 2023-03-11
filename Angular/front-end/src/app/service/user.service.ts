@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment.prod";
-import {Observable} from "rxjs";
-import {UserWelcome} from "../interface/user.welcome";
-import {IUserRegisterModel} from "../authentication/register/IUserRegisterModel";
-import {HttpResponse} from "../interface/http.response";
-import {Product} from "../interface/product";
+import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../environments/environment.prod";
+import { Observable } from "rxjs";
+import { UserWelcome } from "../interface/user.welcome";
+import { IUserRegisterModel } from "../authentication/register/IUserRegisterModel";
+import { HttpResponse } from "../interface/http.response";
+import { Product } from "../interface/product";
 
 @Injectable()
 export class UserService {
@@ -60,5 +60,9 @@ export class UserService {
 
   removeFromBasket(identifier: string): Observable<HttpResponse> {
     return this.http.post<HttpResponse>(`${this.apiUrl}/user/removeFromBasket`, identifier);
+  }
+
+  updateBasketProductQuantity(identifier: string, quantity: number): Observable<HttpResponse> {
+    return this.http.post<HttpResponse>(`${this.apiUrl}/user/updateBasketProduct`, { identifier, quantity });
   }
 }

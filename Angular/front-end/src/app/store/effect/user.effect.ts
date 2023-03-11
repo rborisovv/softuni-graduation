@@ -11,10 +11,14 @@ import {
   fetchRenewedBasketProducts,
   fetchRenewedFavouriteProducts,
   removeFromBasket,
-  removeFromBasketFail, removeFromBasketSuccess,
+  removeFromBasketFail,
+  removeFromBasketSuccess,
   removeFromFavourites,
   removeFromFavouritesFail,
-  removeFromFavouritesSuccess
+  removeFromFavouritesSuccess,
+  updateBasketProductQuantity,
+  updateBasketProductQuantityFail,
+  updateBasketProductQuantitySuccess
 } from "../action/user.action";
 import {catchError, exhaustMap, map, of, tap} from "rxjs";
 import {Injectable} from "@angular/core";
@@ -89,6 +93,22 @@ export class UserEffects {
               this.store.dispatch(fetchRenewedBasketProducts({httpResponse: response.httpResponse}));
             }),
             catchError(error => of(removeFromBasketFail({error: error})))
+          );
+      }))
+    )
+  });
+
+  updateBasketProductQuantity = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(updateBasketProductQuantity),
+      exhaustMap((({identifier, quantity}) => {
+        return this.userService.updateBasketProductQuantity(identifier, quantity)
+          .pipe(
+            map(response => updateBasketProductQuantitySuccess({httpResponse: response})),
+            tap((response) => {
+              this.store.dispatch(fetchRenewedBasketProducts({httpResponse: response.httpResponse}));
+            }),
+            catchError(error => of(updateBasketProductQuantityFail({error: error})))
           );
       }))
     )

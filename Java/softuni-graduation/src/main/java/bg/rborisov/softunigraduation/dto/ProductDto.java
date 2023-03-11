@@ -40,6 +40,9 @@ public class ProductDto implements Serializable {
     @PositiveOrZero
     private Integer stockLevel;
 
+    @PositiveOrZero
+    private Integer quantity;
+
     @NotNull
     private Boolean showBuyButton;
 

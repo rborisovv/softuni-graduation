@@ -24,7 +24,7 @@
             </a>
           </div>
           <div class="td_item item_qty">
-            <select>
+            <select [value]="product.quantity" (change)="changeQuantityForProduct(product.identifier, $event)">
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -32,7 +32,7 @@
               <option value="5">5</option>
               <option value="more">More</option>
 
-              <!--              TODO: make a basketProductEntityModel so it has stock level and renewed basket products
+              <!-- TODO: make a basketProductEntityModel so it has stock level and renewed basket products
               will be of that type so you can easily change the quantity and then send it upon checkout is clicked.
               The store should probably also keep basketProductEntityModel types (think of that)-->
             </select>
@@ -67,6 +67,7 @@
         <div class="product-summary__image">
           <img [src]="product.mediaUrl" [alt]="product.name">
         </div>
+        <div class="product-summary__quantity">x {{product.quantity}}</div>
         <div class="product-summary__price fs-5">{{product.price | currency}} lv.</div>
       </div>
     </div>

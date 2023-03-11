@@ -1,6 +1,9 @@
 package bg.rborisov.softunigraduation.service;
 
-import bg.rborisov.softunigraduation.dao.*;
+import bg.rborisov.softunigraduation.dao.BasketRepository;
+import bg.rborisov.softunigraduation.dao.ProductRepository;
+import bg.rborisov.softunigraduation.dao.RoleRepository;
+import bg.rborisov.softunigraduation.dao.UserRepository;
 import bg.rborisov.softunigraduation.domain.BasketHttpResponse;
 import bg.rborisov.softunigraduation.domain.FavouritesHttpResponse;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
@@ -11,10 +14,14 @@ import bg.rborisov.softunigraduation.dto.UserWelcomeDto;
 import bg.rborisov.softunigraduation.enumeration.LoggerStatus;
 import bg.rborisov.softunigraduation.enumeration.NotificationStatus;
 import bg.rborisov.softunigraduation.enumeration.RoleEnum;
+import bg.rborisov.softunigraduation.exception.BasketNotFoundException;
 import bg.rborisov.softunigraduation.exception.ProductNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
-import bg.rborisov.softunigraduation.model.*;
+import bg.rborisov.softunigraduation.model.Basket;
+import bg.rborisov.softunigraduation.model.Product;
+import bg.rborisov.softunigraduation.model.Role;
+import bg.rborisov.softunigraduation.model.User;
 import bg.rborisov.softunigraduation.util.JwtProvider;
 import bg.rborisov.softunigraduation.util.logger.AuthLogger;
 import jakarta.servlet.http.Cookie;
@@ -264,7 +271,7 @@ public class UserService {
         User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(UserNotFoundException::new);
         Product product = this.productRepository.findProductByIdentifier(identifier).orElseThrow(ProductNotFoundException::new);
 
-        if (user.getBasket() != null && user.getBasket().getProducts().contains(product)) {
+        if (user.getBasket() != null && user.getBasket().getProductMapping().containsKey(product)) {
             HttpResponse httpResponse = constructHttpResponse(
                     OK, String.format(PRODUCT_ALREADY_ADDED_TO_BASKET, product.getName()),
                     NotificationStatus.INFO.name().toLowerCase(Locale.ROOT));
@@ -278,13 +285,10 @@ public class UserService {
 
         if (basket == null) {
             basket = new Basket();
-            basket.setProductQuantity(new HashMap<>());
-            basket.setProducts(new HashSet<>());
+            basket.setProductMapping(new HashMap<>());
         }
 
-        basket.getProducts().add(product);
-        basket.getProductQuantity().put(product, 1);
-
+        basket.getProductMapping().put(product, 1);
         this.basketRepository.save(basket);
         user.setBasket(basket);
 
@@ -306,12 +310,16 @@ public class UserService {
     }
 
     private Set<ProductDto> loadSortedUserBasketProducts(User user) {
-        if (user.getBasket() == null || user.getBasket().getProducts().isEmpty()) {
+        if (user.getBasket() == null || user.getBasket().getProductMapping().isEmpty()) {
             return Collections.emptySet();
         }
 
-        return user.getBasket().getProducts()
-                .stream().map(product -> this.modelMapper.map(product, ProductDto.class))
+        return user.getBasket().getProductMapping().entrySet()
+                .stream().map((entry) -> {
+                    ProductDto productDto = this.modelMapper.map(entry.getKey(), ProductDto.class);
+                    productDto.setQuantity(entry.getValue());
+                    return productDto;
+                })
                 .sorted(Comparator.comparing(ProductDto::getCategoryIdentifier).thenComparing(ProductDto::getPrice))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
@@ -323,10 +331,9 @@ public class UserService {
         User user = this.userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
 
         Basket basket = user.getBasket();
-        basket.getProducts().remove(product);
-        basket.getProductQuantity().remove(product);
+        basket.getProductMapping().remove(product);
 
-        if (basket.getProducts() == null || basket.getProducts().isEmpty()) {
+        if (basket.getProductMapping() == null || basket.getProductMapping().isEmpty()) {
             user.setBasket(null);
             this.basketRepository.delete(basket);
         }
@@ -338,5 +345,24 @@ public class UserService {
         Set<ProductDto> userBasketProducts = loadSortedUserBasketProducts(user);
         response.setBasketProducts(userBasketProducts);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    public ResponseEntity<HttpResponse> updateBasketProduct(Principal principal, Map<String, String> productParams) throws ProductNotFoundException, UserNotFoundException, BasketNotFoundException {
+        String identifier = productParams.get("identifier");
+        Integer quantity = Integer.parseInt(productParams.get("quantity"));
+        Product product = this.productRepository.findProductByIdentifier(identifier).orElseThrow(ProductNotFoundException::new);
+        User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(UserNotFoundException::new);
+        Basket basket = this.basketRepository.findBasketByUser(user).orElseThrow(BasketNotFoundException::new);
+
+        basket.getProductMapping().put(product, quantity);
+        this.basketRepository.save(basket);
+
+        Set<ProductDto> basketProducts = loadSortedUserBasketProducts(user);
+        BasketHttpResponse basketHttpResponse = new BasketHttpResponse();
+        basketHttpResponse.setHttpStatus(HttpStatus.OK);
+        basketHttpResponse.setHttpStatusCode(HttpStatus.OK.value());
+        basketHttpResponse.setBasketProducts(basketProducts);
+
+        return new ResponseEntity<>(basketHttpResponse, HttpStatus.OK);
     }
 }
