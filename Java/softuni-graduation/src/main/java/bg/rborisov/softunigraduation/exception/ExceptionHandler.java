@@ -55,5 +55,4 @@ public class ExceptionHandler extends AbstractExceptionHandler {
     public ResponseEntity<HttpResponse> objectContainsDbRelations() {
         return super.createHttpResponse(BAD_REQUEST, OBJECT_CONTAINS_EXTERNAL_RELATIONS);
     }
-
 }
