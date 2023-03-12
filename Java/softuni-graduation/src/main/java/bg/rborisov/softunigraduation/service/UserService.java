@@ -365,6 +365,8 @@ public class UserService {
         Order order = user.getOrder() == null ? this.modelMapper.map(checkoutDto, Order.class) : user.getOrder();
         Basket basket = user.getBasket();
         this.modelMapper.map(checkoutDto, order);
+        String orderNumber = RandomStringUtils.randomNumeric(10);
+        order.setOrderNumber(orderNumber);
         order.setOrderStatus(OrderStatus.INITIAL);
         order.setCountry(CountryEnum.BULGARIA.name());
         order.setBasket(basket);

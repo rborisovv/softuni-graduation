@@ -1,11 +1,8 @@
 package bg.rborisov.softunigraduation.model;
 
-
-import bg.rborisov.softunigraduation.dto.ProductDto;
 import bg.rborisov.softunigraduation.enumeration.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
 
@@ -20,6 +17,9 @@ public class Order extends BaseEntity implements Serializable {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+
+    @Column(nullable = false, unique = true, length = 30)
+    private String orderNumber;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
