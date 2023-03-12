@@ -365,7 +365,7 @@ public class UserService {
         Order order = user.getOrder() == null ? this.modelMapper.map(checkoutDto, Order.class) : user.getOrder();
         Basket basket = user.getBasket();
         this.modelMapper.map(checkoutDto, order);
-        String orderNumber = RandomStringUtils.randomNumeric(10);
+        String orderNumber = RandomStringUtils.randomNumeric(12);
         order.setOrderNumber(orderNumber);
         order.setOrderStatus(OrderStatus.INITIAL);
         order.setCountry(CountryEnum.BULGARIA.name());
@@ -387,8 +387,7 @@ public class UserService {
         return new ResponseEntity<>(checkoutDto, HttpStatus.OK);
     }
 
-    public ResponseEntity<HttpResponse> createOrder(Principal principal) {
+    public void createOrder(Principal principal) {
         this.orderCreatedPublisher.publishOrderCreation(principal);
-        return null;
     }
 }

@@ -10,14 +10,16 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { ReactiveFormsModule } from "@angular/forms";
 import { FinalizeComponent } from './finalize/finalize.component';
 import { PaymentSuccessfulComponent } from './payment-successful/payment-successful.component';
+import { CheckoutGuard } from "../guard/checkout.guard";
+import { OrderFlowGuard } from "../guard/order.flow.guard";
 
 const routes: Routes = [
   {
     path: '', canActivate: [PageGuard], children: [
       { path: 'cart', component: CartComponent },
-      { path: 'checkout', component: CheckoutComponent },
-      { path: 'finalize-order', component: FinalizeComponent },
-      { path: 'order-created', component: PaymentSuccessfulComponent }
+      { path: 'checkout', component: CheckoutComponent, canActivate: [CheckoutGuard] },
+      { path: 'finalize-order', component: FinalizeComponent, canActivate: [OrderFlowGuard] },
+      { path: 'order-created', component: PaymentSuccessfulComponent, canActivate: [OrderFlowGuard] }
     ]
   }
 ];

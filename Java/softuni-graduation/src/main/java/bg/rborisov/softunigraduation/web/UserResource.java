@@ -70,7 +70,7 @@ public class UserResource {
     }
 
     @PostMapping("/createOrder")
-    public ResponseEntity<HttpResponse> createOrder(final Principal principal) {
-        return this.userService.createOrder(principal);
+    public void createOrder(final Principal principal) {
+        this.userService.createOrder(principal);
     }
 }
