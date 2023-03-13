@@ -56,3 +56,10 @@ main {
     }
   }
 }
+
+@media screen and (max-width: 500px) {
+  .category-products {
+    justify-content: center;
+    margin-top: 75px;
+  }
+}

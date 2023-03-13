@@ -39,3 +39,19 @@ img:hover {
 figcaption > h2 {
   color: $base-color;
 }
+
+.mr-30:last-child {
+  margin-right: 0;
+}
+
+@media screen and (max-width: 500px) {
+  div.row {
+    flex-flow: column wrap;
+  }
+
+  .col {
+    width: 300px;
+    margin: 2rem auto 0 auto !important;
+    padding: 25px;
+  }
+}

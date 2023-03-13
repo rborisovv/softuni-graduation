@@ -422,3 +422,66 @@ a {
   }
 }
 
+@media screen and (max-width: 900px) {
+  .nav__elements {
+    flex-flow: row wrap;
+  }
+
+  .user-items {
+    margin: 0 auto;
+  }
+
+  .modal-dialog {
+    width: 90% !important;
+    margin: 0 auto !important;
+  }
+
+  .modal-body {
+    & .product {
+      flex-flow: column wrap;
+
+      & .product-name {
+        margin-top: 1rem;
+      }
+
+      & .product-price {
+        text-align: center;
+      }
+    }
+
+    .product:not(:first-child) {
+      margin-top: 25px;
+    }
+
+    & .name-wrapper {
+      @include flex-horizontal-center-col();
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .nav__logo > a {
+    vertical-align: super;
+  }
+
+  .nav__logo {
+    margin: 0 auto;
+  }
+
+  #searchbar {
+    margin: 0 auto !important;
+  }
+
+  #searchbar > input {
+    width: 310px !important;
+  }
+
+  .search-btn {
+    display: none ;
+  }
+
+  .user-items {
+    flex-flow: row wrap;
+    justify-content: center;
+  }
+}

@@ -19,7 +19,7 @@ const routes: Routes = [
       { path: 'cart', component: CartComponent },
       { path: 'checkout', component: CheckoutComponent, canActivate: [CheckoutGuard] },
       { path: 'finalize-order', component: FinalizeComponent, canActivate: [OrderFlowGuard] },
-      { path: 'order-created', component: PaymentSuccessfulComponent, canActivate: [OrderFlowGuard] }
+      { path: 'order-created', component: PaymentSuccessfulComponent }
     ]
   }
 ];
