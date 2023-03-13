@@ -372,6 +372,7 @@ public class UserService {
         order.setBasket(basket);
         order.setUser(user);
         user.setOrder(order);
+        user.setOrder(order);
 
         this.orderRepository.save(order);
         this.userRepository.save(user);
