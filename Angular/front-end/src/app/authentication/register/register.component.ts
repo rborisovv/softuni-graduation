@@ -1,14 +1,22 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {faFacebookF, faGithub, faGoogle, faTwitter} from "@fortawesome/free-brands-svg-icons";
-import {faAddressCard, faCalendar, faEnvelope, faKey, faLock, faUser} from '@fortawesome/free-solid-svg-icons';
-import {UserService} from "../../service/user.service";
-import {catchError, map, Observable, Subscription} from "rxjs";
-import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
-import {DatePipe} from "@angular/common";
-import {Router} from "@angular/router";
-import {IUserRegisterModel} from "./IUserRegisterModel";
-import {NotificationType} from "../../enumeration/notification-enum";
-import {NotifierService} from "angular-notifier";
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { faFacebookF, faGithub, faGoogle, faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { faAddressCard, faCalendar, faEnvelope, faKey, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import { UserService } from "../../service/user.service";
+import { catchError, map, Observable, Subscription } from "rxjs";
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators
+} from "@angular/forms";
+import { DatePipe } from "@angular/common";
+import { Router } from "@angular/router";
+import { IUserRegisterModel } from "./IUserRegisterModel";
+import { NotificationType } from "../../enumeration/notification-enum";
+import { NotifierService } from "angular-notifier";
+import moment from "moment";
 
 @Component({
   selector: 'app-register',
@@ -90,7 +98,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: () => {
-          this.router.navigateByUrl('/login');
+          this.router.navigateByUrl('/auth/login');
         }
       });
 
@@ -101,7 +109,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     return this.password.value === this.confirmPassword.value;
   }
 
-  get today() {
+  get today(): any {
     let today = new Date();
     return this.datePipe.transform(today, 'yyyy-MM-dd');
   }
@@ -139,7 +147,7 @@ class EmailExistsValidator {
   static validateEmail(userService: UserService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors> => {
       return userService.isEmailPresent(control.value)
-        .pipe(map((result: boolean) => result ? {emailPresent: true} : null));
+        .pipe(map((result: boolean) => result ? { emailPresent: true } : null));
     }
   }
 }

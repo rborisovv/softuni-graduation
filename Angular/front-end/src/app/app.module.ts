@@ -22,6 +22,7 @@ import {
   favouriteProductsReducer,
 } from "./store/reducer/user.reducer";
 import { UrlNormalizerPipe } from './pipes/url.normalizer.pipe';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { UrlNormalizerPipe } from './pipes/url.normalizer.pipe';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FontAwesomeModule,
     SharedModule,
@@ -71,7 +73,7 @@ import { UrlNormalizerPipe } from './pipes/url.normalizer.pipe';
       basketProducts: basketProductsReducer
     }, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
   ],
   providers: [
     {

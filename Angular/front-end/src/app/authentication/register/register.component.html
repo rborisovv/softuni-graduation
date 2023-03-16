@@ -74,13 +74,11 @@
     </div>
   </div>
   <div class="form-controll">
-    <div class="form-input">
-      <input type="text" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" name="birthdate"
-             [max]="today"
-             style="cursor: default;"
-             id="birthdate" required
-             formControlName="birthDate">
-      <label for="birthdate">
+    <div class="form-input" style="display: flex; flex-wrap: nowrap;">
+      <input id="birthdate" [max]="today" matInput [matDatepicker]="picker" formControlName="birthDate">
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <label for="birthdate" style="bottom: 100%;">
         <fa-icon [icon]="faCalendar"></fa-icon>
         Birthdate</label>
     </div>
