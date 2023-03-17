@@ -7,7 +7,10 @@ import {
   addToBasketSuccess,
   addToFavourites,
   addToFavouritesFail,
-  addToFavouritesSuccess, createOrder, createOrderFail, createOrderSuccess,
+  addToFavouritesSuccess,
+  createOrder,
+  createOrderFail,
+  createOrderSuccess,
   fetchRenewedBasketProducts,
   fetchRenewedFavouriteProducts,
   removeFromBasket,
@@ -15,7 +18,12 @@ import {
   removeFromBasketSuccess,
   removeFromFavourites,
   removeFromFavouritesFail,
-  removeFromFavouritesSuccess, submitCheckoutFlow, submitCheckoutFlowFail, submitCheckoutFlowSuccess,
+  removeFromFavouritesSuccess,
+  resetPassword,
+  resetPasswordSuccess,
+  submitCheckoutFlow,
+  submitCheckoutFlowFail,
+  submitCheckoutFlowSuccess,
   updateBasketProductQuantity,
   updateBasketProductQuantityFail,
   updateBasketProductQuantitySuccess
@@ -143,6 +151,21 @@ export class UserEffects {
               this.router.navigateByUrl('/order-created').then(() => {
                 this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
               });
+            }),
+            catchError(error => of(createOrderFail({ error: error })))
+          );
+      }));
+  });
+
+  resetPassword = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(resetPassword),
+      exhaustMap(({ email }) => {
+        return this.userService.resetPassword(email)
+          .pipe(
+            map((response) => resetPasswordSuccess({ httpResponse: response })),
+            tap((response) => {
+              this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
             }),
             catchError(error => of(createOrderFail({ error: error })))
           );

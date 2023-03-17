@@ -55,6 +55,10 @@
     </div>
   </div>
 
+  <div class="forgot-pass text-right">
+    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal">Forgot password?</a>
+  </div>
+
   <div class="icon-wrapper mt-40">
     <p class="text-center">Or Sign in with:</p>
     <a href="javascript:void(0)">
@@ -74,3 +78,30 @@
     <button type="submit" [disabled]="loginForm.invalid">Sign in</button>
   </div>
 </form>
+
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="mediaModal" aria-hidden="true">
+  <div class="modal-dialog" style="max-width: 1200px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Reset password confirmation</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="margin-top: 18px;">
+        <div class="search-wrapper">
+            <div class="form-controll">
+              <div class="form-input" style="width: 500px; margin: 0 auto; padding: 1rem 0;">
+                <input type="text" name="passwordResetEmail" id="password-reset-email" #passwordResetEmail required>
+                <label for="password-reset-email" style="bottom: 70%;">
+                  <fa-icon [icon]="faEnvelope"></fa-icon>
+                  Email</label>
+              </div>
+            </div>
+          <button type="button" id="modal-btn-save" class="btn" (click)="submitEmail()">Send email</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="modal-close-btn" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

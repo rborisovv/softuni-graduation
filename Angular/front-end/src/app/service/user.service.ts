@@ -79,4 +79,8 @@ export class UserService {
   createOrder(): Observable<HttpResponse> {
     return this.http.post<HttpResponse>(`${this.apiUrl}/user/createOrder`, null);
   }
+
+  resetPassword(email: string): Observable<HttpResponse> {
+    return this.http.post<HttpResponse>(`${this.apiUrl}/user/resetPassword`, email);
+  }
 }

@@ -47,3 +47,7 @@ export const createOrder = createAction('[Order] Create Order');
 export const createOrderSuccess = createAction('[Order] Create Order Success', props<{ httpResponse: HttpResponse }>());
 
 export const createOrderFail = createAction('[Order] Create Order Fail', props<{ error: Error }>());
+
+export const resetPassword = createAction('[Reset Password] Password reset email', props<{ email: string }>());
+export const resetPasswordSuccess = createAction('[Reset Password] Password reset email success', props<{ httpResponse: HttpResponse }>());
+export const resetPasswordFail = createAction('[Reset Password] Password reset email fail', props<{ error: Error }>());

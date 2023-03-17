@@ -1,47 +1,3 @@
-//.login-heading {
-//  color: #999;
-//}
-//
-//.container {
-//  display: flex;
-//  justify-content: center;
-//  align-items: center;
-//  height: 100vh;
-//}
-//
-//.login-wrapper {
-//  width: 40%;
-//  padding:20px 70px 70px 70px;
-//
-//  -webkit-box-shadow: 0 0 17px 5px rgba(0, 0, 0, 0.2);
-//  box-shadow: 0 0 17px 5px rgba(0, 0, 0, 0.2);
-//  border-radius: 12px;
-//
-//
-//  & > .nav-pills, & > .tab-content {
-//    width: 100%;
-//  }
-//
-//  & .submit-btn {
-//    width: 100%;
-//  }
-//}
-//
-//.error-messages {
-//  position: relative;
-//  bottom: 1.4rem;
-//}
-//
-//.social {
-//  color: #66f;
-//}
-//
-//@media screen and (max-width: 800px) {
-//  .register-wrapper {
-//    width: 100% !important;
-//  }
-//}
-
 @import "../../../common";
 
 * {
@@ -275,4 +231,22 @@ input:valid + label {
 .twitter:hover {
   background: #1c96e9;
   color: #ffffff;
+}
+
+.forgot-pass > a {
+  color: #455c91;
+  transition: all 300ms ease-in-out;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.search-wrapper {
+  @include flex-horizontal-center-row();
+}
+
+#modal-btn-save {
+  @include modal-save-btn;
+  margin-left: 32px;
 }
