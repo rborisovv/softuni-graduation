@@ -13,9 +13,9 @@ import java.io.IOException;
 @ToString
 @NoArgsConstructor
 public class PasswordTokenLogger extends AbstractLogger {
-    private static final String PASSWORD_TOKEN_CLEANUP_LOG_PATH = "C:\\Users\\Radoslav\\Documents\\Github\\softuni-graduation\\Java\\softuni-graduation\\src\\main\\resources\\loggers\\PasswordTokenCleanup.txt";
+    private static final String PASSWORD_TOKEN_CLEANUP_LOG_FILE = "PasswordTokenCleanup.txt";
 
     public void log(final String message, LoggerStatus loggerStatus) throws IOException {
-        super.log(PASSWORD_TOKEN_CLEANUP_LOG_PATH, message, loggerStatus);
+        super.log(PASSWORD_TOKEN_CLEANUP_LOG_FILE, message, loggerStatus);
     }
 }

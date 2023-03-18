@@ -10,9 +10,9 @@ import java.io.IOException;
 @ToString
 @NoArgsConstructor
 public class AuthLogger extends AbstractLogger {
-    private static final String AUTH_FILE_PATH = "C:\\Users\\Radoslav\\Documents\\Github\\softuni-graduation\\Java\\softuni-graduation\\src\\main\\resources\\logs\\Auth.txt";
+    private static final String AUTH_LOG_FILE = "Auth.txt";
 
     public void log(final String message, LoggerStatus loggerStatus) throws IOException {
-        super.log(AUTH_FILE_PATH, message, loggerStatus);
+        super.log(AUTH_LOG_FILE, message, loggerStatus);
     }
 }
