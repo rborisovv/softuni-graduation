@@ -38,7 +38,6 @@ import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -421,9 +420,7 @@ public class UserService {
         if (optionalPasswordToken.isEmpty()) {
             throw new AbsentPasswordTokenException();
         }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        LocalDateTime expireDate = LocalDateTime.parse(optionalPasswordToken.get().getExpireDate(), formatter);
+        LocalDateTime expireDate = optionalPasswordToken.get().getExpireDate();
 
         if (expireDate.isBefore(LocalDateTime.now())) {
             throw new PasswordTokenExpiredException();
@@ -437,8 +434,7 @@ public class UserService {
             return false;
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        LocalDateTime expireDate = LocalDateTime.parse(passwordToken.get().getExpireDate(), formatter);
+        LocalDateTime expireDate = passwordToken.get().getExpireDate();
         return expireDate.isAfter(LocalDateTime.now());
     }
 }

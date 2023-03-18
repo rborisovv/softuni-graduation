@@ -30,7 +30,7 @@ export class PasswordChangeGuard implements CanActivate {
       take(1), tap(response => {
         if (response === false) {
           this.router.navigateByUrl('/home').then(() => {
-            this.notifier.notify(NotificationType.INFO, 'The provided token is invalid');
+            this.notifier.notify(NotificationType.INFO, 'The provided token is invalid!');
           });
         }
       })

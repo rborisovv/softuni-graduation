@@ -3,7 +3,6 @@ package bg.rborisov.softunigraduation.eventListener;
 import bg.rborisov.softunigraduation.dao.PasswordTokenRepository;
 import bg.rborisov.softunigraduation.dao.UserRepository;
 import bg.rborisov.softunigraduation.events.PasswordResetEvent;
-import bg.rborisov.softunigraduation.exception.AbsentPasswordTokenException;
 import bg.rborisov.softunigraduation.exception.PasswordTokenExistsException;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.model.PasswordToken;
@@ -13,7 +12,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Component
@@ -41,9 +39,7 @@ public class PasswordTokenGeneratorListener {
 
     private PasswordToken createPasswordResetToken(final User user) {
         String token = UUID.randomUUID().toString();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        LocalDateTime date = LocalDateTime.now().plusMinutes(30);
-        String expireDate = formatter.format(date);
+        LocalDateTime expireDate = LocalDateTime.now().plusMinutes(30);
 
         return new PasswordToken(token, user, expireDate);
     }

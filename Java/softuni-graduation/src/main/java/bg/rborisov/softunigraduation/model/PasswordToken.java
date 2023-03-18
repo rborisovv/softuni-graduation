@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,5 +19,5 @@ public class PasswordToken extends BaseEntity implements Serializable {
     @OneToOne
     private User user;
     @Column(nullable = false, updatable = false)
-    private String expireDate;
+    private LocalDateTime expireDate;
 }
