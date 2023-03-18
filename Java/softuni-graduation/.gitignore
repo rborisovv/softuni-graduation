@@ -37,4 +37,4 @@ out/
 .vscode/
 /src/main/resources/META-INF/MANIFEST.MF
 
-/src/main/resources/loggers
+/src/main/resources/logs
