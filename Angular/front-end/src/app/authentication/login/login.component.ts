@@ -39,11 +39,12 @@ export class LoginComponent implements OnInit {
   });
 
   constructor(private userService: UserService, private router: Router,
-              private cookieService: CookieService, private readonly store: Store,
-              private readonly notifier: NotifierService) {
+              private cookieService: CookieService, private store: Store,
+              private notifier: NotifierService) {
   }
 
   @ViewChild('passwordResetEmail') passwordResetEmail: ElementRef | undefined;
+  @ViewChild('modalClose') modalClose: ElementRef | undefined;
 
   ngOnInit(): void {
     const allShowHidePassword = document.querySelectorAll('.password-showHide')
@@ -95,5 +96,6 @@ export class LoginComponent implements OnInit {
     }
 
     this.store.dispatch(resetPassword({ email }));
+    this.modalClose.nativeElement.click();
   }
 }

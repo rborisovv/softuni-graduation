@@ -26,7 +26,7 @@ public class OrderCreationUpdateStockLvlEventListener {
 
     @Order(2)
     @EventListener
-    public void onApplicationEvent(OrderCreatedEvent event) throws UserNotFoundException {
+    public void onOrderCreationEvent(OrderCreatedEvent event) throws UserNotFoundException {
         Principal principal = event.getPrincipal();
         User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(UserNotFoundException::new);
         this.productRepository.saveAll(user.getOrder().getBasket()

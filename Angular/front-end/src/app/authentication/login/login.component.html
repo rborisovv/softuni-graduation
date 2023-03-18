@@ -22,7 +22,8 @@
 
   <div class="form-controll">
     <div class="form-input">
-      <input type="password" name="password" id="password" formControlName="password" required>
+      <input type="password" name="password" id="password" formControlName="password" required
+             autocomplete="new-password">
       <label for="password">
         <fa-icon [icon]="faKey"></fa-icon>
         Password</label>
@@ -88,19 +89,20 @@
       </div>
       <div class="modal-body" style="margin-top: 18px;">
         <div class="search-wrapper">
-            <div class="form-controll">
-              <div class="form-input" style="width: 500px; margin: 0 auto; padding: 1rem 0;">
-                <input type="text" name="passwordResetEmail" id="password-reset-email" #passwordResetEmail required>
-                <label for="password-reset-email" style="bottom: 70%;">
-                  <fa-icon [icon]="faEnvelope"></fa-icon>
-                  Email</label>
-              </div>
+          <div class="form-controll">
+            <div class="form-input" style="width: 500px; margin: 0 auto; padding: 1rem 0;">
+              <input type="text" name="passwordResetEmail" id="password-reset-email" #passwordResetEmail required>
+              <label for="password-reset-email" style="bottom: 70%;">
+                <fa-icon [icon]="faEnvelope"></fa-icon>
+                Email</label>
             </div>
+          </div>
           <button type="button" id="modal-btn-save" class="btn" (click)="submitEmail()">Send email</button>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="modal-close-btn" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" #modalClose id="modal-close-btn" data-bs-dismiss="modal">Close
+        </button>
       </div>
     </div>
   </div>

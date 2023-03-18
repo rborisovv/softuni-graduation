@@ -21,7 +21,7 @@ public class OrderCreationStatusChangerListener {
 
     @Order(1)
     @EventListener
-    public void onApplicationEvent(OrderCreatedEvent event) throws UserNotFoundException {
+    public void onOrderCreationEvent(OrderCreatedEvent event) throws UserNotFoundException {
         Principal principal = event.getPrincipal();
         User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(UserNotFoundException::new);
         user.getOrder().setOrderStatus(OrderStatus.AWAITING);

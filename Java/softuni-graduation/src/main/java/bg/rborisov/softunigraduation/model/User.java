@@ -23,7 +23,7 @@ public class User extends BaseEntity implements Serializable {
     @Column(nullable = false, unique = true, updatable = false)
     private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String password;
 
     @Column(nullable = false, unique = true)

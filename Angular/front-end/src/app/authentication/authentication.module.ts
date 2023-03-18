@@ -14,12 +14,15 @@ import { AuthEffects } from "../store/effect/auth.effect";
 import { MatInputModule } from "@angular/material/input";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MAT_DATE_LOCALE, MatNativeDateModule } from "@angular/material/core";
+import { PasswordChangeComponent } from './password-change/password.change.component';
+import { PasswordChangeGuard } from "../guard/password.change.guard";
 
 const routes: Routes = [
   {
     path: '', canActivate: [AuthGuard], children: [
       { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent }
+      { path: 'register', component: RegisterComponent },
+      { path: 'change-password', component: PasswordChangeComponent, canActivate: [PasswordChangeGuard] }
     ]
   }
 ]
@@ -27,7 +30,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    PasswordChangeComponent
   ],
   imports: [
     CommonModule,

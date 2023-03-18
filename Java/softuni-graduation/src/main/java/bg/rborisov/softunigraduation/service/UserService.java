@@ -7,10 +7,8 @@ import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.*;
 import bg.rborisov.softunigraduation.enumeration.*;
 import bg.rborisov.softunigraduation.events.OrderCreatedPublisher;
-import bg.rborisov.softunigraduation.exception.BasketNotFoundException;
-import bg.rborisov.softunigraduation.exception.ProductNotFoundException;
-import bg.rborisov.softunigraduation.exception.UserNotFoundException;
-import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
+import bg.rborisov.softunigraduation.events.PasswordResetPublisher;
+import bg.rborisov.softunigraduation.exception.*;
 import bg.rborisov.softunigraduation.model.*;
 import bg.rborisov.softunigraduation.util.JwtProvider;
 import bg.rborisov.softunigraduation.util.logger.AuthLogger;
@@ -39,6 +37,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -65,11 +65,13 @@ public class UserService {
     private final BasketRepository basketRepository;
     private final OrderRepository orderRepository;
     private final OrderCreatedPublisher orderCreatedPublisher;
+    private final PasswordTokenRepository passwordTokenRepository;
+    private final PasswordResetPublisher passwordResetPublisher;
 
     public UserService(JwtProvider jwtProvider, UserDetailsService userDetailsService, AuthenticationManager authenticationManager,
                        ModelMapper modelMapper, UserRepository userRepository, PasswordEncoder passwordEncoder,
                        RoleRepository roleRepository, Validator validator, ProductRepository productRepository,
-                       BasketRepository basketRepository, OrderRepository orderRepository, OrderCreatedPublisher orderCreatedPublisher) {
+                       BasketRepository basketRepository, OrderRepository orderRepository, OrderCreatedPublisher orderCreatedPublisher, PasswordTokenRepository passwordTokenRepository, PasswordResetPublisher passwordResetPublisher) {
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
         this.authenticationManager = authenticationManager;
@@ -82,6 +84,8 @@ public class UserService {
         this.basketRepository = basketRepository;
         this.orderRepository = orderRepository;
         this.orderCreatedPublisher = orderCreatedPublisher;
+        this.passwordTokenRepository = passwordTokenRepository;
+        this.passwordResetPublisher = passwordResetPublisher;
     }
 
     public ResponseEntity<UserWelcomeDto> login(UserLoginDto userLoginDto) throws IOException {
@@ -390,5 +394,51 @@ public class UserService {
 
     public void createOrder(Principal principal) {
         this.orderCreatedPublisher.publishOrderCreation(principal);
+    }
+
+    public ResponseEntity<HttpResponse> resetPassword(final String email) {
+        this.passwordResetPublisher.publishPasswordResetRequest(email);
+        HttpResponse httpResponse = constructHttpResponse(HttpStatus.OK, String.format(PASSWORD_RESET_EMAIL, email),
+                NotificationStatus.SUCCESS.name());
+
+        return new ResponseEntity<>(httpResponse, HttpStatus.OK);
+    }
+
+    public ResponseEntity<HttpResponse> changePassword(final PasswordChangeDto passwordChangeDto) throws AbsentPasswordTokenException, PasswordTokenExpiredException {
+        preActivePasswordResetRequestCheck(passwordChangeDto.getToken());
+
+        PasswordToken passwordToken = this.passwordTokenRepository.findByToken(passwordChangeDto.getToken()).orElseThrow(AbsentPasswordTokenException::new);
+        User user = passwordToken.getUser();
+        user.setPassword(this.passwordEncoder.encode(passwordChangeDto.getPassword()));
+
+        HttpResponse httpResponse = constructHttpResponse(HttpStatus.OK, PASSWORD_CHANGED_SUCCESSFULLY, NotificationStatus.SUCCESS.name());
+        return new ResponseEntity<>(httpResponse, HttpStatus.OK);
+    }
+
+    public void preActivePasswordResetRequestCheck(String token) throws AbsentPasswordTokenException, PasswordTokenExpiredException {
+        Optional<PasswordToken> optionalPasswordToken = this.passwordTokenRepository.findByToken(token);
+
+        if (optionalPasswordToken.isEmpty()) {
+            throw new AbsentPasswordTokenException();
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        LocalDateTime expireDate = LocalDateTime.parse(optionalPasswordToken.get().getExpireDate(), formatter);
+
+        if (expireDate.isBefore(LocalDateTime.now())) {
+            throw new PasswordTokenExpiredException();
+        }
+    }
+
+    public Boolean hasActivePasswordRequest(String token) {
+        Optional<PasswordToken> passwordToken = this.passwordTokenRepository.findByToken(token);
+
+        if (passwordToken.isEmpty()) {
+            return false;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        LocalDateTime expireDate = LocalDateTime.parse(passwordToken.get().getExpireDate(), formatter);
+        return expireDate.isAfter(LocalDateTime.now());
     }
 }

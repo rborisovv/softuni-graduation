@@ -55,4 +55,20 @@ public class ExceptionHandler extends AbstractExceptionHandler {
     public ResponseEntity<HttpResponse> objectContainsDbRelations() {
         return super.createHttpResponse(BAD_REQUEST, OBJECT_CONTAINS_EXTERNAL_RELATIONS);
     }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(AbsentPasswordTokenException.class)
+    public ResponseEntity<HttpResponse> passwordTokenNotFound() {
+        return super.createHttpResponse(BAD_REQUEST, PASSWORD_TOKEN_NOT_FOUND);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(PasswordTokenExistsException.class)
+    public ResponseEntity<HttpResponse> passwordTokenAlreadyGenerated() {
+        return super.createHttpResponse(BAD_REQUEST, PASSWORD_TOKEN_EXISTS);
+    }
+
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(PasswordTokenExpiredException.class)
+    public ResponseEntity<HttpResponse> passwordTokenExpired() {
+        return super.createHttpResponse(BAD_REQUEST, PASSWORD_TOKEN_EXPIRED);
+    }
 }

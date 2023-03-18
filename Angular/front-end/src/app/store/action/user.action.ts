@@ -1,6 +1,7 @@
 import { createAction, props } from "@ngrx/store";
 import { HttpResponse } from "../../interface/http.response";
 import { Checkout } from "../../interface/checkout";
+import { PasswordReset } from "../../interface/passwordReset";
 
 export const addToFavourites = createAction('[Favourites] Add to Favourites', props<{ identifier: string }>());
 
@@ -49,5 +50,11 @@ export const createOrderSuccess = createAction('[Order] Create Order Success', p
 export const createOrderFail = createAction('[Order] Create Order Fail', props<{ error: Error }>());
 
 export const resetPassword = createAction('[Reset Password] Password reset email', props<{ email: string }>());
+
 export const resetPasswordSuccess = createAction('[Reset Password] Password reset email success', props<{ httpResponse: HttpResponse }>());
+
 export const resetPasswordFail = createAction('[Reset Password] Password reset email fail', props<{ error: Error }>());
+
+export const changePassword = createAction('[Change Password] Change password', props<{ data: PasswordReset }>());
+export const changePasswordSuccess = createAction('[Change Password] Change password Success', props<{ response: HttpResponse }>());
+export const changePasswordFail = createAction('[Change Password] Change password Fail', props<{ error: Error }>());

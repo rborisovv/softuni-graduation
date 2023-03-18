@@ -1,8 +1,12 @@
 package bg.rborisov.softunigraduation.web;
 
+import bg.rborisov.softunigraduation.domain.HttpResponse;
+import bg.rborisov.softunigraduation.dto.PasswordChangeDto;
 import bg.rborisov.softunigraduation.dto.UserLoginDto;
 import bg.rborisov.softunigraduation.dto.UserRegisterDto;
 import bg.rborisov.softunigraduation.dto.UserWelcomeDto;
+import bg.rborisov.softunigraduation.exception.AbsentPasswordTokenException;
+import bg.rborisov.softunigraduation.exception.PasswordTokenExpiredException;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
 import bg.rborisov.softunigraduation.service.UserService;
 import bg.rborisov.softunigraduation.util.JwtProvider;
@@ -14,6 +18,7 @@ import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
 
@@ -67,6 +72,21 @@ public class AuthResource {
     public void obtainCsrfToken(HttpServletRequest request, HttpServletResponse response) {
         CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
         response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
+    }
+
+    @PostMapping("/resetPassword")
+    public ResponseEntity<HttpResponse> resetPassword(final @RequestBody String email) {
+        return this.userService.resetPassword(email);
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<HttpResponse> changePassword(final @Valid @RequestBody PasswordChangeDto passwordChangeDto) throws AbsentPasswordTokenException, PasswordTokenExpiredException {
+        return this.userService.changePassword(passwordChangeDto);
+    }
+
+    @PostMapping("/hasActivePasswordRequest")
+    public Boolean hasActivePasswordRequest(@RequestBody String token) {
+        return this.userService.hasActivePasswordRequest(token);
     }
 
     @PostMapping("/logout")

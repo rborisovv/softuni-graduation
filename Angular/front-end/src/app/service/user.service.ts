@@ -8,6 +8,7 @@ import { HttpResponse } from "../interface/http.response";
 import { Product } from "../interface/product";
 import { Checkout } from "../interface/checkout";
 import { Order } from "../interface/order";
+import { PasswordReset } from "../interface/passwordReset";
 
 @Injectable()
 export class UserService {
@@ -81,6 +82,14 @@ export class UserService {
   }
 
   resetPassword(email: string): Observable<HttpResponse> {
-    return this.http.post<HttpResponse>(`${this.apiUrl}/user/resetPassword`, email);
+    return this.http.post<HttpResponse>(`${this.apiUrl}/auth/resetPassword`, email);
+  }
+
+  changePassword(data: PasswordReset): Observable<HttpResponse> {
+    return this.http.post<HttpResponse>(`${this.apiUrl}/auth/changePassword`, data);
+  }
+
+  hasActivePasswordRequest(token: string): Observable<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}/auth/hasActivePasswordRequest`, token);
   }
 }

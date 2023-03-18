@@ -4,13 +4,8 @@ import bg.rborisov.softunigraduation.dao.UserRepository;
 import bg.rborisov.softunigraduation.events.OrderCreatedEvent;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.model.User;
-import com.sendgrid.Method;
-import com.sendgrid.Request;
-import com.sendgrid.SendGrid;
-import com.sendgrid.helpers.mail.Mail;
-import com.sendgrid.helpers.mail.objects.Content;
+import bg.rborisov.softunigraduation.util.EmailFactory;
 import com.sendgrid.helpers.mail.objects.Email;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -32,18 +27,17 @@ public class OrderCreationConfirmationEmailListener {
 
     private final UserRepository userRepository;
     private final SpringTemplateEngine springTemplateEngine;
+    private final EmailFactory emailFactory;
 
-    @Value("${sendgrid.apiKey}")
-    private String sendGridApiKey;
-
-    public OrderCreationConfirmationEmailListener(UserRepository userRepository, SpringTemplateEngine springTemplateEngine) {
+    public OrderCreationConfirmationEmailListener(UserRepository userRepository, SpringTemplateEngine springTemplateEngine, EmailFactory emailFactory) {
         this.userRepository = userRepository;
         this.springTemplateEngine = springTemplateEngine;
+        this.emailFactory = emailFactory;
     }
 
     @Order(3)
     @EventListener
-    public void onApplicationEvent(OrderCreatedEvent event) throws IOException, UserNotFoundException {
+    public void onOrderCreationEvent(OrderCreatedEvent event) throws IOException, UserNotFoundException {
         Principal principal = event.getPrincipal();
         User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(UserNotFoundException::new);
         bg.rborisov.softunigraduation.model.Order order = user.getOrder();
@@ -61,16 +55,8 @@ public class OrderCreationConfirmationEmailListener {
         Email to = new Email(orderEmail);
         Context context = new Context(Locale.ROOT, emailVariables);
         String htmlContent = this.springTemplateEngine.process("orderConfirmation.html", context);
-        Content content = new Content("text/html", htmlContent);
-        Mail mail = new Mail(from, EMAIL_CONFIRMATION_SUBJECT, to, content);
 
-        SendGrid sg = new SendGrid(sendGridApiKey);
-        Request request = new Request();
-        request.setMethod(Method.POST);
-        request.setEndpoint("mail/send");
-        request.setBody(mail.build());
-        sg.api(request);
-
+        this.emailFactory.sendEmail(from, to, EMAIL_CONFIRMATION_SUBJECT, htmlContent);
         //TODO: Log the response info from sg.api(request) call;
     }
 }
