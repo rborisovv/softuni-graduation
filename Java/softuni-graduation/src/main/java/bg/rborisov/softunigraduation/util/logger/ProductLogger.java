@@ -13,9 +13,9 @@ import java.io.IOException;
 @Setter
 @ToString
 public class ProductLogger extends AbstractLogger {
-    private static final String PRODUCT_FILE_PATH = "C:\\Users\\Radoslav\\Documents\\Github\\softuni-graduation\\Java\\softuni-graduation\\src\\main\\resources\\loggers\\Product.txt";
+    private static final String PRODUCT_LOG_FILE_PATH = "Product.txt";
 
     public final void log(final String message, LoggerStatus loggerStatus) throws IOException {
-        super.log(PRODUCT_FILE_PATH, message, loggerStatus);
+        super.log(PRODUCT_LOG_FILE_PATH, message, loggerStatus);
     }
 }

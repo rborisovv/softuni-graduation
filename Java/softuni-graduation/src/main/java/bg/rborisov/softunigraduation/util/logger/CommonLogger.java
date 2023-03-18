@@ -13,9 +13,9 @@ import java.io.IOException;
 @Setter
 @ToString
 public class CommonLogger extends AbstractLogger {
-    private static final String COMMON_FILE_PATH = "C:\\Users\\Radoslav\\Documents\\Github\\softuni-graduation\\Java\\softuni-graduation\\src\\main\\resources\\loggers\\Common.txt";
+    private static final String COMMON_LOG_FILE_PATH = "Common.txt";
 
     public final void log(final String message, LoggerStatus loggerStatus) throws IOException {
-        super.log(COMMON_FILE_PATH, message, loggerStatus);
+        super.log(COMMON_LOG_FILE_PATH, message, loggerStatus);
     }
 }

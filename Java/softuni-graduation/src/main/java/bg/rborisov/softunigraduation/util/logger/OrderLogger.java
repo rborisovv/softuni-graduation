@@ -13,9 +13,9 @@ import java.io.IOException;
 @Setter
 @ToString
 public class OrderLogger extends AbstractLogger {
-    private static final String ORDER_FILE_PATH = "C:\\Users\\Radoslav\\Documents\\Github\\softuni-graduation\\Java\\softuni-graduation\\src\\main\\resources\\loggers\\Order.txt";
+    private static final String ORDER_LOG_FILE_PATH = "Order.txt";
 
     public final void log(final String message, LoggerStatus loggerStatus) throws IOException {
-        super.log(ORDER_FILE_PATH, message, loggerStatus);
+        super.log(ORDER_LOG_FILE_PATH, message, loggerStatus);
     }
 }
