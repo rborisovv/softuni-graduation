@@ -7,7 +7,7 @@ import {
   addToBasketSuccess,
   addToFavourites,
   addToFavouritesFail,
-  addToFavouritesSuccess, changePassword, changePasswordSuccess,
+  addToFavouritesSuccess, changePassword, changePasswordFail, changePasswordSuccess,
   createOrder,
   createOrderFail,
   createOrderSuccess,
@@ -28,10 +28,12 @@ import {
   updateBasketProductQuantityFail,
   updateBasketProductQuantitySuccess
 } from "../action/user.action";
-import { catchError, exhaustMap, map, of, tap } from "rxjs";
+import { catchError, exhaustMap, map, mergeMap, of, tap } from "rxjs";
 import { Injectable } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { Router } from "@angular/router";
+import { NotificationType } from "../../enumeration/notification-enum";
+import { ORDER_CREATED } from "../../common/messages";
 
 @Injectable()
 export class UserEffects {
@@ -127,7 +129,7 @@ export class UserEffects {
   submitCheckoutFlow = createEffect(() => {
     return this.actions$.pipe(
       ofType(submitCheckoutFlow),
-      exhaustMap((({ checkout }) => {
+      mergeMap((({ checkout }) => {
         return this.userService.submitCheckoutFlow(checkout)
           .pipe(
             map(() => submitCheckoutFlowSuccess),
@@ -146,10 +148,10 @@ export class UserEffects {
       exhaustMap(() => {
         return this.userService.createOrder()
           .pipe(
-            map((response) => createOrderSuccess({ httpResponse: response })),
-            tap((response) => {
+            map(() => createOrderSuccess()),
+            tap(() => {
               this.router.navigateByUrl('/order-created').then(() => {
-                this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
+                this.notifier.notify(NotificationType.SUCCESS, ORDER_CREATED);
               });
             }),
             catchError(error => of(createOrderFail({ error: error })))
@@ -184,7 +186,7 @@ export class UserEffects {
                 this.notifier.notify(httpResponse.response.notificationStatus, httpResponse.response.message);
               });
             }),
-            catchError(error => of(resetPasswordFail({ error: error })))
+            catchError(error => of(changePasswordFail({ error: error })))
           );
       }));
   });

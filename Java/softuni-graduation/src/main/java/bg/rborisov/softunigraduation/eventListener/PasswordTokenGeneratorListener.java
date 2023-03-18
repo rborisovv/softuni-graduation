@@ -12,6 +12,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -29,7 +30,9 @@ public class PasswordTokenGeneratorListener {
     public void onPasswordResetRequestEvent(PasswordResetEvent event) throws UserNotFoundException, PasswordTokenExistsException {
         User user = this.userRepository.findUserByEmail(event.getEmail()).orElseThrow(UserNotFoundException::new);
 
-        if (this.passwordTokenRepository.findPasswordTokenByUser(user).isPresent()) {
+        Optional<PasswordToken> optionalPasswordToken = this.passwordTokenRepository.findPasswordTokenByUser(user);
+
+        if (optionalPasswordToken.isPresent() && optionalPasswordToken.get().getExpireDate().isAfter(LocalDateTime.now())) {
             throw new PasswordTokenExistsException();
         }
 

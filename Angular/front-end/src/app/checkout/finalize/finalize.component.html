@@ -33,49 +33,51 @@
 
       </div>
 
-      <form class="form">
-        <h3 class="form-title text-left">Client Details</h3>
-        <div class="grid-2">
-          <div class="form-controll">
-            <div class="form-input">
-              <input type="text" [value]="checkoutData.firstName" name="first_name" id="first_name" disabled required>
-              <label for="first_name" style="bottom: 100%;">First Name</label>
+      <ng-container *ngIf="checkoutData">
+        <form class="form">
+          <h3 class="form-title text-left">Client Details</h3>
+          <div class="grid-2">
+            <div class="form-controll">
+              <div class="form-input">
+                <input type="text" [value]="checkoutData.firstName" name="first_name" id="first_name" disabled required>
+                <label for="first_name" style="bottom: 100%;">First Name</label>
+              </div>
+            </div>
+            <div class="form-controll">
+              <div class="form-input">
+                <input type="text" [value]="checkoutData.lastName" name="last_name" id="last_name" disabled required>
+                <label style="bottom: 100%;" for="last_name">Last Name</label>
+              </div>
             </div>
           </div>
           <div class="form-controll">
             <div class="form-input">
-              <input type="text" [value]="checkoutData.lastName" name="last_name" id="last_name" disabled required>
-              <label style="bottom: 100%;" for="last_name">Last Name</label>
+              <input type="email" [value]="checkoutData.email" name="email" id="email" disabled required>
+              <label for="email" style="bottom: 100%;">E-mail</label>
             </div>
           </div>
-        </div>
-        <div class="form-controll">
-          <div class="form-input">
-            <input type="email" [value]="checkoutData.email" name="email" id="email" disabled required>
-            <label for="email" style="bottom: 100%;">E-mail</label>
+          <div class="grid-2">
+            <div class="form-controll">
+              <div class="form-input">
+                <input type="text" name="first_name" value="Bulgaria" id="country" disabled required>
+                <label style="bottom: 100%;" for="country">Country</label>
+              </div>
+            </div>
+            <div class="form-controll">
+              <div class="form-input">
+                <input type="text" name="last_name" [value]="checkoutData.city" id="city" disabled required>
+                <label for="city" style="bottom: 100%;">City / Village</label>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="grid-2">
           <div class="form-controll">
             <div class="form-input">
-              <input type="text" name="first_name" value="Bulgaria" id="country" disabled required>
-              <label style="bottom: 100%;" for="country">Country</label>
+              <input type="email" name="email" [value]="checkoutData.address" id="address" disabled required>
+              <label for="address" style="bottom: 100%;">Address</label>
             </div>
           </div>
-          <div class="form-controll">
-            <div class="form-input">
-              <input type="text" name="last_name" [value]="checkoutData.city" id="city" disabled required>
-              <label for="city" style="bottom: 100%;">City / Village</label>
-            </div>
-          </div>
-        </div>
-        <div class="form-controll">
-          <div class="form-input">
-            <input type="email" name="email" [value]="checkoutData.address" id="address" disabled required>
-            <label for="address" style="bottom: 100%;">Address</label>
-          </div>
-        </div>
-      </form>
+        </form>
+      </ng-container>
       <div class="footer">
         <div class="back_cart">
           <a href="javascript:void(0)" (click)="this.location.back();">

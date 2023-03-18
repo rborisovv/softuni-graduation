@@ -45,7 +45,7 @@ export const submitCheckoutFlowFail = createAction('[Checkout] Submit Checkout F
 
 export const createOrder = createAction('[Order] Create Order');
 
-export const createOrderSuccess = createAction('[Order] Create Order Success', props<{ httpResponse: HttpResponse }>());
+export const createOrderSuccess = createAction('[Order] Create Order Success');
 
 export const createOrderFail = createAction('[Order] Create Order Fail', props<{ error: Error }>());
 
