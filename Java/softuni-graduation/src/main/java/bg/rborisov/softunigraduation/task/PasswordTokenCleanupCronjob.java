@@ -1,10 +1,15 @@
 package bg.rborisov.softunigraduation.task;
 
 import bg.rborisov.softunigraduation.dao.PasswordTokenRepository;
+import bg.rborisov.softunigraduation.enumeration.LoggerStatus;
+import bg.rborisov.softunigraduation.model.PasswordToken;
+import bg.rborisov.softunigraduation.util.logger.PasswordTokenLogger;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Component
 public class PasswordTokenCleanupCronjob {
@@ -15,7 +20,13 @@ public class PasswordTokenCleanupCronjob {
     }
 
     @Scheduled(cron = "@hourly")
-    public void expiredPasswordTokenCleanup() {
-        this.passwordTokenRepository.deleteAll(this.passwordTokenRepository.findByExpireDateBefore(LocalDateTime.now()));
+    public void expiredPasswordTokenCleanup() throws IOException {
+        int expiredPasswordTokensCount;
+        Set<PasswordToken> expiredPasswordTokens = this.passwordTokenRepository.findByExpireDateBefore(LocalDateTime.now());
+        expiredPasswordTokensCount = expiredPasswordTokens.size();
+
+        this.passwordTokenRepository.deleteAll(expiredPasswordTokens);
+        new PasswordTokenLogger().log(String.format("Removed %s expired password tokens",
+                expiredPasswordTokensCount), LoggerStatus.INFO);
     }
 }

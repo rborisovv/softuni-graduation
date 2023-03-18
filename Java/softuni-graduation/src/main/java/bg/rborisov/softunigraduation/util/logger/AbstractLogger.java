@@ -14,7 +14,7 @@ public abstract class AbstractLogger {
         PrintWriter printWriter = new PrintWriter(new java.io.FileWriter(file, true));
 
         String loggerBuilder = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) +
-                " | " + LoggerStatus.INFO.name() + " | " + message + System.lineSeparator();
+                " | " + loggerStatus.name() + " | " + message + System.lineSeparator();
 
         printWriter.print(loggerBuilder);
 
