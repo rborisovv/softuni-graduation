@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Store } from "@ngrx/store";
 import { deleteMediaAction } from "../../store/action/media.action";
-import { MediaPageable } from "../../model/mediaPageable";
+import { MediaPageable } from "../../model/media.pageable";
 import { PageEvent } from "@angular/material/paginator";
 import { PageableData } from "../../model/pageable.data";
 

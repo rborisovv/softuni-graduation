@@ -9,6 +9,7 @@ import {AuthHeaderComponent} from './auth-header/auth-header.component';
 import {BreadcrumbComponent} from './breadcrumb/breadcrumb.component';
 import {CommonModule, KeyValuePipe} from "@angular/common";
 import {UrlNormalizerPipe} from "../pipes/url.normalizer.pipe";
+import { MatPaginatorModule } from "@angular/material/paginator";
 
 
 @NgModule({
@@ -19,13 +20,14 @@ import {UrlNormalizerPipe} from "../pipes/url.normalizer.pipe";
     BreadcrumbComponent,
     UrlNormalizerPipe
   ],
-  imports: [
-    CommonModule,
-    FontAwesomeModule,
-    RouterLink,
-    RouterLinkActive,
-    KeyValuePipe
-  ],
+    imports: [
+        CommonModule,
+        FontAwesomeModule,
+        RouterLink,
+        RouterLinkActive,
+        KeyValuePipe,
+        MatPaginatorModule
+    ],
   exports: [
     HeaderComponent,
     AuthHeaderComponent,

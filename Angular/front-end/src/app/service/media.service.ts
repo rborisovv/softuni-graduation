@@ -4,7 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Media } from "../interface/media";
 import { HttpResponse } from "../interface/http.response";
-import { MediaPageable } from "../model/mediaPageable";
+import { MediaPageable } from "../model/media.pageable";
 import { PageableData } from "../model/pageable.data";
 
 @Injectable({
