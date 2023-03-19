@@ -3,11 +3,11 @@
 <main>
   <h1 class="text-center mt-40 mb-30">All Medias</h1>
   <div class="create-btn-wrapper">
-    <h3>Total Medias: <span *ngIf="medias$ | async as medias">{{medias.length}}</span></h3>
+    <h3>Total Medias: <span *ngIf="medias$ | async as medias">{{medias.totalElements}}</span></h3>
     <a href="javascript:void(0)" routerLink="/admin/media/create" class="add-btn">Create Media</a>
   </div>
   <div class="medias">
-    <div class="media">
+    <div class="media" *ngIf="medias$ | async as medias">
       <table>
         <thead>
         <tr>
@@ -18,7 +18,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let media of medias$ | async">
+        <tr *ngFor="let media of medias.content">
           <td><img [src]="media.mediaUrl" alt=""></td>
           <td>{{media.name}}</td>
           <td>{{media.pkOfFile}}</td>
@@ -30,6 +30,14 @@
         </tr>
         </tbody>
       </table>
+      <mat-paginator style="margin: 24px 0 0 auto;"
+                     [length]="medias.totalElements"
+                     [pageIndex]="pageIndex"
+                     [pageSize]="pageSize"
+                     [pageSizeOptions]="[10, 25, 50, 100]"
+                     (page)="onPaginationChange($event)"
+                     aria-label="Select page">
+      </mat-paginator>
     </div>
   </div>
 </main>

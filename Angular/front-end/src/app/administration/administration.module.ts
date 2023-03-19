@@ -21,6 +21,7 @@ import {EffectsModule} from "@ngrx/effects";
 import {CategoryEffects} from "../store/effect/category.effect";
 import {MediaEffects} from "../store/effect/media.effect";
 import {ProductEffects} from "../store/effect/product.effect";
+import { MatPaginatorModule } from "@angular/material/paginator";
 
 const routes: Routes = [
   {
@@ -61,6 +62,7 @@ const routes: Routes = [
     AsyncPipe,
     ReactiveFormsModule,
     NgOptimizedImage,
+    MatPaginatorModule,
     EffectsModule.forFeature(CategoryEffects, MediaEffects, ProductEffects)
   ],
   providers: [JwtHelperService]

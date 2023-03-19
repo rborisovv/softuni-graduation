@@ -1,9 +1,11 @@
-import {Injectable} from '@angular/core';
-import {environment} from "../../environments/environment.prod";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Media} from "../interface/media";
-import {HttpResponse} from "../interface/http.response";
+import { Injectable } from '@angular/core';
+import { environment } from "../../environments/environment.prod";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { Media } from "../interface/media";
+import { HttpResponse } from "../interface/http.response";
+import { MediaPageable } from "../model/mediaPageable";
+import { PageableData } from "../model/pageable.data";
 
 @Injectable({
   providedIn: 'root'
@@ -30,8 +32,8 @@ export class MediaService {
     return this.http.get(`${this.apiUrl}/media/sys_master/h4f/${identifier}.jpg`);
   }
 
-  public fetchAllMedias(): Observable<Media[]> {
-    return this.http.get<Media[]>(`${this.apiUrl}/media/findAll`);
+  public fetchAllMedias(pageableData: PageableData): Observable<MediaPageable> {
+    return this.http.post<MediaPageable>(`${this.apiUrl}/media/findAll`, pageableData);
   }
 
   public deleteMedia(pk: string): Observable<HttpResponse> {

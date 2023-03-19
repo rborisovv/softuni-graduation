@@ -3,10 +3,16 @@ package bg.rborisov.softunigraduation.web;
 import bg.rborisov.softunigraduation.dao.MediaRepository;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.MediaDto;
+import bg.rborisov.softunigraduation.dto.PageableData;
 import bg.rborisov.softunigraduation.exception.MediaByNameAlreadyExistsException;
 import bg.rborisov.softunigraduation.exception.MediaNotFoundException;
+import bg.rborisov.softunigraduation.model.Media;
 import bg.rborisov.softunigraduation.service.MediaService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -67,11 +73,12 @@ public class MediaResource {
         return this.mediaRepository.findMediaByName(name).isPresent();
     }
 
-    @GetMapping("/findAll")
-    public Set<MediaDto> findAllMedias() {
-        return this.mediaRepository.findAll().stream()
-                .map(media -> modelMapper.map(media, MediaDto.class))
-                .collect(Collectors.toSet());
+    @PostMapping("/findAll")
+    public Page<MediaDto> findAllMedias(final @Valid @RequestBody PageableData pageableData) {
+        Pageable pageable = PageRequest.of(pageableData.getPageIndex(), pageableData.getPageSize());
+
+        return this.mediaRepository.findAll(pageable)
+                .map(media -> this.modelMapper.map(media, MediaDto.class));
     }
 
     @DeleteMapping("/delete/{pk}")

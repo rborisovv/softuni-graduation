@@ -1,10 +1,12 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {MediaService} from "../../service/media.service";
-import {Observable} from "rxjs";
-import {Media} from "../../interface/media";
-import {faTrash} from '@fortawesome/free-solid-svg-icons';
-import {Store} from "@ngrx/store";
-import {deleteMediaAction} from "../../store/action/media.action";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MediaService } from "../../service/media.service";
+import { Observable } from "rxjs";
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Store } from "@ngrx/store";
+import { deleteMediaAction } from "../../store/action/media.action";
+import { MediaPageable } from "../../model/mediaPageable";
+import { PageEvent } from "@angular/material/paginator";
+import { PageableData } from "../../model/pageable.data";
 
 @Component({
   selector: 'app-media',
@@ -17,13 +19,32 @@ export class MediaComponent implements OnInit {
   }
 
   faTrash = faTrash;
-  medias$: Observable<Media[]>;
+  medias$: Observable<MediaPageable>;
+  pageIndex: number = 0;
+  pageSize: number = 10;
 
   ngOnInit(): void {
-    this.medias$ = this.mediaService.fetchAllMedias();
+
+    const data: PageableData = {
+      pageIndex: 0,
+      pageSize: 10
+    };
+
+    this.medias$ = this.mediaService.fetchAllMedias(data);
   }
 
   public deleteCategory(pkOfFile: string) {
-    this.store.dispatch(deleteMediaAction({pk: pkOfFile}));
+    this.store.dispatch(deleteMediaAction({ pk: pkOfFile }));
+  }
+
+  onPaginationChange(event: PageEvent) {
+    const data: PageableData = {
+      pageIndex: event.pageIndex,
+      pageSize: event.pageSize
+    };
+
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.medias$ = this.mediaService.fetchAllMedias(data);
   }
 }
