@@ -33,7 +33,7 @@ export class MediaComponent implements OnInit {
     this.medias$ = this.mediaService.fetchAllMedias(data);
   }
 
-  public deleteCategory(pkOfFile: string) {
+  public deleteMedia(pkOfFile: string) {
     this.store.dispatch(deleteMediaAction({ pk: pkOfFile }));
   }
 
