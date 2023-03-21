@@ -37,7 +37,7 @@ export class CheckoutHeaderComponent implements OnInit, OnDestroy {
   @ViewChild('products') products: ElementRef;
 
   ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
+
   }
 
   ngOnInit(): void {
