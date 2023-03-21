@@ -61,8 +61,8 @@ export class LoginComponent implements OnInit {
     })
     //TODO: Remove the event listeners manually
 
-    this.userService.obtainCsrf()
-      .pipe(take(1)).subscribe();
+    // this.userService.obtainCsrf()
+    //   .pipe(take(1)).subscribe();
   }
 
   public onLogin() {

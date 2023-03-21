@@ -9,7 +9,6 @@ import bg.rborisov.softunigraduation.exception.AbsentPasswordTokenException;
 import bg.rborisov.softunigraduation.exception.PasswordTokenExpiredException;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
 import bg.rborisov.softunigraduation.service.UserService;
-import bg.rborisov.softunigraduation.util.JwtProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -25,11 +24,8 @@ import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
 public class AuthResource {
     private final UserService userService;
 
-    private final JwtProvider jwtProvider;
-
-    public AuthResource(UserService userService, JwtProvider jwtProvider) {
+    public AuthResource(UserService userService) {
         this.userService = userService;
-        this.jwtProvider = jwtProvider;
     }
 
     @PostMapping("/login")
@@ -67,11 +63,8 @@ public class AuthResource {
     }
 
     @GetMapping("/csrf")
-    public void obtainCsrfToken(HttpServletRequest request, HttpServletResponse response) {
-//        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-//        response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
+    public void obtainCsrfToken() {
 
-        System.out.println("Hello");
     }
 
     @PostMapping("/resetPassword")
