@@ -2,12 +2,15 @@ package bg.rborisov.softunigraduation.service;
 
 import bg.rborisov.softunigraduation.dao.BasketRepository;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
+import bg.rborisov.softunigraduation.model.Basket;
 import bg.rborisov.softunigraduation.model.User;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 
 @Slf4j
 @Service
@@ -24,5 +27,12 @@ public class BasketService {
     public boolean canActivateCheckout(final Principal principal) throws UserNotFoundException {
         User user = this.userService.findUserByUsername(principal.getName());
         return this.basketRepository.findBasketByUser(user).isPresent();
+    }
+
+    public Basket createBasket() {
+        Basket basket = new Basket();
+        basket.setProductMapping(new HashMap<>());
+        basket.setCreationDate(LocalDateTime.now());
+        return basket;
     }
 }

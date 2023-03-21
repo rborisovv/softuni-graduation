@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import static bg.rborisov.softunigraduation.common.LogMessages.PASSWORD_TOKEN_CLEANUP;
+
 @Component
 public class PasswordTokenCleanupCronjob {
     private final PasswordTokenRepository passwordTokenRepository;
@@ -26,7 +28,7 @@ public class PasswordTokenCleanupCronjob {
         expiredPasswordTokensCount = expiredPasswordTokens.size();
 
         this.passwordTokenRepository.deleteAll(expiredPasswordTokens);
-        new PasswordTokenLogger().log(String.format("Removed %s expired password tokens",
+        new PasswordTokenLogger().log(String.format(PASSWORD_TOKEN_CLEANUP,
                 expiredPasswordTokensCount), LoggerStatus.INFO);
     }
 }

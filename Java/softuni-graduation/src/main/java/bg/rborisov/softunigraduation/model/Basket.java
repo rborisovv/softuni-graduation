@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @NoArgsConstructor
@@ -21,5 +22,6 @@ public class Basket extends BaseEntity implements Serializable {
     @ElementCollection
     private Map<Product, Integer> productMapping;
 
-    private String creationDate;
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime creationDate;
 }
