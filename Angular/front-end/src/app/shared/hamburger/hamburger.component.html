@@ -1,0 +1,30 @@
+<header>
+  <a class="logo-wrapper" href="javascript:void(0)" routerLink="/home">
+    <div class="img-wrapper">
+      <fa-icon style="font-size: 32px; color: #00c5b2;" [icon]="cart"></fa-icon>
+      <h2 style="color: #00c5b2;">eCart</h2>
+    </div>
+  </a>
+
+  <input (click)="onHamburgerClick($event)" type="checkbox" id="openSideMenu" class="openSideMenu"/>
+  <label for="openSideMenu" class="menuIconToggle">
+    <fa-icon class="hamburger-icon" [icon]="burger"></fa-icon>
+  </label>
+
+  <nav>
+    <ul>
+      <li><a href="javascript:void(0)" routerLink="/home" routerLinkActive="is-active">Home</a></li>
+      <li><a href="javascript:void(0)" routerLink="/experience" routerLinkActive="is-active">Experience</a></li>
+      <li><a href="javascript:void(0)" routerLink="/projects" routerLinkActive="is-active">Projects</a></li>
+      <li><a href="javascript:void(0)" routerLink="/portfolio" routerLinkActive="is-active">Portfolio</a></li>
+      <li><a href="javascript:void(0)" routerLink="/certificates" routerLinkActive="is-active">Certificates</a></li>
+      <li><a href="javascript:void(0)" routerLink="/interview" routerLinkActive="is-active">Interview</a></li>
+      <li><a href="javascript:void(0)" routerLink="/about" routerLinkActive="is-active">About</a></li>
+<!--      <li>-->
+<!--        <div class="social-media">-->
+
+<!--        </div>-->
+<!--      </li>-->
+    </ul>
+  </nav>
+</header>
