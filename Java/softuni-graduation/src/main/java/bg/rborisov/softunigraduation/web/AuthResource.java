@@ -14,11 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.security.Principal;
 
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
 
@@ -70,8 +68,10 @@ public class AuthResource {
 
     @GetMapping("/csrf")
     public void obtainCsrfToken(HttpServletRequest request, HttpServletResponse response) {
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-        response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
+//        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+//        response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
+
+        System.out.println("Hello");
     }
 
     @PostMapping("/resetPassword")

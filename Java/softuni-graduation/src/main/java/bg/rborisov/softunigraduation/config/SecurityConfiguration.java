@@ -48,7 +48,7 @@ public class SecurityConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new Argon2PasswordEncoder(32, 32, 32, 64, 32);
+        return Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     }
 
     @Bean
@@ -58,20 +58,24 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        CookieCsrfTokenRepository tokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+//        CookieCsrfTokenRepository tokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+//        XorCsrfTokenRequestAttributeHandler delegate = new XorCsrfTokenRequestAttributeHandler();
+        // set the name of the attribute the CsrfToken will be populated on
+//        delegate.setCsrfRequestAttributeName("_csrf");
+//        CsrfTokenRequestHandler requestHandler = delegate::handle;
+        CookieCsrfTokenRepository tokenRepository = new CookieCsrfTokenRepository();
+        tokenRepository.setCookieHttpOnly(false);
         XorCsrfTokenRequestAttributeHandler delegate = new XorCsrfTokenRequestAttributeHandler();
 
-
-        // set the name of the attribute the CsrfToken will be populated on
-        delegate.setCsrfRequestAttributeName("_csrf");
+        delegate.setCsrfRequestAttributeName(null);
         CsrfTokenRequestHandler requestHandler = delegate::handle;
 
-                http.cors()
+        http.cors()
                 .and()
                 .csrf((csrf) -> csrf
                         .csrfTokenRepository(tokenRepository)
                         .csrfTokenRequestHandler(requestHandler))
-                        .csrf().disable() //csrf override
+//                .csrf().disable() //csrf override
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
