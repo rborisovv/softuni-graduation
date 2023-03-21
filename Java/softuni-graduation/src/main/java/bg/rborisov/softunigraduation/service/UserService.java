@@ -66,12 +66,12 @@ public class UserService {
     private final OrderCreatedPublisher orderCreatedPublisher;
     private final PasswordTokenRepository passwordTokenRepository;
     private final PasswordResetPublisher passwordResetPublisher;
-    private final BasketService basketService;
 
     public UserService(JwtProvider jwtProvider, UserDetailsService userDetailsService, AuthenticationManager authenticationManager,
                        ModelMapper modelMapper, UserRepository userRepository, PasswordEncoder passwordEncoder,
                        RoleRepository roleRepository, Validator validator, ProductRepository productRepository,
-                       BasketRepository basketRepository, OrderRepository orderRepository, OrderCreatedPublisher orderCreatedPublisher, PasswordTokenRepository passwordTokenRepository, PasswordResetPublisher passwordResetPublisher, BasketService basketService) {
+                       BasketRepository basketRepository, OrderRepository orderRepository, OrderCreatedPublisher orderCreatedPublisher,
+                       PasswordTokenRepository passwordTokenRepository, PasswordResetPublisher passwordResetPublisher) {
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
         this.authenticationManager = authenticationManager;
@@ -86,7 +86,6 @@ public class UserService {
         this.orderCreatedPublisher = orderCreatedPublisher;
         this.passwordTokenRepository = passwordTokenRepository;
         this.passwordResetPublisher = passwordResetPublisher;
-        this.basketService = basketService;
     }
 
     public ResponseEntity<UserWelcomeDto> login(UserLoginDto userLoginDto) throws IOException {
@@ -283,7 +282,9 @@ public class UserService {
         Basket basket = user.getBasket();
 
         if (basket == null) {
-            basket = this.basketService.createBasket();
+            basket = new Basket();
+            basket.setProductMapping(new HashMap<>());
+            basket.setCreationDate(LocalDateTime.now());
         }
 
         basket.getProductMapping().put(product, 1);

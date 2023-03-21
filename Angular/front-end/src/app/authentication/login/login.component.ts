@@ -11,7 +11,6 @@ import { loginAction } from "../../store/action/auth.action";
 import { NotifierService } from "angular-notifier";
 import { NotificationType } from "../../enumeration/notification-enum";
 import { resetPassword } from "../../store/action/user.action";
-import { take } from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -46,6 +45,7 @@ export class LoginComponent implements OnInit {
 
   @ViewChild('passwordResetEmail') passwordResetEmail: ElementRef | undefined;
   @ViewChild('modalClose') modalClose: ElementRef | undefined;
+  clientWidth: number = window.innerWidth;
 
   ngOnInit(): void {
     const allShowHidePassword = document.querySelectorAll('.password-showHide')

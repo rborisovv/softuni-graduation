@@ -10,6 +10,7 @@ import {BreadcrumbComponent} from './breadcrumb/breadcrumb.component';
 import {CommonModule, KeyValuePipe} from "@angular/common";
 import {UrlNormalizerPipe} from "../pipes/url.normalizer.pipe";
 import { MatPaginatorModule } from "@angular/material/paginator";
+import { HamburgerComponent } from './hamburger/hamburger.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { MatPaginatorModule } from "@angular/material/paginator";
     FooterComponent,
     AuthHeaderComponent,
     BreadcrumbComponent,
-    UrlNormalizerPipe
+    UrlNormalizerPipe,
+    HamburgerComponent
   ],
     imports: [
         CommonModule,
@@ -33,7 +35,8 @@ import { MatPaginatorModule } from "@angular/material/paginator";
     AuthHeaderComponent,
     BreadcrumbComponent,
     FooterComponent,
-    UrlNormalizerPipe
+    UrlNormalizerPipe,
+    HamburgerComponent
   ],
   providers: [
     UserService, CookieService

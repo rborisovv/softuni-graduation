@@ -16,7 +16,7 @@ public class BasketCleanupCronjob {
         this.basketRepository = basketRepository;
     }
 
-    @Scheduled(cron = "0 0 * * 0 */2 *")
+    @Scheduled(cron = "0 0 0 */14 * *")
     public void expiredBasketsCleanup() {
         Set<Basket> expiredBaskets = this.basketRepository.findBasketByCreationDateBefore(LocalDateTime.now());
         this.basketRepository.deleteAll(expiredBaskets);
