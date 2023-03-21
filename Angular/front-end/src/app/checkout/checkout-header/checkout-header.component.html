@@ -1,0 +1,23 @@
+<header>
+  <nav class="nav">
+    <div class="nav__elements">
+      <div class="nav__logo mb-20 mt-30">
+        <a href="javascript:void(0)" routerLink="/home">
+          <fa-icon [icon]="faCart"></fa-icon>
+          eCart
+        </a>
+      </div>
+      <div class="user-items">
+        <a *ngIf="roleIsAdmin()" href="javascript:void(0)" routerLink="/admin/cockpit">
+          <fa-icon [icon]="faUserSecret"></fa-icon>
+        </a>
+        <a *ngIf="!roleIsAdmin()" href="javascript:void(0)">
+          <fa-icon [icon]="faUserAlt"></fa-icon>
+        </a>
+        <a href="javascript:void(0)" (click)="onLogout($event)">
+          <fa-icon [icon]="faSignOut"></fa-icon>
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>

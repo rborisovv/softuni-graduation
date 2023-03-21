@@ -20,15 +20,15 @@ import {
   faUserAlt,
   faUserSecret
 } from '@fortawesome/free-solid-svg-icons';
-import {UserService} from "../../service/user.service";
-import {CookieService} from "ngx-cookie-service";
-import {Router} from "@angular/router";
-import {Observable, Subscription} from "rxjs";
-import {Jwt} from "../../authentication/Jwt";
-import {Product} from "../../interface/product";
-import {Store} from "@ngrx/store";
-import {addToBasket, removeFromFavourites} from "../../store/action/user.action";
-import {selectBasketProductsState, selectFavouriteProductsState} from "../../store/selector/user.selector";
+import { UserService } from "../../service/user.service";
+import { CookieService } from "ngx-cookie-service";
+import { Router } from "@angular/router";
+import { Observable, Subscription } from "rxjs";
+import { Product } from "../../interface/product";
+import { Store } from "@ngrx/store";
+import { addToBasket, removeFromFavourites } from "../../store/action/user.action";
+import { selectBasketProductsState, selectFavouriteProductsState } from "../../store/selector/user.selector";
+import { logout, roleIsAdmin } from "../../service/service.index";
 
 @Component({
   selector: 'app-header',
@@ -81,37 +81,25 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   onLogout(event: Event): void {
-    event.preventDefault();
-    const subscription = this.userService.logoutUser().subscribe({
-      next: () => {
-        this.cookieService.delete('XSRF-TOKEN', "/", "localhost", false, "Lax");
-        this.cookieService.delete('X-XSRF-JWT', "/", "localhost", false, "Lax");
-        this.cookieService.delete('JWT-TOKEN', "/", "localhost", false, "Lax");
-        this.router.navigateByUrl("/auth/login");
-      }
-    });
-
-    this.subscriptions.push(subscription);
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(x => x.unsubscribe());
+    logout(event, this.cookieService, this.userService, this.router);
   }
 
   roleIsAdmin(): boolean {
-    const jwtToken = Jwt.obtainJwtHeader();
-    let decodedJwt = JSON.parse(window.atob(jwtToken.split('.')[1]));
-    return decodedJwt.role === 'ADMIN';
+    return roleIsAdmin();
   }
 
   removeProductFromFavourites(productRef: HTMLDivElement, identifier: string): void {
-    this.store.dispatch(removeFromFavourites({identifier}));
+    this.store.dispatch(removeFromFavourites({ identifier }));
     this.renderer.removeChild(this.products.nativeElement, productRef);
     this.favouriteProducts$ = this.store.select(selectFavouriteProductsState);
   }
 
   addProductToBasket(identifier: string) {
-    this.store.dispatch(addToBasket({identifier}));
+    this.store.dispatch(addToBasket({ identifier }));
     this.basketProducts$ = this.store.select(selectBasketProductsState);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(x => x.unsubscribe());
   }
 }

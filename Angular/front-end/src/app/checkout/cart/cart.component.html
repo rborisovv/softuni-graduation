@@ -1,4 +1,4 @@
-<app-header [renewedBasketProducts$]="renewedBasketProducts$"></app-header>
+<app-checkout-header></app-checkout-header>
 
 <section class="cart_wrapper mt-25">
   <div class="cart_lists">
@@ -31,10 +31,6 @@
               <option value="4">4</option>
               <option value="5">5</option>
               <option value="more">More</option>
-
-              <!-- TODO: make a basketProductEntityModel so it has stock level and renewed basket products
-              will be of that type so you can easily change the quantity and then send it upon checkout is clicked.
-              The store should probably also keep basketProductEntityModel types (think of that)-->
             </select>
 
           </div>

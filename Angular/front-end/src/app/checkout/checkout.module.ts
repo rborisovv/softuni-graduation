@@ -12,6 +12,7 @@ import { FinalizeComponent } from './finalize/finalize.component';
 import { PaymentSuccessfulComponent } from './payment-successful/payment-successful.component';
 import { CheckoutGuard } from "../guard/checkout.guard";
 import { OrderFlowGuard } from "../guard/order.flow.guard";
+import { CheckoutHeaderComponent } from './checkout-header/checkout-header.component';
 
 const routes: Routes = [
   {
@@ -30,7 +31,8 @@ const routes: Routes = [
     CartBalancePipe,
     CheckoutComponent,
     FinalizeComponent,
-    PaymentSuccessfulComponent
+    PaymentSuccessfulComponent,
+    CheckoutHeaderComponent
   ],
   imports: [
     CommonModule,

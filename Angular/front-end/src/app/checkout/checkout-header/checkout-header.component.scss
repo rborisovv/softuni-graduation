@@ -1,0 +1,120 @@
+$font-family: 'Roboto', sans-serif;
+$base-color: #00c5b2;
+
+@import "../../../common";
+
+a {
+  color: inherit;
+}
+
+.nav {
+  display: block;
+  left: 0;
+  top: 0;
+  position: relative;
+  font-size: 1.2rem;
+
+  max-width: 1355px;
+  margin: 0 auto;
+
+  & .nav__logo > a {
+    color: $base-color;
+    font-family: $font-family;
+    font-weight: 500;
+    font-size: 32px;
+    padding: 0 !important;
+  }
+
+  a {
+    cursor: pointer;
+    padding: 1.5rem 2rem;
+    display: inline-block;
+  }
+
+  &__logo {
+    color: #B1B3B5;
+    font-size: 1.8rem;
+    align-self: center;
+    cursor: pointer;
+    white-space: nowrap;
+
+    span {
+      display: inline-block;
+      transform: translateY(0);
+    }
+
+    &:hover {
+      span {
+        animation: .4s bounce ease-in-out;
+
+        &:nth-child(2) {
+          animation-delay: .1s;
+        }
+
+        &:nth-child(3) {
+          animation-delay: .2s;
+        }
+
+        &:nth-child(4) {
+          animation-delay: .3s;
+        }
+
+        &:nth-child(5) {
+          animation-delay: .4s;
+        }
+      }
+
+      &:before {
+        transform: translateY(0);
+        transition: .3s ease .5s;
+      }
+    }
+  }
+
+  &__elements {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1rem;
+  }
+
+  #searchbar {
+    & > input {
+      width: 600px;
+      height: 50px;
+      padding: 15px 50px 15px 15px;
+
+      border: 1px solid #c6c6c6;
+      border-radius: 10px;
+      outline: none;
+      font-size: 20px;
+    }
+
+    & > button {
+      position: relative;
+      right: 40px;
+      bottom: 1px;
+      background: none;
+      border: none;
+
+      & > fa-icon {
+        font-size: 22px;
+      }
+    }
+  }
+
+  .user-items {
+    display: flex;
+    gap: 1rem;
+
+    transition: all 300ms ease-in-out;
+  }
+
+  .user-items:hover {
+    cursor: pointer;
+  }
+
+  .user-items fa-icon {
+    font-size: 40px;
+  }
+}
