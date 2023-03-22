@@ -20,6 +20,9 @@ import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_ALGORITHM;
 
 @Configuration
 public class ApplicationBeanConfiguration {
+    private static final String CHARACTER_ENCODING = "UTF-8";
+    private static final String TEMPLATE_RESOLVER_PREFIX = "classpath:/templates/";
+    private static final String TEMPLATE_RESOLVER_SUFFIX = ".html";
 
     @Bean
     public ModelMapper modelMapper() {
@@ -34,10 +37,10 @@ public class ApplicationBeanConfiguration {
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-        templateResolver.setPrefix("classpath:/templates/");
-        templateResolver.setSuffix(".html");
+        templateResolver.setPrefix(TEMPLATE_RESOLVER_PREFIX);
+        templateResolver.setSuffix(TEMPLATE_RESOLVER_SUFFIX);
         templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setCharacterEncoding("UTF-8");
+        templateResolver.setCharacterEncoding(CHARACTER_ENCODING);
         templateResolver.setCacheable(false);
         return templateResolver;
     }
