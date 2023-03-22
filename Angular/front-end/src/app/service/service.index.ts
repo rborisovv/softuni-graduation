@@ -23,9 +23,8 @@ export function logout(event: Event, cookieService: CookieService, userService: 
   event.preventDefault();
   return userService.logoutUser().pipe(take(1)).subscribe({
     next: () => {
-      cookieService.delete('XSRF-TOKEN', "/", "localhost", false, "Lax");
-      cookieService.delete('X-XSRF-JWT', "/", "localhost", false, "Lax");
-      cookieService.delete('JWT-TOKEN', "/", "localhost", false, "Lax");
+      cookieService.delete('XSRF-TOKEN', "/", "localhost", false);
+      cookieService.delete('JWT-TOKEN', "/", "localhost", false);
       router.navigateByUrl("/auth/login");
     }
   });
