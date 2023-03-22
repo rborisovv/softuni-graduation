@@ -9,7 +9,6 @@ import bg.rborisov.softunigraduation.model.PasswordToken;
 import bg.rborisov.softunigraduation.model.User;
 import bg.rborisov.softunigraduation.util.EmailFactory;
 import com.sendgrid.helpers.mail.objects.Email;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -20,7 +19,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 
 @Component
 public class PasswordTokenEmailListener {
@@ -31,9 +29,6 @@ public class PasswordTokenEmailListener {
     private final PasswordTokenRepository passwordTokenRepository;
     private final SpringTemplateEngine springTemplateEngine;
     private final EmailFactory emailFactory;
-
-    @Value("${sendgrid.apiKey}")
-    private String sendGridApiKey;
 
     public PasswordTokenEmailListener(UserRepository userRepository, PasswordTokenRepository passwordTokenRepository, SpringTemplateEngine springTemplateEngine, EmailFactory emailFactory) {
         this.userRepository = userRepository;

@@ -7,6 +7,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.RSAKeyProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -30,20 +31,19 @@ public class JwtProvider {
     private final UserDetailsService userDetailsService;
 
     private final UserService userService;
+    private final RSAKeyProvider rsaKeyProvider;
 
-    @Value("${jwt.secret}")
-    private String secret;
-
-    public JwtProvider(UserDetailsService userDetailsService, @Lazy UserService userService) {
+    public JwtProvider(UserDetailsService userDetailsService, @Lazy UserService userService, RSAKeyProvider rsaKeyProvider) {
         this.userDetailsService = userDetailsService;
         this.userService = userService;
+        this.rsaKeyProvider = rsaKeyProvider;
     }
 
     public String generateToken() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         String[] claims = getClaimsFromUser(username);
         try {
-            Algorithm algorithm = Algorithm.HMAC512(secret);
+            Algorithm algorithm = Algorithm.RSA256(this.rsaKeyProvider);
             return JWT.create()
                     .withIssuer(TOKEN_ISSUER)
                     .withAudience(TOKEN_AUDIENCE)
@@ -90,7 +90,7 @@ public class JwtProvider {
 
     private JWTVerifier getJwtVerifier() {
         try {
-            Algorithm algorithm = Algorithm.HMAC512(secret);
+            Algorithm algorithm = Algorithm.RSA256(this.rsaKeyProvider);
             return JWT.require(algorithm)
                     .withIssuer(TOKEN_ISSUER).build();
         } catch (JWTVerificationException exception) {
