@@ -88,7 +88,10 @@ const actionReducerMap = combineReducers({
         skipWhenExpired: true
       }
     }),
-    StoreModule.forRoot({actionReducerMap}, { metaReducers: metaReducers }),
+    StoreModule.forRoot({
+      auth: authReducer, favouriteProducts: favouriteProductsReducer,
+      basketReducer: basketProductsReducer
+    }, { metaReducers: metaReducers }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     EffectsModule.forRoot([]),
   ],
