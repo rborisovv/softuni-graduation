@@ -10,7 +10,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule } from "@angu
 import { CoreModule } from "./core/core.module";
 import { JwtModule } from "@auth0/angular-jwt";
 import { XsrfInterceptor } from "./interceptor/xsrf.interceptor";
-import { ActionReducer, ActionReducerMap, MetaReducer, State, StoreModule } from '@ngrx/store';
+import { ActionReducer, combineReducers, MetaReducer, State, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NotifierModule } from "angular-notifier";
 import { EffectsModule } from "@ngrx/effects";
@@ -38,6 +38,11 @@ function localStorageSyncReducer(reducer: ActionReducer<State<any>>): ActionRedu
 
 const metaReducers: Array<MetaReducer> = [localStorageSyncReducer];
 
+const actionReducerMap = combineReducers({
+  auth: authReducer,
+  favouriteProductsReducer: favouriteProductsReducer,
+  basketReducer: basketProductsReducer
+});
 
 @NgModule({
   declarations: [
@@ -83,10 +88,7 @@ const metaReducers: Array<MetaReducer> = [localStorageSyncReducer];
         skipWhenExpired: true
       }
     }),
-    StoreModule.forRoot({
-      auth: authReducer, favouriteProducts: favouriteProductsReducer,
-      basketProducts: basketProductsReducer
-    }, { metaReducers: metaReducers }),
+    StoreModule.forRoot({actionReducerMap}, { metaReducers: metaReducers }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     EffectsModule.forRoot([]),
   ],
