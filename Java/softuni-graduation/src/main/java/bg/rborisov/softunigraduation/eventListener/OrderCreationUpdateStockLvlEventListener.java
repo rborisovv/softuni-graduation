@@ -6,7 +6,6 @@ import bg.rborisov.softunigraduation.events.OrderCreatedEvent;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.model.Product;
 import bg.rborisov.softunigraduation.model.User;
-import jakarta.transaction.Transactional;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;

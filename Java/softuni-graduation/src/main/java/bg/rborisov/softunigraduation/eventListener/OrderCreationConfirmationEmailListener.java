@@ -7,7 +7,7 @@ import bg.rborisov.softunigraduation.model.User;
 import bg.rborisov.softunigraduation.util.EmailFactory;
 import com.sendgrid.helpers.mail.objects.Email;
 import org.springframework.context.event.EventListener;
-import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -35,7 +35,7 @@ public class OrderCreationConfirmationEmailListener {
         this.emailFactory = emailFactory;
     }
 
-    @Order(3)
+    @Async
     @EventListener
     public void onOrderCreationEvent(OrderCreatedEvent event) throws IOException, UserNotFoundException {
         Principal principal = event.getPrincipal();
