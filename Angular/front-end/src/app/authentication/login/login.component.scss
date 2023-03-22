@@ -6,7 +6,7 @@
   box-sizing: border-box;
 }
 
-form {
+.login-container form {
   position: relative;
   top: 50%;
   left: 50%;
@@ -22,7 +22,7 @@ form {
   margin: 15px 0 50px 0;
 }
 
-.form {
+.login-container .form {
   position: relative;
   width: 100%;
   max-width: 550px;

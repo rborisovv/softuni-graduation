@@ -11,6 +11,7 @@ import { loginAction } from "../../store/action/auth.action";
 import { NotifierService } from "angular-notifier";
 import { NotificationType } from "../../enumeration/notification-enum";
 import { resetPassword } from "../../store/action/user.action";
+import { take } from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -61,8 +62,8 @@ export class LoginComponent implements OnInit {
     })
     //TODO: Remove the event listeners manually
 
-    // this.userService.obtainCsrf()
-    //   .pipe(take(1)).subscribe();
+    this.userService.obtainCsrf()
+      .pipe(take(1)).subscribe();
   }
 
   public onLogin() {
