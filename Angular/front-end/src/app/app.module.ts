@@ -10,7 +10,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule } from "@angu
 import { CoreModule } from "./core/core.module";
 import { JwtModule } from "@auth0/angular-jwt";
 import { XsrfInterceptor } from "./interceptor/xsrf.interceptor";
-import { StoreModule } from '@ngrx/store';
+import { ActionReducer, ActionReducerMap, MetaReducer, State, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NotifierModule } from "angular-notifier";
 import { EffectsModule } from "@ngrx/effects";
@@ -23,6 +23,21 @@ import {
 } from "./store/reducer/user.reducer";
 import { UrlNormalizerPipe } from './pipes/url.normalizer.pipe';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { localStorageSync } from "ngrx-store-localstorage";
+
+function localStorageSyncReducer(reducer: ActionReducer<State<any>>): ActionReducer<State<any>> {
+  return localStorageSync({
+    keys: [
+      { auth: ['username', 'email'] },
+      { favouriteProducts: ['favouriteProducts'] },
+      { basketProducts: ['basketProducts'] }
+    ],
+    rehydrate: true
+  })(reducer);
+}
+
+const metaReducers: Array<MetaReducer> = [localStorageSyncReducer];
+
 
 @NgModule({
   declarations: [
@@ -71,7 +86,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     StoreModule.forRoot({
       auth: authReducer, favouriteProducts: favouriteProductsReducer,
       basketProducts: basketProductsReducer
-    }, {}),
+    }, { metaReducers: metaReducers }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     EffectsModule.forRoot([]),
   ],
