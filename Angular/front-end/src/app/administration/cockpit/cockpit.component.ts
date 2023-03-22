@@ -17,7 +17,7 @@ export class CockpitComponent implements OnInit {
               private readonly store: Store) {
   }
 
-  public username$: Observable<string>;
+  protected username$: Observable<string>;
 
   ngOnInit(): void {
     this.username$ = this.store.select(selectUserState)
