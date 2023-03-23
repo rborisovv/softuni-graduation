@@ -6,7 +6,6 @@ import bg.rborisov.softunigraduation.dto.ProductDto;
 import bg.rborisov.softunigraduation.exception.BasketNotFoundException;
 import bg.rborisov.softunigraduation.exception.ProductNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
-import bg.rborisov.softunigraduation.model.Order;
 import bg.rborisov.softunigraduation.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +17,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/user")
 public class UserResource {
+
     private final UserService userService;
 
     public UserResource(UserService userService) {

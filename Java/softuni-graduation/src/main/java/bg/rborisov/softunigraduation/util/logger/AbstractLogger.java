@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public abstract class AbstractLogger {
-    public static final String LOG_FOLDER = "C:\\Users\\Radoslav\\Documents\\Github\\softuni-graduation\\Java\\softuni-graduation\\src\\main\\resources\\logs\\";
+    private static final String LOG_FOLDER = "C:\\Users\\Radoslav\\Documents\\Github\\softuni-graduation\\Java\\softuni-graduation\\src\\main\\resources\\logs\\";
 
-    public void log(final String fileName, final String message, LoggerStatus loggerStatus) throws IOException {
+    protected void log(final String fileName, final String message, LoggerStatus loggerStatus) throws IOException {
         File file = new File(LOG_FOLDER + fileName);
         PrintWriter printWriter = new PrintWriter(new java.io.FileWriter(file, true));
 

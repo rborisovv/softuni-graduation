@@ -13,9 +13,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
 
@@ -46,9 +48,9 @@ public class AuthResource {
     }
 
     @GetMapping("/admin")
-    public boolean adminPage(HttpServletRequest request) {
+    @PreAuthorize("#principal.name == 'radi2000'")
+    public boolean adminPage(HttpServletRequest request, Principal principal) {
         String authorizationHeaders = request.getHeader(JWT_COOKIE_NAME);
-
         return this.userService.isAdmin(authorizationHeaders);
     }
 
@@ -78,7 +80,7 @@ public class AuthResource {
     }
 
     @PostMapping("/hasActivePasswordRequest")
-    public Boolean hasActivePasswordRequest(@RequestBody String token) {
+    public Boolean hasActivePasswordRequest(final @RequestBody String token) {
         return this.userService.hasActivePasswordRequest(token);
     }
 
