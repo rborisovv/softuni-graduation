@@ -2,16 +2,12 @@ package bg.rborisov.softunigraduation.service;
 
 import bg.rborisov.softunigraduation.dao.BasketRepository;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
-import bg.rborisov.softunigraduation.model.Basket;
 import bg.rborisov.softunigraduation.model.User;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.HashMap;
 
 @Slf4j
 @Service
