@@ -12,6 +12,7 @@ import bg.rborisov.softunigraduation.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +48,9 @@ public class AuthResource {
         return userService.register(userRegisterDto);
     }
 
+    @Cacheable("isAdmin")
     @GetMapping("/admin")
-    @PreAuthorize("#principal.name == 'radi2000'")
+    @PreAuthorize("#principal.name == 'radi2000' || #principal.name == 'admin'")
     public boolean adminPage(HttpServletRequest request, Principal principal) {
         String authorizationHeaders = request.getHeader(JWT_COOKIE_NAME);
         return this.userService.isAdmin(authorizationHeaders);
