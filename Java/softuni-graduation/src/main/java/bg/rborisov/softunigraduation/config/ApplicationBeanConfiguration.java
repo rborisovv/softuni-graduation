@@ -1,5 +1,6 @@
 package bg.rborisov.softunigraduation.config;
 
+import bg.rborisov.softunigraduation.util.LoginCacheModel;
 import bg.rborisov.softunigraduation.util.RsaKeyProviderFactory;
 import com.auth0.jwt.interfaces.RSAKeyProvider;
 import com.google.common.cache.CacheBuilder;
@@ -61,14 +62,14 @@ public class ApplicationBeanConfiguration {
     }
 
     @Bean
-    public LoadingCache<String, Integer> loginAttemptCache() {
+    public LoadingCache<String, LoginCacheModel<Integer>> loginAttemptCache() {
         return CacheBuilder.newBuilder()
                 .expireAfterWrite(15, MINUTES)
                 .maximumSize(100)
                 .build(new CacheLoader<>() {
                     @Override
-                    public Integer load(String key) {
-                        return 0;
+                    public LoginCacheModel<Integer> load(String key) {
+                        return new LoginCacheModel<>(0);
                     }
                 });
     }
