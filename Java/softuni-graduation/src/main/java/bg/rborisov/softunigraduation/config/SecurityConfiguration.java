@@ -1,6 +1,7 @@
 package bg.rborisov.softunigraduation.config;
 
 import bg.rborisov.softunigraduation.dao.UserRepository;
+import bg.rborisov.softunigraduation.httpFilter.IpAddressFilter;
 import bg.rborisov.softunigraduation.httpFilter.JWTAuthEntryPoint;
 import bg.rborisov.softunigraduation.httpFilter.JwtAuthFilter;
 import bg.rborisov.softunigraduation.service.AppUserDetailsService;
@@ -41,12 +42,14 @@ public class SecurityConfiguration {
     private final JwtAuthFilter jwtAuthFilter;
     private final JWTAuthEntryPoint jwtAuthEntryPoint;
     private final LoginAttemptService loginAttemptService;
+    private final IpAddressFilter ipAddressFilter;
 
-    public SecurityConfiguration(UserRepository userRepository, @Lazy JwtAuthFilter jwtAuthFilter, JWTAuthEntryPoint jwtAuthEntryPoint, LoginAttemptService loginAttemptService) {
+    public SecurityConfiguration(UserRepository userRepository, @Lazy JwtAuthFilter jwtAuthFilter, JWTAuthEntryPoint jwtAuthEntryPoint, LoginAttemptService loginAttemptService, IpAddressFilter ipAddressFilter) {
         this.userRepository = userRepository;
         this.jwtAuthFilter = jwtAuthFilter;
         this.jwtAuthEntryPoint = jwtAuthEntryPoint;
         this.loginAttemptService = loginAttemptService;
+        this.ipAddressFilter = ipAddressFilter;
     }
 
     @Bean
@@ -89,6 +92,7 @@ public class SecurityConfiguration {
                 .authenticationEntryPoint(jwtAuthEntryPoint)
                 .and()
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(ipAddressFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout();
 
         return http.build();
