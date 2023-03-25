@@ -13,12 +13,14 @@ import bg.rborisov.softunigraduation.model.*;
 import bg.rborisov.softunigraduation.util.JwtProvider;
 import bg.rborisov.softunigraduation.util.logger.AuthLogger;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -44,6 +48,7 @@ import java.util.stream.Collectors;
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.*;
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
 import static bg.rborisov.softunigraduation.common.JwtConstants.TOKEN_PREFIX;
+import static bg.rborisov.softunigraduation.common.LogMessages.USER_LOGGED_IN;
 import static bg.rborisov.softunigraduation.common.Messages.*;
 import static bg.rborisov.softunigraduation.constant.SecurityConstant.COOKIE_MAX_AGE;
 import static org.springframework.http.HttpStatus.OK;
@@ -66,12 +71,14 @@ public class UserService {
     private final OrderCreatedPublisher orderCreatedPublisher;
     private final PasswordTokenRepository passwordTokenRepository;
     private final PasswordResetPublisher passwordResetPublisher;
+    private final LoginAttemptService loginAttemptService;
 
     public UserService(JwtProvider jwtProvider, UserDetailsService userDetailsService, AuthenticationManager authenticationManager,
                        ModelMapper modelMapper, UserRepository userRepository, PasswordEncoder passwordEncoder,
                        RoleRepository roleRepository, Validator validator, ProductRepository productRepository,
                        BasketRepository basketRepository, OrderRepository orderRepository, OrderCreatedPublisher orderCreatedPublisher,
-                       PasswordTokenRepository passwordTokenRepository, PasswordResetPublisher passwordResetPublisher) {
+                       PasswordTokenRepository passwordTokenRepository, PasswordResetPublisher passwordResetPublisher,
+                       LoginAttemptService loginAttemptService) {
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
         this.authenticationManager = authenticationManager;
@@ -86,6 +93,7 @@ public class UserService {
         this.orderCreatedPublisher = orderCreatedPublisher;
         this.passwordTokenRepository = passwordTokenRepository;
         this.passwordResetPublisher = passwordResetPublisher;
+        this.loginAttemptService = loginAttemptService;
     }
 
     public ResponseEntity<UserWelcomeDto> login(UserLoginDto userLoginDto) throws IOException {
@@ -106,10 +114,12 @@ public class UserService {
         securityContext.setAuthentication(authentication);
         SecurityContextHolder.setContext(securityContext);
 
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        this.loginAttemptService.evictUserFromLoginAttemptCache(request);
 
         UserWelcomeDto userWelcomeDto = modelMapper.map(user, UserWelcomeDto.class);
         AuthLogger authLogger = new AuthLogger();
-        authLogger.log(String.format("User %s successfully logged in!", user.getUsername()), LoggerStatus.INFO);
+        authLogger.log(String.format(USER_LOGGED_IN, user.getUsername()), LoggerStatus.INFO);
         return new ResponseEntity<>(userWelcomeDto, OK);
     }
 
@@ -133,7 +143,7 @@ public class UserService {
         registerDto.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 
         User user = modelMapper.map(registerDto, User.class);
-        user.setUserId(RandomStringUtils.randomAscii(10).replaceAll(" ", ""));
+        user.setUserId(RandomStringUtils.randomAscii(10).replaceAll(StringUtils.SPACE, StringUtils.EMPTY));
         Role userRole = roleRepository.findRoleByName(RoleEnum.USER.name());
         user.setRole(userRole);
         user.setJoinDate(LocalDate.now());

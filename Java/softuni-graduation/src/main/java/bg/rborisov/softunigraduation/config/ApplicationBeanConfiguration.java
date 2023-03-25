@@ -2,6 +2,9 @@ package bg.rborisov.softunigraduation.config;
 
 import bg.rborisov.softunigraduation.util.RsaKeyProviderFactory;
 import com.auth0.jwt.interfaces.RSAKeyProvider;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.modelmapper.ModelMapper;
@@ -17,6 +20,7 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_ALGORITHM;
+import static java.util.concurrent.TimeUnit.MINUTES;
 
 @Configuration
 public class ApplicationBeanConfiguration {
@@ -54,5 +58,18 @@ public class ApplicationBeanConfiguration {
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
         return new RsaKeyProviderFactory(privateKey, publicKey);
+    }
+
+    @Bean
+    public LoadingCache<String, Integer> loginAttemptCache() {
+        return CacheBuilder.newBuilder()
+                .expireAfterWrite(15, MINUTES)
+                .maximumSize(100)
+                .build(new CacheLoader<>() {
+                    @Override
+                    public Integer load(String key) {
+                        return 0;
+                    }
+                });
     }
 }

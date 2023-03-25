@@ -4,6 +4,7 @@ import bg.rborisov.softunigraduation.dao.UserRepository;
 import bg.rborisov.softunigraduation.httpFilter.JWTAuthEntryPoint;
 import bg.rborisov.softunigraduation.httpFilter.JwtAuthFilter;
 import bg.rborisov.softunigraduation.service.AppUserDetailsService;
+import bg.rborisov.softunigraduation.service.LoginAttemptService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,11 +40,13 @@ public class SecurityConfiguration {
     private final UserRepository userRepository;
     private final JwtAuthFilter jwtAuthFilter;
     private final JWTAuthEntryPoint jwtAuthEntryPoint;
+    private final LoginAttemptService loginAttemptService;
 
-    public SecurityConfiguration(UserRepository userRepository, @Lazy JwtAuthFilter jwtAuthFilter, JWTAuthEntryPoint jwtAuthEntryPoint) {
+    public SecurityConfiguration(UserRepository userRepository, @Lazy JwtAuthFilter jwtAuthFilter, JWTAuthEntryPoint jwtAuthEntryPoint, LoginAttemptService loginAttemptService) {
         this.userRepository = userRepository;
         this.jwtAuthFilter = jwtAuthFilter;
         this.jwtAuthEntryPoint = jwtAuthEntryPoint;
+        this.loginAttemptService = loginAttemptService;
     }
 
     @Bean
@@ -53,7 +56,7 @@ public class SecurityConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new AppUserDetailsService(userRepository);
+        return new AppUserDetailsService(userRepository, loginAttemptService);
     }
 
     @Bean
