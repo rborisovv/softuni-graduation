@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import static bg.rborisov.softunigraduation.common.Messages.IMAGES_CONSTRAINT_MESSAGE;
 import static bg.rborisov.softunigraduation.constant.FileConstant.*;
 
-public class ImageFileValidator implements ConstraintValidator<ImageValidator, MultipartFile> {
+public final class ImageFileValidator implements ConstraintValidator<ImageValidator, MultipartFile> {
 
     @Override
     public void initialize(ImageValidator constraintAnnotation) {
