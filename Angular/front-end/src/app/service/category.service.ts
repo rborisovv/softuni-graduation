@@ -4,6 +4,8 @@ import {environment} from "../../environments/environment.prod";
 import {Observable} from "rxjs";
 import {HttpResponse} from "../interface/http.response";
 import {Category} from "../interface/category";
+import { PageableData } from "../model/pageable.data";
+import { CategoryPageable } from "../model/category.pageable";
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +29,8 @@ export class CategoryService {
     return this.http.post<boolean>(`${this.apiUrl}/category/name`, name);
   }
 
-  public loadAllCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${this.apiUrl}/category/all`);
+  public loadAllCategories(data: PageableData): Observable<CategoryPageable> {
+    return this.http.post<CategoryPageable>(`${this.apiUrl}/category/all`, data);
   }
 
   public loadCategory(identifier: string): Observable<Category> {

@@ -99,16 +99,6 @@ public class CategoryService extends AbstractMediaUrlBuilder {
         return this.categoryRepository.findCategoryByName(name).isPresent();
     }
 
-    public Set<CategoryDto> loadAllCategories() {
-        return this.categoryRepository.findAll()
-                .stream().map(category -> {
-                    CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
-                    categoryDto.setMediaUrl(category.getMedia().getMediaUrl());
-                    return categoryDto;
-                })
-                .collect(Collectors.toCollection(LinkedHashSet::new));
-    }
-
     public CategoryDto loadCategory(String identifier) {
         //TODO: throw exception if category not present
         Category category = this.categoryRepository.findCategoryByIdentifier(identifier).orElseThrow();

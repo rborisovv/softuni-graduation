@@ -2,12 +2,20 @@
 
 <main>
   <h1 class="text-center mt-40 mb-30">All Categories</h1>
-  <div class="create-btn-wrapper">
-    <h3>Total Categories: <span *ngIf="categories$ | async as categories">{{categories.length}}</span></h3>
+  <div class="create-btn-wrapper" *ngIf="categories$ | async as categories">
+    <h3>Total Categories: <span>{{categories.totalElements}}</span></h3>
+    <mat-paginator style="margin: 24px 0 0 auto;"
+                   [length]="categories.totalElements"
+                   [pageIndex]="pageIndex"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="[10, 25, 50, 100]"
+                   (page)="onPaginationChange($event)"
+                   aria-label="Select page">
+    </mat-paginator>
     <a href="javascript:void(0)" routerLink="/admin/category/create" class="add-btn">Create Category</a>
   </div>
   <div class="categories">
-    <div class="category">
+    <div class="category" *ngIf="categories$ | async as categories">
       <table>
         <thead>
         <tr>
@@ -18,7 +26,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let category of categories$ | async">
+        <tr *ngFor="let category of categories.content">
           <td><img [src]="category.mediaUrl" alt=""></td>
           <td>{{category.identifier}}</td>
           <td>{{category.name}}</td>
@@ -33,6 +41,14 @@
         </tr>
         </tbody>
       </table>
+      <mat-paginator style="margin: 24px 0 0 auto;"
+                     [length]="categories.totalElements"
+                     [pageIndex]="pageIndex"
+                     [pageSize]="pageSize"
+                     [pageSizeOptions]="[10, 25, 50, 100]"
+                     (page)="onPaginationChange($event)"
+                     aria-label="Select page">
+      </mat-paginator>
     </div>
   </div>
 </main>

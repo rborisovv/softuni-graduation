@@ -2,11 +2,20 @@
 
 <main>
   <h1 class="text-center mt-40 mb-30">All Products</h1>
-  <div class="create-btn-wrapper">
+  <div class="create-btn-wrapper" *ngIf="products$ | async as products">
+    <h3>Total Categories: <span>{{products.totalElements}}</span></h3>
+    <mat-paginator style="margin: 24px 0 0 auto;"
+                   [length]="products.totalElements"
+                   [pageIndex]="pageIndex"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="[10, 25, 50, 100]"
+                   (page)="onPaginationChange($event)"
+                   aria-label="Select page">
+    </mat-paginator>
     <a href="javascript:void(0)" routerLink="/admin/product/create" class="add-btn">Create Product</a>
   </div>
   <div class="products">
-    <div class="product">
+    <div class="product" *ngIf="products$ | async as products">
       <table>
         <thead>
         <tr>
@@ -20,7 +29,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let product of products$ | async">
+        <tr *ngFor="let product of products.content">
           <td><img [src]="product.mediaUrl" alt=""></td>
           <td>{{product.name}}</td>
           <td>{{product.identifier}}</td>
@@ -38,6 +47,14 @@
         </tr>
         </tbody>
       </table>
+      <mat-paginator style="margin: 24px 0 0 auto;"
+                     [length]="products.totalElements"
+                     [pageIndex]="pageIndex"
+                     [pageSize]="pageSize"
+                     [pageSizeOptions]="[10, 25, 50, 100]"
+                     (page)="onPaginationChange($event)"
+                     aria-label="Select page">
+      </mat-paginator>
     </div>
   </div>
 </main>

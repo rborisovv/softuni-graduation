@@ -1,9 +1,10 @@
-import {Injectable} from '@angular/core';
-import {environment} from "../../environments/environment.prod";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Product} from "../interface/product";
-import {HttpResponse} from "../interface/http.response";
+import { Injectable } from '@angular/core';
+import { environment } from "../../environments/environment.prod";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { HttpResponse } from "../interface/http.response";
+import { PageableData } from "../model/pageable.data";
+import { ProductPageable } from "../model/product.pageable";
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +28,8 @@ export class ProductService {
     return this.http.post<HttpResponse>(`${this.apiUrl}/product/create`, product);
   }
 
-  public loadAllProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/product/findAll`);
+  public loadAllProducts(data: PageableData): Observable<ProductPageable> {
+    return this.http.post<ProductPageable>(`${this.apiUrl}/product/findAll`, data);
   }
 
   public deleteProduct(identifier: string): Observable<HttpResponse> {

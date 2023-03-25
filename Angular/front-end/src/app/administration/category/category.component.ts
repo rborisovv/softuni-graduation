@@ -1,10 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {CategoryService} from "../../service/category.service";
-import {Observable} from "rxjs";
-import {Category} from 'src/app/interface/category';
-import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
-import {Store} from "@ngrx/store";
-import {deleteCategoryAction} from "../../store/action/category.action";
+import { Component, OnInit } from '@angular/core';
+import { CategoryService } from "../../service/category.service";
+import { Observable } from "rxjs";
+import { faTrash, faWrench } from '@fortawesome/free-solid-svg-icons';
+import { Store } from "@ngrx/store";
+import { deleteCategoryAction } from "../../store/action/category.action";
+import { PageableData } from "../../model/pageable.data";
+import { CategoryPageable } from "../../model/category.pageable";
+import { PageEvent } from "@angular/material/paginator";
 
 @Component({
   selector: 'app-categories',
@@ -16,17 +18,35 @@ export class CategoryComponent implements OnInit {
   faWrench = faWrench;
   faTrash = faTrash;
 
-  categories$: Observable<Category[]>;
+  categories$: Observable<CategoryPageable>;
+  pageIndex: number = 0;
+  pageSize: number = 10;
 
   constructor(private categoryService: CategoryService, private readonly store: Store) {
   }
 
   ngOnInit(): void {
-    this.categories$ = this.categoryService.loadAllCategories();
+    const data: PageableData = {
+      pageIndex: 0,
+      pageSize: 10
+    };
+
+    this.categories$ = this.categoryService.loadAllCategories(data);
   }
 
   public deleteCategory(identifier: string) {
-    this.store.dispatch(deleteCategoryAction({identifier}));
+    this.store.dispatch(deleteCategoryAction({ identifier }));
     //TODO: Fix deleting category does not detect the change
+  }
+
+  onPaginationChange(event: PageEvent) {
+    const data: PageableData = {
+      pageIndex: event.pageIndex,
+      pageSize: event.pageSize
+    };
+
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.categories$ = this.categoryService.loadAllCategories(data);
   }
 }

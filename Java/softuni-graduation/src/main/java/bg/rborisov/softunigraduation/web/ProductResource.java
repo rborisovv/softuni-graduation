@@ -2,23 +2,22 @@ package bg.rborisov.softunigraduation.web;
 
 import bg.rborisov.softunigraduation.dao.ProductRepository;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
+import bg.rborisov.softunigraduation.dto.PageableData;
 import bg.rborisov.softunigraduation.dto.ProductDto;
 import bg.rborisov.softunigraduation.exception.*;
-import bg.rborisov.softunigraduation.model.Product;
 import bg.rborisov.softunigraduation.service.ProductService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/product")
@@ -61,16 +60,12 @@ public class ProductResource {
         return this.productService.createProduct(productDto);
     }
 
-    @GetMapping("/findAll")
-    public Set<ProductDto> findAllProducts() {
-        return this.productRepository.findAllProducts().stream()
-                .map(product -> {
-                    ProductDto productDto = modelMapper.map(product, ProductDto.class);
-                    productDto.setMediaUrl(product.getMedia().getMediaUrl());
-                    productDto.setCategoryMediaUrl(product.getCategory().getMedia().getMediaUrl());
-                    return productDto;
-                })
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+    @PostMapping("/findAll")
+    public Page<ProductDto> findAllProducts(final @Valid @RequestBody PageableData pageableData) {
+        Pageable pageable = PageRequest.of(pageableData.getPageIndex(), pageableData.getPageSize());
+
+        return this.productRepository.findAll(pageable)
+                .map(product -> this.modelMapper.map(product, ProductDto.class));
     }
 
     @DeleteMapping("/delete/{identifier}")

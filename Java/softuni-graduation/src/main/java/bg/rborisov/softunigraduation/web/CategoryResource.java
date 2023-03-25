@@ -1,11 +1,17 @@
 package bg.rborisov.softunigraduation.web;
 
+import bg.rborisov.softunigraduation.dao.CategoryRepository;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.CategoryDto;
 import bg.rborisov.softunigraduation.dto.CategoryUpdateDto;
+import bg.rborisov.softunigraduation.dto.PageableData;
 import bg.rborisov.softunigraduation.exception.*;
 import bg.rborisov.softunigraduation.service.CategoryService;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +25,13 @@ import java.util.Set;
 public class CategoryResource {
 
     private final CategoryService categoryService;
+    private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
 
-    public CategoryResource(CategoryService categoryService) {
+    public CategoryResource(CategoryService categoryService, CategoryRepository categoryRepository, ModelMapper modelMapper) {
         this.categoryService = categoryService;
+        this.categoryRepository = categoryRepository;
+        this.modelMapper = modelMapper;
     }
 
     @PostMapping("/create")
@@ -53,9 +63,12 @@ public class CategoryResource {
 
     }
 
-    @GetMapping("/all")
-    public Set<CategoryDto> loadCategories() {
-        return this.categoryService.loadAllCategories();
+    @PostMapping("/all")
+    public Page<CategoryDto> loadCategories(final @Valid @RequestBody PageableData pageableData) {
+        Pageable pageable = PageRequest.of(pageableData.getPageIndex(), pageableData.getPageSize());
+
+        return this.categoryRepository.findAll(pageable)
+                .map(category -> this.modelMapper.map(category, CategoryDto.class));
     }
 
     @GetMapping("/{identifier}")

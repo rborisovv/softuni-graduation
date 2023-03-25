@@ -6,6 +6,7 @@ h1 {
 }
 
 .create-btn-wrapper {
+  @include create-btn-wrapper;
   width: 70%;
   margin: 0 auto 1.5rem auto;
   text-align: right;
@@ -22,6 +23,7 @@ h1 {
   padding: 8px 30px;
   border-radius: 8px;
   border-bottom: 1px solid #c2c2c2;
+  text-align: center;
 }
 
 .medias {
