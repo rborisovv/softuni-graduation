@@ -30,7 +30,7 @@
           <td><img [src]="category.mediaUrl" alt=""></td>
           <td>{{category.identifier}}</td>
           <td>{{category.name}}</td>
-          <td id="actions">
+          <td id="actions" *ngIf="category.identifier != '0000'">
             <a class="update" href="javascript:void(0)" [routerLink]="['/admin/categories', category.identifier]">
               <fa-icon [icon]="faWrench"></fa-icon>
             </a>
