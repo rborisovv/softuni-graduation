@@ -137,7 +137,6 @@ public class UserService {
         Role userRole = roleRepository.findRoleByName(RoleEnum.USER.name());
         user.setRole(userRole);
         user.setJoinDate(LocalDate.now());
-        user.setIsLocked(false);
         userRepository.save(user);
 
         return registerDto;

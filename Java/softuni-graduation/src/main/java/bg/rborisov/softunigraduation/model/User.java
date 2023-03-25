@@ -47,9 +47,6 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "is_locked", nullable = false)
-    private Boolean isLocked;
-
     @ManyToMany
     @ColumnDefault("null")
     private Set<Product> favouriteProducts;
