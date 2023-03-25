@@ -17,7 +17,7 @@ import java.util.Locale;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Component
-public class JWTAuthEntryPoint extends Http403ForbiddenEntryPoint {
+public class JwtAuthEntryPoint extends Http403ForbiddenEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
         HttpStatus httpStatus = HttpStatus.FORBIDDEN;
