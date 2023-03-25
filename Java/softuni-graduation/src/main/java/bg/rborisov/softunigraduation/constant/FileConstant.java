@@ -7,4 +7,5 @@ public class FileConstant {
     public static final String MEDIA_EXTENSION_JPEG = ".jpeg";
     public static final String MEDIA_EXTENSION_JPG = ".jpg";
     public static final String MEDIA_EXTENSION_PNG = ".png";
+    public static final String FILE_TXT_EXTENSION = ".txt";
 }
