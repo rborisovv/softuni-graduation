@@ -62,6 +62,7 @@ public class ApplicationBeanConfiguration {
     }
 
     @Bean
+    @SuppressWarnings("all")
     public LoadingCache<String, LoginCacheModel<Integer>> loginAttemptCache() {
         return CacheBuilder.newBuilder()
                 .expireAfterWrite(15, MINUTES)
