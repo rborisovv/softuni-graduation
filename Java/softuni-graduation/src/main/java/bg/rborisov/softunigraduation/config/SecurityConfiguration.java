@@ -91,8 +91,8 @@ public class SecurityConfiguration {
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthEntryPoint)
                 .and()
+                .addFilterBefore(ipAddressFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(ipAddressFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout();
 
         return http.build();
