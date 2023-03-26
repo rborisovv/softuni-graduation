@@ -265,7 +265,7 @@ public class UserService {
         response.setHttpStatus(httpStatus);
         response.setHttpStatusCode(httpStatus.value());
         response.setNotificationStatus(notificationStatus.toLowerCase(Locale.ROOT));
-        response.setReason("");
+        response.setReason(StringUtils.EMPTY);
         response.setMessage(message);
 
         return response;
