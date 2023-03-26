@@ -6,7 +6,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Renderer2,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
@@ -57,11 +56,8 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
 
   @ViewChild('products') products: ElementRef;
 
-  constructor(private userService: UserService,
-              private cookieService: CookieService,
-              private router: Router,
-              private readonly store: Store,
-              private readonly renderer: Renderer2) {
+  constructor(private userService: UserService, private cookieService: CookieService,
+              private router: Router, private store: Store) {
   }
 
   ngOnInit(): void {
@@ -90,7 +86,6 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
 
   removeProductFromFavourites(productRef: HTMLDivElement, identifier: string): void {
     this.store.dispatch(removeFromFavourites({ identifier }));
-    this.renderer.removeChild(this.products.nativeElement, productRef);
     this.favouriteProducts$ = this.store.select(selectFavouriteProductsState);
   }
 

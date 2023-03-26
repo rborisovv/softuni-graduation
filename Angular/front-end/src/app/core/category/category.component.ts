@@ -1,16 +1,16 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {Observable, take} from "rxjs";
-import {Category} from 'src/app/interface/category';
-import {CategoryService} from "../../service/category.service";
-import {ActivatedRoute, ParamMap, Router} from "@angular/router";
-import {faHeart} from '@fortawesome/free-regular-svg-icons';
-import {Store} from "@ngrx/store";
-import {addToBasket, addToFavourites} from "../../store/action/user.action";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable, take } from "rxjs";
+import { Category } from 'src/app/interface/category';
+import { CategoryService } from "../../service/category.service";
+import { ActivatedRoute, ParamMap, Router } from "@angular/router";
+import { faHeart } from '@fortawesome/free-regular-svg-icons';
+import { Store } from "@ngrx/store";
+import { addToBasket, addToFavourites } from "../../store/action/user.action";
 import {
   selectBasketProductsState,
   selectFavouriteProductsState
 } from "../../store/selector/user.selector";
-import {Product} from "../../interface/product";
+import { Product } from "../../interface/product";
 
 @Component({
   selector: 'app-category',
@@ -46,12 +46,12 @@ export class CategoryComponent implements OnInit {
   }
 
   public addToFavourites(identifier: string) {
-    this.store.dispatch(addToFavourites({identifier}));
+    this.store.dispatch(addToFavourites({ identifier }));
     this.favouriteProducts$ = this.store.select(selectFavouriteProductsState);
   }
 
   public addToBasket(identifier: string) {
-    this.store.dispatch(addToBasket({identifier}));
+    this.store.dispatch(addToBasket({ identifier }));
     this.basketProducts$ = this.store.select(selectBasketProductsState);
   }
 }
