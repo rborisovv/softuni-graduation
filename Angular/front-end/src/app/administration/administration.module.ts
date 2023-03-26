@@ -23,6 +23,7 @@ import { MediaEffects } from "../store/effect/media.effect";
 import { ProductEffects } from "../store/effect/product.effect";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { UserComponent } from './user/user.component';
+import { OrderComponent } from './order/order.component';
 
 const routes: Routes = [
   {
@@ -35,7 +36,8 @@ const routes: Routes = [
       { path: 'product/create', component: CreateProductComponent },
       { path: 'media/create', component: CreateMediaComponent },
       { path: 'categories/:identifier', component: UpdateCategoryComponent },
-      { path: 'users', component: UserComponent }
+      { path: 'users', component: UserComponent },
+      {path: 'orders', component: OrderComponent}
     ]
   }
 ]
@@ -53,7 +55,8 @@ const routes: Routes = [
     PositiveNumberDirective,
     ProductComponent,
     UpdateProductComponent,
-    UserComponent
+    UserComponent,
+    OrderComponent
   ],
   imports: [
     CommonModule,

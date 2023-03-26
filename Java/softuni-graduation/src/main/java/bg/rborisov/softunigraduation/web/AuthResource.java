@@ -5,6 +5,7 @@ import bg.rborisov.softunigraduation.dto.*;
 import bg.rborisov.softunigraduation.exception.AbsentPasswordTokenException;
 import bg.rborisov.softunigraduation.exception.PasswordTokenExpiredException;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
+import bg.rborisov.softunigraduation.service.OrderService;
 import bg.rborisov.softunigraduation.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,9 +25,11 @@ import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
 @RequestMapping("/auth")
 public class AuthResource {
     private final UserService userService;
+    private final OrderService orderService;
 
-    public AuthResource(UserService userService) {
+    public AuthResource(UserService userService, OrderService orderService) {
         this.userService = userService;
+        this.orderService = orderService;
     }
 
     @PostMapping("/login")
@@ -93,5 +96,11 @@ public class AuthResource {
     @PreAuthorize("#principal.name.equals('radi2000')")
     public Set<UserDto> loadAllUsers(final Principal principal) {
         return this.userService.loadAllUsers();
+    }
+
+    @GetMapping("/orders")
+    @PreAuthorize("#principal.name.equals('radi2000')")
+    public Set<OrderDto> fetchAllOrders(final Principal principal) {
+        return this.orderService.fetchAllOrders();
     }
 }

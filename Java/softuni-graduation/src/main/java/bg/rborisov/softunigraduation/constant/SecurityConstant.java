@@ -10,5 +10,5 @@ public class SecurityConstant {
     public static final int COOKIE_MAX_AGE = 1800;
     public static final String FORBIDDEN_MESSAGE = "You need to be logged in to access this page!";
 
-    public static final String[] AUTH_ENDPOINTS = {"/auth/admin", "/auth/users"};
+    public static final String[] AUTH_ENDPOINTS = {"/auth/admin", "/auth/users", "/auth/orders"};
 }

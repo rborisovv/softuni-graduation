@@ -8,12 +8,12 @@ import org.hibernate.validator.constraints.UUID;
 
 import java.io.Serializable;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Getter
 @Setter
+@Builder
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class PasswordChangeDto implements Serializable {
     @NotBlank
     @Size(min = 6, max = 50)
