@@ -272,7 +272,6 @@ public class UserService {
     }
 
     public ResponseEntity<HttpResponse> addToBasket(final String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException {
-        //TODO: Find a way to add quantity to ordered Products
         if (identifier.isBlank()) {
             throw new IllegalArgumentException();
         }
