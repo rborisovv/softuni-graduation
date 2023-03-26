@@ -694,7 +694,7 @@
               <div class="name-wrapper">
                 <h4 class="product-name">{{product.name}}</h4>
                 <a class="remove-fav mt-10 fs-6" href="javascript:void(0)"
-                   (click)="removeProductFromFavourites(productRef, product.identifier)">
+                   (click)="removeProductFromFavourites(productRef, product.identifier, $event)">
                   <span>Remove</span>
                   <fa-icon [icon]="faTrash"></fa-icon>
                 </a>

@@ -84,7 +84,8 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
     return roleIsAdmin();
   }
 
-  removeProductFromFavourites(productRef: HTMLDivElement, identifier: string): void {
+  removeProductFromFavourites(productRef: HTMLDivElement, identifier: string, event: MouseEvent): void {
+    event.preventDefault();
     this.store.dispatch(removeFromFavourites({ identifier }));
     this.favouriteProducts$ = this.store.select(selectFavouriteProductsState);
   }
