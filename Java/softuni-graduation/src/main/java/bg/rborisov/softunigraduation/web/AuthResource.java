@@ -1,10 +1,7 @@
 package bg.rborisov.softunigraduation.web;
 
 import bg.rborisov.softunigraduation.domain.HttpResponse;
-import bg.rborisov.softunigraduation.dto.PasswordChangeDto;
-import bg.rborisov.softunigraduation.dto.UserLoginDto;
-import bg.rborisov.softunigraduation.dto.UserRegisterDto;
-import bg.rborisov.softunigraduation.dto.UserWelcomeDto;
+import bg.rborisov.softunigraduation.dto.*;
 import bg.rborisov.softunigraduation.exception.AbsentPasswordTokenException;
 import bg.rborisov.softunigraduation.exception.PasswordTokenExpiredException;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Set;
 
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
 
@@ -50,7 +48,7 @@ public class AuthResource {
 
     @Cacheable("isAdmin")
     @GetMapping("/admin")
-    @PreAuthorize("#principal.name == 'radi2000' || #principal.name == 'admin'")
+    @PreAuthorize("#principal.name.equals('radi2000') || #principal.name.equals('admin')")
     public boolean adminPage(HttpServletRequest request, Principal principal) {
         String authorizationHeaders = request.getHeader(JWT_COOKIE_NAME);
         return this.userService.isAdmin(authorizationHeaders);
@@ -89,5 +87,11 @@ public class AuthResource {
     @PostMapping("/logout")
     public void logout() {
         this.userService.logout();
+    }
+
+    @GetMapping("/users")
+    @PreAuthorize("#principal.name.equals('radi2000')")
+    public Set<UserDto> loadAllUsers(final Principal principal) {
+        return this.userService.loadAllUsers();
     }
 }

@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -448,5 +449,16 @@ public class UserService {
 
         LocalDateTime expireDate = passwordToken.get().getExpireDate();
         return expireDate.isAfter(LocalDateTime.now());
+    }
+
+    public Set<UserDto> loadAllUsers() {
+        return this.userRepository.findAll().stream().map(user -> {
+                    UserDto userDto = this.modelMapper.map(user, UserDto.class);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    String birthDate = formatter.format(user.getBirthDate());
+                    userDto.setBirthDate(birthDate);
+
+                    return userDto;
+                }).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }

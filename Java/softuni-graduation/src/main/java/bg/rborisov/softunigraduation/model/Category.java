@@ -2,11 +2,10 @@ package bg.rborisov.softunigraduation.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,7 +24,7 @@ public class Category extends BaseEntity implements Serializable {
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Media media;
     @OneToMany(mappedBy = "category")
-    public Set<Product> products;
+    public List<Product> products;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

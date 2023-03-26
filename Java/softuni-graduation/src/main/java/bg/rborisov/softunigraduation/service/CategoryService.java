@@ -183,6 +183,7 @@ public class CategoryService extends AbstractMediaUrlBuilder {
 
     public CategoryDto loadCategoryWithBreadCrumb(String identifier) {
         Category category = this.categoryRepository.findCategoryByIdentifier(identifier).orElseThrow();
+
         Map<String, String> reversedBreadcrumb = new LinkedHashMap<>();
         Category parentCategory = category;
 

@@ -5,12 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.io.Serializable;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
-public class CheckoutDto {
+public class CheckoutDto implements Serializable {
     @NotBlank
     @Size(min = 3, max = 30)
     private String firstName;

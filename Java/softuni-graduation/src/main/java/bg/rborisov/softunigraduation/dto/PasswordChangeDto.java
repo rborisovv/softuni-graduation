@@ -6,13 +6,15 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.validator.constraints.UUID;
 
+import java.io.Serializable;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 @ToString
-public class PasswordChangeDto {
+public class PasswordChangeDto implements Serializable {
     @NotBlank
     @Size(min = 6, max = 50)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

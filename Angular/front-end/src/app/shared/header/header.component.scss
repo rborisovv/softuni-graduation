@@ -387,6 +387,7 @@ a {
 
   & .product-media {
     width: 100px;
+    margin-right: 20px;
   }
 
   & .product-price {
@@ -510,6 +511,14 @@ a {
         max-width: unset;
         min-width: unset;
       }
+    }
+  }
+
+  .product-attributes {
+    flex-flow: column wrap;
+
+    & > .product-media {
+      margin-right: 0 !important;
     }
   }
 }
