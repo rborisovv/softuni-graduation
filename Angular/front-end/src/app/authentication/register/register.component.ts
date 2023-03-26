@@ -16,7 +16,6 @@ import { Router } from "@angular/router";
 import { IUserRegisterModel } from "./IUserRegisterModel";
 import { NotificationType } from "../../enumeration/notification-enum";
 import { NotifierService } from "angular-notifier";
-import moment from "moment";
 
 @Component({
   selector: 'app-register',

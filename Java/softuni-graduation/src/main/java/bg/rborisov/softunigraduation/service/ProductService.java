@@ -21,11 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
 
-import static bg.rborisov.softunigraduation.common.Messages.*;
+import static bg.rborisov.softunigraduation.common.Messages.PRODUCT_CREATED_SUCCESSFULLY;
+import static bg.rborisov.softunigraduation.common.Messages.PRODUCT_DELETED_SUCCESSFULLY;
 
 @Service
 @Transactional
@@ -90,9 +90,9 @@ public class ProductService {
 
         Product product = this.modelMapper.map(productDto, Product.class);
 
-        product.setMedia(optionalMedia.get());
+        optionalMedia.ifPresent(product::setMedia);
         product.setCategory(category);
-        product.setCreationTime(LocalDate.parse(LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)));
+        product.setCreationTime(LocalDate.now());
 
         this.productRepository.save(product);
 
