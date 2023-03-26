@@ -257,7 +257,7 @@ public class UserService {
         favouritesHttpResponse.setFavouriteProducts(loadFavouriteProducts(principal));
 
 
-        return new ResponseEntity<>(httpResponse, HttpStatus.OK);
+        return new ResponseEntity<>(favouritesHttpResponse, HttpStatus.OK);
     }
 
     private HttpResponse constructHttpResponse(HttpStatus httpStatus, String message, String notificationStatus) {

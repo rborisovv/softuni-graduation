@@ -1,0 +1,40 @@
+<app-admin-header></app-admin-header>
+
+<main>
+  <h1 class="text-center mt-40 mb-30">Orders</h1>
+  <div class="create-btn-wrapper" *ngIf="orders$ | async as orders">
+    <h3>Total Categories: <span>{{orders.length}}</span></h3>
+  </div>
+  <div class="categories">
+    <div class="category" *ngIf="orders$ | async as orders">
+      <table>
+        <thead>
+        <tr>
+          <th>Order</th>
+          <th>Order number</th>
+          <th>Order status</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Country</th>
+          <th>City</th>
+          <th>Address</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let order of orders">
+          <td><img src="./assets/images/Cockpit/order.png" alt=""></td>
+          <td>{{order.orderNumber}}</td>
+          <td>{{order.orderStatus}}</td>
+          <td>{{order.firstName}}</td>
+          <td>{{order.lastName}}</td>
+          <td>{{order.country}}</td>
+          <td>{{order.city}}</td>
+          <td>{{order.address}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<app-footer></app-footer>
