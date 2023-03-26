@@ -13,17 +13,23 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 
-import static bg.rborisov.softunigraduation.constant.SecurityConstant.AUTH_ENDPOINT;
+import static bg.rborisov.softunigraduation.constant.SecurityConstant.AUTH_ENDPOINTS;
 
 @Component
 public class IpAddressFilter extends OncePerRequestFilter {
     private static final String WHITE_LISTED_IP = "127.0.0.1";
 
     @Override
-    protected void doFilterInternal(@NonNull  HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
-        if (!requestWrapper.getRequestURI().equals(AUTH_ENDPOINT)) {
+        String requestURI = requestWrapper.getRequestURI();
+
+        Optional<String> optionalAuthEndpoint = Arrays.stream(AUTH_ENDPOINTS).filter(requestURI::equals).findAny();
+
+        if (optionalAuthEndpoint.isEmpty()) {
             filterChain.doFilter(requestWrapper, response);
             return;
         }
