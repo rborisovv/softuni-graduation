@@ -9,6 +9,7 @@ import { Product } from "../interface/product";
 import { Checkout } from "../interface/checkout";
 import { Order } from "../interface/order";
 import { PasswordReset } from "../interface/passwordReset";
+import { User } from "../interface/user";
 
 @Injectable()
 export class UserService {
@@ -91,5 +92,9 @@ export class UserService {
 
   hasActivePasswordRequest(token: string): Observable<boolean> {
     return this.http.post<boolean>(`${this.apiUrl}/auth/hasActivePasswordRequest`, token);
+  }
+
+  loadAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/auth/users`);
   }
 }
