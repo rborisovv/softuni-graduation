@@ -37,7 +37,7 @@ public class BasketResource {
         return this.basketService.addToBasket(identifier, principal);
     }
 
-    @GetMapping("/basket")
+    @GetMapping("/userBasket")
     public Set<ProductDto> loadBasket(final Principal principal) throws UserNotFoundException {
         return this.basketService.loadBasket(principal);
     }
