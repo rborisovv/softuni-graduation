@@ -1,6 +1,5 @@
 package bg.rborisov.softunigraduation.httpFilter;
 
-import bg.rborisov.softunigraduation.constant.SecurityConstant;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +22,8 @@ public class JwtAuthEntryPoint extends Http403ForbiddenEntryPoint {
         HttpStatus httpStatus = HttpStatus.FORBIDDEN;
         HttpResponse httpResponse = new HttpResponse(httpStatus.value(),
                 httpStatus, httpStatus.getReasonPhrase().toUpperCase(Locale.ROOT),
-                SecurityConstant.FORBIDDEN_MESSAGE);
+                exception.getMessage());
+
 
         response.setContentType(APPLICATION_JSON_VALUE);
         response.setStatus(httpStatus.value());
