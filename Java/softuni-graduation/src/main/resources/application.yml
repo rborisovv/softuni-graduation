@@ -28,14 +28,19 @@ spring:
     resources:
       add-mappings: false
 
-server:
-  port: 8080
-
 logging:
   level:
     org:
       springframework:
+        session:
+          web:
+            http:
+              SessionRepositoryFilter:
+                SESSION_LOGGER=DEBUG: debug
         web: DEBUG
 
 sendgrid:
-  apiKey: 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
+  apiKey: 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\
+
+server:
+  port: 8080

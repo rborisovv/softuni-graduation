@@ -5,6 +5,7 @@ import bg.rborisov.softunigraduation.dto.*;
 import bg.rborisov.softunigraduation.exception.AbsentPasswordTokenException;
 import bg.rborisov.softunigraduation.exception.PasswordTokenExpiredException;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
+import bg.rborisov.softunigraduation.service.AuthService;
 import bg.rborisov.softunigraduation.service.OrderService;
 import bg.rborisov.softunigraduation.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,10 +26,12 @@ import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
 @RequestMapping("/auth")
 public class AuthResource {
     private final UserService userService;
+    private final AuthService authService;
     private final OrderService orderService;
 
-    public AuthResource(UserService userService, OrderService orderService) {
+    public AuthResource(UserService userService, final AuthService authService, OrderService orderService) {
         this.userService = userService;
+        this.authService = authService;
         this.orderService = orderService;
     }
 
@@ -51,10 +54,10 @@ public class AuthResource {
 
     @Cacheable("isAdmin")
     @GetMapping("/admin")
-    @PreAuthorize("#principal.name.equals('radi2000') || #principal.name.equals('admin')")
+    @PreAuthorize("#principal.name.equals('radi2000') || #principal.equals('admin')")
     public boolean adminPage(HttpServletRequest request, Principal principal) {
         String authorizationHeaders = request.getHeader(JWT_COOKIE_NAME);
-        return this.userService.isAdmin(authorizationHeaders);
+        return this.authService.isAdmin(authorizationHeaders);
     }
 
     @PostMapping("/email")
@@ -74,17 +77,17 @@ public class AuthResource {
 
     @PostMapping("/resetPassword")
     public ResponseEntity<HttpResponse> resetPassword(final @RequestBody String email) {
-        return this.userService.resetPassword(email);
+        return this.authService.resetPassword(email);
     }
 
     @PostMapping("/changePassword")
     public ResponseEntity<HttpResponse> changePassword(final @Valid @RequestBody PasswordChangeDto passwordChangeDto) throws AbsentPasswordTokenException, PasswordTokenExpiredException {
-        return this.userService.changePassword(passwordChangeDto);
+        return this.authService.changePassword(passwordChangeDto);
     }
 
     @PostMapping("/hasActivePasswordRequest")
     public Boolean hasActivePasswordRequest(final @RequestBody String token) {
-        return this.userService.hasActivePasswordRequest(token);
+        return this.authService.hasActivePasswordRequest(token);
     }
 
     @PostMapping("/logout")
@@ -95,7 +98,7 @@ public class AuthResource {
     @GetMapping("/users")
     @PreAuthorize("#principal.name.equals('radi2000')")
     public Set<UserDto> loadAllUsers(final Principal principal) {
-        return this.userService.loadAllUsers();
+        return this.authService.loadAllUsers();
     }
 
     @GetMapping("/orders")

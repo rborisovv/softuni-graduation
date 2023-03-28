@@ -28,9 +28,12 @@ public class Voucher extends BaseEntity implements Serializable {
     @ManyToMany
     private Set<User> users;
 
-    @Column(nullable = false, insertable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime creationTime;
 
     @Column(nullable = false)
     private LocalDateTime expireTime;
+
+    @ManyToMany
+    private Set<Order> orders;
 }

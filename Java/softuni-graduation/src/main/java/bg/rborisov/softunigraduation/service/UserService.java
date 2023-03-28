@@ -1,15 +1,13 @@
 package bg.rborisov.softunigraduation.service;
 
 import bg.rborisov.softunigraduation.dao.*;
-import bg.rborisov.softunigraduation.domain.BasketHttpResponse;
 import bg.rborisov.softunigraduation.domain.FavouritesHttpResponse;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.*;
 import bg.rborisov.softunigraduation.enumeration.*;
-import bg.rborisov.softunigraduation.events.OrderCreatedPublisher;
-import bg.rborisov.softunigraduation.events.PasswordResetPublisher;
 import bg.rborisov.softunigraduation.exception.*;
 import bg.rborisov.softunigraduation.model.*;
+import bg.rborisov.softunigraduation.util.HttpResponseConstructor;
 import bg.rborisov.softunigraduation.util.JwtProvider;
 import bg.rborisov.softunigraduation.util.logger.AuthLogger;
 import jakarta.servlet.http.Cookie;
@@ -41,14 +39,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.*;
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
-import static bg.rborisov.softunigraduation.common.JwtConstants.TOKEN_PREFIX;
 import static bg.rborisov.softunigraduation.common.LogMessages.USER_LOGGED_IN;
 import static bg.rborisov.softunigraduation.common.Messages.*;
 import static bg.rborisov.softunigraduation.constant.SecurityConstant.COOKIE_MAX_AGE;
@@ -67,18 +62,11 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final Validator validator;
     private final ProductRepository productRepository;
-    private final BasketRepository basketRepository;
-    private final OrderRepository orderRepository;
-    private final OrderCreatedPublisher orderCreatedPublisher;
-    private final PasswordTokenRepository passwordTokenRepository;
-    private final PasswordResetPublisher passwordResetPublisher;
     private final LoginAttemptService loginAttemptService;
 
     public UserService(JwtProvider jwtProvider, UserDetailsService userDetailsService, AuthenticationManager authenticationManager,
                        ModelMapper modelMapper, UserRepository userRepository, PasswordEncoder passwordEncoder,
                        RoleRepository roleRepository, Validator validator, ProductRepository productRepository,
-                       BasketRepository basketRepository, OrderRepository orderRepository, OrderCreatedPublisher orderCreatedPublisher,
-                       PasswordTokenRepository passwordTokenRepository, PasswordResetPublisher passwordResetPublisher,
                        LoginAttemptService loginAttemptService) {
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
@@ -89,11 +77,6 @@ public class UserService {
         this.roleRepository = roleRepository;
         this.validator = validator;
         this.productRepository = productRepository;
-        this.basketRepository = basketRepository;
-        this.orderRepository = orderRepository;
-        this.orderCreatedPublisher = orderCreatedPublisher;
-        this.passwordTokenRepository = passwordTokenRepository;
-        this.passwordResetPublisher = passwordResetPublisher;
         this.loginAttemptService = loginAttemptService;
     }
 
@@ -165,16 +148,6 @@ public class UserService {
         }
     }
 
-    public boolean isAdmin(String authorizationHeader) {
-        String token = authorizationHeader.substring(TOKEN_PREFIX.length());
-        String username = this.jwtProvider.getSubject(token);
-
-        User user = this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(USERNAME_OR_PASSWORD_INCORRECT));
-
-        return user.getRole().getName().equalsIgnoreCase(RoleEnum.ADMIN.name());
-    }
-
     public boolean isUserWithEmailPresent(String email) {
         return this.userRepository.findUserByEmail(email).isPresent();
     }
@@ -207,14 +180,15 @@ public class UserService {
         if (!user.getFavouriteProducts().contains(product)) {
             user.getFavouriteProducts().add(product);
         } else {
-            HttpResponse response = constructHttpResponse(OK,
+            HttpResponse response = HttpResponseConstructor.construct(OK,
                     PRODUCT_ALREADY_ADDED_TO_FAVOURITES, NotificationStatus.INFO.name());
 
             FavouritesHttpResponse favouritesHttpResponse = this.modelMapper.map(response, FavouritesHttpResponse.class);
             favouritesHttpResponse.setFavouriteProducts(loadFavouriteProducts(principal));
             return new ResponseEntity<>(favouritesHttpResponse, HttpStatus.OK);
         }
-        HttpResponse response = constructHttpResponse(OK, String.format(PRODUCT_SUCCESSFULLY_ADDED_TO_FAVOURITES, product.getName()),
+        HttpResponse response = HttpResponseConstructor.construct(OK,
+                String.format(PRODUCT_SUCCESSFULLY_ADDED_TO_FAVOURITES, product.getName()),
                 NotificationStatus.SUCCESS.name());
 
         FavouritesHttpResponse favouritesHttpResponse = this.modelMapper.map(response, FavouritesHttpResponse.class);
@@ -239,7 +213,7 @@ public class UserService {
 
         if (!isRemoved) {
 
-            HttpResponse response = constructHttpResponse(HttpStatus.BAD_REQUEST,
+            HttpResponse response = HttpResponseConstructor.construct(HttpStatus.BAD_REQUEST,
                     String.format(PRODUCT_NOT_REMOVED_FROM_FAVOURITES, productName),
                     NotificationStatus.ERROR.name());
 
@@ -249,7 +223,7 @@ public class UserService {
             return new ResponseEntity<>(favouritesHttpResponse, HttpStatus.BAD_REQUEST);
         }
 
-        HttpResponse httpResponse = constructHttpResponse(OK,
+        HttpResponse httpResponse = HttpResponseConstructor.construct(OK,
                 String.format(PRODUCT_REMOVED_FROM_FAVOURITES, productName),
                 NotificationStatus.SUCCESS.name());
 
@@ -258,210 +232,5 @@ public class UserService {
 
 
         return new ResponseEntity<>(favouritesHttpResponse, HttpStatus.OK);
-    }
-
-    private HttpResponse constructHttpResponse(HttpStatus httpStatus, String message, String notificationStatus) {
-        HttpResponse response = new HttpResponse();
-        response.setHttpStatus(httpStatus);
-        response.setHttpStatusCode(httpStatus.value());
-        response.setNotificationStatus(notificationStatus.toLowerCase(Locale.ROOT));
-        response.setReason(StringUtils.EMPTY);
-        response.setMessage(message);
-
-        return response;
-    }
-
-    public ResponseEntity<HttpResponse> addToBasket(final String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException, ProductSoldOutException {
-        if (identifier.isBlank()) {
-            throw new IllegalArgumentException();
-        }
-
-        User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(UserNotFoundException::new);
-        Product product = this.productRepository.findProductByIdentifier(identifier).orElseThrow(ProductNotFoundException::new);
-
-        if (product.getStockLevel() <= 0) {
-            throw new ProductSoldOutException();
-        }
-
-        if (user.getBasket() != null && user.getBasket().getProductMapping().containsKey(product)) {
-            HttpResponse httpResponse = constructHttpResponse(
-                    OK, String.format(PRODUCT_ALREADY_ADDED_TO_BASKET, product.getName()),
-                    NotificationStatus.INFO.name().toLowerCase(Locale.ROOT));
-
-            BasketHttpResponse basketHttpResponse = this.modelMapper.map(httpResponse, BasketHttpResponse.class);
-            basketHttpResponse.setBasketProducts(loadBasket(principal));
-            return new ResponseEntity<>(basketHttpResponse, HttpStatus.OK);
-        }
-
-        Basket basket = user.getBasket();
-
-        if (basket == null) {
-            basket = new Basket();
-            basket.setProductMapping(new HashMap<>());
-            basket.setCreationDate(LocalDateTime.now());
-        }
-
-        basket.getProductMapping().put(product, 1);
-        this.basketRepository.save(basket);
-        user.setBasket(basket);
-
-        HttpResponse httpResponse = constructHttpResponse(
-                OK, String.format(PRODUCT_SUCCESSFULLY_ADDED_TO_BASKET, product.getName()),
-                NotificationStatus.SUCCESS.name().toLowerCase(Locale.ROOT)
-        );
-
-        BasketHttpResponse basketHttpResponse = this.modelMapper.map(httpResponse, BasketHttpResponse.class);
-        basketHttpResponse.setBasketProducts(loadBasket(principal));
-        return new ResponseEntity<>(basketHttpResponse, HttpStatus.OK);
-    }
-
-    public Set<ProductDto> loadBasket(Principal principal) throws UserNotFoundException {
-        User user = this.userRepository.findByUsername(principal.getName())
-                .orElseThrow(UserNotFoundException::new);
-
-        return loadSortedUserBasketProducts(user);
-    }
-
-    private Set<ProductDto> loadSortedUserBasketProducts(User user) {
-        if (user.getBasket() == null || user.getBasket().getProductMapping().isEmpty()) {
-            return Collections.emptySet();
-        }
-
-        return user.getBasket().getProductMapping().entrySet()
-                .stream().map((entry) -> {
-                    ProductDto productDto = this.modelMapper.map(entry.getKey(), ProductDto.class);
-                    productDto.setQuantity(entry.getValue());
-                    return productDto;
-                })
-                .sorted(Comparator.comparing(ProductDto::getCategoryIdentifier).thenComparing(ProductDto::getPrice))
-                .collect(Collectors.toCollection(LinkedHashSet::new));
-    }
-
-    public ResponseEntity<HttpResponse> removeFromBasket(final String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException {
-        String username = principal.getName();
-
-        Product product = this.productRepository.findProductByIdentifier(identifier).orElseThrow(ProductNotFoundException::new);
-        User user = this.userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
-
-        Basket basket = user.getBasket();
-        basket.getProductMapping().remove(product);
-
-        if (basket.getProductMapping() == null || basket.getProductMapping().isEmpty()) {
-            user.setBasket(null);
-            this.basketRepository.delete(basket);
-        }
-
-        HttpResponse httpResponse = constructHttpResponse(HttpStatus.OK,
-                String.format(PRODUCT_REMOVED_FROM_BASKET, product.getName()), NotificationStatus.SUCCESS.name());
-        BasketHttpResponse response = this.modelMapper.map(httpResponse, BasketHttpResponse.class);
-
-        Set<ProductDto> userBasketProducts = loadSortedUserBasketProducts(user);
-        response.setBasketProducts(userBasketProducts);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    public ResponseEntity<HttpResponse> updateBasketProduct(Principal principal, Map<String, String> productParams) throws ProductNotFoundException, UserNotFoundException, BasketNotFoundException {
-        String identifier = productParams.get("identifier");
-        Integer quantity = Integer.parseInt(productParams.get("quantity"));
-        Product product = this.productRepository.findProductByIdentifier(identifier).orElseThrow(ProductNotFoundException::new);
-        User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(UserNotFoundException::new);
-        Basket basket = this.basketRepository.findBasketByUser(user).orElseThrow(BasketNotFoundException::new);
-
-        basket.getProductMapping().put(product, quantity);
-        this.basketRepository.save(basket);
-
-        Set<ProductDto> basketProducts = loadSortedUserBasketProducts(user);
-        BasketHttpResponse basketHttpResponse = new BasketHttpResponse();
-        basketHttpResponse.setHttpStatus(HttpStatus.OK);
-        basketHttpResponse.setHttpStatusCode(HttpStatus.OK.value());
-        basketHttpResponse.setBasketProducts(basketProducts);
-
-        return new ResponseEntity<>(basketHttpResponse, HttpStatus.OK);
-    }
-
-    public void submitCheckoutFlow(Principal principal, CheckoutDto checkoutDto) throws UserNotFoundException {
-        User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(UserNotFoundException::new);
-        Order order = user.getOrder() == null ? this.modelMapper.map(checkoutDto, Order.class) : user.getOrder();
-        Basket basket = user.getBasket();
-        this.modelMapper.map(checkoutDto, order);
-        String orderNumber = RandomStringUtils.randomNumeric(12);
-        order.setOrderNumber(orderNumber);
-        order.setOrderStatus(OrderStatus.INITIAL);
-        order.setCountry(CountryEnum.BULGARIA.name());
-        order.setBasket(basket);
-        order.setUser(user);
-        user.setOrder(order);
-        user.setOrder(order);
-
-        this.orderRepository.save(order);
-        this.userRepository.save(user);
-    }
-
-    public ResponseEntity<CheckoutDto> fetchCheckoutDataIfPresent(Principal principal) throws UserNotFoundException {
-        User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(UserNotFoundException::new);
-        Order order = user.getOrder();
-        if (user.getOrder() == null) {
-            return new ResponseEntity<>(new CheckoutDto(), HttpStatus.OK);
-        }
-        CheckoutDto checkoutDto = this.modelMapper.map(order, CheckoutDto.class);
-        return new ResponseEntity<>(checkoutDto, HttpStatus.OK);
-    }
-
-    public void createOrder(Principal principal) {
-        this.orderCreatedPublisher.publishOrderCreation(principal);
-    }
-
-    public ResponseEntity<HttpResponse> resetPassword(final String email) {
-        this.passwordResetPublisher.publishPasswordResetRequest(email);
-        HttpResponse httpResponse = constructHttpResponse(HttpStatus.OK, String.format(PASSWORD_RESET_EMAIL, email),
-                NotificationStatus.SUCCESS.name());
-
-        return new ResponseEntity<>(httpResponse, HttpStatus.OK);
-    }
-
-    public ResponseEntity<HttpResponse> changePassword(final PasswordChangeDto passwordChangeDto) throws AbsentPasswordTokenException, PasswordTokenExpiredException {
-        preActivePasswordResetRequestCheck(passwordChangeDto.getToken());
-
-        PasswordToken passwordToken = this.passwordTokenRepository.findByToken(passwordChangeDto.getToken()).orElseThrow(AbsentPasswordTokenException::new);
-        User user = passwordToken.getUser();
-        user.setPassword(this.passwordEncoder.encode(passwordChangeDto.getPassword()));
-
-        HttpResponse httpResponse = constructHttpResponse(HttpStatus.OK, PASSWORD_CHANGED_SUCCESSFULLY, NotificationStatus.SUCCESS.name());
-        return new ResponseEntity<>(httpResponse, HttpStatus.OK);
-    }
-
-    public void preActivePasswordResetRequestCheck(String token) throws AbsentPasswordTokenException, PasswordTokenExpiredException {
-        Optional<PasswordToken> optionalPasswordToken = this.passwordTokenRepository.findByToken(token);
-
-        if (optionalPasswordToken.isEmpty()) {
-            throw new AbsentPasswordTokenException();
-        }
-        LocalDateTime expireDate = optionalPasswordToken.get().getExpireDate();
-
-        if (expireDate.isBefore(LocalDateTime.now())) {
-            throw new PasswordTokenExpiredException();
-        }
-    }
-
-    public Boolean hasActivePasswordRequest(String token) {
-        Optional<PasswordToken> passwordToken = this.passwordTokenRepository.findByToken(token);
-
-        if (passwordToken.isEmpty()) {
-            return false;
-        }
-
-        LocalDateTime expireDate = passwordToken.get().getExpireDate();
-        return expireDate.isAfter(LocalDateTime.now());
-    }
-
-    public Set<UserDto> loadAllUsers() {
-        return this.userRepository.findAll().stream().map(user -> {
-            UserDto userDto = this.modelMapper.map(user, UserDto.class);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            String birthDate = formatter.format(user.getBirthDate());
-            userDto.setBirthDate(birthDate);
-
-            return userDto;
-        }).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }
