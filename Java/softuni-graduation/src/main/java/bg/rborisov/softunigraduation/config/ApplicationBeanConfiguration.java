@@ -14,11 +14,18 @@ import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_ALGORITHM;
 import static java.util.concurrent.TimeUnit.MINUTES;
@@ -51,13 +58,28 @@ public class ApplicationBeanConfiguration {
     }
 
     @Bean
-    public RSAKeyProvider rsaKeyProvider() throws NoSuchAlgorithmException {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(JWT_ALGORITHM);
-        keyPairGenerator.initialize(2048);
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+    public RSAKeyProvider rsaKeyProvider() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
+        byte[] privateKeyBytes = Files.readAllBytes(Paths.get("/home/dev/Desktop/demo/softuni-graduation/Java/softuni-graduation/src/main/resources/keys/private_key.pem"));
+        byte[] publicKeyBytes = Files.readAllBytes(Paths.get("/home/dev/Desktop/demo/softuni-graduation/Java/softuni-graduation/src/main/resources/keys/public_key.pem"));
 
-        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+        String publicKeyContent = new String(publicKeyBytes, StandardCharsets.UTF_8)
+                .replaceAll("\\n", "")
+                .replace("-----BEGIN PUBLIC KEY-----", "")
+                .replace("-----END PUBLIC KEY-----", "");
+        byte[] decodedPublicKeyBytes = Base64.getDecoder().decode(publicKeyContent);
+
+        String privateKeyContent = new String(privateKeyBytes, StandardCharsets.UTF_8)
+                .replaceAll("\\n", "")
+                .replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "");
+        byte[] decodedPrivateKeyBytes = Base64.getDecoder().decode(privateKeyContent);
+
+        PKCS8EncodedKeySpec privateSpec = new PKCS8EncodedKeySpec(decodedPrivateKeyBytes);
+        X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(decodedPublicKeyBytes);
+        KeyFactory kf = KeyFactory.getInstance(JWT_ALGORITHM);
+
+        RSAPrivateKey privateKey = (RSAPrivateKey) kf.generatePrivate(privateSpec);
+        RSAPublicKey publicKey = (RSAPublicKey) kf.generatePublic(publicSpec);
         return new RsaKeyProviderFactory(privateKey, publicKey);
     }
 

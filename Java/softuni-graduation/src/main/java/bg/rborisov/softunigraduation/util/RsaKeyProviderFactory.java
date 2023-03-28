@@ -12,7 +12,7 @@ public final class RsaKeyProviderFactory implements RSAKeyProvider {
     private final RSAPublicKey rsaPublicKey;
 
     @Override
-    public RSAPublicKey getPublicKeyById(String keyId) {
+    public RSAPublicKey getPublicKeyById(final String keyId) {
         return this.rsaPublicKey;
     }
 

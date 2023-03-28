@@ -97,6 +97,7 @@ public final class JwtProvider {
         }
     }
 
+    @SuppressWarnings("unused")
     private String[] getClaimsFromToken(String token) {
         JWTVerifier jwtVerifier = getJwtVerifier();
         return jwtVerifier.verify(token).getClaim(AUTHORITIES).asArray(String.class);

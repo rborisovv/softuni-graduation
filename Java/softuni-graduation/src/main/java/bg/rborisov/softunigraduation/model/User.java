@@ -59,4 +59,7 @@ public class User extends BaseEntity implements Serializable {
 
     @OneToOne
     private Order order;
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Voucher> voucher;
 }
