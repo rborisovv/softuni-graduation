@@ -1,20 +1,16 @@
 <app-header [renewedFavouriteProducts$]="favouriteProducts$" [renewedBasketProducts$]="basketProducts$"></app-header>
 
-<main>
-  <div class="category-data">
-    <ng-container *ngIf="category$ | async as category">
+<ng-container *ngIf="category$ | async as category">
+  <main>
+    <div class="category-data">
       <div class="breadcrumb-wrapper">
         <app-breadcrumb [breadcrumb]="category.breadcrumb"></app-breadcrumb>
         <h2 class="mb-50 mt-50 text-green">{{category.name}}</h2>
       </div>
-    </ng-container>
-    <ng-container *ngIf="category$ | async as category">
       <div class="category-img-wrapper mt-15">
         <img [src]="category.mediaUrl" alt="">
       </div>
-    </ng-container>
-  </div>
-  <ng-container *ngIf="category$ | async as category">
+    </div>
     <div class="category-products">
       <div class="product" *ngFor="let product of category.products">
         <div class="product-img__wrapper">
@@ -32,7 +28,8 @@
         </div>
       </div>
     </div>
-  </ng-container>
-</main>
+  </main>
 
-<app-footer></app-footer>
+  <app-footer></app-footer>
+
+</ng-container>
