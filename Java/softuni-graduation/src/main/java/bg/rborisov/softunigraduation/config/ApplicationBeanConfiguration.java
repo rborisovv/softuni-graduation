@@ -8,17 +8,25 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_ALGORITHM;
 import static java.util.concurrent.TimeUnit.MINUTES;
@@ -51,13 +59,18 @@ public class ApplicationBeanConfiguration {
     }
 
     @Bean
-    public RSAKeyProvider rsaKeyProvider() throws NoSuchAlgorithmException {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(JWT_ALGORITHM);
-        keyPairGenerator.initialize(2048);
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+    public RSAKeyProvider rsaKeyProvider() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
+        final byte[] privateKeyBytes = Files.readAllBytes(Paths.get("/home/dev/Desktop/demo/softuni-graduation/Java/softuni-graduation/src/main/resources/keys/private_key.pem"));
+        final byte[] publicKeyBytes = Files.readAllBytes(Paths.get("/home/dev/Desktop/demo/softuni-graduation/Java/softuni-graduation/src/main/resources/keys/public_key.pem"));
 
-        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+        final byte[] decodedPrivateKey = decodeRsaKeyContent(privateKeyBytes);
+        final byte[] decodedPublicKey = decodeRsaKeyContent(publicKeyBytes);
+        final PKCS8EncodedKeySpec privateSpec = new PKCS8EncodedKeySpec(decodedPrivateKey);
+        final X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(decodedPublicKey);
+
+        final KeyFactory keyFactory = KeyFactory.getInstance(JWT_ALGORITHM);
+        final RSAPrivateKey privateKey = (RSAPrivateKey) keyFactory.generatePrivate(privateSpec);
+        final RSAPublicKey publicKey = (RSAPublicKey) keyFactory.generatePublic(publicSpec);
         return new RsaKeyProviderFactory(privateKey, publicKey);
     }
 
@@ -73,5 +86,16 @@ public class ApplicationBeanConfiguration {
                         return new LoginCacheModel<>(0);
                     }
                 });
+    }
+
+    private byte[] decodeRsaKeyContent(final byte[] rsaKeyBytes) {
+        final String rsaKeyContent = new String(rsaKeyBytes, StandardCharsets.UTF_8)
+                .replaceAll("\\n+", StringUtils.EMPTY)
+                .replace("-----BEGIN PRIVATE KEY-----", StringUtils.EMPTY)
+                .replace("-----BEGIN PUBLIC KEY-----", StringUtils.EMPTY)
+                .replace("-----END PRIVATE KEY-----", StringUtils.EMPTY)
+                .replace("-----END PUBLIC KEY-----", StringUtils.EMPTY);
+
+        return Base64.getDecoder().decode(rsaKeyContent);
     }
 }
