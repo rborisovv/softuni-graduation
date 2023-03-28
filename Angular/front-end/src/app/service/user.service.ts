@@ -51,7 +51,7 @@ export class UserService {
   }
 
   loadBasketProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/user/basket`);
+    return this.http.get<Product[]>(`${this.apiUrl}/basket/userBasket`);
   }
 
   removeFromFavourites(identifier: string): Observable<HttpResponse> {
@@ -59,27 +59,27 @@ export class UserService {
   }
 
   addToBasket(identifier: string): Observable<HttpResponse> {
-    return this.http.post<HttpResponse>(`${this.apiUrl}/user/addToBasket`, identifier);
+    return this.http.post<HttpResponse>(`${this.apiUrl}/basket/addToBasket`, identifier);
   }
 
   removeFromBasket(identifier: string): Observable<HttpResponse> {
-    return this.http.post<HttpResponse>(`${this.apiUrl}/user/removeFromBasket`, identifier);
+    return this.http.post<HttpResponse>(`${this.apiUrl}/basket/removeFromBasket`, identifier);
   }
 
   updateBasketProductQuantity(identifier: string, quantity: number): Observable<HttpResponse> {
-    return this.http.post<HttpResponse>(`${this.apiUrl}/user/updateBasketProduct`, { identifier, quantity });
+    return this.http.post<HttpResponse>(`${this.apiUrl}/basket/updateBasketProduct`, { identifier, quantity });
   }
 
   submitCheckoutFlow(checkout: Checkout): Observable<Order> {
-    return this.http.post<Order>(`${this.apiUrl}/user/submitCheckoutFlow`, checkout);
+    return this.http.post<Order>(`${this.apiUrl}/order/submitCheckoutFlow`, checkout);
   }
 
   fetchCheckoutDataIfPresent(): Observable<Checkout> {
-    return this.http.get<Checkout>(`${this.apiUrl}/user/fetchCheckoutData`);
+    return this.http.get<Checkout>(`${this.apiUrl}/order/fetchCheckoutData`);
   }
 
   createOrder() {
-    return this.http.post<HttpResponse>(`${this.apiUrl}/user/createOrder`, null);
+    return this.http.post<HttpResponse>(`${this.apiUrl}/order/createOrder`, null);
   }
 
   resetPassword(email: string): Observable<HttpResponse> {
