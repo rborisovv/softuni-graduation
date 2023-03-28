@@ -8,6 +8,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -59,27 +60,17 @@ public class ApplicationBeanConfiguration {
 
     @Bean
     public RSAKeyProvider rsaKeyProvider() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
-        byte[] privateKeyBytes = Files.readAllBytes(Paths.get("/home/dev/Desktop/demo/softuni-graduation/Java/softuni-graduation/src/main/resources/keys/private_key.pem"));
-        byte[] publicKeyBytes = Files.readAllBytes(Paths.get("/home/dev/Desktop/demo/softuni-graduation/Java/softuni-graduation/src/main/resources/keys/public_key.pem"));
+        final byte[] privateKeyBytes = Files.readAllBytes(Paths.get("/home/dev/Desktop/demo/softuni-graduation/Java/softuni-graduation/src/main/resources/keys/private_key.pem"));
+        final byte[] publicKeyBytes = Files.readAllBytes(Paths.get("/home/dev/Desktop/demo/softuni-graduation/Java/softuni-graduation/src/main/resources/keys/public_key.pem"));
 
-        String publicKeyContent = new String(publicKeyBytes, StandardCharsets.UTF_8)
-                .replaceAll("\\n", "")
-                .replace("-----BEGIN PUBLIC KEY-----", "")
-                .replace("-----END PUBLIC KEY-----", "");
-        byte[] decodedPublicKeyBytes = Base64.getDecoder().decode(publicKeyContent);
+        final byte[] decodedPrivateKey = decodeRsaKeyContent(privateKeyBytes);
+        final byte[] decodedPublicKey = decodeRsaKeyContent(publicKeyBytes);
+        final PKCS8EncodedKeySpec privateSpec = new PKCS8EncodedKeySpec(decodedPrivateKey);
+        final X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(decodedPublicKey);
 
-        String privateKeyContent = new String(privateKeyBytes, StandardCharsets.UTF_8)
-                .replaceAll("\\n", "")
-                .replace("-----BEGIN PRIVATE KEY-----", "")
-                .replace("-----END PRIVATE KEY-----", "");
-        byte[] decodedPrivateKeyBytes = Base64.getDecoder().decode(privateKeyContent);
-
-        PKCS8EncodedKeySpec privateSpec = new PKCS8EncodedKeySpec(decodedPrivateKeyBytes);
-        X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(decodedPublicKeyBytes);
-        KeyFactory kf = KeyFactory.getInstance(JWT_ALGORITHM);
-
-        RSAPrivateKey privateKey = (RSAPrivateKey) kf.generatePrivate(privateSpec);
-        RSAPublicKey publicKey = (RSAPublicKey) kf.generatePublic(publicSpec);
+        final KeyFactory keyFactory = KeyFactory.getInstance(JWT_ALGORITHM);
+        final RSAPrivateKey privateKey = (RSAPrivateKey) keyFactory.generatePrivate(privateSpec);
+        final RSAPublicKey publicKey = (RSAPublicKey) keyFactory.generatePublic(publicSpec);
         return new RsaKeyProviderFactory(privateKey, publicKey);
     }
 
@@ -95,5 +86,16 @@ public class ApplicationBeanConfiguration {
                         return new LoginCacheModel<>(0);
                     }
                 });
+    }
+
+    private byte[] decodeRsaKeyContent(final byte[] rsaKeyBytes) {
+        final String rsaKeyContent = new String(rsaKeyBytes, StandardCharsets.UTF_8)
+                .replaceAll("\\n+", StringUtils.EMPTY)
+                .replace("-----BEGIN PRIVATE KEY-----", StringUtils.EMPTY)
+                .replace("-----BEGIN PUBLIC KEY-----", StringUtils.EMPTY)
+                .replace("-----END PRIVATE KEY-----", StringUtils.EMPTY)
+                .replace("-----END PUBLIC KEY-----", StringUtils.EMPTY);
+
+        return Base64.getDecoder().decode(rsaKeyContent);
     }
 }

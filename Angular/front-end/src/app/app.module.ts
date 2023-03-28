@@ -69,7 +69,6 @@ const metaReducers: Array<MetaReducer> = [localStorageSyncReducer];
         showDismissButton: true,
         stacking: 4
       }
-
     }),
     HttpClientXsrfModule.withOptions({
       cookieName: 'XSRF-TOKEN',
