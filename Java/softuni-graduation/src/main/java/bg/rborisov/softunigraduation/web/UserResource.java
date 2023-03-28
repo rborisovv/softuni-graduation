@@ -5,6 +5,7 @@ import bg.rborisov.softunigraduation.dto.CheckoutDto;
 import bg.rborisov.softunigraduation.dto.ProductDto;
 import bg.rborisov.softunigraduation.exception.BasketNotFoundException;
 import bg.rborisov.softunigraduation.exception.ProductNotFoundException;
+import bg.rborisov.softunigraduation.exception.ProductSoldOutException;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,7 @@ public class UserResource {
     }
 
     @PostMapping("/addToBasket")
-    public ResponseEntity<HttpResponse> addToCart(@RequestBody final String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException {
+    public ResponseEntity<HttpResponse> addToCart(@RequestBody final String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException, ProductSoldOutException {
         return this.userService.addToBasket(identifier, principal);
     }
 

@@ -23,9 +23,10 @@
           <h6 class="product-name mb-30">{{product.name}}</h6>
           <p class="product-expire-date mb-20">Best before: <span>09/03/2023</span></p>
           <p class="product-price fs-2 mb-40">{{product.price | currency}} <span>lv.</span></p>
-          <a *ngIf="product.showBuyButton" (click)="addToBasket(product.identifier)" class="add-to-basket"
+          <a *ngIf="product.showBuyButton && product.stockLevel > 0" (click)="addToBasket(product.identifier)" class="add-to-basket"
              href="javascript:void(0)">Add to Basket</a>
         </div>
+        <span class="sold-out__text text-red" *ngIf="product.stockLevel <= 0">Out of stock</span>
       </div>
     </div>
   </main>

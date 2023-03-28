@@ -12,17 +12,22 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class ProductExceptionHandler extends AbstractExceptionHandler {
 
     @ExceptionHandler(AbsentCategoryProductException.class)
-    public ResponseEntity<HttpResponse> CategoryAbsentFromProduct() {
+    public ResponseEntity<HttpResponse> categoryAbsentFromProduct() {
         return super.createHttpResponse(BAD_REQUEST, PRODUCT_WITHOUT_CATEGORY);
     }
 
     @ExceptionHandler(AbsentMediaOnProductException.class)
-    public ResponseEntity<HttpResponse> MediaAbsentFromProduct() {
+    public ResponseEntity<HttpResponse> mediaAbsentFromProduct() {
         return super.createHttpResponse(BAD_REQUEST, PRODUCT_WITHOUT_MEDIA);
     }
 
     @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<HttpResponse> ProductNotFound() {
+    public ResponseEntity<HttpResponse> productNotFound() {
         return super.createHttpResponse(BAD_REQUEST, PRODUCT_COULD_NOT_BE_FOUND);
+    }
+
+    @ExceptionHandler(ProductSoldOutException.class)
+    public ResponseEntity<HttpResponse> productSoldOut() {
+        return super.createHttpResponse(BAD_REQUEST, PRODUCT_SOLD_OUT);
     }
 }

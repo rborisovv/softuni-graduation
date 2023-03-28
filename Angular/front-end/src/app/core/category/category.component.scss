@@ -44,6 +44,12 @@ main {
     }
   }
 
+  .sold-out__text {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
   @include add-to-basket;
 
   & .product-img__wrapper {

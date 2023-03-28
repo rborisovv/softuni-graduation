@@ -271,13 +271,17 @@ public class UserService {
         return response;
     }
 
-    public ResponseEntity<HttpResponse> addToBasket(final String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException {
+    public ResponseEntity<HttpResponse> addToBasket(final String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException, ProductSoldOutException {
         if (identifier.isBlank()) {
             throw new IllegalArgumentException();
         }
 
         User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(UserNotFoundException::new);
         Product product = this.productRepository.findProductByIdentifier(identifier).orElseThrow(ProductNotFoundException::new);
+
+        if (product.getStockLevel() <= 0) {
+            throw new ProductSoldOutException();
+        }
 
         if (user.getBasket() != null && user.getBasket().getProductMapping().containsKey(product)) {
             HttpResponse httpResponse = constructHttpResponse(
@@ -452,12 +456,12 @@ public class UserService {
 
     public Set<UserDto> loadAllUsers() {
         return this.userRepository.findAll().stream().map(user -> {
-                    UserDto userDto = this.modelMapper.map(user, UserDto.class);
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                    String birthDate = formatter.format(user.getBirthDate());
-                    userDto.setBirthDate(birthDate);
+            UserDto userDto = this.modelMapper.map(user, UserDto.class);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            String birthDate = formatter.format(user.getBirthDate());
+            userDto.setBirthDate(birthDate);
 
-                    return userDto;
-                }).collect(Collectors.toCollection(LinkedHashSet::new));
+            return userDto;
+        }).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }
