@@ -12,6 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
@@ -36,6 +38,11 @@ public class ApplicationBeanConfiguration {
     private static final String CHARACTER_ENCODING = "UTF-8";
     private static final String TEMPLATE_RESOLVER_PREFIX = "classpath:/templates/";
     private static final String TEMPLATE_RESOLVER_SUFFIX = ".html";
+    private final ResourceLoader resourceLoader;
+
+    public ApplicationBeanConfiguration(final ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
 
     @Bean
     public ModelMapper modelMapper() {
@@ -60,8 +67,10 @@ public class ApplicationBeanConfiguration {
 
     @Bean
     public RSAKeyProvider rsaKeyProvider() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
-        final byte[] privateKeyBytes = Files.readAllBytes(Paths.get("/home/dev/Desktop/demo/softuni-graduation/Java/softuni-graduation/src/main/resources/keys/private_key.pem"));
-        final byte[] publicKeyBytes = Files.readAllBytes(Paths.get("/home/dev/Desktop/demo/softuni-graduation/Java/softuni-graduation/src/main/resources/keys/public_key.pem"));
+        final Resource privateKeyPath = resourceLoader.getResource("classpath:keys/private_key.pem");
+        final Resource publicKeyPath = resourceLoader.getResource("classpath:keys/public_key.pem");
+        final byte[] privateKeyBytes = Files.readAllBytes(Paths.get(privateKeyPath.getURI()));
+        final byte[] publicKeyBytes = Files.readAllBytes(Paths.get(publicKeyPath.getURI()));
 
         final byte[] decodedPrivateKey = decodeRsaKeyContent(privateKeyBytes);
         final byte[] decodedPublicKey = decodeRsaKeyContent(publicKeyBytes);
