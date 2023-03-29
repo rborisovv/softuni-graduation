@@ -43,7 +43,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   registerForm = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(30)]),
+    username: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(30)]),
     email: new FormControl('', [Validators.required, Validators.email],
       [EmailExistsValidator.validateEmail(this.userService)]),
     firstName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),

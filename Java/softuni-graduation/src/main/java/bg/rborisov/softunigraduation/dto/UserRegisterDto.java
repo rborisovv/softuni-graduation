@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class UserRegisterDto implements Serializable {
 
     @NotBlank
-    @Size(min = 5, max = 30)
+    @Size(min = 4, max = 30)
     private String username;
 
     @Email

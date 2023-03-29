@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
   faEnvelope = faEnvelope;
 
   loginForm = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(30)]),
+    username: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(30)]),
     password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)])
   });
 

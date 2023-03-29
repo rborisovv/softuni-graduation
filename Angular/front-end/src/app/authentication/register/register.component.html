@@ -11,7 +11,7 @@
     </div>
     <div class="error-messages text-danger">
       <div *ngIf="username.errors?.['required'] && username.touched">Username is required.</div>
-      <div *ngIf="username.errors?.['minlength'] && username.touched">Username must be at least 5 characters long.
+      <div *ngIf="username.errors?.['minlength'] && username.touched">Username must be at least 4 characters long.
       </div>
       <div *ngIf="username.errors?.['maxlength'] && username.touched">The maximum length of the username is 30
         characters.

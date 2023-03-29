@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import static bg.rborisov.softunigraduation.constant.FileConstant.FILE_TXT_EXTENSION;
 
 @Component
-public class LogsCleanup {
+public class LogsCleanupCronJob {
     private static final String LOG_FOLDER = "C:\\Users\\Radoslav\\Documents\\Github\\softuni-graduation\\Java\\softuni-graduation\\src\\main\\resources\\logs\\";
 
     @Scheduled(cron = "@daily")

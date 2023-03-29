@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class UserLoginDto implements Serializable {
 
     @NotBlank
-    @Size(min = 5, max = 30)
+    @Size(min = 4, max = 30)
     private String username;
 
     @NotBlank
