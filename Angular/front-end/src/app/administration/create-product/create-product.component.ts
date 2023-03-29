@@ -9,15 +9,15 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {ProductSharedFunctionality} from "../item.product.index";
-import {Media} from "../../interface/media";
+import {Media} from "../../model/media";
 import {map, Observable, Subscription} from "rxjs";
 import {MediaService} from "../../service/media.service";
 import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {ProductService} from "../../service/product.service";
 import {positiveNumberValidator} from "../../directive/positive.number.directive";
 import {CategoryService} from "../../service/category.service";
-import {Category} from "../../interface/category";
-import {Product} from "../../interface/product";
+import {Category} from "../../model/category";
+import {Product} from "../../model/product";
 import {NotificationType} from "../../enumeration/notification-enum";
 import {NotifierService} from "angular-notifier";
 import {Router} from "@angular/router";

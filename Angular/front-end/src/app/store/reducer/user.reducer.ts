@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import { Product } from "../../interface/product";
+import { Product } from "../../model/product";
 import {
   fetchRenewedBasketProducts,
   fetchRenewedFavouriteProducts,

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, take } from "rxjs";
-import { Product } from "../../interface/product";
+import { Product } from "../../model/product";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Location } from "@angular/common";
 import { UserService } from "../../service/user.service";
-import { Checkout } from "../../interface/checkout";
+import { Checkout } from "../../model/checkout";
 import { createOrder } from "../../store/action/user.action";
 
 @Component({

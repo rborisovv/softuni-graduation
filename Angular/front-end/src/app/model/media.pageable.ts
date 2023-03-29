@@ -1,4 +1,4 @@
-import { Media } from "../interface/media";
+import { Media } from "./media";
 
 export interface MediaPageable {
   content: Media[],

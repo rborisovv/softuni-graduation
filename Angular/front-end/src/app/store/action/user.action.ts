@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { HttpResponse } from "../../interface/http.response";
-import { Checkout } from "../../interface/checkout";
+import { Checkout } from "../../model/checkout";
 import { PasswordReset } from "../../interface/passwordReset";
 
 export const addToFavourites = createAction('[Favourites] Add to Favourites', props<{ identifier: string }>());

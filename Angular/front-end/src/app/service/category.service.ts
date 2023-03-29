@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment.prod";
 import {Observable} from "rxjs";
 import {HttpResponse} from "../interface/http.response";
-import {Category} from "../interface/category";
+import {Category} from "../model/category";
 import { PageableData } from "../model/pageable.data";
 import { CategoryPageable } from "../model/category.pageable";
 

@@ -1,4 +1,4 @@
-import {Product} from "./product";
+import {Product} from "../model/product";
 
 export interface HttpResponse {
   statusCode: number,

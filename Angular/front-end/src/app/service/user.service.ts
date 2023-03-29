@@ -5,11 +5,11 @@ import { Observable } from "rxjs";
 import { UserWelcome } from "../interface/user.welcome";
 import { IUserRegisterModel } from "../authentication/register/IUserRegisterModel";
 import { HttpResponse } from "../interface/http.response";
-import { Product } from "../interface/product";
-import { Checkout } from "../interface/checkout";
-import { Order } from "../interface/order";
+import { Product } from "../model/product";
+import { Checkout } from "../model/checkout";
+import { Order } from "../model/order";
 import { PasswordReset } from "../interface/passwordReset";
-import { User } from "../interface/user";
+import { User } from "../model/user";
 
 @Injectable()
 export class UserService {

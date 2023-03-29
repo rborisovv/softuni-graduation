@@ -23,7 +23,7 @@ import { UserService } from "../../service/user.service";
 import { CookieService } from "ngx-cookie-service";
 import { Router } from "@angular/router";
 import { Observable, Subscription } from "rxjs";
-import { Product } from "../../interface/product";
+import { Product } from "../../model/product";
 import { Store } from "@ngrx/store";
 import { addToBasket, removeFromFavourites } from "../../store/action/user.action";
 import { selectBasketProductsState, selectFavouriteProductsState } from "../../store/selector/user.selector";

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from "../../environments/environment.prod";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { Media } from "../interface/media";
+import { Media } from "../model/media";
 import { HttpResponse } from "../interface/http.response";
 import { MediaPageable } from "../model/media.pageable";
 import { PageableData } from "../model/pageable.data";

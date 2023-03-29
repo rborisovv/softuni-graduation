@@ -1,4 +1,4 @@
-import { Product } from "../interface/product";
+import { Product } from "./product";
 
 export interface ProductPageable {
   content: Product[],

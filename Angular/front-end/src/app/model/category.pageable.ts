@@ -1,4 +1,4 @@
-import { Category } from "../interface/category";
+import { Category } from "./category";
 
 export interface CategoryPageable {
   content: Category[],

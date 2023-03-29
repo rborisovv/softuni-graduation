@@ -3,7 +3,7 @@ import {map, Observable} from "rxjs";
 import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {MediaService} from "../../service/media.service";
 import {createFormData} from "../../service/service.index";
-import {Media} from "../../interface/media";
+import {Media} from "../../model/media";
 import {Store} from "@ngrx/store";
 import {createMediaAction} from "../../store/action/media.action";
 

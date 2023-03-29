@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from "../../service/user.service";
 import { Observable } from "rxjs";
-import { Product } from "../../interface/product";
+import { Product } from "../../model/product";
 import { Location } from "@angular/common";
 import { Store } from "@ngrx/store";
 import { removeFromBasket, updateBasketProductQuantity } from "../../store/action/user.action";

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable, take } from "rxjs";
-import { Category } from 'src/app/interface/category';
+import { Category } from 'src/app/model/category';
 import { CategoryService } from "../../service/category.service";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
@@ -10,7 +10,7 @@ import {
   selectBasketProductsState,
   selectFavouriteProductsState
 } from "../../store/selector/user.selector";
-import { Product } from "../../interface/product";
+import { Product } from "../../model/product";
 
 @Component({
   selector: 'app-category',

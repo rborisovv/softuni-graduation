@@ -10,7 +10,7 @@ import {
   faUserSecret
 } from "@fortawesome/free-solid-svg-icons";
 import { Observable } from "rxjs";
-import { Product } from "../../interface/product";
+import { Product } from "../../model/product";
 
 @Component({
   selector: 'app-checkout-header',
