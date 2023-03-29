@@ -106,4 +106,9 @@ public class AuthResource {
     public Set<OrderDto> fetchAllOrders(final Principal principal) {
         return this.orderService.fetchAllOrders();
     }
+
+    @GetMapping("/vouchers")
+    public Set<VoucherDto> vouchers() {
+        return this.authService.fetchAllVouchers();
+    }
 }
