@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { faFacebookF, faGithub, faGoogle, faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { faAddressCard, faCalendar, faEnvelope, faKey, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from "../../service/user.service";
-import { catchError, map, Observable, Subscription } from "rxjs";
+import { map, Observable } from "rxjs";
 import {
   AbstractControl,
   AsyncValidatorFn,
@@ -12,10 +11,9 @@ import {
   Validators
 } from "@angular/forms";
 import { DatePipe } from "@angular/common";
-import { Router } from "@angular/router";
 import { IUserRegisterModel } from "./IUserRegisterModel";
-import { NotificationType } from "../../enumeration/notification-enum";
-import { NotifierService } from "angular-notifier";
+import { Store } from "@ngrx/store";
+import { registerAction } from "../../store/action/auth.action";
 
 @Component({
   selector: 'app-register',
@@ -23,14 +21,8 @@ import { NotifierService } from "angular-notifier";
   styleUrls: ['./register.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegisterComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class RegisterComponent implements OnInit {
 
-
-  faFacebook = faFacebookF;
-  faTwitter = faTwitter;
-  faGoogle = faGoogle;
-  faGithub = faGithub;
   faUser = faUser;
   faKey = faKey;
   faLock = faLock;
@@ -38,8 +30,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   faEnvelope = faEnvelope;
   faCalendar = faCalendar;
 
-  constructor(private userService: UserService, private datePipe: DatePipe, private router: Router,
-              private notifier: NotifierService) {
+  constructor(private userService: UserService, private datePipe: DatePipe, private store: Store) {
   }
 
   registerForm = new FormGroup({
@@ -68,10 +59,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
   public onRegister(): void {
     if (!this.username.value || !this.email.value || !this.firstName.value || !this.lastName.value
       || !this.birthDate.value || !this.password.value || !this.confirmPassword.value) {
@@ -88,20 +75,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       'confirmPassword': this.confirmPassword.value
     };
 
-    const subscription: Subscription = this.userService.registerUser(registerData)
-      .pipe(
-        catchError((err) => {
-          this.notifier.notify(NotificationType.ERROR, err.error.message);
-          throw err;
-        })
-      )
-      .subscribe({
-        next: () => {
-          this.router.navigateByUrl('/auth/login');
-        }
-      });
-
-    this.subscriptions.push(subscription);
+    this.store.dispatch(registerAction({ registerModel: registerData }));
   }
 
   public onConfirmPasswordChange(): boolean {

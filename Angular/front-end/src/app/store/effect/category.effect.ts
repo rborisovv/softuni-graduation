@@ -16,7 +16,6 @@ import {CategoryService} from "../../service/category.service";
 import {Router} from "@angular/router";
 import {NotifierService} from "angular-notifier";
 import {NotificationType} from "../../enumeration/notification-enum";
-import {Store} from "@ngrx/store";
 
 @Injectable()
 export class CategoryEffects {
