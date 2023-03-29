@@ -1,0 +1,22 @@
+@import "../../../common";
+
+@include table-items();
+
+.create-btn-wrapper {
+  @include flex-horizontal-center-row();
+  justify-content: space-between;
+  width: 70%;
+  margin: 0 auto 1rem;
+}
+
+.create-voucher__btn {
+  display: block;
+  @include modal-save-btn();
+  width: 175px;
+  text-align: center;
+}
+
+.vouchers {
+  width: 70%;
+  margin: 0 auto;
+}

@@ -2,9 +2,11 @@ package bg.rborisov.softunigraduation.service;
 
 import bg.rborisov.softunigraduation.dao.PasswordTokenRepository;
 import bg.rborisov.softunigraduation.dao.UserRepository;
+import bg.rborisov.softunigraduation.dao.VoucherRepository;
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.PasswordChangeDto;
 import bg.rborisov.softunigraduation.dto.UserDto;
+import bg.rborisov.softunigraduation.dto.VoucherDto;
 import bg.rborisov.softunigraduation.enumeration.NotificationStatus;
 import bg.rborisov.softunigraduation.enumeration.RoleEnum;
 import bg.rborisov.softunigraduation.events.PasswordResetPublisher;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -41,14 +44,16 @@ public class AuthService {
     private final PasswordResetPublisher passwordResetPublisher;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final VoucherRepository voucherRepository;
 
-    public AuthService(final UserRepository userRepository, final JwtProvider jwtProvider, final PasswordTokenRepository passwordTokenRepository, final PasswordResetPublisher passwordResetPublisher, final PasswordEncoder passwordEncoder, final ModelMapper modelMapper) {
+    public AuthService(final UserRepository userRepository, final JwtProvider jwtProvider, final PasswordTokenRepository passwordTokenRepository, final PasswordResetPublisher passwordResetPublisher, final PasswordEncoder passwordEncoder, final ModelMapper modelMapper, final VoucherRepository voucherRepository) {
         this.userRepository = userRepository;
         this.jwtProvider = jwtProvider;
         this.passwordTokenRepository = passwordTokenRepository;
         this.passwordResetPublisher = passwordResetPublisher;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
+        this.voucherRepository = voucherRepository;
     }
 
     public boolean isAdmin(String authorizationHeader) {
@@ -114,5 +119,16 @@ public class AuthService {
 
             return userDto;
         }).collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public Set<VoucherDto> fetchAllVouchers() {
+        return this.voucherRepository.findAll().stream().map(voucher -> {
+                    final VoucherDto voucherDto = this.modelMapper.map(voucher, VoucherDto.class);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    voucherDto.setCreationDate(formatter.format(voucher.getCreationDate()));
+                    voucherDto.setExpirationDate(formatter.format(voucher.getExpirationDate()));
+                    return voucherDto;
+                }).sorted(Comparator.comparing(VoucherDto::getCreationDate))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }

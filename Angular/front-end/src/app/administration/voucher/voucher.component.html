@@ -1,0 +1,37 @@
+<app-admin-header></app-admin-header>
+
+<main>
+  <h1 class="text-center mt-40 mb-30">Vouchers</h1>
+  <div class="create-btn-wrapper" *ngIf="vouchers$ | async as vouchers">
+    <h3>Total Vouchers: <span>{{vouchers.length}}</span></h3>
+    <a class="create-voucher__btn" href="javascript:void(0)">Create Voucher</a>
+  </div>
+  <div class="vouchers">
+    <div class="voucher" *ngIf="vouchers$ | async as vouchers">
+      <table>
+        <thead>
+        <tr>
+          <th>Voucher</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Discount</th>
+          <th>Creation Date</th>
+          <th>ExpirationDate</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let voucher of vouchers">
+          <td><img style="width: 45px;" src="./assets/images/Cockpit/voucher.png" alt=""></td>
+          <td>{{voucher.name}}</td>
+          <td>{{voucher.type}}</td>
+          <td>{{voucher.discount}}</td>
+          <td>{{voucher.creationDate}}</td>
+          <td>{{voucher.expirationDate}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<app-footer></app-footer>

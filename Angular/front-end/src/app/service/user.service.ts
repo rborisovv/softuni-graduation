@@ -10,6 +10,7 @@ import { Checkout } from "../model/checkout";
 import { Order } from "../model/order";
 import { PasswordReset } from "../interface/passwordReset";
 import { User } from "../model/user";
+import { Voucher } from "../model/voucher";
 
 @Injectable()
 export class UserService {
@@ -96,5 +97,9 @@ export class UserService {
 
   loadAllUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/auth/users`);
+  }
+
+  fetchAllVouchers(): Observable<Voucher[]> {
+    return this.http.get<Voucher[]>(`${this.apiUrl}/auth/vouchers`);
   }
 }
