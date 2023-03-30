@@ -59,4 +59,9 @@ public class BasketResource {
     public ResponseEntity<VoucherDto> addVoucher(final @Valid @NotBlank @RequestBody String voucher) throws Exception {
         return this.basketService.addVoucherToBasket(voucher);
     }
+
+    @GetMapping("/fetchVoucherIfPresent")
+    public VoucherDto fetchVoucherIfPresent(final Principal principal) throws UserNotFoundException {
+        return this.basketService.fetchVoucherIfPresent(principal);
+    }
 }

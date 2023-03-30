@@ -1,10 +1,11 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Injectable, Pipe, PipeTransform } from '@angular/core';
 import { Product } from "../model/product";
 import { map, Observable } from "rxjs";
 
 @Pipe({
   name: 'cartBalance'
 })
+@Injectable()
 export class CartBalancePipe implements PipeTransform {
   transform(products$: Observable<Product[]>, ...args: unknown[]): Observable<number> {
     return products$.pipe(

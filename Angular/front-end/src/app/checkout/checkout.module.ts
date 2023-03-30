@@ -40,7 +40,8 @@ const routes: Routes = [
     SharedModule,
     FontAwesomeModule,
     ReactiveFormsModule
-  ]
+  ],
+  providers: [CartBalancePipe]
 })
 export class CheckoutModule {
 }

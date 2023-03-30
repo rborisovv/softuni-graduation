@@ -165,8 +165,12 @@ public class AuthService {
         user.getVouchers().add(voucher);
         voucher.setUser(user);
 
-        final Optional<Category> optionalCategory = this.categoryRepository.findCategoryByIdentifier(voucherDto.getCategory().getIdentifier());
-        optionalCategory.ifPresent(voucher::setCategory);
+        if (voucher.getCategory() != null) {
+            final Optional<Category> optionalCategory;
+            optionalCategory = this.categoryRepository.findCategoryByIdentifier(voucherDto.getCategory().getIdentifier());
+            optionalCategory.ifPresent(voucher::setCategory);
+        }
+
         this.voucherRepository.save(voucher);
 
         HttpResponse response = HttpResponseConstructor.construct(HttpStatus.OK,
