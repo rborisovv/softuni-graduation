@@ -21,4 +21,8 @@ public class ExceptionMessages {
     public static final String PASSWORD_TOKEN_EXISTS = "A password token is already generated for that user!";
     public static final String PASSWORD_TOKEN_EXPIRED = "The provided password token has expired!";
     public static final String VOUCHER_BY_NAME_PRESENT = "A voucher with the provided name is already present!";
+    public static final String ABSENT_VOUCHER_BY_NAME = "A voucher with the provided name could not be found";
+    public static final String VOUCHER_HAS_EXPIRED = "The voucher \"%s\" code has expired!";
+    public static final String VOUCHER_CANNOT_BE_USED_BY_USER = "The voucher cannot be used!";
+    public static final String USER_HAS_NO_BASKET = "No basket object found for user!";
 }

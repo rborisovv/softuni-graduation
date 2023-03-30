@@ -4,9 +4,10 @@ import { Observable } from "rxjs";
 import { Product } from "../../model/product";
 import { Location } from "@angular/common";
 import { Store } from "@ngrx/store";
-import { removeFromBasket, updateBasketProductQuantity } from "../../store/action/user.action";
+import { addVoucher, removeFromBasket, updateBasketProductQuantity } from "../../store/action/user.action";
 import { selectBasketProductsState } from "../../store/selector/user.selector";
 import { Router } from "@angular/router";
+import { BasketService } from "../../service/basket.service";
 
 @Component({
   selector: 'app-cart',
@@ -16,8 +17,8 @@ import { Router } from "@angular/router";
 export class CartComponent implements OnInit {
   renewedBasketProducts$: Observable<Product[]>;
 
-  constructor(private readonly userService: UserService, protected readonly location: Location,
-              private readonly store: Store, public readonly router: Router) {
+  constructor(private userService: UserService, protected location: Location,
+              private store: Store, public router: Router, private basketService: BasketService) {
   }
 
   ngOnInit(): void {
@@ -33,5 +34,10 @@ export class CartComponent implements OnInit {
     const quantity = +(<HTMLSelectElement>event.target).value;
     this.store.dispatch(updateBasketProductQuantity({ identifier: identifier, quantity: quantity }));
     this.renewedBasketProducts$ = this.store.select(selectBasketProductsState);
+  }
+
+  addVoucher(labelElement: HTMLInputElement) {
+    const name: string = labelElement.value;
+    this.store.dispatch(addVoucher({ name }));
   }
 }

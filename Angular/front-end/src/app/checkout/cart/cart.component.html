@@ -50,6 +50,15 @@
             Back to Shop
           </a>
         </div>
+        <div class="voucher-wrapper">
+          <div class="form-controll mr-25">
+            <div class="form-input">
+              <input type="text" name="voucher" id="voucher" #voucher required>
+              <label for="voucher">Voucher</label>
+            </div>
+          </div>
+          <button class="add-voucher__btn" (click)="addVoucher(voucher)">Add Voucher</button>
+        </div>
       </div>
     </div>
   </div>

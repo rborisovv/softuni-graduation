@@ -93,9 +93,4 @@ public class ExceptionHandler extends AbstractExceptionHandler {
     public ResponseEntity<HttpResponse> passwordTokenExpired() {
         return super.createHttpResponse(BAD_REQUEST, PASSWORD_TOKEN_EXPIRED);
     }
-
-    @org.springframework.web.bind.annotation.ExceptionHandler(VoucherByNameAlreadyPresent.class)
-    public ResponseEntity<HttpResponse> voucherByNamePresent() {
-        return super.createHttpResponse(BAD_REQUEST, VOUCHER_BY_NAME_PRESENT);
-    }
 }
