@@ -303,14 +303,12 @@
       }
 
       .footer {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
+        @include flex-horizontal-center-row();
+        justify-content: space-between;
+        align-items: flex-end;
         padding: 20px 5px;
 
         .back_cart {
-          width: 50%;
-          flex: 0 0 50%;
 
           a {
             color: #303030;
@@ -348,6 +346,16 @@
                 transform: translateX(0px);
               }
             }
+          }
+        }
+
+        & .voucher-wrapper {
+          @include checkout-flow-form-style();
+          @include flex-horizontal-center-row();
+          margin-right: 50px;
+
+          & .add-voucher__btn {
+            @include modal-save-btn();
           }
         }
       }

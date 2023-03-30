@@ -6,6 +6,7 @@ import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,4 +25,7 @@ public class Basket extends BaseEntity implements Serializable {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime creationDate;
+
+    @OneToMany
+    private Set<Voucher> vouchers;
 }

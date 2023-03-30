@@ -46,7 +46,4 @@ public class Voucher extends BaseEntity implements Serializable {
 
     @Column(nullable = false)
     private LocalDate expirationDate;
-
-    @ManyToMany
-    private Set<Basket> orders;
 }

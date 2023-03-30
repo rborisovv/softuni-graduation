@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from "../../environments/environment.prod";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { HttpResponse } from "../interface/http.response";
+import { Voucher } from "../model/voucher";
 
 @Injectable({
   providedIn: 'root'
@@ -15,5 +17,9 @@ export class BasketService {
 
   public canActivateCheckout(): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/basket/canActivateCheckout`)
+  }
+
+  addVoucherToBasket(voucher: string): Observable<Voucher> {
+    return this.http.post<Voucher>(`${this.apiUrl}/basket/addVoucher`, voucher);
   }
 }
