@@ -18,4 +18,5 @@ public class Messages {
     public static final String PRODUCT_REMOVED_FROM_BASKET = "The product \"%s\" was successfully removed from basket!";
     public static final String PASSWORD_RESET_EMAIL = "An email confirmation has been sent to %s. Please check your inbox";
     public static final String PASSWORD_CHANGED_SUCCESSFULLY = "The password has been changed successfully!";
+    public static final String VOUCHER_CREATED_SUCCESSFULLY = "The voucher has been created successfully!";
 }
