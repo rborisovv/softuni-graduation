@@ -10,9 +10,6 @@ import { CategoryService } from "../../service/category.service";
 import { Voucher } from "../../model/voucher";
 import { Store } from "@ngrx/store";
 import { createVoucher } from "../../store/action/auth.action";
-import { NotifierService } from "angular-notifier";
-import { NotificationType } from "../../enumeration/notification-enum";
-import { INVALID_EXPIRATION_DATE } from "../../common/messages";
 
 @Component({
   selector: 'app-create-voucher',
@@ -32,8 +29,7 @@ export class CreateVoucherComponent {
   @ViewChildren('userRow') suggestedUsers: ElementRef[] | undefined;
   @ViewChildren('categoryRow') suggestedCategories: ElementRef[] | undefined;
 
-  constructor(private userService: UserService, private categoryService: CategoryService, private store: Store,
-              private notifier: NotifierService) {
+  constructor(private userService: UserService, private categoryService: CategoryService, private store: Store) {
   }
 
   createVoucherFormGroup: FormGroup = new FormGroup({
@@ -110,10 +106,6 @@ export class CreateVoucherComponent {
   }
 
   createVoucher() {
-    if (this.expirationDate.value <= new Date().getTime()) {
-      this.notifier.notify(NotificationType.INFO, INVALID_EXPIRATION_DATE);
-      return;
-    }
 
     const voucher: Voucher = {
       name: this.name.value,

@@ -79,7 +79,19 @@
 
     <div *ngIf="products.length > 0" class="subtotal text-right">
       <label class="fs-5">Subtotal: </label>
-      <strong class="fs-4">{{renewedBasketProducts$ | cartBalance | async | currency}} lv.</strong>
+      <strong class="fs-4" [ngClass]="{'price-cross': voucher$}"
+              #totalPrice>{{renewedBasketProducts$ | cartBalance | async | currency}}
+        lv.</strong>
+    </div>
+    <div class="voucher-label text-white">
+      <label class="fs-5" *ngIf="voucher$" style="margin-left: 48px;">Voucher:</label>
+      <strong *ngIf="voucher$ | async as voucher" class="fs-4"> {{voucher.name}}</strong>
+    </div>
+    <div class="voucher-label text-white">
+      <label class="fs-5" *ngIf="voucher$" style="margin-left: 45px;">Total:</label>
+      <strong *ngIf="voucher$ | async as voucher" class="fs-4">
+        {{totalAfterVoucherDiscount | async}} lv.
+      </strong>
     </div>
 
     <button *ngIf="products.length > 0" (click)="this.router.navigate(['/checkout'])" class="btn">Checkout</button>

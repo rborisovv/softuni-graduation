@@ -1,5 +1,9 @@
 @import "../../../common";
 
+.price-cross {
+  text-decoration: line-through;
+}
+
 @mixin size($point) {
   @if $point == lg-device {
     @media (min-width: 1024px) and (max-width: 1600px) {

@@ -8,9 +8,6 @@ import {
   addToFavourites,
   addToFavouritesFail,
   addToFavouritesSuccess,
-  addVoucher,
-  addVoucherFail,
-  addVoucherSuccess,
   changePassword,
   changePasswordFail,
   changePasswordSuccess,
@@ -40,14 +37,13 @@ import { Injectable } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { Router } from "@angular/router";
 import { NotificationType } from "../../enumeration/notification-enum";
-import { ORDER_CREATED, VOUCHER_ADDED_SUCCESSFULLY } from "../../common/messages";
-import { BasketService } from "../../service/basket.service";
+import { ORDER_CREATED } from "../../common/messages";
 
 @Injectable()
 export class UserEffects {
   constructor(private actions$: Actions, private userService: UserService,
               private notifier: NotifierService, private store: Store,
-              private router: Router, private basketService: BasketService) {
+              private router: Router) {
   }
 
   addToFavourites$ = createEffect(() => {
@@ -195,21 +191,6 @@ export class UserEffects {
               });
             }),
             catchError(error => of(changePasswordFail({ error: error })))
-          );
-      }));
-  });
-
-  addVoucher$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(addVoucher),
-      exhaustMap(({ name }) => {
-        return this.basketService.addVoucherToBasket(name)
-          .pipe(
-            map((voucher) => addVoucherSuccess({ voucher })),
-            tap(() => {
-              this.notifier.notify(NotificationType.SUCCESS, VOUCHER_ADDED_SUCCESSFULLY);
-            }),
-            catchError(error => of(addVoucherFail({ error: error })))
           );
       }));
   });

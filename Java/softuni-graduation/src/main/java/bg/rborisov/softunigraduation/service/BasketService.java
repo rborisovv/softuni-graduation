@@ -9,14 +9,7 @@ import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.ProductDto;
 import bg.rborisov.softunigraduation.dto.VoucherDto;
 import bg.rborisov.softunigraduation.enumeration.NotificationStatus;
-import bg.rborisov.softunigraduation.exception.AbsentVoucherByNameException;
-import bg.rborisov.softunigraduation.exception.BasketNotFoundException;
-import bg.rborisov.softunigraduation.exception.UserHasNoBasketException;
-import bg.rborisov.softunigraduation.exception.VoucherCannotBeUsedByUserException;
-import bg.rborisov.softunigraduation.exception.ProductNotFoundException;
-import bg.rborisov.softunigraduation.exception.ProductSoldOutException;
-import bg.rborisov.softunigraduation.exception.UserNotFoundException;
-import bg.rborisov.softunigraduation.exception.VoucherExpiredException;
+import bg.rborisov.softunigraduation.exception.*;
 import bg.rborisov.softunigraduation.model.Basket;
 import bg.rborisov.softunigraduation.model.Product;
 import bg.rborisov.softunigraduation.model.User;
@@ -33,21 +26,11 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.VOUCHER_HAS_EXPIRED;
-import static bg.rborisov.softunigraduation.common.Messages.PRODUCT_ALREADY_ADDED_TO_BASKET;
-import static bg.rborisov.softunigraduation.common.Messages.PRODUCT_REMOVED_FROM_BASKET;
-import static bg.rborisov.softunigraduation.common.Messages.PRODUCT_SUCCESSFULLY_ADDED_TO_BASKET;
+import static bg.rborisov.softunigraduation.common.Messages.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
@@ -189,11 +172,12 @@ public class BasketService {
         final User user = this.userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
         preValidationChecks(optionalVoucher, user);
 
-        if (user.getBasket().getVouchers() == null) {
-            user.getBasket().setVouchers(new HashSet<>());
+        if (user.getBasket().getVoucher() != null) {
+            throw new OneVoucherAlreadyAddedException();
         }
 
-        user.getBasket().getVouchers().add(optionalVoucher.get());
+        user.getBasket().setVoucher(new Voucher());
+        optionalVoucher.ifPresent(user.getBasket()::setVoucher);
         final VoucherDto voucherDto = this.modelMapper.map(voucher, VoucherDto.class);
 
         return new ResponseEntity<>(voucherDto, HttpStatus.OK);
@@ -220,5 +204,17 @@ public class BasketService {
         if (voucher.getUser().getBasket() == null) {
             throw new UserHasNoBasketException();
         }
+    }
+
+    public VoucherDto fetchVoucherIfPresent(final Principal principal) throws UserNotFoundException {
+        User user = this.userService.findUserByUsername(principal.getName());
+        VoucherDto voucherDto = null;
+
+        if (user.getBasket().getVoucher() != null) {
+            Voucher voucher = user.getBasket().getVoucher();
+            voucherDto = this.modelMapper.map(voucher, VoucherDto.class);
+        }
+
+        return voucherDto;
     }
 }
