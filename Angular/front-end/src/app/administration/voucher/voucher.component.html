@@ -4,7 +4,7 @@
   <h1 class="text-center mt-40 mb-30">Vouchers</h1>
   <div class="create-btn-wrapper" *ngIf="vouchers$ | async as vouchers">
     <h3>Total Vouchers: <span>{{vouchers.length}}</span></h3>
-    <a class="create-voucher__btn" href="javascript:void(0)">Create Voucher</a>
+    <a class="create-voucher__btn" href="javascript:void(0)" routerLink="/admin/voucher/create">Create Voucher</a>
   </div>
   <div class="vouchers">
     <div class="voucher" *ngIf="vouchers$ | async as vouchers">
@@ -25,8 +25,8 @@
           <td>{{voucher.name}}</td>
           <td>{{voucher.type}}</td>
           <td>{{voucher.discount}}</td>
-          <td>{{voucher.creationDate}}</td>
-          <td>{{voucher.expirationDate}}</td>
+          <td>{{voucher.creationDate | dateFormat}}</td>
+          <td>{{voucher.expirationDate | dateFormat}}</td>
         </tr>
         </tbody>
       </table>

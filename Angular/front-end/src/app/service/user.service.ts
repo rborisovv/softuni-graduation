@@ -102,4 +102,12 @@ export class UserService {
   fetchAllVouchers(): Observable<Voucher[]> {
     return this.http.get<Voucher[]>(`${this.apiUrl}/auth/vouchers`);
   }
+
+  findUserByUsernameLike(username: string): Observable<User[]> {
+    return this.http.post<User[]>(`${this.apiUrl}/user/findUserByUsernameLike`, username);
+  }
+
+  createVoucher(voucher: Voucher): Observable<HttpResponse> {
+    return this.http.post<HttpResponse>(`${this.apiUrl}/auth/createVoucher`, voucher);
+  }
 }

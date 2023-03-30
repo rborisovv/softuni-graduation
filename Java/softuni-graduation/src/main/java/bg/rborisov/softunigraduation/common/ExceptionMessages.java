@@ -20,4 +20,5 @@ public class ExceptionMessages {
     public static final String PASSWORD_TOKEN_NOT_FOUND = "No token has been generated for the provided user!";
     public static final String PASSWORD_TOKEN_EXISTS = "A password token is already generated for that user!";
     public static final String PASSWORD_TOKEN_EXPIRED = "The provided password token has expired!";
+    public static final String VOUCHER_BY_NAME_PRESENT = "A voucher with the provided name is already present!";
 }

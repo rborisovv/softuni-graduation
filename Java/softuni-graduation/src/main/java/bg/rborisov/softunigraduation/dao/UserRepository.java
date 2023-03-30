@@ -20,4 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u.favouriteProducts FROM User u where u.username = ?1")
     Set<Product> loadFavouriteProducts(String username);
+
+    Set<User> findUserByUsernameLike(String username);
 }
