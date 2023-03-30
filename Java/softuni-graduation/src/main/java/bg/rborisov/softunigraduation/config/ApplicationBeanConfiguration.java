@@ -99,11 +99,11 @@ public class ApplicationBeanConfiguration {
 
     private byte[] decodeRsaKeyContent(final byte[] rsaKeyBytes) {
         final String rsaKeyContent = new String(rsaKeyBytes, StandardCharsets.UTF_8)
-                .replaceAll("\\n+", StringUtils.EMPTY)
                 .replace("-----BEGIN PRIVATE KEY-----", StringUtils.EMPTY)
                 .replace("-----BEGIN PUBLIC KEY-----", StringUtils.EMPTY)
                 .replace("-----END PRIVATE KEY-----", StringUtils.EMPTY)
-                .replace("-----END PUBLIC KEY-----", StringUtils.EMPTY);
+                .replace("-----END PUBLIC KEY-----", StringUtils.EMPTY)
+                .replaceAll("\\s+", StringUtils.EMPTY);
 
         return Base64.getDecoder().decode(rsaKeyContent);
     }
