@@ -4,7 +4,9 @@ import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.*;
 import bg.rborisov.softunigraduation.exception.AbsentPasswordTokenException;
 import bg.rborisov.softunigraduation.exception.PasswordTokenExpiredException;
+import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
+import bg.rborisov.softunigraduation.exception.VoucherByNameAlreadyPresent;
 import bg.rborisov.softunigraduation.service.AuthService;
 import bg.rborisov.softunigraduation.service.OrderService;
 import bg.rborisov.softunigraduation.service.UserService;
@@ -110,5 +112,10 @@ public class AuthResource {
     @GetMapping("/vouchers")
     public Set<VoucherDto> vouchers() {
         return this.authService.fetchAllVouchers();
+    }
+
+    @PostMapping("/createVoucher")
+    public ResponseEntity<HttpResponse> createVoucher(final @Valid @RequestBody VoucherDto voucherDto) throws UserNotFoundException, VoucherByNameAlreadyPresent {
+        return this.authService.createVoucher(voucherDto);
     }
 }

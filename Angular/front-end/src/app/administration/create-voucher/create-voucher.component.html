@@ -1,0 +1,202 @@
+<app-admin-header></app-admin-header>
+
+<main>
+  <form class="form" [formGroup]="createVoucherFormGroup" (ngSubmit)="createVoucher()">
+    <h3 class="form-title">Create Voucher</h3>
+    <div class="grid-2">
+      <div class="form-controll">
+        <div class="form-input">
+          <input type="text" name="name" id="name" required formControlName="name">
+          <label for="name">Voucher name</label>
+        </div>
+        <div class="name-messages error-messages text-danger">
+          <div *ngIf="name.errors?.['required'] && name.touched">Voucher name is required.</div>
+          <div *ngIf="name.errors?.['minlength'] && name.touched">
+            The Voucher name must be at least 3 characters long.
+          </div>
+          <div *ngIf="name.errors?.['maxlength'] && name.touched">
+            The maximum length of the Product name is 20 characters.
+          </div>
+        </div>
+      </div>
+      <div class="form-controll">
+        <div class="form-input">
+          <input type="text" name="type" id="type" required formControlName="type">
+          <label for="type">Voucher type</label>
+        </div>
+        <div class="name-messages error-messages text-danger">
+          <div *ngIf="type.errors?.['required'] && name.touched">Voucher type is required.</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-controll">
+      <div class="form-input">
+        <input type="text" name="discount" id="discount" required formControlName="discount">
+        <label for="discount">Voucher discount</label>
+      </div>
+      <div class="name-messages error-messages text-danger">
+        <div *ngIf="discount.errors?.['required'] && discount.touched">Voucher discount is required.</div>
+        <div *ngIf="discount.errors?.['nonPositive'] && discount.touched">
+          The Voucher discount must be a positive number.
+        </div>
+      </div>
+    </div>
+    <div class="form-controll">
+      <div class="form-input" style="display: flex; flex-wrap: nowrap;">
+        <input id="expirationDate" [min]="today" matInput [matDatepicker]="picker" formControlName="expirationDate">
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <label for="expirationDate" style="bottom: 100%;">
+          <fa-icon [icon]="faCalendar"></fa-icon>
+          Expiration date</label>
+      </div>
+
+      <div id="actionsControl" class="form-controll">
+        <label for="actionsControl">Voucher Restrictions</label>
+        <div id="actionsFormInput" class="form-input">
+          <button id="findUser" type="button" data-bs-toggle="modal" data-bs-target="#userRestrictionModal">User</button>
+          <button id="findCategory" type="button" data-bs-toggle="modal" data-bs-target="#categoryRestrictionModal">Category
+          </button>
+        </div>
+      </div>
+
+      <ng-container *ngIf="selectedUserFromPickup as user">
+        <div class="user-preview" style="width: 100%;">
+          <table>
+            <thead>
+            <tr>
+              <th>User</th>
+              <th>Username</th>
+              <th>Full Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>
+                <img src="../../../assets/images/Cockpit/user.png" alt="">
+              </td>
+              <td>{{user.username}}</td>
+              <td>{{user.firstName }} {{user.lastName}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="selectedCategoryFromPickup as category">
+        <div class="user-preview" style="width: 100%;">
+          <table>
+            <thead>
+            <tr>
+              <th>Image</th>
+              <th>Identifier</th>
+              <th>Category Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>
+                <img [src]="category.mediaUrl" alt="">
+              </td>
+              <td>{{category.identifier}}</td>
+              <td>{{category.name}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+
+    </div>
+    <div class="form-submit">
+      <button [disabled]="this.createVoucherFormGroup.invalid" type="submit">Create Voucher</button>
+    </div>
+  </form>
+</main>
+
+
+<div class="modal fade" id="userRestrictionModal" tabindex="-1" aria-labelledby="userRestrictionModal" aria-hidden="true">
+  <div class="modal-dialog" style="max-width: 1200px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">User Restriction</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="search-wrapper text-center">
+          <label class="search" style="margin-right: 20px;" for="user-searchbar">Search User:</label>
+          <input class="find-user" type="text" id="user-searchbar" #userSearchInput (input)="findUserByUsername()" style="width: 380px;">
+        </div>
+        <div class="users-response mt-40">
+          <table>
+            <thead>
+            <tr>
+              <th>User</th>
+              <th>Username</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Birthdate</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr #userRow *ngFor="let user of users$ | async" (click)="selectUser(userRow, user)">
+              <td><img src="../../../assets/images/Cockpit/user.png" alt=""></td>
+              <td>{{user.username}}</td>
+              <td>{{user.firstName}}</td>
+              <td>{{user.lastName}}</td>
+              <td>{{user.birthDate}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer media-footer">
+        <div class="modal-buttons">
+          <button type="button" class="btn btn-secondary" id="user-modal-close-btn" data-bs-dismiss="modal">Close</button>
+          <button type="button" id="user-modal-btn-save" class="btn" (click)="submitUserSelection()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="categoryRestrictionModal" tabindex="-1" aria-labelledby="categoryRestrictionModal" aria-hidden="true">
+  <div class="modal-dialog" style="max-width: 1200px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="CategoryModalLabel">Category Restriction</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="search-wrapper text-center">
+          <label class="search" style="margin-right: 20px;" for="category-searchbar">Search category:</label>
+          <input class="find-category" type="text" id="category-searchbar"
+                 (input)="findCategoryByName($event)" style="width: 380px;">
+        </div>
+        <div class="category-response mt-40">
+          <table>
+            <thead>
+            <tr>
+              <th>Image</th>
+              <th>Identifier</th>
+              <th>Category Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr #categoryRow *ngFor="let category of categories$ | async" (click)="selectCategory(categoryRow, category)">
+              <td><img [src]="category.mediaUrl" alt=""></td>
+              <td>{{category.identifier}}</td>
+              <td>{{category.name}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer media-footer">
+        <div class="modal-buttons">
+          <button type="button" class="btn btn-secondary" id="category-modal-close-btn" data-bs-dismiss="modal">Close</button>
+          <button type="button" id="category-modal-btn-save" class="btn" (click)="submitCategorySelection()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

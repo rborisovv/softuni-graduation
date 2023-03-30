@@ -278,11 +278,6 @@ input:valid + label {
   transition: all 200ms ease-in-out;
 }
 
-@mixin selected-item {
-  background: #6eded2;
-  color: #ffffff;
-}
-
 .modal tbody tr:hover {
   @include selected-item;
 }

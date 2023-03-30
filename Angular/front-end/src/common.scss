@@ -30,7 +30,6 @@
     font-size: .875rem;
     color: #666;
     background: #eee;
-    /*  以下２行で見出しを固定  */
     position: sticky;
     top: 0;
   }
@@ -210,4 +209,9 @@
     grid-template-columns: 1fr 1fr;
     grid-gap: 30px;
   }
+}
+
+@mixin selected-item {
+  background: #6eded2;
+  color: #ffffff;
 }

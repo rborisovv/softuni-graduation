@@ -233,4 +233,10 @@ public class UserService {
 
         return new ResponseEntity<>(favouritesHttpResponse, HttpStatus.OK);
     }
+
+    public Set<UserDto> findUserByUsernameLike(final String username) {
+        return this.userRepository.findUserByUsernameLike(username).stream()
+                .map(user -> this.modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toSet());
+    }
 }

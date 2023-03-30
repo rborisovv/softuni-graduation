@@ -25,6 +25,11 @@ import { MatPaginatorModule } from "@angular/material/paginator";
 import { UserComponent } from './user/user.component';
 import { OrderComponent } from './order/order.component';
 import { VoucherComponent } from './voucher/voucher.component';
+import { CreateVoucherComponent } from './create-voucher/create-voucher.component';
+import { MatInputModule } from "@angular/material/input";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from "@angular/material/core";
+import { DateFormatPipe } from "../pipes/date.format.pipe";
 
 const routes: Routes = [
   {
@@ -39,6 +44,7 @@ const routes: Routes = [
       { path: 'categories/:identifier', component: UpdateCategoryComponent },
       { path: 'users', component: UserComponent },
       { path: 'vouchers', component: VoucherComponent },
+      { path: 'voucher/create', component: CreateVoucherComponent },
       { path: 'orders', component: OrderComponent }
     ]
   }
@@ -59,7 +65,9 @@ const routes: Routes = [
     UpdateProductComponent,
     UserComponent,
     OrderComponent,
-    VoucherComponent
+    VoucherComponent,
+    CreateVoucherComponent,
+    DateFormatPipe
   ],
   imports: [
     CommonModule,
@@ -72,6 +80,9 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgOptimizedImage,
     MatPaginatorModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     EffectsModule.forFeature(CategoryEffects, MediaEffects, ProductEffects)
   ],
   providers: [JwtHelperService]

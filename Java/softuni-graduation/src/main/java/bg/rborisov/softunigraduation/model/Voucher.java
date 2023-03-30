@@ -1,18 +1,19 @@
 package bg.rborisov.softunigraduation.model;
 
 import bg.rborisov.softunigraduation.enumeration.VoucherTypeEnum;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -34,8 +35,11 @@ public class Voucher extends BaseEntity implements Serializable {
     @Column(nullable = false, updatable = false)
     private BigDecimal discount;
 
-    @ManyToMany
-    private Set<User> users;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private User user;
+
+    @ManyToOne
+    private Category category;
 
     @Column(nullable = false, updatable = false)
     private LocalDate creationDate;

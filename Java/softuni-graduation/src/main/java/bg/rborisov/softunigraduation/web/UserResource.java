@@ -2,9 +2,13 @@ package bg.rborisov.softunigraduation.web;
 
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.ProductDto;
+import bg.rborisov.softunigraduation.dto.UserDto;
 import bg.rborisov.softunigraduation.exception.ProductNotFoundException;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.service.UserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,5 +38,10 @@ public class UserResource {
     @PostMapping("/removeFromFavourites")
     public ResponseEntity<HttpResponse> removeProductFromFavourites(final @RequestBody String identifier, final Principal principal) throws UserNotFoundException, ProductNotFoundException {
         return this.userService.removeFromFavourites(identifier, principal);
+    }
+
+    @PostMapping("/findUserByUsernameLike")
+    public Set<UserDto> findUserByUsernameLike(final @Valid @NotBlank @RequestBody String username) throws UserNotFoundException {
+        return this.userService.findUserByUsernameLike(username);
     }
 }
