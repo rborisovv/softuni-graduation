@@ -50,17 +50,21 @@
             Back to Shop
           </a>
         </div>
-        <div class="voucher-wrapper">
-          <div class="form-controll mr-25">
-            <div class="form-input">
-              <input type="text" name="voucher" id="voucher" #voucherInput [disabled]="voucher$ | async" required>
-              <label for="voucher">Voucher</label>
+
+        <ng-container *ngIf="renewedBasketProducts$ | async as products">
+          <div class="voucher-wrapper" *ngIf="products.length > 0">
+            <div class="form-controll mr-25">
+              <div class="form-input">
+                <input type="text" name="voucher" id="voucher" #voucherInput [disabled]="voucher$ | async" required>
+                <label for="voucher" #voucherLabel>Voucher</label>
+              </div>
             </div>
+            <button class="add-voucher__btn" (click)="addVoucher(voucherInput)" [disabled]="voucher$ | async">
+              Add Voucher
+            </button>
           </div>
-          <button class="add-voucher__btn" (click)="addVoucher(voucherInput)" [disabled]="voucher$ | async">
-            Add Voucher
-          </button>
-        </div>
+        </ng-container>
+
       </div>
     </div>
   </div>
@@ -86,19 +90,22 @@
         lv.</strong>
     </div>
 
-    <ng-container *ngIf="voucher$ | async as voucher">
-      <div class="voucher-label text-white">
+    <ng-container *ngIf="products.length > 0 && voucher$ | async as voucher">
+      <div class="voucher-label text-white mb-35">
         <label class="fs-5">Voucher:</label>
         <strong class="fs-4"> {{voucher.name}}</strong>
       </div>
       <div class="voucher-label text-white">
         <label class="fs-5">Total:</label>
-        <strong class="fs-4">
+        <strong class="fs-4"
+                *ngIf="(renewedBasketProducts$ | cartBalance | voucherTotal: voucher | async) > 0; else free">
           {{renewedBasketProducts$ | cartBalance | voucherTotal: voucher | async | currency}} lv.
         </strong>
       </div>
     </ng-container>
-
+    <ng-template #free>
+      <strong class="fs-4">Free</strong>
+    </ng-template>
 
     <button *ngIf="products.length > 0" (click)="this.router.navigate(['/checkout'])" class="btn">Checkout</button>
 
