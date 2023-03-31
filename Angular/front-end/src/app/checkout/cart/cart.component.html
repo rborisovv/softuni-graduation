@@ -53,11 +53,13 @@
         <div class="voucher-wrapper">
           <div class="form-controll mr-25">
             <div class="form-input">
-              <input type="text" name="voucher" id="voucher" #voucher required>
+              <input type="text" name="voucher" id="voucher" #voucherInput [disabled]="voucher$ | async" required>
               <label for="voucher">Voucher</label>
             </div>
           </div>
-          <button class="add-voucher__btn" (click)="addVoucher(voucher)">Add Voucher</button>
+          <button class="add-voucher__btn" (click)="addVoucher(voucherInput)" [disabled]="voucher$ | async">
+            Add Voucher
+          </button>
         </div>
       </div>
     </div>
@@ -79,20 +81,24 @@
 
     <div *ngIf="products.length > 0" class="subtotal text-right">
       <label class="fs-5">Subtotal: </label>
-      <strong class="fs-4" [ngClass]="{'price-cross': voucher$}"
+      <strong class="fs-4 subtotal-price" [ngClass]="{'subtotal-price' : voucher$ | async}"
               #totalPrice>{{renewedBasketProducts$ | cartBalance | async | currency}}
         lv.</strong>
     </div>
-    <div class="voucher-label text-white">
-      <label class="fs-5" *ngIf="voucher$" style="margin-left: 48px;">Voucher:</label>
-      <strong *ngIf="voucher$ | async as voucher" class="fs-4"> {{voucher.name}}</strong>
-    </div>
-    <div class="voucher-label text-white">
-      <label class="fs-5" *ngIf="voucher$" style="margin-left: 45px;">Total:</label>
-      <strong *ngIf="voucher$ | async as voucher" class="fs-4">
-        {{totalAfterVoucherDiscount | async}} lv.
-      </strong>
-    </div>
+
+    <ng-container *ngIf="voucher$ | async as voucher">
+      <div class="voucher-label text-white">
+        <label class="fs-5">Voucher:</label>
+        <strong class="fs-4"> {{voucher.name}}</strong>
+      </div>
+      <div class="voucher-label text-white">
+        <label class="fs-5">Total:</label>
+        <strong class="fs-4">
+          {{renewedBasketProducts$ | cartBalance | voucherTotal: voucher | async | currency}} lv.
+        </strong>
+      </div>
+    </ng-container>
+
 
     <button *ngIf="products.length > 0" (click)="this.router.navigate(['/checkout'])" class="btn">Checkout</button>
 

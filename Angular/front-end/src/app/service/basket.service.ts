@@ -22,7 +22,7 @@ export class BasketService {
     return this.http.post<Voucher>(`${this.apiUrl}/basket/addVoucher`, voucher);
   }
 
-  fetchVoucherIfPresent() {
+  fetchVoucherIfPresent(): Observable<Voucher | null> {
     return this.http.get<Voucher>(`${this.apiUrl}/basket/fetchVoucherIfPresent`);
   }
 }

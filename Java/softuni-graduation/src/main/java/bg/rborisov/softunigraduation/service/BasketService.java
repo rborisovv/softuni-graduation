@@ -178,7 +178,7 @@ public class BasketService {
 
         user.getBasket().setVoucher(new Voucher());
         optionalVoucher.ifPresent(user.getBasket()::setVoucher);
-        final VoucherDto voucherDto = this.modelMapper.map(voucher, VoucherDto.class);
+        final VoucherDto voucherDto = this.modelMapper.map(optionalVoucher.get(), VoucherDto.class);
 
         return new ResponseEntity<>(voucherDto, HttpStatus.OK);
     }
