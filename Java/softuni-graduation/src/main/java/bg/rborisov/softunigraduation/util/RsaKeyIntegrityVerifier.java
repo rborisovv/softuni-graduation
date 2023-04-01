@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 @Component
 public final class RsaKeyIntegrityVerifier {
@@ -27,24 +26,34 @@ public final class RsaKeyIntegrityVerifier {
     public void verifyRsaKeysIntegrity() throws IOException, NoSuchAlgorithmException, RsaKeyIntegrityViolationException {
         byte[] privateRsaKeyBytes = Files.readAllBytes(Path.of(this.privateKeyPath.getURI()));
         byte[] publicRsaKeyBytes = Files.readAllBytes(Path.of(this.publicKeyPath.getURI()));
-
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
         byte[] privateRsaKeyHash = digest.digest(privateRsaKeyBytes);
         byte[] publicRsaKeyHash = digest.digest(publicRsaKeyBytes);
 
-        byte[] privateRsaKeySha256 = Files.readAllBytes(Path.of(this.resourceLoader
-                .getResource("classpath:keys/private_key.sha256").getURI()));
+        String privateRsaKeySha256 = Files.readString(Path.of(this.resourceLoader
+                .getResource("classpath:keys/private_key.sha256").getURI())).trim();
 
-        byte[] publicRsaKeySha256 = Files.readAllBytes(Path.of(this.resourceLoader
-                .getResource("classpath:keys/public_key.sha256").getURI()));
+        String publicRsaKeySha256 = Files.readString(Path.of(this.resourceLoader
+                .getResource("classpath:keys/public_key.sha256").getURI())).trim();
 
-        if (!Arrays.equals(publicRsaKeyHash, publicRsaKeySha256)){
+        if (!privateRsaKeySha256.equals(bytesToHex(privateRsaKeyHash))) {
             throw new RsaKeyIntegrityViolationException();
         }
 
-        if (!Arrays.equals(privateRsaKeyHash, privateRsaKeySha256)) {
+        if (!publicRsaKeySha256.equals(bytesToHex(publicRsaKeyHash))) {
             throw new RsaKeyIntegrityViolationException();
         }
+    }
+
+    public static String bytesToHex(byte[] bytes) {
+        char[] hexArray = "0123456789abcdef".toCharArray();
+        char[] hexChars = new char[bytes.length * 2];
+        for (int i = 0; i < bytes.length; i++) {
+            int v = bytes[i] & 0xff;
+            hexChars[i * 2] = hexArray[v >>> 4];
+            hexChars[i * 2 + 1] = hexArray[v & 0x0f];
+        }
+        return new String(hexChars);
     }
 }
