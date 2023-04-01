@@ -2,11 +2,7 @@ package bg.rborisov.softunigraduation.web;
 
 import bg.rborisov.softunigraduation.domain.HttpResponse;
 import bg.rborisov.softunigraduation.dto.*;
-import bg.rborisov.softunigraduation.exception.AbsentPasswordTokenException;
-import bg.rborisov.softunigraduation.exception.PasswordTokenExpiredException;
-import bg.rborisov.softunigraduation.exception.UserNotFoundException;
-import bg.rborisov.softunigraduation.exception.UserWithUsernameOrEmailExists;
-import bg.rborisov.softunigraduation.exception.VoucherByNameAlreadyPresent;
+import bg.rborisov.softunigraduation.exception.*;
 import bg.rborisov.softunigraduation.service.AuthService;
 import bg.rborisov.softunigraduation.service.OrderService;
 import bg.rborisov.softunigraduation.service.UserService;
@@ -15,11 +11,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.Set;
 
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
@@ -56,8 +50,7 @@ public class AuthResource {
 
     @Cacheable("isAdmin")
     @GetMapping("/admin")
-    @PreAuthorize("#principal.name.equals('radi2000') || #principal.equals('admin')")
-    public boolean adminPage(HttpServletRequest request, Principal principal) {
+    public boolean adminPage(HttpServletRequest request) {
         String authorizationHeaders = request.getHeader(JWT_COOKIE_NAME);
         return this.authService.isAdmin(authorizationHeaders);
     }
@@ -98,14 +91,12 @@ public class AuthResource {
     }
 
     @GetMapping("/users")
-    @PreAuthorize("#principal.name.equals('radi2000')")
-    public Set<UserDto> loadAllUsers(final Principal principal) {
+    public Set<UserDto> loadAllUsers() {
         return this.authService.loadAllUsers();
     }
 
     @GetMapping("/orders")
-    @PreAuthorize("#principal.name.equals('radi2000')")
-    public Set<OrderDto> fetchAllOrders(final Principal principal) {
+    public Set<OrderDto> fetchAllOrders() {
         return this.orderService.fetchAllOrders();
     }
 
