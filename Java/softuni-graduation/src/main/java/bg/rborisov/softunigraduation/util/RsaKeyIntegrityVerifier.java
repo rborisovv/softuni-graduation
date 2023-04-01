@@ -24,17 +24,17 @@ public final class RsaKeyIntegrityVerifier {
     }
 
     public void verifyRsaKeysIntegrity() throws IOException, NoSuchAlgorithmException, RsaKeyIntegrityViolationException {
-        byte[] privateRsaKeyBytes = Files.readAllBytes(Path.of(this.privateKeyPath.getURI()));
-        byte[] publicRsaKeyBytes = Files.readAllBytes(Path.of(this.publicKeyPath.getURI()));
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        final byte[] privateRsaKeyBytes = Files.readAllBytes(Path.of(this.privateKeyPath.getURI()));
+        final byte[] publicRsaKeyBytes = Files.readAllBytes(Path.of(this.publicKeyPath.getURI()));
+        final MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
-        byte[] privateRsaKeyHash = digest.digest(privateRsaKeyBytes);
-        byte[] publicRsaKeyHash = digest.digest(publicRsaKeyBytes);
+        final byte[] privateRsaKeyHash = digest.digest(privateRsaKeyBytes);
+        final byte[] publicRsaKeyHash = digest.digest(publicRsaKeyBytes);
 
-        String privateRsaKeySha256 = Files.readString(Path.of(this.resourceLoader
+        final String privateRsaKeySha256 = Files.readString(Path.of(this.resourceLoader
                 .getResource("classpath:keys/private_key.sha256").getURI())).trim();
 
-        String publicRsaKeySha256 = Files.readString(Path.of(this.resourceLoader
+        final String publicRsaKeySha256 = Files.readString(Path.of(this.resourceLoader
                 .getResource("classpath:keys/public_key.sha256").getURI())).trim();
 
         if (!privateRsaKeySha256.equals(bytesToHex(privateRsaKeyHash))) {
@@ -46,7 +46,7 @@ public final class RsaKeyIntegrityVerifier {
         }
     }
 
-    public static String bytesToHex(byte[] bytes) {
+    public static String bytesToHex(final byte[] bytes) {
         char[] hexArray = "0123456789abcdef".toCharArray();
         char[] hexChars = new char[bytes.length * 2];
         for (int i = 0; i < bytes.length; i++) {
