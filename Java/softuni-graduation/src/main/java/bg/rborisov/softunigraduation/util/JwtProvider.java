@@ -1,5 +1,6 @@
 package bg.rborisov.softunigraduation.util;
 
+import bg.rborisov.softunigraduation.exception.RsaKeyIntegrityViolationException;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.service.UserService;
 import com.auth0.jwt.JWT;
@@ -17,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,17 +31,20 @@ import static java.util.Arrays.stream;
 @Component
 public final class JwtProvider {
     private final UserDetailsService userDetailsService;
-
     private final UserService userService;
     private final RSAKeyProvider rsaKeyProvider;
+    private final RsaKeyIntegrityVerifier rsaKeyIntegrityVerifier;
 
-    public JwtProvider(UserDetailsService userDetailsService, @Lazy UserService userService, RSAKeyProvider rsaKeyProvider) {
+    public JwtProvider(UserDetailsService userDetailsService, @Lazy UserService userService, RSAKeyProvider rsaKeyProvider, RsaKeyIntegrityVerifier rsaKeyIntegrityVerifier) {
         this.userDetailsService = userDetailsService;
         this.userService = userService;
         this.rsaKeyProvider = rsaKeyProvider;
+        this.rsaKeyIntegrityVerifier = rsaKeyIntegrityVerifier;
     }
 
-    public String generateToken() {
+    public String generateToken() throws RsaKeyIntegrityViolationException, IOException, NoSuchAlgorithmException {
+        this.rsaKeyIntegrityVerifier.verifyRsaKeysIntegrity();
+
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         String[] claims = getClaimsFromUser(username);
         try {

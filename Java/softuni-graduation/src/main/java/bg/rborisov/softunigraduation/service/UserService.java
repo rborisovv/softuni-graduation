@@ -37,6 +37,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.*;
@@ -107,7 +108,7 @@ public class UserService {
         return new ResponseEntity<>(userWelcomeDto, OK);
     }
 
-    public Cookie generateJwtCookie() {
+    public Cookie generateJwtCookie() throws RsaKeyIntegrityViolationException, IOException, NoSuchAlgorithmException {
         String token = jwtProvider.generateToken();
         Cookie cookie = new Cookie(JWT_COOKIE_NAME, token);
         cookie.setMaxAge(COOKIE_MAX_AGE);

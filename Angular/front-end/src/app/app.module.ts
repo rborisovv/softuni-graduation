@@ -45,7 +45,6 @@ function fetchCsrfToken(httpClient: HttpClient): () => Observable<any> {
   return () => httpClient.get('http://localhost:8080/auth/csrf').pipe(catchError((err) => of(null)));
 }
 
-
 @NgModule({
   declarations: [
     AppComponent

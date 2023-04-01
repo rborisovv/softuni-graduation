@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Set;
 
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
@@ -34,7 +35,7 @@ public class AuthResource {
     @PostMapping("/login")
     public ResponseEntity<UserWelcomeDto> login(@RequestParam String username,
                                                 @RequestParam String password,
-                                                HttpServletResponse response) throws IOException {
+                                                HttpServletResponse response) throws IOException, RsaKeyIntegrityViolationException, NoSuchAlgorithmException {
         @Valid UserLoginDto userLoginDto = UserLoginDto.builder().username(username).password(password).build();
         ResponseEntity<UserWelcomeDto> responseEntity = userService.login(userLoginDto);
 
