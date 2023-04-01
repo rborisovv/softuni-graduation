@@ -208,13 +208,11 @@ public class BasketService {
 
     public VoucherDto fetchVoucherIfPresent(final Principal principal) throws UserNotFoundException {
         User user = this.userService.findUserByUsername(principal.getName());
-        VoucherDto voucherDto = null;
-
-        if (user.getBasket().getVoucher() != null) {
-            Voucher voucher = user.getBasket().getVoucher();
-            voucherDto = this.modelMapper.map(voucher, VoucherDto.class);
+        if (user.getBasket() == null || user.getBasket().getVoucher() == null) {
+            return null;
         }
 
-        return voucherDto;
+        Voucher voucher = user.getBasket().getVoucher();
+        return this.modelMapper.map(voucher, VoucherDto.class);
     }
 }
