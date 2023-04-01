@@ -422,11 +422,10 @@
 
     .subtotal {
       @include flex-horizontal-center-row();
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: flex-end;
       flex: 0 0 calc(50% - 50px);
-      margin-right: 20px;
-      padding-bottom: 1rem;
+      margin: 20px 1rem 0 1rem;
       text-align: right;
       color: #ffffff;
       font-size: 16px;

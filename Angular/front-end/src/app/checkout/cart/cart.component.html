@@ -86,7 +86,7 @@
     <div *ngIf="products.length > 0" class="subtotal text-right">
       <label class="fs-5">Subtotal: </label>
       <strong class="fs-4 subtotal-price" [ngClass]="{'subtotal-price' : voucher$ | async}"
-              #totalPrice>{{renewedBasketProducts$ | cartBalance | async | currency: 'BGN'}}
+              #totalPrice>{{renewedBasketProducts$ | cartBalance | async | currency}}
         lv.</strong>
     </div>
 
