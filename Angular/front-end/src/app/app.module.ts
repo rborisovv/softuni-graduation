@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { SharedModule } from "./shared/shared.module";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthenticationModule } from "./authentication/authentication.module";
-import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpClientXsrfModule } from "@angular/common/http";
 import { CoreModule } from "./core/core.module";
 import { JwtModule } from "@auth0/angular-jwt";
 import { XsrfInterceptor } from "./interceptor/xsrf.interceptor";
@@ -25,6 +25,7 @@ import { UrlNormalizerPipe } from './pipes/url.normalizer.pipe';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { localStorageSync } from "ngrx-store-localstorage";
 import { discountedTotalReducer } from "./store/reducer/basket.reducer";
+import { catchError, Observable, of } from "rxjs";
 
 function localStorageSyncReducer(reducer: ActionReducer<State<any>>): ActionReducer<State<any>> {
   return localStorageSync({
@@ -39,6 +40,11 @@ function localStorageSyncReducer(reducer: ActionReducer<State<any>>): ActionRedu
 }
 
 const metaReducers: Array<MetaReducer> = [localStorageSyncReducer];
+
+function fetchCsrfToken(httpClient: HttpClient): () => Observable<any> {
+  return () => httpClient.get('http://localhost:8080/auth/csrf').pipe(catchError((err) => of(null)));
+}
+
 
 @NgModule({
   declarations: [
@@ -87,7 +93,8 @@ const metaReducers: Array<MetaReducer> = [localStorageSyncReducer];
       auth: authReducer, favouriteProducts: favouriteProductsReducer,
       basketProducts: basketProductsReducer, discountedTotal: discountedTotalReducer
     }, { metaReducers: metaReducers }),
-    StoreDevtoolsModule.instrument({ maxAge: 25,
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
       // logOnly: !isDevMode()
     }),
     EffectsModule.forRoot([]),
@@ -106,6 +113,12 @@ const metaReducers: Array<MetaReducer> = [localStorageSyncReducer];
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HeadersDecoratorInterceptor,
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: fetchCsrfToken,
+      deps: [HttpClient],
       multi: true
     }],
   exports: [
