@@ -21,6 +21,8 @@ public class Product extends BaseEntity implements Serializable {
     private String identifier;
     @Column
     private String description;
+    @Column
+    private LocalDate bestBefore;
     @Column(nullable = false)
     private BigDecimal price;
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -31,5 +33,6 @@ public class Product extends BaseEntity implements Serializable {
     private Boolean showBuyButton;
     @ManyToOne
     private Category category;
+    @Column
     private LocalDate creationTime;
 }

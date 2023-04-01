@@ -51,41 +51,44 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [
-    CockpitComponent,
-    AdminHeaderComponent,
-    CreateProductComponent,
-    CreateCategoryComponent,
-    UpdateCategoryComponent,
-    CategoryComponent,
-    CreateMediaComponent,
-    MediaComponent,
-    PositiveNumberDirective,
-    ProductComponent,
-    UpdateProductComponent,
-    UserComponent,
-    OrderComponent,
-    VoucherComponent,
-    CreateVoucherComponent,
-    DateFormatPipe
-  ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    SharedModule,
-    FontAwesomeModule,
-    RouterModule.forChild(routes),
-    FormsModule,
-    AsyncPipe,
-    ReactiveFormsModule,
-    NgOptimizedImage,
-    MatPaginatorModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    EffectsModule.forFeature(CategoryEffects, MediaEffects, ProductEffects)
-  ],
-  providers: [JwtHelperService]
+    declarations: [
+        CockpitComponent,
+        AdminHeaderComponent,
+        CreateProductComponent,
+        CreateCategoryComponent,
+        UpdateCategoryComponent,
+        CategoryComponent,
+        CreateMediaComponent,
+        MediaComponent,
+        PositiveNumberDirective,
+        ProductComponent,
+        UpdateProductComponent,
+        UserComponent,
+        OrderComponent,
+        VoucherComponent,
+        CreateVoucherComponent,
+        DateFormatPipe
+    ],
+    imports: [
+        CommonModule,
+        SharedModule,
+        SharedModule,
+        FontAwesomeModule,
+        RouterModule.forChild(routes),
+        FormsModule,
+        AsyncPipe,
+        ReactiveFormsModule,
+        NgOptimizedImage,
+        MatPaginatorModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        EffectsModule.forFeature(CategoryEffects, MediaEffects, ProductEffects)
+    ],
+    exports: [
+        DateFormatPipe
+    ],
+    providers: [JwtHelperService]
 })
 export class AdministrationModule {
 }

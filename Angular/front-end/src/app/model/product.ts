@@ -11,5 +11,6 @@ export interface Product {
   mediaUrl?: string,
   categoryIdentifier: string,
   categoryMediaUrl?: string,
-  categoryName?: string
+  categoryName?: string,
+  bestBefore?: Date
 }
