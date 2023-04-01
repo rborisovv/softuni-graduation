@@ -136,7 +136,7 @@ export class UserEffects {
       mergeMap((({ checkout }) => {
         return this.userService.submitCheckoutFlow(checkout)
           .pipe(
-            map(() => submitCheckoutFlowSuccess),
+            map(() => submitCheckoutFlowSuccess()),
             tap(() => {
               this.router.navigateByUrl('/finalize-order');
             }),

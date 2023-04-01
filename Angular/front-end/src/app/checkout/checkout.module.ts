@@ -43,7 +43,7 @@ const routes: Routes = [
     FontAwesomeModule,
     ReactiveFormsModule
   ],
-  providers: [CartBalancePipe]
+  providers: [CartBalancePipe, BasketDiscountedTotalPipe]
 })
 export class CheckoutModule {
 }

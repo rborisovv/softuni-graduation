@@ -1,4 +1,4 @@
-import { NgModule, isDevMode } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,13 +24,15 @@ import {
 import { UrlNormalizerPipe } from './pipes/url.normalizer.pipe';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { localStorageSync } from "ngrx-store-localstorage";
+import { discountedTotalReducer } from "./store/reducer/basket.reducer";
 
 function localStorageSyncReducer(reducer: ActionReducer<State<any>>): ActionReducer<State<any>> {
   return localStorageSync({
     keys: [
       { auth: ['username', 'email'] },
       { favouriteProducts: ['favouriteProducts'] },
-      { basketProducts: ['basketProducts'] }
+      { basketProducts: ['basketProducts'] },
+      { discountedTotal: ['total'] }
     ],
     rehydrate: true
   })(reducer);
@@ -83,9 +85,11 @@ const metaReducers: Array<MetaReducer> = [localStorageSyncReducer];
     }),
     StoreModule.forRoot({
       auth: authReducer, favouriteProducts: favouriteProductsReducer,
-      basketProducts: basketProductsReducer
+      basketProducts: basketProductsReducer, discountedTotal: discountedTotalReducer
     }, { metaReducers: metaReducers }),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    StoreDevtoolsModule.instrument({ maxAge: 25,
+      // logOnly: !isDevMode()
+    }),
     EffectsModule.forRoot([]),
   ],
   providers: [

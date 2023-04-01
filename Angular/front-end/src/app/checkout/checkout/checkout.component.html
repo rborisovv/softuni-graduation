@@ -122,10 +122,29 @@
       </div>
     </div>
 
-    <div style="padding-bottom: 1rem;" *ngIf="products.length > 0" class="subtotal text-right">
-      <label class="fs-5">Subtotal: </label>
+    <div style="padding-bottom: 1rem;"
+         *ngIf="(products.length > 0) && (voucher$ | async) === null"
+         class="subtotal text-right">
+      <label class="fs-5">Total: </label>
       <strong class="fs-4">{{renewedBasketProducts$ | cartBalance | async | currency}} lv.</strong>
     </div>
+
+
+    <ng-container *ngIf="(voucher$ | async) !== null && products.length > 0">
+      <div style="padding-bottom: 1rem;" *ngIf="discountedBasketTotal$ | async as total; else free"
+           class="subtotal text-right">
+        <label class="fs-5">Subtotal: </label>
+        <strong class="fs-4">{{ total }}</strong>
+      </div>
+      <ng-template #free>
+        <div style="padding-bottom: 1rem;" class="subtotal text-right">
+          <label class="fs-5">Subtotal: </label>
+          <strong class="fs-4">Free</strong>
+        </div>
+      </ng-template>
+    </ng-container>
+
+
 
   </div>
 </section>

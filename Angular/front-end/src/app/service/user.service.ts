@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment.prod";
-import { Observable } from "rxjs";
+import { Observable, shareReplay } from "rxjs";
 import { UserWelcome } from "../interface/user.welcome";
 import { IUserRegisterModel } from "../authentication/register/IUserRegisterModel";
 import { HttpResponse } from "../interface/http.response";
@@ -52,7 +52,8 @@ export class UserService {
   }
 
   loadBasketProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/basket/userBasket`);
+    return this.http.get<Product[]>(`${this.apiUrl}/basket/userBasket`)
+      .pipe(shareReplay());
   }
 
   removeFromFavourites(identifier: string): Observable<HttpResponse> {

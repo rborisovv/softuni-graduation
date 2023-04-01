@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, take } from "rxjs";
+import { map, Observable, of, take } from "rxjs";
 import { Product } from "../../model/product";
 import { Store } from "@ngrx/store";
 import { Router } from "@angular/router";
@@ -8,6 +8,9 @@ import { UserService } from "../../service/user.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Checkout } from "../../model/checkout";
 import { submitCheckoutFlow } from "../../store/action/user.action";
+import { selectDiscountedTotalState } from "../../store/selector/basket.selector";
+import { Voucher } from "../../model/voucher";
+import { BasketService } from "../../service/basket.service";
 
 @Component({
   selector: 'app-checkout',
@@ -16,6 +19,8 @@ import { submitCheckoutFlow } from "../../store/action/user.action";
 })
 export class CheckoutComponent implements OnInit {
   renewedBasketProducts$: Observable<Product[]>;
+  discountedBasketTotal$: Observable<string> = of(undefined);
+  voucher$: Observable<Voucher> = of(undefined);
 
   checkoutFormGroup: FormGroup = new FormGroup({
     firstName: new FormControl('', [Validators.required, Validators.minLength(3),
@@ -27,8 +32,8 @@ export class CheckoutComponent implements OnInit {
     address: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(150)]),
   });
 
-  constructor(public readonly router: Router, protected readonly location: Location, private readonly store: Store,
-              private readonly userService: UserService) {
+  constructor(public router: Router, protected location: Location, private store: Store,
+              private userService: UserService, private basketService: BasketService) {
   }
 
   ngOnInit(): void {
@@ -43,6 +48,12 @@ export class CheckoutComponent implements OnInit {
           address: data.address
         })
       });
+
+    this.voucher$ = this.basketService.fetchVoucherIfPresent();
+
+    this.discountedBasketTotal$ = this.store.select(selectDiscountedTotalState).pipe(
+      map(state => state ? (state.total <= 0 ? 'Free' : (state.total.toFixed(2) + ' lv.')) : undefined)
+    );
   }
 
   submitCheckout() {
