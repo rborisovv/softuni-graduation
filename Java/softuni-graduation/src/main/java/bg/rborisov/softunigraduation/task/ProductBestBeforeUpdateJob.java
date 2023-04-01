@@ -31,7 +31,7 @@ public class ProductBestBeforeUpdateJob {
 
     private LocalDate generateRandomDate() {
         int randomBestBefore = ThreadLocalRandom.current().nextInt(1, 15);
-        LocalDate startDate = LocalDate.now();
+        LocalDate startDate = LocalDate.now().plusDays(1);
         LocalDate endDate = startDate.plusDays(randomBestBefore);
         long randomDay = startDate.toEpochDay() + ThreadLocalRandom.current().nextInt((int) (endDate.toEpochDay() - startDate.toEpochDay()));
         return LocalDate.ofEpochDay(randomDay);
