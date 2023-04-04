@@ -11,6 +11,7 @@ public class ExceptionMessages {
     public static final String CATEGORY_BY_IDENTIFIER_EXISTS = "A Category with the provided Identifier already exists!";
     public static final String CATEGORY_BY_NAME_EXISTS = "A Category with the provided Name already exists!";
     public static final String CATEGORY_NOT_FOUND = "The category could not be found!";
+    public static final String ABSENT_CATEGORY_BY_IDENTIFIER = "A category with the provided identifier could not be found!";
     public static final String MEDIA_BY_NAME_ALREADY_EXISTS = "A media with the provided name already exists!";
     public static final String PRODUCT_WITHOUT_CATEGORY = "The product does not have a category specified!";
     public static final String PRODUCT_WITHOUT_MEDIA = "The product does not have a media specified!";

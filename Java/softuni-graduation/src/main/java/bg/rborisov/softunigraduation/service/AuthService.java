@@ -158,6 +158,7 @@ public class AuthService {
     }
 
     public ResponseEntity<HttpResponse> createVoucher(final VoucherDto voucherDto) throws VoucherByNameAlreadyPresent, UserNotFoundException {
+        User user;
         final Optional<Voucher> optionalVoucher = this.voucherRepository.findVoucherByName(voucherDto.getName());
 
         if (optionalVoucher.isPresent()) {
@@ -168,15 +169,17 @@ public class AuthService {
         voucher.setCreationDate(LocalDate.now());
         voucher.setType(VoucherTypeEnum.valueOf(voucherDto.getType()));
 
-        final String username = voucherDto.getUser().getUsername();
-        final User user = this.userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        if (voucherDto.getUser() != null) {
+            final String username = voucherDto.getUser().getUsername();
+            user = this.userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
 
-        if (user.getVouchers() == null) {
-            user.setVouchers(new HashSet<>());
+            if (user.getVouchers() == null) {
+                user.setVouchers(new HashSet<>());
+            }
+
+            user.getVouchers().add(voucher);
+            voucher.setUser(user);
         }
-
-        user.getVouchers().add(voucher);
-        voucher.setUser(user);
 
         if (voucher.getCategory() != null) {
             final Optional<Category> optionalCategory;

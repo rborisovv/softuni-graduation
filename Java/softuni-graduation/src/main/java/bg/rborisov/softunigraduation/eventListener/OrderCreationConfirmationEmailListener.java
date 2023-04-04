@@ -24,6 +24,7 @@ import java.util.Map;
 public class OrderCreationConfirmationEmailListener {
     private static final String EMAIL_CONFIRMATION_SUBJECT = "Order Confirmation Email";
     private static final String EMAIL_CONFIRMATION_SENDER = "radii2000@abv.bg";
+    private static final String ORDER_TEMPLATE = "orderConfirmation.html";
 
     private final UserRepository userRepository;
     private final SpringTemplateEngine springTemplateEngine;
@@ -54,9 +55,8 @@ public class OrderCreationConfirmationEmailListener {
         Email from = new Email(EMAIL_CONFIRMATION_SENDER);
         Email to = new Email(orderEmail);
         Context context = new Context(Locale.ROOT, emailVariables);
-        String htmlContent = this.springTemplateEngine.process("orderConfirmation.html", context);
+        String htmlContent = this.springTemplateEngine.process(ORDER_TEMPLATE, context);
 
         this.emailFactory.sendEmail(from, to, EMAIL_CONFIRMATION_SUBJECT, htmlContent);
-        //TODO: Log the response info from sg.api(request) call;
     }
 }

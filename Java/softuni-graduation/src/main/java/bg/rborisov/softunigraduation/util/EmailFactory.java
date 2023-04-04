@@ -2,15 +2,18 @@ package bg.rborisov.softunigraduation.util;
 
 import com.sendgrid.Method;
 import com.sendgrid.Request;
+import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Slf4j
 @Component
 public final class EmailFactory {
 
@@ -25,6 +28,11 @@ public final class EmailFactory {
         request.setMethod(Method.POST);
         request.setEndpoint("mail/send");
         request.setBody(mail.build());
-        sg.api(request);
+        final Response apiResponse = sg.api(request);
+
+        final String msgResponseBuilder = apiResponse.getStatusCode() +
+                System.lineSeparator() + apiResponse.getHeaders();
+
+        log.info(msgResponseBuilder.trim());
     }
 }

@@ -4,7 +4,5 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class CategoryWithIdentifierExists extends Exception {
-    public CategoryWithIdentifierExists(String message) {
-        super(message);
-    }
+
 }

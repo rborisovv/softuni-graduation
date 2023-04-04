@@ -51,18 +51,19 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
 
   addVoucher(labelElement: HTMLInputElement) {
     const voucher: string = labelElement.value;
-    this.voucher$ = this.basketService.addVoucherToBasket(voucher).pipe(take(1));
-    this.notifier.notify(NotificationType.SUCCESS, `The voucher ${voucher} has been used successfully!`);
+    this.voucher$ = this.basketService.addVoucherToBasket(voucher).pipe(take(1),
+      catchError(() => of(null)));
+
     this.renderer.setStyle(this.voucherLabel.nativeElement, 'bottom', '100%');
   }
 
   ngAfterViewInit(): void {
-      this.voucher$ = this.basketService.fetchVoucherIfPresent().pipe(tap((v) => {
-        if (v) {
-          this.voucherInput.nativeElement.value = v.name;
-          this.renderer.setStyle(this.voucherLabel.nativeElement, 'bottom', '100%');
-        }
-      }));
+    this.voucher$ = this.basketService.fetchVoucherIfPresent().pipe(tap((v) => {
+      if (v) {
+        this.voucherInput.nativeElement.value = v.name;
+        this.renderer.setStyle(this.voucherLabel.nativeElement, 'bottom', '100%');
+      }
+    }));
   }
 
   ngOnDestroy(): void {

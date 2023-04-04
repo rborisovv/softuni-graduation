@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 
 @RestController
@@ -48,8 +47,7 @@ public class ProductResource {
                                                       @RequestParam(value = "stockLevel") Integer stockLevel,
                                                       @RequestParam(value = "showBuyButton") Boolean showBuyButton,
                                                       @RequestParam(value = "pkOfFile", required = false) String pkOfFile,
-                                                      @RequestParam("categoryIdentifier") String categoryIdentifier) throws AbsentMediaOnProductException,
-            AbsentCategoryProductException, MediaByNameAlreadyExistsException, CategoryNotFoundException, IOException, MediaNotFoundException {
+                                                      @RequestParam("categoryIdentifier") String categoryIdentifier) throws Exception {
 
         @Valid ProductDto productDto = ProductDto.builder()
                 .name(name).identifier(identifier)

@@ -166,8 +166,9 @@ public class BasketService {
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    public ResponseEntity<VoucherDto> addVoucherToBasket(final String voucher) throws Exception {
-        final Optional<Voucher> optionalVoucher = this.voucherRepository.findVoucherByName(voucher);
+
+    public ResponseEntity<VoucherDto> addVoucherToBasket(final String voucherName) throws Exception {
+        final Optional<Voucher> optionalVoucher = this.voucherRepository.findVoucherByName(voucherName);
         final String username = SecurityContextHolder.getContext().getAuthentication().getName();
         final User user = this.userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
         preValidationChecks(optionalVoucher, user);
@@ -178,7 +179,8 @@ public class BasketService {
 
         user.getBasket().setVoucher(new Voucher());
         optionalVoucher.ifPresent(user.getBasket()::setVoucher);
-        final VoucherDto voucherDto = this.modelMapper.map(optionalVoucher.get(), VoucherDto.class);
+        final Voucher voucher = optionalVoucher.orElseThrow(AbsentVoucherByNameException::new);
+        final VoucherDto voucherDto = this.modelMapper.map(voucher, VoucherDto.class);
 
         return new ResponseEntity<>(voucherDto, HttpStatus.OK);
     }
@@ -200,8 +202,7 @@ public class BasketService {
             }
         }
 
-        assert voucher.getUser() != null;
-        if (voucher.getUser().getBasket() == null) {
+        if (voucher.getUser() != null && user.getBasket() == null) {
             throw new UserHasNoBasketException();
         }
     }

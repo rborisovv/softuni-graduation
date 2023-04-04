@@ -25,7 +25,6 @@ public class VoucherExceptionHandler extends AbstractExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(VoucherExpiredException.class)
     public ResponseEntity<HttpResponse> voucherExpired(VoucherExpiredException ex) {
         return super.createHttpResponse(BAD_REQUEST, ex.getMessage());
-        //TODO: Check if passing this param works
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(VoucherCannotBeUsedByUserException.class)

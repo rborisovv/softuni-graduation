@@ -61,12 +61,9 @@ public class MediaResource {
         this.mediaService.saveMedia(name, file);
 
         HttpResponse httpResponse = HttpResponse.builder().httpStatusCode(HttpStatus.OK.value())
-                .httpStatus(HttpStatus.OK).reason("").message(MEDIA_CREATED_SUCCESSFULLY)
-                .build();
+                .httpStatus(HttpStatus.OK).reason("").message(MEDIA_CREATED_SUCCESSFULLY).build();
 
         return new ResponseEntity<>(httpResponse, HttpStatus.OK);
-
-        //TODO: Catch exception
     }
 
     @PostMapping("/findByName")

@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
@@ -42,12 +41,10 @@ public class ProductService {
     @Resource
     private ModelMapper modelMapper;
 
-    public ResponseEntity<HttpResponse> createProduct(ProductDto productDto) throws AbsentCategoryProductException, AbsentMediaOnProductException,
-            MediaByNameAlreadyExistsException, IOException, CategoryNotFoundException, MediaNotFoundException {
+    public ResponseEntity<HttpResponse> createProduct(ProductDto productDto) throws Exception {
 
         String categoryIdentifier = productDto.getCategoryIdentifier();
         @ImageValidator MultipartFile multipartFile = productDto.getMedia();
-        //TODO: Fix media upload when creating a new product
         String pkOfFile = productDto.getPkOfFile();
         Optional<Media> optionalMedia;
 
@@ -60,18 +57,9 @@ public class ProductService {
         }
 
         assert multipartFile != null;
-
-        //TODO: Fix this duplicate code here and in category Service
         if (productDto.getMedia() != null) {
             String mediaName = Objects.requireNonNull(multipartFile.getOriginalFilename());
-            optionalMedia = this.mediaRepository.findMediaByName(mediaName.substring(0, mediaName.length() - 4));
-
-            if (optionalMedia.isPresent()) {
-                throw new MediaByNameAlreadyExistsException();
-            }
-
-            this.mediaService.saveMedia(productDto.getMedia().getOriginalFilename(), productDto.getMedia());
-            optionalMedia = this.mediaRepository.findMediaByName(productDto.getMedia().getOriginalFilename());
+            optionalMedia = this.mediaService.constructMediaForEntity(productDto.getMedia(), mediaName);
 
         } else {
             //If existing media is selected

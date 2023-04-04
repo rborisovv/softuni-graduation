@@ -39,8 +39,7 @@ public class CategoryResource {
                                                        @RequestParam("identifier") String identifier,
                                                        @RequestParam(name = "superCategory") String superCategory,
                                                        @RequestParam(value = "media", required = false) MultipartFile media,
-                                                       @RequestParam(value = "pkOfFile", required = false) String pkOfFile)
-            throws MediaNotFoundException, CategoryWithIdentifierExists, MediaByNameAlreadyExistsException, IOException, CategoryNotFoundException {
+                                                       @RequestParam(value = "pkOfFile", required = false) String pkOfFile) throws Exception {
 
         @Valid CategoryDto categoryDto = CategoryDto.builder().name(name)
                 .identifier(identifier)
@@ -72,7 +71,7 @@ public class CategoryResource {
     }
 
     @GetMapping("/{identifier}")
-    public CategoryDto loadCategory(@PathVariable String identifier) {
+    public CategoryDto loadCategory(@PathVariable String identifier) throws AbsentCategoryByIdentifier {
         return this.categoryService.loadCategory(identifier);
     }
 

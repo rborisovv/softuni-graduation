@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
+import java.util.Optional;
 
 import static bg.rborisov.softunigraduation.common.ExceptionMessages.MEDIA_NOT_FOUND;
 import static bg.rborisov.softunigraduation.common.Messages.MEDIA_DELETED_SUCCESSFULLY;
@@ -30,11 +30,6 @@ public class MediaService extends AbstractMediaUrlBuilder {
         this.mediaRepository = mediaRepository;
     }
 
-    public byte[] findMediaByName(String name) throws MediaNotFoundException {
-        return this.mediaRepository.findMediaByName(name)
-                .orElseThrow(() -> new MediaNotFoundException(MEDIA_NOT_FOUND)).getFile();
-    }
-
     public byte[] findMediaByPk(String pkOfFile) throws MediaNotFoundException {
         return this.mediaRepository.findMediaByPkOfFile(pkOfFile)
                 .orElseThrow(() -> new MediaNotFoundException(MEDIA_NOT_FOUND)).getFile();
@@ -43,7 +38,7 @@ public class MediaService extends AbstractMediaUrlBuilder {
     /*
     Creates a new Media Object and returns HTTP Response
      */
-    public Media saveMedia(String name, MultipartFile multipartFile) throws MediaByNameAlreadyExistsException, IOException {
+    public void saveMedia(String name, MultipartFile multipartFile) throws MediaByNameAlreadyExistsException, IOException {
         if (this.mediaRepository.findMediaByName(name).isPresent()) {
             throw new MediaByNameAlreadyExistsException();
         }
@@ -54,7 +49,7 @@ public class MediaService extends AbstractMediaUrlBuilder {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         creationTime.format(dateTimeFormatter);
         Media media = new Media(name, multipartFile.getBytes(), mediaUrl, PK, creationTime);
-        return this.mediaRepository.save(media);
+        this.mediaRepository.save(media);
     }
 
     public ResponseEntity<HttpResponse> deleteMedia(String pk) throws MediaNotFoundException {
@@ -65,6 +60,17 @@ public class MediaService extends AbstractMediaUrlBuilder {
                 String.format(MEDIA_DELETED_SUCCESSFULLY, media.getName()));
         return new ResponseEntity<>(httpResponse, HttpStatus.OK);
     }
-}
 
-//TODO: Create a validation for the media file: Must be an image only
+    public Optional<Media> constructMediaForEntity(final MultipartFile multipartFile, final String mediaName) throws MediaByNameAlreadyExistsException, IOException {
+        Optional<Media> optionalMedia;
+        optionalMedia = this.mediaRepository.findMediaByName(mediaName.substring(0, mediaName.length() - 4));
+
+        if (optionalMedia.isPresent()) {
+            throw new MediaByNameAlreadyExistsException();
+        }
+
+        this.saveMedia(multipartFile.getOriginalFilename(), multipartFile);
+        optionalMedia = this.mediaRepository.findMediaByName(multipartFile.getOriginalFilename());
+        return optionalMedia;
+    }
+}

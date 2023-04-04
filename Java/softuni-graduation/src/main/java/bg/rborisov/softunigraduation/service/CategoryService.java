@@ -38,7 +38,8 @@ public class CategoryService extends AbstractMediaUrlBuilder {
         this.modelMapper = modelMapper;
     }
 
-    public ResponseEntity<HttpResponse> createCategory(CategoryDto categoryDto, String pkOfFile) throws CategoryWithIdentifierExists, MediaNotFoundException, MediaByNameAlreadyExistsException, IOException, CategoryNotFoundException {
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    public ResponseEntity<HttpResponse> createCategory(CategoryDto categoryDto, String pkOfFile) throws Exception {
         String mediaName;
         Optional<Category> optionalCategory = this.categoryRepository.findCategoryByIdentifier(categoryDto.getIdentifier());
         String categoryName = categoryDto.getName();
@@ -52,15 +53,7 @@ public class CategoryService extends AbstractMediaUrlBuilder {
         if (categoryDto.getMedia() != null) {
             //If new media is uploaded
             mediaName = Objects.requireNonNull(categoryDto.getMedia().getOriginalFilename()).replaceAll("\\s+", "-");
-            optionalMedia = this.mediaRepository.findMediaByName(mediaName.substring(0, mediaName.length() - 4));
-
-            if (optionalMedia.isPresent()) {
-                throw new MediaByNameAlreadyExistsException();
-            }
-
-            this.mediaService.saveMedia(categoryDto.getMedia().getOriginalFilename(), categoryDto.getMedia());
-
-            optionalMedia = this.mediaRepository.findMediaByName(categoryDto.getMedia().getOriginalFilename());
+            optionalMedia = this.mediaService.constructMediaForEntity(categoryDto.getMedia(), mediaName);
 
         } else {
             //If existing media is selected
@@ -80,7 +73,7 @@ public class CategoryService extends AbstractMediaUrlBuilder {
                 .media(optionalMedia.get()).build();
 
         String superCategoryIdentifier = categoryDto.getSuperCategory();
-        setSuperAndChildCategories(category, superCategoryIdentifier);
+        setSuperCategory(category, superCategoryIdentifier);
 
         this.categoryRepository.save(category);
 
@@ -98,9 +91,8 @@ public class CategoryService extends AbstractMediaUrlBuilder {
         return this.categoryRepository.findCategoryByName(name).isPresent();
     }
 
-    public CategoryDto loadCategory(String identifier) {
-        //TODO: throw exception if category not present
-        Category category = this.categoryRepository.findCategoryByIdentifier(identifier).orElseThrow();
+    public CategoryDto loadCategory(String identifier) throws AbsentCategoryByIdentifier {
+        Category category = this.categoryRepository.findCategoryByIdentifier(identifier).orElseThrow(AbsentCategoryByIdentifier::new);
         return this.modelMapper.map(category, CategoryDto.class);
     }
 
@@ -124,8 +116,7 @@ public class CategoryService extends AbstractMediaUrlBuilder {
         category.setIdentifier(categoryDto.getIdentifier());
 
         String superCategoryIdentifier = categoryDto.getSuperCategory();
-        setSuperAndChildCategories(category, superCategoryIdentifier);
-        //TODO: Fix the name of the upper method
+        setSuperCategory(category, superCategoryIdentifier);
         if (categoryDto.getMedia() != null) {
             String PK = RandomStringUtils.randomNumeric(15);
 
@@ -152,7 +143,7 @@ public class CategoryService extends AbstractMediaUrlBuilder {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    private void setSuperAndChildCategories(Category category, String superCategoryIdentifier) throws CategoryNotFoundException {
+    private void setSuperCategory(Category category, String superCategoryIdentifier) throws CategoryNotFoundException {
         if (superCategoryIdentifier != null && !superCategoryIdentifier.equalsIgnoreCase("null")) {
             Category superCategory = this.categoryRepository.findCategoryByIdentifier(superCategoryIdentifier)
                     .orElseThrow(CategoryNotFoundException::new);
