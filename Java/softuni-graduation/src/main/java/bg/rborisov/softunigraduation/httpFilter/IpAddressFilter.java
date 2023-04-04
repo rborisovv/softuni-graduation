@@ -19,7 +19,7 @@ import java.util.Optional;
 import static bg.rborisov.softunigraduation.constant.SecurityConstant.AUTH_ENDPOINTS;
 
 @Component
-public class IpAddressFilter extends OncePerRequestFilter {
+public final class IpAddressFilter extends OncePerRequestFilter {
     private static final String WHITE_LISTED_IP = "127.0.0.1";
 
     @Override

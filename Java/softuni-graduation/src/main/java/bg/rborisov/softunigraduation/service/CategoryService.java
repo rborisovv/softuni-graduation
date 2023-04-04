@@ -11,6 +11,7 @@ import bg.rborisov.softunigraduation.model.Media;
 import bg.rborisov.softunigraduation.util.AbstractMediaUrlBuilder;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,7 +79,7 @@ public class CategoryService extends AbstractMediaUrlBuilder {
         this.categoryRepository.save(category);
 
         HttpResponse response = new HttpResponse(HttpStatus.OK.value(),
-                HttpStatus.OK, "", String.format(String.format(CATEGORY_CREATED, categoryName)));
+                HttpStatus.OK, StringUtils.EMPTY, String.format(String.format(CATEGORY_CREATED, categoryName)));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -138,7 +139,7 @@ public class CategoryService extends AbstractMediaUrlBuilder {
 
 
         HttpResponse response = new HttpResponse(HttpStatus.OK.value(),
-                HttpStatus.OK, "", String.format(String.format(CATEGORY_UPDATED, categoryDto.getName())));
+                HttpStatus.OK, StringUtils.EMPTY, String.format(String.format(CATEGORY_UPDATED, categoryDto.getName())));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -158,7 +159,8 @@ public class CategoryService extends AbstractMediaUrlBuilder {
 
         this.categoryRepository.delete(category);
 
-        HttpResponse httpResponse = new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, "", String.format(CATEGORY_DELETED_SUCCESSFULLY, category.getName()));
+        HttpResponse httpResponse = new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, StringUtils.EMPTY,
+                String.format(CATEGORY_DELETED_SUCCESSFULLY, category.getName()));
 
         return new ResponseEntity<>(httpResponse, HttpStatus.OK);
     }

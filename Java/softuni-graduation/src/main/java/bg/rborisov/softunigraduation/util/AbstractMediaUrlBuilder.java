@@ -18,8 +18,7 @@ public abstract class AbstractMediaUrlBuilder {
             ext = fileName.substring(i);
         }
 
-        return ServletUriComponentsBuilder
-                .fromCurrentContextPath()
+        return ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(MEDIA_LOCATION_PATH.concat(PK).concat(ext)).toUriString();
     }
 }

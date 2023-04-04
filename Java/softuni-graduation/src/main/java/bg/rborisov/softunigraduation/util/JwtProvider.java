@@ -43,7 +43,7 @@ public final class JwtProvider {
     }
 
     public String generateToken() throws RsaKeyIntegrityViolationException, IOException, NoSuchAlgorithmException {
-        this.rsaKeyIntegrityVerifier.verifyRsaKeysIntegrity();
+//        this.rsaKeyIntegrityVerifier.verifyRsaKeysIntegrity();
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         String[] claims = getClaimsFromUser(username);

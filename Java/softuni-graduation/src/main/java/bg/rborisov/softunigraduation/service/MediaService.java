@@ -8,6 +8,7 @@ import bg.rborisov.softunigraduation.model.Media;
 import bg.rborisov.softunigraduation.util.AbstractMediaUrlBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -56,7 +57,7 @@ public class MediaService extends AbstractMediaUrlBuilder {
         Media media = this.mediaRepository.findMediaByPkOfFile(pk).orElseThrow(MediaNotFoundException::new);
         this.mediaRepository.deleteById(media.getId());
 
-        HttpResponse httpResponse = new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, "",
+        HttpResponse httpResponse = new HttpResponse(HttpStatus.OK.value(), HttpStatus.OK, StringUtils.EMPTY,
                 String.format(MEDIA_DELETED_SUCCESSFULLY, media.getName()));
         return new ResponseEntity<>(httpResponse, HttpStatus.OK);
     }

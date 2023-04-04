@@ -87,7 +87,7 @@ public class ProductService {
         HttpResponse httpResponse = HttpResponse.builder()
                 .httpStatusCode(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
-                .reason("")
+                .reason(StringUtils.EMPTY)
                 .message(String.format(PRODUCT_CREATED_SUCCESSFULLY, productDto.getName()))
                 .build();
 
@@ -103,7 +103,7 @@ public class ProductService {
         HttpResponse httpResponse = HttpResponse.builder()
                 .httpStatusCode(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
-                .reason("")
+                .reason(StringUtils.EMPTY)
                 .message(String.format(PRODUCT_DELETED_SUCCESSFULLY, product.getName()))
                 .build();
 

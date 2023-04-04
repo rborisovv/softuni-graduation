@@ -47,6 +47,7 @@ import static bg.rborisov.softunigraduation.common.ExceptionMessages.*;
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_COOKIE_NAME;
 import static bg.rborisov.softunigraduation.common.LogMessages.USER_LOGGED_IN;
 import static bg.rborisov.softunigraduation.common.Messages.*;
+import static bg.rborisov.softunigraduation.constant.FileConstant.FORWARD_SLASH;
 import static bg.rborisov.softunigraduation.constant.SecurityConstant.COOKIE_MAX_AGE;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -113,7 +114,7 @@ public class UserService {
         Cookie cookie = new Cookie(JWT_COOKIE_NAME, token);
         cookie.setMaxAge(COOKIE_MAX_AGE);
         cookie.setHttpOnly(false);
-        cookie.setPath("/");
+        cookie.setPath(FORWARD_SLASH);
         return cookie;
     }
 

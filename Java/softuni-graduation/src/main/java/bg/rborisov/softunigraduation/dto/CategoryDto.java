@@ -20,7 +20,6 @@ import java.util.Map;
 @Getter
 @Setter
 public class CategoryDto implements Serializable {
-
     @Size(min = 4, max = 40)
     @NonNull
     private String name;

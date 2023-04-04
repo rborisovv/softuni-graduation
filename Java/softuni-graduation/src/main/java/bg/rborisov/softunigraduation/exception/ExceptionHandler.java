@@ -59,7 +59,7 @@ public class ExceptionHandler extends AbstractExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<HttpResponse> objectContainsDbRelations() {
-        return super.createHttpResponse(BAD_REQUEST, OBJECT_CONTAINS_EXTERNAL_RELATIONS);
+        return super.createHttpResponse(BAD_REQUEST, INTERNAL_SERVER_ERROR);
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(AbsentPasswordTokenException.class)

@@ -16,7 +16,7 @@ public class ExceptionMessages {
     public static final String PRODUCT_WITHOUT_CATEGORY = "The product does not have a category specified!";
     public static final String PRODUCT_WITHOUT_MEDIA = "The product does not have a media specified!";
     public static final String PRODUCT_SOLD_OUT = "The product is sold out!";
-    public static final String OBJECT_CONTAINS_EXTERNAL_RELATIONS = "The object contains external relations with other entities. Please ensure those entities are removed before trying this again!";
+    public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
     public static final String PRODUCT_COULD_NOT_BE_FOUND = "This product could not be found!";
     public static final String PASSWORD_TOKEN_NOT_FOUND = "No token has been generated for the provided user!";
     public static final String PASSWORD_TOKEN_EXISTS = "A password token is already generated for that user!";

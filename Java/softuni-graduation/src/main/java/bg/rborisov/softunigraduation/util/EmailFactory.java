@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+import static bg.rborisov.softunigraduation.constant.FileConstant.MIME_TEXT_HTML;
+
 @Slf4j
 @Component
 public final class EmailFactory {
@@ -21,7 +23,7 @@ public final class EmailFactory {
     private String sendGridApiKey;
 
     public void sendEmail(Email from, Email to, String emailConfirmationSubject, String htmlContent) throws IOException {
-        Content content = new Content("text/html", htmlContent);
+        Content content = new Content(MIME_TEXT_HTML, htmlContent);
         Mail mail = new Mail(from, emailConfirmationSubject, to, content);
         SendGrid sg = new SendGrid(sendGridApiKey);
         Request request = new Request();
