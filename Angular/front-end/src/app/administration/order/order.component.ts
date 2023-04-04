@@ -18,5 +18,3 @@ export class OrderComponent implements OnInit {
     this.orders$ = this.orderService.fetchAllOrders();
   }
 }
-
-//TODO: Make a delete order functionality

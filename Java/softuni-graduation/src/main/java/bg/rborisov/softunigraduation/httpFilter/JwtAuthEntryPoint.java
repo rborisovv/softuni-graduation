@@ -18,7 +18,7 @@ import static bg.rborisov.softunigraduation.constant.FileConstant.EXCLAMATION_MA
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Component
-public class JwtAuthEntryPoint extends Http403ForbiddenEntryPoint {
+public final class JwtAuthEntryPoint extends Http403ForbiddenEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
         HttpStatus httpStatus = HttpStatus.FORBIDDEN;

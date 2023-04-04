@@ -72,8 +72,6 @@ export class HeaderComponent implements OnInit, OnDestroy, OnChanges {
     if (changes['renewedBasketProducts$'] && changes['renewedBasketProducts$'].previousValue !== changes['renewedBasketProducts$'].currentValue) {
       this.basketProducts$ = changes['renewedBasketProducts$'].currentValue;
     }
-
-    //TODO: Find why only one counter is display upon clicking one of the items
   }
 
   onLogout(event: Event): void {
