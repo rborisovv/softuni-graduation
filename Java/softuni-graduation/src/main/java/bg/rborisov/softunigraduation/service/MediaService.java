@@ -12,6 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -31,6 +33,7 @@ public class MediaService extends AbstractMediaUrlBuilder {
         this.mediaRepository = mediaRepository;
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW, timeout = 20)
     public byte[] findMediaByPk(String pkOfFile) throws MediaNotFoundException {
         return this.mediaRepository.findMediaByPkOfFile(pkOfFile)
                 .orElseThrow(() -> new MediaNotFoundException(MEDIA_NOT_FOUND)).getFile();

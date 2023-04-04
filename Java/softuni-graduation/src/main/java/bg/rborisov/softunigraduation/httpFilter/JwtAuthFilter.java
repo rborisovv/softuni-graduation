@@ -28,7 +28,7 @@ import static bg.rborisov.softunigraduation.common.JwtConstants.TOKEN_PREFIX;
 import static bg.rborisov.softunigraduation.constant.SecurityConstant.HTTP_OPTIONS_NAME;
 
 @Component
-public class JwtAuthFilter extends OncePerRequestFilter {
+public final class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
     private final UserDetailsService userDetailsService;
     private final RsaKeyIntegrityVerifier rsaKeyIntegrityVerifier;
