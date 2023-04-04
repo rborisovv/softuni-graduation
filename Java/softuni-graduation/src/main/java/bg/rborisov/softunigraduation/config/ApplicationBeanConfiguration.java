@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
@@ -29,6 +30,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.concurrent.Executor;
 
 import static bg.rborisov.softunigraduation.common.JwtConstants.JWT_ALGORITHM;
 import static java.util.concurrent.TimeUnit.MINUTES;
@@ -95,6 +97,17 @@ public class ApplicationBeanConfiguration {
                         return new LoginCacheModel<>(0);
                     }
                 });
+    }
+
+    @Bean
+    public Executor executor() {
+        final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(24);
+        executor.setMaxPoolSize(32);
+        executor.setQueueCapacity(1000);
+        executor.setThreadNamePrefix("SoftuniGraduation-");
+        executor.initialize();
+        return executor;
     }
 
     private byte[] decodeRsaKeyContent(final byte[] rsaKeyBytes) {

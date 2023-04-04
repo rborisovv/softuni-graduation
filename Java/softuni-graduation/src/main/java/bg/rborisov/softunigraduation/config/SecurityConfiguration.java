@@ -36,7 +36,7 @@ import static bg.rborisov.softunigraduation.constant.SecurityConstant.PUBLIC_URL
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(jsr250Enabled = true)
 public class SecurityConfiguration {
     private final UserRepository userRepository;
     private final JwtAuthFilter jwtAuthFilter;
@@ -76,7 +76,6 @@ public class SecurityConfiguration {
                 .csrf((csrf) -> csrf
                         .csrfTokenRepository(tokenRepository)
                         .csrfTokenRequestHandler(requestHandler))
-//                .csrf().disable() //csrf override
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

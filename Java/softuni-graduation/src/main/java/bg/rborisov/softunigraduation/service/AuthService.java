@@ -24,6 +24,8 @@ import bg.rborisov.softunigraduation.util.HttpResponseConstructor;
 import bg.rborisov.softunigraduation.util.JwtProvider;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -57,8 +59,9 @@ public class AuthService {
     private final ModelMapper modelMapper;
     private final VoucherRepository voucherRepository;
     private final CategoryRepository categoryRepository;
+    private final CacheManager cacheManager;
 
-    public AuthService(final UserRepository userRepository, final JwtProvider jwtProvider, final PasswordTokenRepository passwordTokenRepository, final PasswordResetPublisher passwordResetPublisher, final PasswordEncoder passwordEncoder, final ModelMapper modelMapper, final VoucherRepository voucherRepository, final CategoryRepository categoryRepository) {
+    public AuthService(final UserRepository userRepository, final JwtProvider jwtProvider, final PasswordTokenRepository passwordTokenRepository, final PasswordResetPublisher passwordResetPublisher, final PasswordEncoder passwordEncoder, final ModelMapper modelMapper, final VoucherRepository voucherRepository, final CategoryRepository categoryRepository, final CacheManager cacheManager) {
         this.userRepository = userRepository;
         this.jwtProvider = jwtProvider;
         this.passwordTokenRepository = passwordTokenRepository;
@@ -67,6 +70,7 @@ public class AuthService {
         this.modelMapper = modelMapper;
         this.voucherRepository = voucherRepository;
         this.categoryRepository = categoryRepository;
+        this.cacheManager = cacheManager;
     }
 
     public boolean isAdmin(String authorizationHeader) {
@@ -96,6 +100,13 @@ public class AuthService {
 
         HttpResponse httpResponse = HttpResponseConstructor.construct(HttpStatus.OK,
                 PASSWORD_CHANGED_SUCCESSFULLY, NotificationStatus.SUCCESS.name());
+
+        final Cache optionalCacheModel = this.cacheManager.getCache("userDetails");
+
+        if (optionalCacheModel != null) {
+            optionalCacheModel.evict(user.getUsername());
+        }
+
         return new ResponseEntity<>(httpResponse, HttpStatus.OK);
     }
 
@@ -105,6 +116,7 @@ public class AuthService {
         if (optionalPasswordToken.isEmpty()) {
             throw new AbsentPasswordTokenException();
         }
+
         LocalDateTime expireDate = optionalPasswordToken.get().getExpireDate();
 
         if (expireDate.isBefore(LocalDateTime.now())) {
@@ -140,7 +152,8 @@ public class AuthService {
                     voucherDto.setCreationDate(voucher.getCreationDate());
                     voucherDto.setExpirationDate(voucher.getExpirationDate());
                     return voucherDto;
-                }).sorted(Comparator.comparing(VoucherDto::getCreationDate).thenComparing(VoucherDto::getName))
+                })
+                .sorted(Comparator.comparing(VoucherDto::getCreationDate).thenComparing(VoucherDto::getName))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

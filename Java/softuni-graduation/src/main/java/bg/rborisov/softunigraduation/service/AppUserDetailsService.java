@@ -4,6 +4,7 @@ import bg.rborisov.softunigraduation.dao.UserRepository;
 import bg.rborisov.softunigraduation.model.Authority;
 import bg.rborisov.softunigraduation.model.User;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,7 +33,9 @@ public class AppUserDetailsService implements UserDetailsService {
         return this.userDetails(user);
     }
 
-    private UserDetails userDetails(User user) {
+
+    @Cacheable("userDetails")
+    public UserDetails userDetails(User user) {
         return org.springframework.security.core.userdetails.User
                 .builder()
                 .username(user.getUsername())

@@ -6,10 +6,10 @@ import bg.rborisov.softunigraduation.dto.MediaDto;
 import bg.rborisov.softunigraduation.dto.PageableData;
 import bg.rborisov.softunigraduation.exception.MediaByNameAlreadyExistsException;
 import bg.rborisov.softunigraduation.exception.MediaNotFoundException;
-import bg.rborisov.softunigraduation.model.Media;
 import bg.rborisov.softunigraduation.service.MediaService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +41,7 @@ public class MediaResource {
         this.modelMapper = modelMapper;
     }
 
+    @Cacheable("media")
     @GetMapping(value = "/*/h4f/{pkOfFile}.*", produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] getMedia(@PathVariable String pkOfFile) throws MediaNotFoundException {
         return this.mediaService.findMediaByPk(pkOfFile);

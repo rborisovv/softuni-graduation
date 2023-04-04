@@ -80,7 +80,6 @@ public class CategoryService extends AbstractMediaUrlBuilder {
                 .media(optionalMedia.get()).build();
 
         String superCategoryIdentifier = categoryDto.getSuperCategory();
-
         setSuperAndChildCategories(category, superCategoryIdentifier);
 
         this.categoryRepository.save(category);

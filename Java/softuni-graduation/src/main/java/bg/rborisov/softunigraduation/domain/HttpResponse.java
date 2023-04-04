@@ -1,6 +1,5 @@
 package bg.rborisov.softunigraduation.domain;
 
-import jakarta.annotation.Nullable;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 
@@ -15,7 +14,7 @@ import java.io.Serializable;
 @ToString
 public class HttpResponse implements Serializable {
     @NonNull
-    protected int httpStatusCode;
+    protected Integer httpStatusCode;
     @NonNull
     protected HttpStatus httpStatus;
     @NonNull

@@ -3,6 +3,7 @@ package bg.rborisov.softunigraduation.domain;
 import bg.rborisov.softunigraduation.dto.ProductDto;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -10,6 +11,6 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-public class FavouritesHttpResponse extends HttpResponse {
+public class FavouritesHttpResponse extends HttpResponse implements Serializable {
     private Set<ProductDto> favouriteProducts;
 }
