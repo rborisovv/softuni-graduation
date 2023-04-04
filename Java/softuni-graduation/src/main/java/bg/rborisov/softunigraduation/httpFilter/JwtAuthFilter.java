@@ -42,11 +42,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     @SuppressWarnings("nullness")
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-//        try {
-//            this.rsaKeyIntegrityVerifier.verifyRsaKeysIntegrity();
-//        } catch (NoSuchAlgorithmException | RsaKeyIntegrityViolationException e) {
-//            throw new ServletException(e);
-//        }
+        try {
+            this.rsaKeyIntegrityVerifier.verifyRsaKeysIntegrity();
+        } catch (NoSuchAlgorithmException | RsaKeyIntegrityViolationException e) {
+            throw new ServletException(e);
+        }
 
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
 
