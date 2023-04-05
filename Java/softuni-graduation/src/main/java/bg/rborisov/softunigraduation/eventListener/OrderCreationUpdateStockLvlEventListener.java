@@ -7,8 +7,7 @@ import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.model.Product;
 import bg.rborisov.softunigraduation.model.User;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
@@ -24,7 +23,7 @@ public class OrderCreationUpdateStockLvlEventListener {
         this.productRepository = productRepository;
     }
 
-    @Async
+    @Order(1)
     @EventListener
     public void onOrderCreationEvent(OrderCreatedEvent event) throws UserNotFoundException {
         Principal principal = event.getPrincipal();

@@ -25,7 +25,7 @@ public class OrderCreationCartRemovalListener {
     }
 
     @EventListener
-    @org.springframework.core.annotation.Order(4)
+    @org.springframework.core.annotation.Order(3)
     public void onOrderCreationEvent(OrderCreatedEvent event) throws UserNotFoundException {
         Principal principal = event.getPrincipal();
         User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(UserNotFoundException::new);

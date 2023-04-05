@@ -8,7 +8,7 @@ import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.model.User;
 import bg.rborisov.softunigraduation.util.logger.OrderLogger;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -24,7 +24,8 @@ public class OrderCreationStatusChangerListener {
         this.userRepository = userRepository;
     }
 
-    @Async
+
+    @Order(2)
     @EventListener
     public void onOrderCreationEvent(OrderCreatedEvent event) throws UserNotFoundException, IOException {
         Principal principal = event.getPrincipal();
