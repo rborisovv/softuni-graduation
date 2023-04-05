@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {ProductService} from "../../service/product.service";
-import {Observable} from "rxjs";
-import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
-import {Store} from "@ngrx/store";
-import {deleteProductAction} from "../../store/action/product.action";
+import { Component, OnInit } from '@angular/core';
+import { ProductService } from "../../service/product.service";
+import { Observable } from "rxjs";
+import { faTrash, faWrench } from '@fortawesome/free-solid-svg-icons';
+import { Store } from "@ngrx/store";
+import { deleteProductAction } from "../../store/action/product.action";
 import { ProductPageable } from "../../model/product.pageable";
 import { PageEvent } from "@angular/material/paginator";
 import { PageableData } from "../../model/pageable.data";
@@ -21,8 +21,8 @@ export class ProductComponent implements OnInit {
   pageIndex: number = 0;
   pageSize: number = 10;
 
-  constructor(private readonly productService: ProductService,
-              private readonly store: Store) {
+  constructor(private productService: ProductService,
+              private store: Store) {
   }
 
   ngOnInit(): void {
@@ -46,6 +46,6 @@ export class ProductComponent implements OnInit {
   }
 
   public deleteProduct(identifier: string): void {
-    this.store.dispatch(deleteProductAction({identifier: identifier}));
+    this.store.dispatch(deleteProductAction({ identifier: identifier }));
   }
 }

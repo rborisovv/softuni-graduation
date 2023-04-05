@@ -27,8 +27,8 @@ export class CategoryComponent implements OnInit {
 
   faHeart = faHeart;
 
-  constructor(private readonly categoryService: CategoryService, private router: Router, private route: ActivatedRoute,
-              private readonly store: Store) {
+  constructor(private categoryService: CategoryService, private router: Router, private route: ActivatedRoute,
+              private store: Store) {
   }
 
   ngOnInit(): void {

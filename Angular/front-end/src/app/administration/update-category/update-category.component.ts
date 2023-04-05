@@ -29,7 +29,7 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
 
   constructor(private categoryService: CategoryService, private router: Router, private notifier: NotifierService,
               private activatedRoute: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef,
-              private readonly store: Store) {
+              private store: Store) {
   }
 
   ngOnInit(): void {

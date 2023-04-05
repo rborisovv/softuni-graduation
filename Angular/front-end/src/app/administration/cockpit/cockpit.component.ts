@@ -1,9 +1,9 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {Store} from "@ngrx/store";
-import {selectUserState} from "../../store/selector/auth.selector";
-import {map, Observable} from "rxjs";
-import {CookieService} from "ngx-cookie-service";
-import {JwtHelperService} from "@auth0/angular-jwt";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Store } from "@ngrx/store";
+import { selectUserState } from "../../store/selector/auth.selector";
+import { map, Observable } from "rxjs";
+import { CookieService } from "ngx-cookie-service";
+import { JwtHelperService } from "@auth0/angular-jwt";
 
 @Component({
   selector: 'app-cockpit',
@@ -14,7 +14,7 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 export class CockpitComponent implements OnInit {
 
   constructor(private cookieService: CookieService, private jwtService: JwtHelperService,
-              private readonly store: Store) {
+              private store: Store) {
   }
 
   protected username$: Observable<string>;

@@ -1,5 +1,5 @@
-import {Injectable} from "@angular/core";
-import {Actions, createEffect, ofType} from "@ngrx/effects";
+import { Injectable } from "@angular/core";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
 import {
   createCategoryAction,
   createCategoryActionSuccess,
@@ -11,31 +11,33 @@ import {
   deleteCategoryActionFail,
   deleteCategoryActionSuccess
 } from "../action/category.action";
-import {catchError, exhaustMap, map, of, tap} from "rxjs";
-import {CategoryService} from "../../service/category.service";
-import {Router} from "@angular/router";
-import {NotifierService} from "angular-notifier";
-import {NotificationType} from "../../enumeration/notification-enum";
+import { catchError, exhaustMap, map, of, tap } from "rxjs";
+import { CategoryService } from "../../service/category.service";
+import { Router } from "@angular/router";
+import { NotifierService } from "angular-notifier";
+import { NotificationType } from "../../enumeration/notification-enum";
 
 @Injectable()
 export class CategoryEffects {
-  constructor(private readonly actions$: Actions, private readonly categoryService: CategoryService,
-              private readonly router: Router, private readonly notifier: NotifierService) {
+  constructor(private actions$: Actions, private categoryService: CategoryService,
+              private router: Router, private notifier: NotifierService) {
   }
 
   createCategory$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(createCategoryAction),
-      exhaustMap(({formData}) => {
+      exhaustMap(({ formData }) => {
         return this.categoryService.createCategory(formData)
           .pipe(
-            map(httpResponse => createCategoryActionSuccess({httpResponse: httpResponse})),
-            tap((response) => {
-              this.router.navigateByUrl('/admin/categories').then(() => {
-                this.notifier.notify(NotificationType.SUCCESS, response.httpResponse.message);
-              });
+            map(httpResponse => createCategoryActionSuccess({ httpResponse })),
+            tap({
+              next: (response) => {
+                this.router.navigateByUrl('/admin/categories').then(() => {
+                  this.notifier.notify(NotificationType.SUCCESS, response.httpResponse.message);
+                });
+              }
             }),
-            catchError((error) => of(createCategoryActionFail({error: error})))
+            catchError((error) => of(createCategoryActionFail({ error })))
           );
       })
     );
@@ -44,16 +46,18 @@ export class CategoryEffects {
   updateCategory$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(updateCategoryAction),
-      exhaustMap(({formData}) => {
+      exhaustMap(({ formData }) => {
         return this.categoryService.updateCategory(formData)
           .pipe(
-            map(httpResponse => updateCategoryActionSuccess({httpResponse: httpResponse})),
-            tap(response => {
-              this.router.navigateByUrl('/admin/categories').then(() => {
-                this.notifier.notify(NotificationType.SUCCESS, response.httpResponse.message);
-              });
+            map(httpResponse => updateCategoryActionSuccess({ httpResponse })),
+            tap({
+              next: (response) => {
+                this.router.navigateByUrl('/admin/categories').then(() => {
+                  this.notifier.notify(NotificationType.SUCCESS, response.httpResponse.message);
+                });
+              }
             }),
-            catchError((error) => of(updateCategoryActionFail({error: error})))
+            catchError((error) => of(updateCategoryActionFail({ error })))
           );
       })
     );
@@ -62,18 +66,21 @@ export class CategoryEffects {
   deleteCategory$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(deleteCategoryAction),
-      exhaustMap(({identifier}) => {
+      exhaustMap(({ identifier }) => {
         return this.categoryService.deleteCategory(identifier)
           .pipe(
-            map(httpResponse => deleteCategoryActionSuccess({httpResponse: httpResponse})),
-            tap((response) => {
-              this.router.navigateByUrl('/admin/categories').then(() => {
-                this.notifier.notify(NotificationType.SUCCESS, response.httpResponse.message);
-              });
-            })
+            map(httpResponse => deleteCategoryActionSuccess({ httpResponse })),
+            tap({
+                next: (response) => {
+                  this.router.navigateByUrl('/admin/categories').then(() => {
+                    this.notifier.notify(NotificationType.SUCCESS, response.httpResponse.message);
+                  });
+                }
+              }
+            )
           );
       }),
-      catchError((error) => of(deleteCategoryActionFail({error: error})))
+      catchError((error) => of(deleteCategoryActionFail({ error: error })))
     );
   });
 }

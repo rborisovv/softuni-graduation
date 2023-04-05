@@ -7,6 +7,6 @@ import { Router } from "@angular/router";
   styleUrls: ['./payment-successful.component.scss']
 })
 export class PaymentSuccessfulComponent {
-  constructor(protected readonly router: Router) {
+  constructor(protected router: Router) {
   }
 }

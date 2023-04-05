@@ -8,20 +8,27 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import {ProductSharedFunctionality} from "../item.product.index";
-import {Media} from "../../model/media";
-import {map, Observable, Subscription} from "rxjs";
-import {MediaService} from "../../service/media.service";
-import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
-import {ProductService} from "../../service/product.service";
-import {positiveNumberValidator} from "../../directive/positive.number.directive";
-import {CategoryService} from "../../service/category.service";
-import {Category} from "../../model/category";
-import {Product} from "../../model/product";
-import {NotificationType} from "../../enumeration/notification-enum";
-import {NotifierService} from "angular-notifier";
-import {Router} from "@angular/router";
-import {createFormData} from "../../service/service.index";
+import { ProductSharedFunctionality } from "../item.product.index";
+import { Media } from "../../model/media";
+import { map, Observable, Subscription } from "rxjs";
+import { MediaService } from "../../service/media.service";
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators
+} from "@angular/forms";
+import { ProductService } from "../../service/product.service";
+import { positiveNumberValidator } from "../../directive/positive.number.directive";
+import { CategoryService } from "../../service/category.service";
+import { Category } from "../../model/category";
+import { Product } from "../../model/product";
+import { NotificationType } from "../../enumeration/notification-enum";
+import { NotifierService } from "angular-notifier";
+import { Router } from "@angular/router";
+import { createFormData } from "../../service/service.index";
 
 @Component({
   selector: 'app-create-product',
@@ -31,12 +38,12 @@ import {createFormData} from "../../service/service.index";
   encapsulation: ViewEncapsulation.None
 })
 export class CreateProductComponent extends ProductSharedFunctionality implements OnDestroy {
-  constructor(protected override readonly changeDetectorRef: ChangeDetectorRef,
-              private readonly mediaService: MediaService,
+  constructor(protected override changeDetectorRef: ChangeDetectorRef,
+              private mediaService: MediaService,
               private productService: ProductService,
-              private readonly categoryService: CategoryService,
-              private readonly notifier: NotifierService,
-              private readonly router: Router) {
+              private categoryService: CategoryService,
+              private notifier: NotifierService,
+              private router: Router) {
     super(changeDetectorRef);
   }
 
@@ -147,6 +154,7 @@ export class CreateProductComponent extends ProductSharedFunctionality implement
       return;
     } else if (!this.selectedCategoryFromPickup) {
       this.notifier.notify(NotificationType.INFO, "Please select a Category for the product!");
+      return;
     }
 
     const product: Product = {
@@ -182,7 +190,7 @@ class identifierValidator {
   static validateIdentifier(productService: ProductService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors> => {
       return productService.isProductByIdentifierPresent(control.value)
-        .pipe(map((result: boolean) => result ? {identifierPresent: true} : null));
+        .pipe(map((result: boolean) => result ? { identifierPresent: true } : null));
     }
   }
 }
@@ -191,7 +199,7 @@ class nameValidator {
   static validateName(productService: ProductService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors> => {
       return productService.isProductByNamePresent(control.value)
-        .pipe(map((result: boolean) => result ? {namePresent: true} : null));
+        .pipe(map((result: boolean) => result ? { namePresent: true } : null));
     }
   }
 }

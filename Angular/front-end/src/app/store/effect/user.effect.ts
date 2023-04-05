@@ -52,12 +52,14 @@ export class UserEffects {
       exhaustMap((({ identifier }) => {
         return this.userService.addToFavourites(identifier)
           .pipe(
-            map(response => addToFavouritesSuccess({ httpResponse: response })),
-            tap((response) => {
-              this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
-              this.store.dispatch(fetchRenewedFavouriteProducts({ httpResponse: response.httpResponse }));
+            map(httpResponse => addToFavouritesSuccess({ httpResponse })),
+            tap({
+              next: (response) => {
+                this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
+                this.store.dispatch(fetchRenewedFavouriteProducts({ httpResponse: response.httpResponse }));
+              }
             }),
-            catchError(error => of(addToFavouritesFail({ error: error })))
+            catchError(error => of(addToFavouritesFail({ error })))
           );
       }))
     )
@@ -69,12 +71,14 @@ export class UserEffects {
       exhaustMap((({ identifier }) => {
         return this.userService.removeFromFavourites(identifier)
           .pipe(
-            map(response => removeFromFavouritesSuccess({ httpResponse: response })),
-            tap((response) => {
-              this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
-              this.store.dispatch(fetchRenewedFavouriteProducts({ httpResponse: response.httpResponse }));
+            map((httpResponse) => removeFromFavouritesSuccess({ httpResponse })),
+            tap({
+              next: (response) => {
+                this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
+                this.store.dispatch(fetchRenewedFavouriteProducts({ httpResponse: response.httpResponse }));
+              }
             }),
-            catchError(error => of(removeFromFavouritesFail({ error: error })))
+            catchError(error => of(removeFromFavouritesFail({ error })))
           );
       }))
     )
@@ -86,12 +90,14 @@ export class UserEffects {
       exhaustMap((({ identifier }) => {
         return this.userService.addToBasket(identifier)
           .pipe(
-            map(response => addToBasketSuccess({ httpResponse: response })),
-            tap((response) => {
-              this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
-              this.store.dispatch(fetchRenewedBasketProducts({ httpResponse: response.httpResponse }));
+            map((httpResponse) => addToBasketSuccess({ httpResponse })),
+            tap({
+              next: (response) => {
+                this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
+                this.store.dispatch(fetchRenewedBasketProducts({ httpResponse: response.httpResponse }));
+              }
             }),
-            catchError(error => of(addToBasketFail({ error: error })))
+            catchError(error => of(addToBasketFail({ error })))
           );
       }))
     )
@@ -103,12 +109,14 @@ export class UserEffects {
       exhaustMap((({ identifier }) => {
         return this.userService.removeFromBasket(identifier)
           .pipe(
-            map(response => removeFromBasketSuccess({ httpResponse: response })),
-            tap((response) => {
-              this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
-              this.store.dispatch(fetchRenewedBasketProducts({ httpResponse: response.httpResponse }));
+            map((httpResponse) => removeFromBasketSuccess({ httpResponse })),
+            tap({
+              next: (response) => {
+                this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
+                this.store.dispatch(fetchRenewedBasketProducts({ httpResponse: response.httpResponse }));
+              }
             }),
-            catchError(error => of(removeFromBasketFail({ error: error })))
+            catchError(error => of(removeFromBasketFail({ error })))
           );
       }))
     )
@@ -120,11 +128,13 @@ export class UserEffects {
       exhaustMap((({ identifier, quantity }) => {
         return this.userService.updateBasketProductQuantity(identifier, quantity)
           .pipe(
-            map(response => updateBasketProductQuantitySuccess({ httpResponse: response })),
-            tap((response) => {
-              this.store.dispatch(fetchRenewedBasketProducts({ httpResponse: response.httpResponse }));
+            map((httpResponse) => updateBasketProductQuantitySuccess({ httpResponse })),
+            tap({
+              next: (response) => {
+                this.store.dispatch(fetchRenewedBasketProducts({ httpResponse: response.httpResponse }));
+              }
             }),
-            catchError(error => of(updateBasketProductQuantityFail({ error: error })))
+            catchError(error => of(updateBasketProductQuantityFail({ error })))
           );
       }))
     )
@@ -137,10 +147,12 @@ export class UserEffects {
         return this.userService.submitCheckoutFlow(checkout)
           .pipe(
             map(() => submitCheckoutFlowSuccess()),
-            tap(() => {
-              this.router.navigateByUrl('/finalize-order');
+            tap({
+              next: () => {
+                this.router.navigateByUrl('/finalize-order');
+              }
             }),
-            catchError(error => of(submitCheckoutFlowFail({ error: error })))
+            catchError(error => of(submitCheckoutFlowFail({ error })))
           );
       }))
     )
@@ -153,12 +165,14 @@ export class UserEffects {
         return this.userService.createOrder()
           .pipe(
             map(() => createOrderSuccess()),
-            tap(() => {
-              this.router.navigateByUrl('/order-created').then(() => {
-                this.notifier.notify(NotificationType.SUCCESS, ORDER_CREATED);
-              });
+            tap({
+              next: () => {
+                this.router.navigateByUrl('/order-created').then(() => {
+                  this.notifier.notify(NotificationType.SUCCESS, ORDER_CREATED);
+                });
+              }
             }),
-            catchError(error => of(createOrderFail({ error: error })))
+            catchError(error => of(createOrderFail({ error })))
           );
       }));
   });
@@ -169,11 +183,13 @@ export class UserEffects {
       exhaustMap(({ email }) => {
         return this.userService.resetPassword(email)
           .pipe(
-            map((response) => resetPasswordSuccess({ httpResponse: response })),
-            tap((response) => {
-              this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
+            map((httpResponse) => resetPasswordSuccess({ httpResponse })),
+            tap({
+              next: (response) => {
+                this.notifier.notify(response.httpResponse.notificationStatus, response.httpResponse.message);
+              }
             }),
-            catchError(error => of(resetPasswordFail({ error: error })))
+            catchError(error => of(resetPasswordFail({ error })))
           );
       }));
   });
@@ -184,13 +200,15 @@ export class UserEffects {
       exhaustMap(({ data }) => {
         return this.userService.changePassword(data)
           .pipe(
-            map((response) => changePasswordSuccess({ response: response })),
-            tap((httpResponse) => {
-              this.router.navigateByUrl('/auth/login').then(() => {
-                this.notifier.notify(httpResponse.response.notificationStatus, httpResponse.response.message);
-              });
+            map((response) => changePasswordSuccess({ response })),
+            tap({
+              next: (httpResponse) => {
+                this.router.navigateByUrl('/auth/login').then(() => {
+                  this.notifier.notify(httpResponse.response.notificationStatus, httpResponse.response.message);
+                });
+              }
             }),
-            catchError(error => of(changePasswordFail({ error: error })))
+            catchError(error => of(changePasswordFail({ error })))
           );
       }));
   });

@@ -1,11 +1,18 @@
-import {ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
-import {map, Observable} from "rxjs";
-import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
-import {MediaService} from "../../service/media.service";
-import {createFormData} from "../../service/service.index";
-import {Media} from "../../model/media";
-import {Store} from "@ngrx/store";
-import {createMediaAction} from "../../store/action/media.action";
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { map, Observable } from "rxjs";
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators
+} from "@angular/forms";
+import { MediaService } from "../../service/media.service";
+import { createFormData } from "../../service/service.index";
+import { Media } from "../../model/media";
+import { Store } from "@ngrx/store";
+import { createMediaAction } from "../../store/action/media.action";
 
 @Component({
   selector: 'app-create-media',
@@ -14,7 +21,7 @@ import {createMediaAction} from "../../store/action/media.action";
 })
 export class CreateMediaComponent {
   constructor(private changeDetectorRef: ChangeDetectorRef, private mediaService: MediaService,
-              private readonly store: Store) {
+              private store: Store) {
   }
 
   @ViewChild('mediaInput') mediaInput: ElementRef;
@@ -69,7 +76,7 @@ export class CreateMediaComponent {
       file: this.mediaInput.nativeElement.files[0]
     }
 
-    this.store.dispatch(createMediaAction({formData: createFormData(mediaData)}));
+    this.store.dispatch(createMediaAction({ formData: createFormData(mediaData) }));
   }
 }
 
@@ -77,7 +84,7 @@ class nameValidator {
   static validateName(mediaService: MediaService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors> => {
       return mediaService.isMediaByNamePresent(control.value)
-        .pipe(map((result: boolean) => result ? {namePresent: true} : null));
+        .pipe(map((result: boolean) => result ? { namePresent: true } : null));
     }
   }
 }

@@ -15,7 +15,7 @@ import { PageableData } from "../../model/pageable.data";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MediaComponent implements OnInit {
-  constructor(private mediaService: MediaService, private readonly store: Store) {
+  constructor(private mediaService: MediaService, private store: Store) {
   }
 
   faTrash = faTrash;

@@ -7,19 +7,26 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import {CategoryService} from "../../service/category.service";
-import {Router} from "@angular/router";
-import {NotifierService} from "angular-notifier";
-import {NotificationType} from "../../enumeration/notification-enum";
-import {AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
-import {map, Observable} from "rxjs";
-import {MediaService} from "../../service/media.service";
-import {Media} from "../../model/media";
-import {Category} from "../../model/category";
-import {createFormData} from "../../service/service.index";
-import {CategorySharedFunctionality} from "../item.category.index";
-import {Store} from "@ngrx/store";
-import {createCategoryAction} from "../../store/action/category.action";
+import { CategoryService } from "../../service/category.service";
+import { Router } from "@angular/router";
+import { NotifierService } from "angular-notifier";
+import { NotificationType } from "../../enumeration/notification-enum";
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators
+} from "@angular/forms";
+import { map, Observable } from "rxjs";
+import { MediaService } from "../../service/media.service";
+import { Media } from "../../model/media";
+import { Category } from "../../model/category";
+import { createFormData } from "../../service/service.index";
+import { CategorySharedFunctionality } from "../item.category.index";
+import { Store } from "@ngrx/store";
+import { createCategoryAction } from "../../store/action/category.action";
 
 @Component({
   selector: 'app-create-categories',
@@ -32,7 +39,7 @@ export class CreateCategoryComponent extends CategorySharedFunctionality {
   constructor(private categoryService: CategoryService, private router: Router,
               private notifier: NotifierService, private mediaService: MediaService,
               protected override changeDetectorRef: ChangeDetectorRef,
-              private readonly store: Store) {
+              private store: Store) {
     super(changeDetectorRef);
   }
 
@@ -76,7 +83,7 @@ export class CreateCategoryComponent extends CategorySharedFunctionality {
       pkOfFile: this.pkOfFIle.value
     }
 
-    this.store.dispatch(createCategoryAction({formData: createFormData(categoryData)}));
+    this.store.dispatch(createCategoryAction({ formData: createFormData(categoryData) }));
   }
 
   get name() {
@@ -128,7 +135,7 @@ class identifierValidator {
   static validateIdentifier(categoryService: CategoryService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors> => {
       return categoryService.isCategoryByIdentifierPresent(control.value)
-        .pipe(map((result: boolean) => result ? {identifierPresent: true} : null));
+        .pipe(map((result: boolean) => result ? { identifierPresent: true } : null));
     }
   }
 }
@@ -137,7 +144,7 @@ class nameValidator {
   static validateName(categoryService: CategoryService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors> => {
       return categoryService.isCategoryByNamePresent(control.value)
-        .pipe(map((result: boolean) => result ? {namePresent: true} : null));
+        .pipe(map((result: boolean) => result ? { namePresent: true } : null));
     }
   }
 }

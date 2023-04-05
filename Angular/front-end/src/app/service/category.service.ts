@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment.prod";
-import {Observable} from "rxjs";
+import { Observable, shareReplay } from "rxjs";
 import {HttpResponse} from "../interface/http.response";
 import {Category} from "../model/category";
 import { PageableData } from "../model/pageable.data";
@@ -30,7 +30,7 @@ export class CategoryService {
   }
 
   public loadAllCategories(data: PageableData): Observable<CategoryPageable> {
-    return this.http.post<CategoryPageable>(`${this.apiUrl}/category/all`, data);
+    return this.http.post<CategoryPageable>(`${this.apiUrl}/category/all`, data).pipe(shareReplay());
   }
 
   public loadCategory(identifier: string): Observable<Category> {

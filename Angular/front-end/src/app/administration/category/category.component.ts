@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoryService } from "../../service/category.service";
-import { Observable } from "rxjs";
+import { Observable, take } from "rxjs";
 import { faTrash, faWrench } from '@fortawesome/free-solid-svg-icons';
 import { Store } from "@ngrx/store";
 import { deleteCategoryAction } from "../../store/action/category.action";
@@ -22,7 +22,7 @@ export class CategoryComponent implements OnInit {
   pageIndex: number = 0;
   pageSize: number = 10;
 
-  constructor(private categoryService: CategoryService, private readonly store: Store) {
+  constructor(private categoryService: CategoryService, private store: Store) {
   }
 
   ngOnInit(): void {
@@ -31,7 +31,7 @@ export class CategoryComponent implements OnInit {
       pageSize: 10
     };
 
-    this.categories$ = this.categoryService.loadAllCategories(data);
+    this.categories$ = this.categoryService.loadAllCategories(data).pipe(take(1));
   }
 
   public deleteCategory(identifier: string) {
@@ -47,6 +47,6 @@ export class CategoryComponent implements OnInit {
 
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
-    this.categories$ = this.categoryService.loadAllCategories(data);
+    this.categories$ = this.categoryService.loadAllCategories(data).pipe(take(1));
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from "../../environments/environment.prod";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, shareReplay } from "rxjs";
 import { HttpResponse } from "../interface/http.response";
 import { PageableData } from "../model/pageable.data";
 import { ProductPageable } from "../model/product.pageable";
@@ -29,7 +29,7 @@ export class ProductService {
   }
 
   public loadAllProducts(data: PageableData): Observable<ProductPageable> {
-    return this.http.post<ProductPageable>(`${this.apiUrl}/product/findAll`, data);
+    return this.http.post<ProductPageable>(`${this.apiUrl}/product/findAll`, data).pipe(shareReplay());
   }
 
   public deleteProduct(identifier: string): Observable<HttpResponse> {

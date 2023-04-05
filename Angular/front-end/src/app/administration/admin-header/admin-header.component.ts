@@ -1,8 +1,9 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {faCartShopping, faHome, faSignOut} from '@fortawesome/free-solid-svg-icons';
-import {CookieService} from "ngx-cookie-service";
-import {UserService} from "../../service/user.service";
-import {Router} from "@angular/router";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { faCartShopping, faHome, faSignOut } from '@fortawesome/free-solid-svg-icons';
+import { CookieService } from "ngx-cookie-service";
+import { UserService } from "../../service/user.service";
+import { Router } from "@angular/router";
+import { take } from "rxjs";
 
 @Component({
   selector: 'app-admin-header',
@@ -26,7 +27,7 @@ export class AdminHeaderComponent implements OnInit {
 
 
   logout(): void {
-    this.userService.logoutUser().subscribe({
+    this.userService.logoutUser().pipe(take(1)).subscribe({
       next: () => {
         this.cookieService.delete('JWT-TOKEN', '/', 'localhost');
       },

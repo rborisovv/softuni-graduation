@@ -10,7 +10,6 @@ import { Router } from "@angular/router";
 import { BasketService } from "../../service/basket.service";
 import { Voucher } from "../../model/voucher";
 import { NotifierService } from "angular-notifier";
-import { NotificationType } from "../../enumeration/notification-enum";
 import { CartBalancePipe } from "../../pipes/cart.balance.pipe";
 import { BasketDiscountedTotalPipe } from "../../pipes/basket.discounted.total.pipe";
 import { storeDiscountedTotal } from "../../store/action/basket.action";

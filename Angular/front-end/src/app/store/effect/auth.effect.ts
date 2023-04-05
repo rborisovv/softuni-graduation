@@ -17,24 +17,25 @@ import { LOGIN_SUCCESS } from "../../common/messages";
 
 @Injectable()
 export class AuthEffects {
-  constructor(private readonly actions$: Actions, private readonly userService: UserService,
-              private readonly router: Router, private readonly notifier: NotifierService) {
+  constructor(private actions$: Actions, private userService: UserService,
+              private router: Router, private notifier: NotifierService) {
   }
 
   loginUser$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loginAction),
       exhaustMap(({ formData }) => {
-        return this.userService.loginUser(formData)
-          .pipe(
-            map(user => loginActionSuccess({ username: user.username, email: user.email })),
-            tap((user) => {
+        return this.userService.loginUser(formData).pipe(
+          map(user => loginActionSuccess({ username: user.username, email: user.email })),
+          tap({
+            next: (user) => {
               this.router.navigateByUrl('/home').then(() => {
                 this.notifier.notify(NotificationType.SUCCESS, LOGIN_SUCCESS + user.username);
               });
-            }),
-            catchError((error) => of(loginActionFail({ error })))
-          );
+            }
+          }),
+          catchError((error) => of(loginActionFail({ error })))
+        );
       })
     );
   });
@@ -46,11 +47,13 @@ export class AuthEffects {
           return this.userService.registerUser(registerModel)
             .pipe(
               map(user => registerActionSuccess({ username: user.username })),
-              tap((user) => {
-                this.router.navigateByUrl('/auth/login').then(() => {
-                  this.notifier.notify(NotificationType.SUCCESS,
-                    `User with username "${user.username}" successfully registered!`);
-                });
+              tap({
+                next: (user) => {
+                  this.router.navigateByUrl('/auth/login').then(() => {
+                    this.notifier.notify(NotificationType.SUCCESS,
+                      `User with username "${user.username}" successfully registered!`);
+                  });
+                }
               }),
               catchError((error) => of(registerActionFail({ error })))
             )
@@ -66,10 +69,12 @@ export class AuthEffects {
           return this.userService.createVoucher(voucher)
             .pipe(
               map(response => createVoucherSuccess({ response })),
-              tap((response) => {
-                this.router.navigateByUrl('/admin/vouchers').then(() => {
-                  this.notifier.notify(NotificationType.SUCCESS, response.response.message);
-                });
+              tap({
+                next: (response) => {
+                  this.router.navigateByUrl('/admin/vouchers').then(() => {
+                    this.notifier.notify(NotificationType.SUCCESS, response.response.message);
+                  });
+                }
               }),
               catchError((error) => of(createVoucherFail({ error })))
             )
