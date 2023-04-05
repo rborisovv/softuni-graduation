@@ -29,7 +29,7 @@ import static bg.rborisov.softunigraduation.common.JwtConstants.*;
 import static java.util.Arrays.stream;
 
 @Component
-public final class JwtProvider {
+public class JwtProvider {
     private final UserDetailsService userDetailsService;
     private final UserService userService;
     private final RSAKeyProvider rsaKeyProvider;
