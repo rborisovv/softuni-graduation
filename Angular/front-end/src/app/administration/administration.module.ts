@@ -34,7 +34,7 @@ import { DateFormatPipe } from "../pipes/date.format.pipe";
 const routes: Routes = [
   {
     path: '', canActivateChild: [() => inject(AdminGuard).canActivateChild()], children: [
-      { path: 'cockpit', component: CockpitComponent },
+      { path: 'cockpit', title: 'eCart Cockpit', component: CockpitComponent },
       { path: 'categories', component: CategoryComponent },
       { path: 'category/create', component: CreateCategoryComponent },
       { path: 'medias', component: MediaComponent },

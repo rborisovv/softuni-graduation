@@ -20,10 +20,11 @@ import { AuthGuard } from "../guard/auth.guard";
 const routes: Routes = [
   {
     path: '', canActivate: [() => inject(AuthGuard).canActivate()], children: [
-      { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent },
+      { path: 'login', title: 'eCart | Login', component: LoginComponent },
+      { path: 'register', title: 'eCart | Register', component: RegisterComponent },
       {
         path: 'change-password',
+        title: 'eCart | Change Password',
         component: PasswordChangeComponent,
         canActivate: [() => inject(PasswordChangeGuard).canActivate()]
       }
