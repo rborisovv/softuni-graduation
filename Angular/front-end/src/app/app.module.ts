@@ -45,6 +45,18 @@ function fetchCsrfToken(httpClient: HttpClient): () => Observable<any> {
   return () => httpClient.get('http://localhost:8080/auth/csrf').pipe(catchError(() => of(null)));
 }
 
+function provideErrorHandlerInterceptor(interceptor: ErrorHandlerInterceptor): ErrorHandlerInterceptor {
+  return interceptor;
+}
+
+function provideXsrfInterceptor(interceptor: XsrfInterceptor): XsrfInterceptor {
+  return interceptor;
+}
+
+function provideHeadersDecoratorInterceptor(interceptor: HeadersDecoratorInterceptor): HeadersDecoratorInterceptor {
+  return interceptor;
+}
+
 @NgModule({
   declarations: [
     AppComponent
@@ -99,19 +111,25 @@ function fetchCsrfToken(httpClient: HttpClient): () => Observable<any> {
     EffectsModule.forRoot([]),
   ],
   providers: [
+    ErrorHandlerInterceptor,
+    XsrfInterceptor,
+    HeadersDecoratorInterceptor,
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: ErrorHandlerInterceptor,
+      useFactory: provideErrorHandlerInterceptor,
+      deps: [ErrorHandlerInterceptor],
       multi: true
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: XsrfInterceptor,
+      useFactory: provideXsrfInterceptor,
+      deps: [XsrfInterceptor],
       multi: true
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: HeadersDecoratorInterceptor,
+      useFactory: provideHeadersDecoratorInterceptor,
+      deps: [HeadersDecoratorInterceptor],
       multi: true
     },
     {

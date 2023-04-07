@@ -5,7 +5,7 @@ import { BasketService } from "../service/basket.service";
 
 @Injectable()
 export class CheckoutGuard {
-  constructor(private readonly basketService: BasketService) {
+  constructor(private basketService: BasketService) {
   }
 
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
