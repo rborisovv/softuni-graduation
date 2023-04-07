@@ -10,6 +10,8 @@ import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.service.BasketService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,21 +37,25 @@ public class BasketResource {
         return this.basketService.canActivateCheckout(principal);
     }
 
+    @CacheEvict(value = "basket")
     @PostMapping("/addToBasket")
-    public ResponseEntity<HttpResponse> addToCart(@RequestBody final String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException, ProductSoldOutException {
+    public ResponseEntity<HttpResponse> addToBasket(@RequestBody final String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException, ProductSoldOutException {
         return this.basketService.addToBasket(identifier, principal);
     }
 
+    @Cacheable("basket")
     @GetMapping("/userBasket")
     public Set<ProductDto> loadBasket(final Principal principal) throws UserNotFoundException {
         return this.basketService.loadBasket(principal);
     }
 
+    @CacheEvict(value = "basket")
     @PostMapping("/removeFromBasket")
     public ResponseEntity<HttpResponse> removeFromBasket(final @RequestBody String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException {
         return this.basketService.removeFromBasket(identifier, principal);
     }
 
+    @CacheEvict(value = "basket")
     @PostMapping("/updateBasketProduct")
     public ResponseEntity<HttpResponse> updateBasketProduct(final Principal principal, final @RequestBody Map<String, String> productParams) throws ProductNotFoundException, UserNotFoundException, BasketNotFoundException {
         return this.basketService.updateBasketProduct(principal, productParams);

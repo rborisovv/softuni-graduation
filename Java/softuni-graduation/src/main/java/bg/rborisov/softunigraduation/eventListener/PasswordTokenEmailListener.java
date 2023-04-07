@@ -24,7 +24,6 @@ import java.util.Map;
 public class PasswordTokenEmailListener {
     private static final String EMAIL_CONFIRMATION_SUBJECT = "Password reset email";
     private static final String EMAIL_CONFIRMATION_SENDER = "radii2000@abv.bg";
-
     private final UserRepository userRepository;
     private final PasswordTokenRepository passwordTokenRepository;
     private final SpringTemplateEngine springTemplateEngine;

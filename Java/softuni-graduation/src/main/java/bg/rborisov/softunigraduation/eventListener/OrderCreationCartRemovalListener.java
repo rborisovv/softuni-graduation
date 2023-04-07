@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.security.Principal;
 
 @Component
-@Transactional
 public class OrderCreationCartRemovalListener {
     private final UserRepository userRepository;
     private final BasketRepository basketRepository;
@@ -25,6 +24,7 @@ public class OrderCreationCartRemovalListener {
     }
 
     @EventListener
+    @Transactional
     @org.springframework.core.annotation.Order(3)
     public void onOrderCreationEvent(OrderCreatedEvent event) throws UserNotFoundException {
         Principal principal = event.getPrincipal();
