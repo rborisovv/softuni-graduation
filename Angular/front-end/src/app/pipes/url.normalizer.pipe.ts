@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class UrlNormalizerPipe implements PipeTransform {
 
-  transform(url: string, ...args: unknown[]): string {
+  transform(url: any, ...args: unknown[]): string {
     return url.toString().toLowerCase().trim().replaceAll(' ', '-');
   }
 }

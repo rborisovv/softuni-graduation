@@ -138,5 +138,3 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
     this.updateCategoryFormGroup.controls['superCategory'].setValue(superCategory);
   }
 }
-
-//TODO: Create validations for user input (Lower or Uppercase)//

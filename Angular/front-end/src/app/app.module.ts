@@ -42,7 +42,7 @@ function localStorageSyncReducer(reducer: ActionReducer<State<any>>): ActionRedu
 const metaReducers: Array<MetaReducer> = [localStorageSyncReducer];
 
 function fetchCsrfToken(httpClient: HttpClient): () => Observable<any> {
-  return () => httpClient.get('http://localhost:8080/auth/csrf').pipe(catchError((err) => of(null)));
+  return () => httpClient.get('http://localhost:8080/auth/csrf').pipe(catchError(() => of(null)));
 }
 
 @NgModule({
@@ -128,3 +128,6 @@ function fetchCsrfToken(httpClient: HttpClient): () => Observable<any> {
 export class AppModule {
 
 }
+
+
+//TODO: Add fav-icon
