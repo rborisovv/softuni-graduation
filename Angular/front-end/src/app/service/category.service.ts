@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment.prod";
+import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../environments/environment.prod";
 import { Observable, shareReplay } from "rxjs";
-import {HttpResponse} from "../interface/http.response";
-import {Category} from "../model/category";
+import { HttpResponse } from "../interface/http.response";
+import { Category } from "../model/category";
 import { PageableData } from "../model/pageable.data";
 import { CategoryPageable } from "../model/category.pageable";
 

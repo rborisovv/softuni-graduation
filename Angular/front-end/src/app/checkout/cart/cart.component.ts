@@ -49,6 +49,10 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   addVoucher(labelElement: HTMLInputElement) {
+    if (labelElement.value === '') {
+      return;
+    }
+
     const voucher: string = labelElement.value;
     this.voucher$ = this.basketService.addVoucherToBasket(voucher).pipe(take(1),
       catchError(() => of(null)));

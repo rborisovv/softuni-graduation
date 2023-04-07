@@ -14,6 +14,7 @@ import { CheckoutGuard } from "../guard/checkout.guard";
 import { OrderFlowGuard } from "../guard/order.flow.guard";
 import { CheckoutHeaderComponent } from './checkout-header/checkout-header.component';
 import { BasketDiscountedTotalPipe } from "../pipes/basket.discounted.total.pipe";
+import { BasketService } from "../service/basket.service";
 
 const routes: Routes = [
   {
@@ -59,7 +60,7 @@ const routes: Routes = [
     FontAwesomeModule,
     ReactiveFormsModule
   ],
-  providers: [CartBalancePipe, BasketDiscountedTotalPipe, CheckoutGuard, OrderFlowGuard]
+  providers: [CartBalancePipe, BasketDiscountedTotalPipe, CheckoutGuard, OrderFlowGuard, BasketService]
 })
 export class CheckoutModule {
 }

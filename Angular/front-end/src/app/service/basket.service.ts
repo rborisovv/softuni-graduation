@@ -4,9 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable, shareReplay } from "rxjs";
 import { Voucher } from "../model/voucher";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class BasketService {
   apiUrl = environment.apiHost;
 
