@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartComponent } from './cart/cart.component';
 import { RouterModule, Routes } from "@angular/router";
@@ -17,11 +17,27 @@ import { BasketDiscountedTotalPipe } from "../pipes/basket.discounted.total.pipe
 
 const routes: Routes = [
   {
-    path: '', canActivate: [PageGuard], children: [
-      { path: 'cart', component: CartComponent },
-      { path: 'checkout', component: CheckoutComponent, canActivate: [CheckoutGuard] },
-      { path: 'finalize-order', component: FinalizeComponent, canActivate: [OrderFlowGuard] },
-      { path: 'order-created', component: PaymentSuccessfulComponent }
+    path: '',
+    canActivate: [() => inject(PageGuard).canActivate()],
+    children: [
+      {
+        path: 'cart',
+        component: CartComponent
+      },
+      {
+        path: 'checkout',
+        component: CheckoutComponent,
+        canActivate: [() => inject(CheckoutGuard).canActivate()]
+      },
+      {
+        path: 'finalize-order',
+        component: FinalizeComponent,
+        canActivate: [() => inject(OrderFlowGuard).canActivate()]
+      },
+      {
+        path: 'order-created',
+        component: PaymentSuccessfulComponent
+      }
     ]
   }
 ];
@@ -43,7 +59,7 @@ const routes: Routes = [
     FontAwesomeModule,
     ReactiveFormsModule
   ],
-  providers: [CartBalancePipe, BasketDiscountedTotalPipe]
+  providers: [CartBalancePipe, BasketDiscountedTotalPipe, CheckoutGuard, OrderFlowGuard]
 })
 export class CheckoutModule {
 }

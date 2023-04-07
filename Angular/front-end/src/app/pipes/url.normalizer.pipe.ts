@@ -1,11 +1,11 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'urlNormalizer'
 })
 export class UrlNormalizerPipe implements PipeTransform {
 
-  transform(url: any, ...args: unknown[]): unknown {
+  transform(url: string, ...args: unknown[]): string {
     return url.toString().toLowerCase().trim().replaceAll(' ', '-');
   }
 }

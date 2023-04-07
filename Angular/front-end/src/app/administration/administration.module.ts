@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 import { CockpitComponent } from './cockpit/cockpit.component';
 import { SharedModule } from "../shared/shared.module";
 import { RouterModule, Routes } from "@angular/router";
@@ -33,7 +33,7 @@ import { DateFormatPipe } from "../pipes/date.format.pipe";
 
 const routes: Routes = [
   {
-    path: '', canActivateChild: [AdminGuard], children: [
+    path: '', canActivateChild: [() => inject(AdminGuard).canActivateChild()], children: [
       { path: 'cockpit', component: CockpitComponent },
       { path: 'categories', component: CategoryComponent },
       { path: 'category/create', component: CreateCategoryComponent },
@@ -51,44 +51,44 @@ const routes: Routes = [
 ]
 
 @NgModule({
-    declarations: [
-        CockpitComponent,
-        AdminHeaderComponent,
-        CreateProductComponent,
-        CreateCategoryComponent,
-        UpdateCategoryComponent,
-        CategoryComponent,
-        CreateMediaComponent,
-        MediaComponent,
-        PositiveNumberDirective,
-        ProductComponent,
-        UpdateProductComponent,
-        UserComponent,
-        OrderComponent,
-        VoucherComponent,
-        CreateVoucherComponent,
-        DateFormatPipe
-    ],
-    imports: [
-        CommonModule,
-        SharedModule,
-        SharedModule,
-        FontAwesomeModule,
-        RouterModule.forChild(routes),
-        FormsModule,
-        AsyncPipe,
-        ReactiveFormsModule,
-        NgOptimizedImage,
-        MatPaginatorModule,
-        MatInputModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        EffectsModule.forFeature(CategoryEffects, MediaEffects, ProductEffects)
-    ],
-    exports: [
-        DateFormatPipe
-    ],
-    providers: [JwtHelperService]
+  declarations: [
+    CockpitComponent,
+    AdminHeaderComponent,
+    CreateProductComponent,
+    CreateCategoryComponent,
+    UpdateCategoryComponent,
+    CategoryComponent,
+    CreateMediaComponent,
+    MediaComponent,
+    PositiveNumberDirective,
+    ProductComponent,
+    UpdateProductComponent,
+    UserComponent,
+    OrderComponent,
+    VoucherComponent,
+    CreateVoucherComponent,
+    DateFormatPipe
+  ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    SharedModule,
+    FontAwesomeModule,
+    RouterModule.forChild(routes),
+    FormsModule,
+    AsyncPipe,
+    ReactiveFormsModule,
+    NgOptimizedImage,
+    MatPaginatorModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    EffectsModule.forFeature(CategoryEffects, MediaEffects, ProductEffects)
+  ],
+  exports: [
+    DateFormatPipe
+  ],
+  providers: [JwtHelperService]
 })
 export class AdministrationModule {
 }

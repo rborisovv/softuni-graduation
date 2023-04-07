@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Router, UrlTree } from '@angular/router';
+import { Observable, tap } from 'rxjs';
 import { OrderService } from "../service/order.service";
 
-@Injectable({
-  providedIn: 'root'
-})
-export class OrderFlowGuard implements CanActivate {
-  constructor(private readonly orderService: OrderService) {
+@Injectable()
+export class OrderFlowGuard {
+  constructor(private orderService: OrderService, private router: Router) {
   }
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.orderService.canActivateOrderConfirmationFlow();
+  canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return this.orderService.canActivateOrderConfirmationFlow().pipe(tap((response) => {
+      if (response == false) {
+        this.router.navigateByUrl('/home');
+      }
+    }));
   }
-
 }
