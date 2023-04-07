@@ -9,4 +9,5 @@ public class SecurityConstant {
     public static final String HTTP_OPTIONS_NAME = HttpMethod.OPTIONS.name();
     public static final int COOKIE_MAX_AGE = 1800;
     public static final String[] AUTH_ENDPOINTS = {"/auth/admin", "/auth/users", "/auth/orders"};
+    public static final String ADMIN_ENDPOINT = "/admin/*";
 }

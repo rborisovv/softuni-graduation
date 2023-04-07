@@ -13,6 +13,5 @@ import java.util.Set;
 public interface BasketRepository extends JpaRepository<Basket, Long> {
     Optional<Basket> findBasketByUser(User user);
 
-
     Set<Basket> findBasketByCreationDateBefore(LocalDateTime creationDate);
 }

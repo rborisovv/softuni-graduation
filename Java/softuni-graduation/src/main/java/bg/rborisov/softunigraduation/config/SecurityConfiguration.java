@@ -1,6 +1,7 @@
 package bg.rborisov.softunigraduation.config;
 
 import bg.rborisov.softunigraduation.dao.UserRepository;
+import bg.rborisov.softunigraduation.enumeration.RoleEnum;
 import bg.rborisov.softunigraduation.httpFilter.IpAddressFilter;
 import bg.rborisov.softunigraduation.httpFilter.JwtAuthEntryPoint;
 import bg.rborisov.softunigraduation.httpFilter.JwtAuthFilter;
@@ -32,6 +33,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static bg.rborisov.softunigraduation.constant.SecurityConstant.ADMIN_ENDPOINT;
 import static bg.rborisov.softunigraduation.constant.SecurityConstant.PUBLIC_URLS;
 
 @Configuration
@@ -84,6 +86,7 @@ public class SecurityConfiguration {
                 .permitAll()
                 .requestMatchers(PUBLIC_URLS)
                 .permitAll()
+                .requestMatchers(ADMIN_ENDPOINT).hasRole(RoleEnum.ADMIN.name())
                 .anyRequest()
                 .authenticated()
                 .and()
