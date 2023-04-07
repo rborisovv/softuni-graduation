@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { PasswordReset } from "../../interface/passwordReset";
 import { ActivatedRoute, ActivatedRouteSnapshot } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { changePassword } from "../../store/action/user.action";
 import { pipe, take } from "rxjs";
+import { checkPasswordEquality, passwordShowHideOption, removeListenersOnDestroy } from "../auth.index";
 
 @Component({
   selector: 'app-password-change',
@@ -12,7 +13,7 @@ import { pipe, take } from "rxjs";
   styleUrls: ['./password.change.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PasswordChangeComponent implements OnInit {
+export class PasswordChangeComponent implements OnInit, OnDestroy {
   token: string | undefined;
 
   constructor(private activatedRoute: ActivatedRoute, private store: Store) {
@@ -26,17 +27,7 @@ export class PasswordChangeComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    let allShowHidePassword = document.querySelectorAll('.password-showHide');
-    allShowHidePassword.forEach(item => {
-      item.addEventListener('click', () => {
-        item.classList.toggle('hide')
-        if (item.closest('.form-input').querySelector('input').type === 'password') {
-          item.closest('.form-input').querySelector('input').type = 'text'
-        } else {
-          item.closest('.form-input').querySelector('input').type = 'password'
-        }
-      })
-    });
+    passwordShowHideOption();
 
     this.activatedRoute.queryParams.pipe(
       take(1),
@@ -57,8 +48,10 @@ export class PasswordChangeComponent implements OnInit {
     return this.passwordReset.get('confirmPassword');
   }
 
-  //TODO: Add a directive here and on register for password confirmation check
   onSubmit() {
+    if (!checkPasswordEquality(this.password.value, this.confirmPassword.value)) {
+      return;
+    }
 
     const data: PasswordReset = {
       password: this.password.value,
@@ -67,5 +60,9 @@ export class PasswordChangeComponent implements OnInit {
     };
 
     this.store.dispatch(changePassword({ data }));
+  }
+
+  ngOnDestroy(): void {
+    removeListenersOnDestroy();
   }
 }

@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { faFacebookF, faGithub, faGoogle, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { UserService } from "../../service/user.service";
 import { Router } from "@angular/router";
@@ -11,6 +19,7 @@ import { loginAction } from "../../store/action/auth.action";
 import { NotifierService } from "angular-notifier";
 import { NotificationType } from "../../enumeration/notification-enum";
 import { resetPassword } from "../../store/action/user.action";
+import { passwordShowHideOption, removeListenersOnDestroy } from "../auth.index";
 
 @Component({
   selector: 'app-login',
@@ -19,7 +28,7 @@ import { resetPassword } from "../../store/action/user.action";
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   faFacebook = faFacebookF;
   faTwitter = faTwitter;
@@ -48,24 +57,14 @@ export class LoginComponent implements OnInit {
   clientWidth: number = window.innerWidth;
 
   ngOnInit(): void {
-    const allShowHidePassword = document.querySelectorAll('.password-showHide')
-    allShowHidePassword.forEach(item => {
-      item.addEventListener('click', () => {
-        item.classList.toggle('hide')
-        if (item.closest('.form-input').querySelector('input').type === 'password') {
-          item.closest('.form-input').querySelector('input').type = 'text'
-        } else {
-          item.closest('.form-input').querySelector('input').type = 'password'
-        }
-      })
-    })
-    //TODO: Remove the event listeners manually
+    passwordShowHideOption();
   }
 
   public onLogin() {
     if (!this.username.value || !this.password.value) {
       return;
     }
+
     const formData: FormData = createFormData({
       'username': this.username.value,
       'password': this.password.value
@@ -98,5 +97,9 @@ export class LoginComponent implements OnInit {
 
     this.store.dispatch(resetPassword({ email }));
     this.modalClose.nativeElement.click();
+  }
+
+  ngOnDestroy(): void {
+    removeListenersOnDestroy();
   }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { faAddressCard, faCalendar, faEnvelope, faKey, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from "../../service/user.service";
 import { map, Observable } from "rxjs";
@@ -14,6 +14,7 @@ import { DatePipe } from "@angular/common";
 import { IUserRegisterModel } from "./IUserRegisterModel";
 import { Store } from "@ngrx/store";
 import { registerAction } from "../../store/action/auth.action";
+import { checkPasswordEquality, passwordShowHideOption, removeListenersOnDestroy } from "../auth.index";
 
 @Component({
   selector: 'app-register',
@@ -21,7 +22,7 @@ import { registerAction } from "../../store/action/auth.action";
   styleUrls: ['./register.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   faUser = faUser;
   faKey = faKey;
@@ -45,23 +46,16 @@ export class RegisterComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    const allShowHidePassword = document.querySelectorAll('.password-showHide')
-
-    allShowHidePassword.forEach(item => {
-      item.addEventListener('click', () => {
-        item.classList.toggle('hide')
-        if (item.closest('.form-input').querySelector('input').type === 'password') {
-          item.closest('.form-input').querySelector('input').type = 'text'
-        } else {
-          item.closest('.form-input').querySelector('input').type = 'password'
-        }
-      })
-    });
+    passwordShowHideOption();
   }
 
   public onRegister(): void {
     if (!this.username.value || !this.email.value || !this.firstName.value || !this.lastName.value
       || !this.birthDate.value || !this.password.value || !this.confirmPassword.value) {
+      return;
+    }
+
+    if (!checkPasswordEquality(this.password.value, this.confirmPassword.value)) {
       return;
     }
 
@@ -113,6 +107,10 @@ export class RegisterComponent implements OnInit {
 
   get confirmPassword(): AbstractControl {
     return this.registerForm.get('confirmPassword');
+  }
+
+  ngOnDestroy(): void {
+    removeListenersOnDestroy();
   }
 }
 
