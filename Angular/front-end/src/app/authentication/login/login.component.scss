@@ -1,11 +1,5 @@
 @import "../../../common";
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 .login-container form {
   position: relative;
   top: 50%;
@@ -249,4 +243,16 @@ input:valid + label {
 #modal-btn-save {
   @include modal-save-btn;
   margin-left: 32px;
+}
+
+@media screen and (max-width: 500px) {
+  .modal .modal-dialog {
+    & .form-input {
+      width: 100% !important;
+    }
+
+    & .search-wrapper {
+      flex-flow: row nowrap;
+    }
+  }
 }

@@ -58,8 +58,6 @@ a {
   }
 }
 
-// Start navbar
-
 .navbar,
 .navbar > .container {
   width: 100%;
@@ -93,42 +91,25 @@ a {
     }
   }
 
-  /*
-  |-----------------------------------
-  | Start navbar logo or brand etc..
-  |-----------------------------------
-  */
   .navbar-header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    & > a {
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: 10px;
+    }
 
     @media (max-width: 768px) {
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-direction: row-reverse;
-    }
-
-    .navbar-toggler {
-      // border-radius: 5px;
-      // background-color: transparent;
-      cursor: pointer;
-      border: none;
-      display: none;
-      outline: none;
-
-      @media (max-width: 768px) { display: block }
-
-      span {
-        height: 2px;
-        width: 22px;
-        background-color: lighten($text-dark, 35%);
-        display: block;
-      }
-      span:not(:last-child) {
-        margin-bottom: 0.2rem;
-      }
+      flex-direction: row;
     }
 
     > a {
@@ -137,118 +118,28 @@ a {
     }
   }
 
-  /*
-  |-----------------------------------
-  | Start navbar menu
-  |-----------------------------------
-  */
-  .navbar-menu {
-    display: flex;
-    align-items: center;
-    flex-basis: auto;
-    flex-grow: 1;
-
-    @media (max-width: 768px) {
-      display: none;
-      text-align: center;
-    }
-
-    // Ul
-    .navbar-nav {
-      margin-left: auto;
-      flex-direction: row;
-      display: flex;
-      padding-left: 0;
-      margin-bottom: 0;
-      list-style: none;
-
-      @media (max-width: 768px) {
-        width: 100%;
-        display: block;
-        border-top: 1px solid #EEE;
-        margin-top: 1rem;
-      }
-
-      > li {
-        > a {
-          color: $text-dark;
-          text-decoration: none;
-          display: inline-block;
-          padding: $navbar-link-padding-y $navbar-link-padding-x;
-          &:hover {
-            color: $navbar-link-hover;
-          }
-          @media (max-width: 768px) {
-            border-bottom: 1px solid $border-color;
-          }
-        }
-        &.active {
-          a {
-            color: $base-color;
-          }
-        }
-      }
-
-      .navbar-dropdown {
-        .dropdown {
-          list-style: none;
-          position: absolute;
-          top: 150%;
-          left: 0;
-          background-color: #fff;
-          padding-top: $navbar-dropdown-padding-y;
-          padding-bottom: $navbar-dropdown-padding-y;
-          min-width: 160px;
-          width: auto;
-          white-space: nowrap;
-          box-shadow: $navbar-dropdown-shadow;
-          z-index: 99999;
-          border-radius: $navbar-dropdown-radius;
-          display: none;
-          @media (max-width: 768px) {
-            position: relative;
-            box-shadow: none;
-          }
-          li {
-            a {
-              color: $text-dark;
-              padding: $navbar-dropdown-item-padding-y
-              $navbar-dropdown-item-padding-x;
-              display: block;
-            }
-          }
-          &.show {
-            display: block !important;
-          }
-        }
-      }
-
-      .dropdown > .separator {
-        height: 1px;
-        width: 100%;
-        margin: {
-          top: $navbar-dropdown-separator-margin-y;
-          bottom: $navbar-dropdown-separator-margin-y;
-        };
-        background-color: $navbar-dropdown-separator-color;
-      }
-    }
-  }
-
   .navbar-dropdown {
     position: relative;
   }
 }
 
+.user-items {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  gap: 35px;
 
-// Custom
+  & a {
+    color: #36454F;
+  }
+}
+
 .navbar .navbar-header > a h2 {
   color: $base-color;
 }
-.navbar .navbar-header h4 {
-  font-weight: 500;
-  font-size: 1.25rem;
-  @media (max-width: 768px) {
-    font-size: 1.05rem;
+
+@media screen and (max-width: 500px) {
+  .container {
+    padding: 0;
   }
 }
