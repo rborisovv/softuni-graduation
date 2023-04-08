@@ -26,20 +26,20 @@ public class UserResource {
         this.userService = userService;
     }
 
-    @CacheEvict("favourites")
     @PostMapping("/addToFavourites")
+    @CacheEvict(value = "favourites", key = "#principal.name")
     public ResponseEntity<HttpResponse> addToFavourites(final @RequestBody String productIdentifier, final Principal principal) throws ProductNotFoundException {
         return this.userService.addToFavourites(productIdentifier, principal);
     }
 
-    @Cacheable("favourites")
     @GetMapping("/favourites")
+    @Cacheable(value = "favourites", key = "#principal.name")
     public Set<ProductDto> loadFavouriteProducts(final Principal principal) {
         return this.userService.loadFavouriteProducts(principal);
     }
 
-    @CacheEvict("favourites")
     @PostMapping("/removeFromFavourites")
+    @CacheEvict(value = "favourites", key = "#principal.name")
     public ResponseEntity<HttpResponse> removeProductFromFavourites(final @RequestBody String identifier, final Principal principal) throws UserNotFoundException, ProductNotFoundException {
         return this.userService.removeFromFavourites(identifier, principal);
     }

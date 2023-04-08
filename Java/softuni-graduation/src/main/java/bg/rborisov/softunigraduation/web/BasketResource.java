@@ -37,26 +37,26 @@ public class BasketResource {
         return this.basketService.canActivateCheckout(principal);
     }
 
-    @CacheEvict(value = "basket")
+    @CacheEvict(value = "basket", key = "#principal.name")
     @PostMapping("/addToBasket")
     public ResponseEntity<HttpResponse> addToBasket(@RequestBody final String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException, ProductSoldOutException {
         return this.basketService.addToBasket(identifier, principal);
     }
 
-    @Cacheable("basket")
     @GetMapping("/userBasket")
+    @Cacheable(value = "basket", key = "#principal.name")
     public Set<ProductDto> loadBasket(final Principal principal) throws UserNotFoundException {
         return this.basketService.loadBasket(principal);
     }
 
-    @CacheEvict(value = "basket")
     @PostMapping("/removeFromBasket")
+    @CacheEvict(value = "basket", key = "#principal.name")
     public ResponseEntity<HttpResponse> removeFromBasket(final @RequestBody String identifier, final Principal principal) throws ProductNotFoundException, UserNotFoundException {
         return this.basketService.removeFromBasket(identifier, principal);
     }
 
-    @CacheEvict(value = "basket")
     @PostMapping("/updateBasketProduct")
+    @CacheEvict(value = "basket", key = "#principal.name")
     public ResponseEntity<HttpResponse> updateBasketProduct(final Principal principal, final @RequestBody Map<String, String> productParams) throws ProductNotFoundException, UserNotFoundException, BasketNotFoundException {
         return this.basketService.updateBasketProduct(principal, productParams);
     }
