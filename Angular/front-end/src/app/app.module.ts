@@ -82,7 +82,7 @@ function provideHeadersDecoratorInterceptor(interceptor: HeadersDecoratorInterce
         }
       },
       behaviour: {
-        autoHide: 5000,
+        autoHide: 1500,
         onClick: "hide",
         onMouseover: "pauseAutoHide",
         showDismissButton: true,

@@ -1,33 +1,16 @@
 <nav class="navbar">
   <div class="container">
-
     <div class="navbar-header">
-      <button class="navbar-toggler" data-toggle="open-navbar1">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
       <fa-icon class="cart-icon" [icon]="faCart"></fa-icon>
       <a href="javascript:void(0)" routerLink="/admin/cockpit">
         <h2>eCart</h2>
       </a>
+      <a href="javascript:void(0)" (click)="logout()">
+        <fa-icon [icon]="faSignOut" style="font-size: 32px;"></fa-icon>
+      </a>
     </div>
+    <div class="user-items">
 
-    <div class="navbar-menu" id="open-navbar1">
-      <ul class="navbar-nav">
-        <li>
-          <a href="javascript:void(0)" style="font-size: 32px;" routerLink="/home">
-            <fa-icon [icon]="faHome"></fa-icon>
-            Home
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)" style="font-size: 32px;" (click)="logout()">
-            <fa-icon [icon]="faSignOut"></fa-icon>
-            Logout
-          </a>
-        </li>
-      </ul>
     </div>
   </div>
 </nav>
