@@ -1,16 +1,19 @@
 <nav class="navbar">
   <div class="container">
     <div class="navbar-header">
-      <fa-icon class="cart-icon" [icon]="faCart"></fa-icon>
       <a href="javascript:void(0)" routerLink="/admin/cockpit">
+        <fa-icon class="cart-icon" [icon]="faCart"></fa-icon>
         <h2>eCart</h2>
       </a>
-      <a href="javascript:void(0)" (click)="logout()">
-        <fa-icon [icon]="faSignOut" style="font-size: 32px;"></fa-icon>
-      </a>
-    </div>
-    <div class="user-items">
-
+      <div class="user-items">
+        <a href="javascript:void(0)" routerLink="/home" style="font-size: 36px;">
+          <fa-icon [icon]="faHome"></fa-icon>
+          Home
+        </a>
+        <a href="javascript:void(0)" (click)="logout()" style="font-size: 36px;">
+          <fa-icon [icon]="faSignOut"></fa-icon>
+        </a>
+      </div>
     </div>
   </div>
 </nav>
