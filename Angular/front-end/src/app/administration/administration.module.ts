@@ -34,18 +34,18 @@ import { DateFormatPipe } from "../pipes/date.format.pipe";
 const routes: Routes = [
   {
     path: '', canActivateChild: [() => inject(AdminGuard).canActivateChild()], children: [
-      { path: 'cockpit', title: 'eCart Cockpit', component: CockpitComponent },
-      { path: 'categories', component: CategoryComponent },
-      { path: 'category/create', component: CreateCategoryComponent },
-      { path: 'medias', component: MediaComponent },
-      { path: 'products', component: ProductComponent },
-      { path: 'product/create', component: CreateProductComponent },
-      { path: 'media/create', component: CreateMediaComponent },
-      { path: 'categories/:identifier', component: UpdateCategoryComponent },
-      { path: 'users', component: UserComponent },
-      { path: 'vouchers', component: VoucherComponent },
-      { path: 'voucher/create', component: CreateVoucherComponent },
-      { path: 'orders', component: OrderComponent }
+      { path: 'cockpit', title: 'eCart | Cockpit', component: CockpitComponent },
+      { path: 'categories', title: 'eCart | Categories', component: CategoryComponent },
+      { path: 'category/create', title: 'eCart | Create category', component: CreateCategoryComponent },
+      { path: 'medias', title: 'eCart | Medias', component: MediaComponent },
+      { path: 'products', title: 'eCart | Products', component: ProductComponent },
+      { path: 'product/create', title: 'eCart | Create product', component: CreateProductComponent },
+      { path: 'media/create', title: 'eCart | Create media', component: CreateMediaComponent },
+      { path: 'categories/:identifier', title: 'eCart | Update Category', component: UpdateCategoryComponent },
+      { path: 'users', title: 'eCart | Users', component: UserComponent },
+      { path: 'vouchers', title: 'eCart | Vouchers', component: VoucherComponent },
+      { path: 'voucher/create', title: 'eCart | Create voucher', component: CreateVoucherComponent },
+      { path: 'orders', title: 'eCart | Orders', component: OrderComponent }
     ]
   }
 ]

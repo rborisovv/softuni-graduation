@@ -24,7 +24,7 @@ const routes: Routes = [
       { path: 'register', title: 'eCart | Register', component: RegisterComponent },
       {
         path: 'change-password',
-        title: 'eCart | Change Password',
+        title: 'eCart | Change password',
         component: PasswordChangeComponent,
         canActivate: [() => inject(PasswordChangeGuard).canActivate()]
       }

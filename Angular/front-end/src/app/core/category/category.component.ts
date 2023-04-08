@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable, take } from "rxjs";
+import { Observable, take, tap } from "rxjs";
 import { Category } from 'src/app/model/category';
 import { CategoryService } from "../../service/category.service";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
@@ -11,6 +11,7 @@ import {
   selectFavouriteProductsState
 } from "../../store/selector/user.selector";
 import { Product } from "../../model/product";
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-category',
@@ -28,7 +29,7 @@ export class CategoryComponent implements OnInit {
   faHeart = faHeart;
 
   constructor(private categoryService: CategoryService, private router: Router, private route: ActivatedRoute,
-              private store: Store) {
+              private store: Store, private titleService: Title) {
   }
 
   ngOnInit(): void {
@@ -41,7 +42,10 @@ export class CategoryComponent implements OnInit {
     this.route.paramMap.subscribe(
       (params: ParamMap) => {
         const category = params.get('category');
-        this.category$ = this.categoryService.loadCategoryWithBreadcrumb(category);
+        this.category$ = this.categoryService.loadCategoryWithBreadcrumb(category)
+          .pipe(tap((category) => {
+            this.titleService.setTitle("eCart | " + category.name);
+          }));
       });
   }
 

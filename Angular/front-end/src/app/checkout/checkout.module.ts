@@ -23,20 +23,24 @@ const routes: Routes = [
     children: [
       {
         path: 'cart',
-        component: CartComponent
+        component: CartComponent,
+        title: 'eCart | Basket',
       },
       {
         path: 'checkout',
         component: CheckoutComponent,
+        title: 'eCart | Checkout',
         canActivate: [() => inject(CheckoutGuard).canActivate()]
       },
       {
         path: 'finalize-order',
         component: FinalizeComponent,
+        title: 'eCart | Finalize order',
         canActivate: [() => inject(OrderFlowGuard).canActivate()]
       },
       {
         path: 'order-created',
+        title: 'eCart | Order created',
         component: PaymentSuccessfulComponent
       }
     ]

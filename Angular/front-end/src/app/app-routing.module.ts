@@ -8,7 +8,7 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule)
   },
-  { path: 'home', component: HomeComponent, canActivate: [PageGuard] },
+  { path: 'home', title: 'eCart | Home', component: HomeComponent, canActivate: [PageGuard] },
   { path: '', pathMatch: "full", redirectTo: '/home' },
   {
     path: 'admin',
