@@ -181,7 +181,7 @@ public class AuthService {
             voucher.setUser(user);
         }
 
-        if (voucher.getCategory() != null) {
+        if (voucherDto.getCategory() != null) {
             final Optional<Category> optionalCategory;
             optionalCategory = this.categoryRepository.findCategoryByIdentifier(voucherDto.getCategory().getIdentifier());
             optionalCategory.ifPresent(voucher::setCategory);

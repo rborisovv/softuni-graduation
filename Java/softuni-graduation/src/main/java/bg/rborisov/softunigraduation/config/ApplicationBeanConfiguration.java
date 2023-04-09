@@ -3,6 +3,7 @@ package bg.rborisov.softunigraduation.config;
 import bg.rborisov.softunigraduation.util.LoginCacheModel;
 import bg.rborisov.softunigraduation.util.RsaKeyProviderFactory;
 import com.auth0.jwt.interfaces.RSAKeyProvider;
+import com.github.javafaker.Faker;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -119,5 +120,10 @@ public class ApplicationBeanConfiguration {
                 .replaceAll("\\s+", StringUtils.EMPTY);
 
         return Base64.getDecoder().decode(rsaKeyContent);
+    }
+
+    @Bean
+    public Faker faker() {
+        return new Faker();
     }
 }
