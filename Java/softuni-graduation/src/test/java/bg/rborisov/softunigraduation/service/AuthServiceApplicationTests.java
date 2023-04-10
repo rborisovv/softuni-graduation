@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-class AuthApplicationTests {
+class AuthServiceApplicationTests {
 
     @Mock
     private UserLoginDto userLoginDto;

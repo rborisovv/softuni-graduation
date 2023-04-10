@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-class UserApplicationTests {
+class UserServiceApplicationTests {
 
     @MockBean
     private UserRepository userRepository;

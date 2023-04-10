@@ -35,7 +35,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
 
     @Cacheable("userDetails")
-    public UserDetails userDetails(User user) {
+    public UserDetails userDetails(final User user) {
         return org.springframework.security.core.userdetails.User
                 .builder()
                 .username(user.getUsername())

@@ -26,10 +26,10 @@ public final class RsaKeyIntegrityVerifier {
     public void verifyRsaKeysIntegrity() throws IOException, NoSuchAlgorithmException, RsaKeyIntegrityViolationException {
         final byte[] privateRsaKeyBytes = Files.readAllBytes(Path.of(this.privateKeyPath.getURI()));
         final byte[] publicRsaKeyBytes = Files.readAllBytes(Path.of(this.publicKeyPath.getURI()));
-        final MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        final MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
 
-        final byte[] privateRsaKeyHash = digest.digest(privateRsaKeyBytes);
-        final byte[] publicRsaKeyHash = digest.digest(publicRsaKeyBytes);
+        final byte[] privateRsaKeyHash = messageDigest.digest(privateRsaKeyBytes);
+        final byte[] publicRsaKeyHash = messageDigest.digest(publicRsaKeyBytes);
 
         final String privateRsaKeySha256 = Files.readString(Path.of(this.resourceLoader
                 .getResource("classpath:keys/private_key.sha256").getURI())).trim();

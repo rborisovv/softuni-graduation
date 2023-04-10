@@ -39,9 +39,6 @@ public class MediaService extends AbstractMediaUrlBuilder {
                 .orElseThrow(() -> new MediaNotFoundException(MEDIA_NOT_FOUND)).getFile();
     }
 
-    /*
-    Creates a new Media Object and returns HTTP Response
-     */
     public void saveMedia(String name, MultipartFile multipartFile) throws MediaByNameAlreadyExistsException, IOException {
         if (this.mediaRepository.findMediaByName(name).isPresent()) {
             throw new MediaByNameAlreadyExistsException();
