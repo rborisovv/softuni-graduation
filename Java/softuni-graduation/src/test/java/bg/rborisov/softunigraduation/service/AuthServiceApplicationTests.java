@@ -91,7 +91,7 @@ class AuthServiceApplicationTests {
                 this.faker.name().firstName(), this.faker.name().lastName(), LocalDate.now(),
                 registerDtoPassword, registerDtoPassword);
 
-        this.userLoginDto = new UserLoginDto("radi2000", "123456");
+        this.userLoginDto = new UserLoginDto("radi2000", "1234567890");
 
         this.user = new User();
 

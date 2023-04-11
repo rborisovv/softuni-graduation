@@ -55,7 +55,6 @@ public class CategoryService extends AbstractMediaUrlBuilder {
             //If new media is uploaded
             mediaName = Objects.requireNonNull(categoryDto.getMedia().getOriginalFilename()).replaceAll("\\s+", "-");
             optionalMedia = this.mediaService.constructMediaForEntity(categoryDto.getMedia(), mediaName);
-
         } else {
             //If existing media is selected
             optionalMedia = this.mediaRepository.findMediaByPkOfFile(pkOfFile);

@@ -42,7 +42,6 @@ public class ProductService {
     private ModelMapper modelMapper;
 
     public ResponseEntity<HttpResponse> createProduct(ProductDto productDto) throws Exception {
-
         String categoryIdentifier = productDto.getCategoryIdentifier();
         @ImageValidator MultipartFile multipartFile = productDto.getMedia();
         String pkOfFile = productDto.getPkOfFile();
@@ -56,8 +55,9 @@ public class ProductService {
             throw new AbsentCategoryProductException();
         }
 
-        assert multipartFile != null;
+
         if (productDto.getMedia() != null) {
+            assert multipartFile != null;
             String mediaName = Objects.requireNonNull(multipartFile.getOriginalFilename());
             optionalMedia = this.mediaService.constructMediaForEntity(productDto.getMedia(), mediaName);
 
