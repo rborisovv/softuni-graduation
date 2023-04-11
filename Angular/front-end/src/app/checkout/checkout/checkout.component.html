@@ -131,7 +131,7 @@
 
 
     <ng-container *ngIf="(voucher$ | async) !== null && products.length > 0">
-      <div *ngIf="discountedBasketTotal$ | async as total; else free"
+      <div style="padding-bottom: 1rem;" *ngIf="discountedBasketTotal$ | async as total; else free"
            class="subtotal text-right">
         <label class="fs-5">Total: </label>
         <strong class="fs-4">{{ total }}</strong>

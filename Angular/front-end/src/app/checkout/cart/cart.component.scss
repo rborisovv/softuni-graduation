@@ -175,6 +175,12 @@
   // cart_details
   .product-summary {
     @include checkout-flow-product-summary();
+
+    & .voucher-label {
+      @include flex-horizontal-center-row();
+      justify-content: space-between;
+      margin: 0 1rem;
+    }
   }
 }
 
