@@ -100,6 +100,9 @@ export class CreateProductComponent extends ProductSharedFunctionality implement
   }
 
   public filterCategory($event: Event): void {
+    if ((<HTMLInputElement>$event.target).value === '') {
+      return;
+    }
     this.filteredCategories$ = this.categoryService.filterCategoriesByName((<HTMLInputElement>$event.target).value);
   }
 

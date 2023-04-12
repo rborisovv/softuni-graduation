@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { PasswordReset } from "../../interface/passwordReset";
-import { ActivatedRoute, ActivatedRouteSnapshot } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { changePassword } from "../../store/action/user.action";
-import { pipe, take } from "rxjs";
+import { take } from "rxjs";
 import { checkPasswordEquality, passwordShowHideOption, removeListenersOnDestroy } from "../auth.index";
 
 @Component({

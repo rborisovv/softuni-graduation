@@ -14,15 +14,16 @@ import { TOKEN_IS_INVALID } from "../common/messages";
   providedIn: 'root'
 })
 export class PasswordChangeGuard {
-  constructor(private userService: UserService,
-              private router: Router,
-              private notifier: NotifierService,
-              private route: ActivatedRouteSnapshot) {
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private notifier: NotifierService
+  ) {
   }
 
-  canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    const token = this.route.queryParams['token'];
+    const token = route.queryParams['token'];
     return this.userService.hasActivePasswordRequest(token).pipe(tap(response => {
         if (response === false) {
           this.router.navigateByUrl('/home').then(() => {

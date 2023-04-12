@@ -3,7 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { RouterModule, Routes } from "@angular/router";
+import { ActivatedRouteSnapshot, RouterModule, Routes } from "@angular/router";
 import { ReactiveFormsModule } from "@angular/forms";
 import { UserService } from "../service/user.service";
 import { SharedModule as SharedModule } from '../shared/shared.module';
@@ -26,7 +26,8 @@ const routes: Routes = [
         path: 'change-password',
         title: 'eCart | Change password',
         component: PasswordChangeComponent,
-        canActivate: [() => inject(PasswordChangeGuard).canActivate()]
+        canActivate: [(route: ActivatedRouteSnapshot) => inject(PasswordChangeGuard).canActivate(route)
+        ]
       }
     ]
   }
