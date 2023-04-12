@@ -54,7 +54,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   @ViewChild('passwordResetEmail') passwordResetEmail: ElementRef | undefined;
   @ViewChild('modalClose') modalClose: ElementRef | undefined;
-  clientWidth: number = window.innerWidth;
 
   ngOnInit(): void {
     passwordShowHideOption();

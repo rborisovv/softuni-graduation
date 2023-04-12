@@ -4,7 +4,6 @@
 @import '../node_modules/angular-notifier/styles.css';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
 @import "../node_modules/tippy.js/dist/tippy.css";
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 $base-color-green: #00c5b2;
 $base-color-white: #e4e6eb;
@@ -83,6 +82,14 @@ $base-color-white: #e4e6eb;
 
 .mb-50 {
   margin-bottom: 50px !important;
+}
+
+.mr-5 {
+  margin-right: 5px !important;
+}
+
+.mr-10 {
+  margin-right: 10px !important;
 }
 
 .mr-25 {

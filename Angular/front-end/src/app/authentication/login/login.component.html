@@ -1,5 +1,4 @@
-<app-hamburger *ngIf="clientWidth < 1000"></app-hamburger>
-<app-auth-header url="/auth/login" *ngIf="clientWidth > 1000"></app-auth-header>
+<app-auth-header url="/auth/login"></app-auth-header>
 
 <main class="login-container">
   <form class="form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
