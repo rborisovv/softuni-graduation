@@ -3,12 +3,9 @@ package bg.rborisov.softunigraduation.web;
 import bg.rborisov.softunigraduation.dto.CheckoutDto;
 import bg.rborisov.softunigraduation.exception.UserNotFoundException;
 import bg.rborisov.softunigraduation.service.OrderService;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -27,6 +24,7 @@ public class OrderResource {
     }
 
     @PostMapping("/createOrder")
+    @CacheEvict(value = "basket", key = "#principal.name")
     public void createOrder(final Principal principal) {
         this.orderService.createOrder(principal);
     }
