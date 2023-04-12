@@ -35,7 +35,7 @@ export class FinalizeComponent implements OnInit {
     this.voucher$ = this.basketService.fetchVoucherIfPresent();
 
     this.discountedBasketTotal$ = this.store.select(selectDiscountedTotalState).pipe(
-      map(state => state ? (state.total <= 0 ? 'Free' : (state.total.toFixed(2) + ' lv.')) : undefined)
+      map(state => state ? (state.total <= 0 ? 'Free' : ('$' + state.total.toFixed(2) + ' lv.')) : undefined)
     );
   }
 
