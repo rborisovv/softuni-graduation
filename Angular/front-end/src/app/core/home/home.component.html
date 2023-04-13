@@ -1,7 +1,77 @@
-<app-header></app-header>
+<app-header [renewedFavouriteProducts$]="favouriteProducts$" [renewedBasketProducts$]="basketProducts$"></app-header>
 
 <main>
+  <div class="banner-wrapper">
+    <img src="./assets/images/home/banner3.webp" alt="">
+    <img src="./assets/images/home/banner.jpg" alt="">
+  </div>
 
+  <div class="pros mt-40 mb-40">
+    <div class="pro">
+      <figure>
+        <img src="./assets/images/home/dollar-symbol.png" alt="">
+        <figcaption>
+          <h2 class="mt-25 mb-10">Prices as in the supermarket</h2>
+          <p>Online grocery shopping doesn't have to be more expensive</p>
+        </figcaption>
+      </figure>
+    </div>
+    <div class="pro">
+      <figure>
+        <img src="./assets/images/home/shopping-bag.png" alt="">
+        <figcaption>
+          <h2 class="mt-25 mb-10">Everything you need</h2>
+          <p>Large assortment of everything you need for your weekly shopping</p>
+        </figcaption>
+      </figure>
+    </div>
+    <div class="pro">
+      <figure>
+        <img src="./assets/images/home/delivery-truck.png" alt="">
+        <figcaption>
+          <h2 class="mt-25 mb-10">Quick and easy</h2>
+          <p>Order easily in minutes - we will deliver it to you within 3 hours</p>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+  <hr/>
+
+  <div class="home-special"  *ngIf="category$ | async as category">
+    <div class="category-data mb-40">
+      <div class="breadcrumb-wrapper">
+        <h2 class="mb-50 mt-50 text-green">{{category.name}}</h2>
+      </div>
+      <div class="category-img-wrapper mt-15">
+        <img [src]="category.mediaUrl" alt="">
+      </div>
+    </div>
+
+    <div class="category-products">
+      <div class="product" *ngFor="let product of category.products">
+        <div class="product-img__wrapper">
+          <img class="mb-30" [src]="product.mediaUrl" alt="">
+          <a href="javascript:void(0)" (click)="addToFavourites(product.identifier)">
+            <fa-icon class="fs-3" [icon]="faHeart" style="color: #c4c5c4;"></fa-icon>
+          </a>
+        </div>
+        <div class="description-wrapper text-center" *ngIf="product.description">
+          <p class="description">{{product.description}}</p>
+        </div>
+        <div class="product-description text-center">
+          <h6 class="product-name">{{product.name}}</h6>
+          <p class="product-expire-date mb-20">Best before:
+            <span>{{product.bestBefore | date: 'dd/MM/yyyy'}}</span>
+          </p>
+          <p class="product-price fs-2 mb-40">{{product.price | currency}} <span>lv.</span></p>
+          <a *ngIf="product.showBuyButton && product.stockLevel > 0" (click)="addToBasket(product.identifier)"
+             class="add-to-basket"
+             href="javascript:void(0)">Add to Basket</a>
+        </div>
+        <span class="sold-out__text text-red" *ngIf="product.stockLevel <= 0">Out of stock</span>
+      </div>
+    </div>
+  </div>
 </main>
 
 <app-footer></app-footer>
