@@ -20,6 +20,22 @@ main {
   flex-flow: row wrap;
   gap: 6rem;
 
+  .description-wrapper {
+    @include flex-horizontal-center-row();
+    margin-bottom: 1rem;
+
+    .description {
+      background: #999999;
+      color: white;
+      border-radius: 20px;
+      min-width: 55px;
+      max-width: 150px;
+      text-align: center;
+      font-weight: bold;
+      padding: 1px 10px;
+    }
+  }
+
   & .product-description {
 
     & > .product-name {

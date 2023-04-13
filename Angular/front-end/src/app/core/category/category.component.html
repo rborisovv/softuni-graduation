@@ -19,6 +19,9 @@
             <fa-icon class="fs-3" [icon]="faHeart" style="color: #c4c5c4;"></fa-icon>
           </a>
         </div>
+        <div class="description-wrapper text-center" *ngIf="product.description">
+          <p class="description">{{product.description}}</p>
+        </div>
         <div class="product-description text-center">
           <h6 class="product-name">{{product.name}}</h6>
           <p class="product-expire-date mb-20">Best before:
