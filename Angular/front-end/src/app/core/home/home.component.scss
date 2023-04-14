@@ -29,14 +29,40 @@ main {
     }
 
     .pro {
-      max-width: 400px;
+      max-width: 365px;
 
       figure {
         @include flex-horizontal-center-row();
         text-align: center;
       }
+
+      h2 {
+        font-family: "Poppins", serif;
+      }
+
+      p {
+        font-family: "Lato", serif;
+      }
     }
   }
 
   @include category-styles();
+}
+
+@media screen and (max-width: 1000px) {
+  main .banner-wrapper > img {
+    height: unset;
+  }
+
+  main .banner-wrapper > img:first-child {
+    margin-bottom: 10px;
+  }
+
+  .pros {
+    justify-content: center !important;
+  }
+
+  .pros .pro {
+    margin-bottom: 32px;
+  }
 }
