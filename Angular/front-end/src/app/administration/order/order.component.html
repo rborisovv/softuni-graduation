@@ -3,7 +3,7 @@
 <main>
   <h1 class="text-center mt-40 mb-30">Orders</h1>
   <div class="create-btn-wrapper" *ngIf="orders$ | async as orders">
-    <h3>Total Categories: <span>{{orders.length}}</span></h3>
+    <h3>Total Orders: <span>{{orders.length}}</span></h3>
   </div>
   <div class="categories">
     <div class="category" *ngIf="orders$ | async as orders">
@@ -37,4 +37,4 @@
   </div>
 </main>
 
-<app-footer></app-footer>
+<app-footer *ngIf="orders$ | async"></app-footer>

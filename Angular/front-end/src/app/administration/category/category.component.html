@@ -53,4 +53,4 @@
   </div>
 </main>
 
-<app-footer></app-footer>
+<app-footer *ngIf="categories$ | async"></app-footer>

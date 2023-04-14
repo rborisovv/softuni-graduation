@@ -21,6 +21,11 @@ main {
 
     & img {
       width: 100px;
+      transition: all 300ms ease-in-out;
+    }
+
+    & img:hover {
+      transform: scale(1.15);
     }
 
     .pro {
