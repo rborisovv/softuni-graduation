@@ -40,7 +40,7 @@ logging:
         web: DEBUG
 
 sendgrid:
-  apiKey: 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
+  apiKey: ${SENDGRID_API_KEY}
 
 server:
   port: 8080
