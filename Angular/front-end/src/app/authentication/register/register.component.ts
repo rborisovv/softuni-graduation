@@ -62,8 +62,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     const registerData: IUserRegisterModel = {
       'username': this.username.value,
       'email': this.email.value,
-      'firstName': this.firstName.value.toUpperCase().chatAt(0) + this.firstName.value.slice(1),
-      'lastName': this.lastName.value.toUpperCase().chat(0) + this.firstName.value.slice(1),
+      'firstName': this.firstName.value,
+      'lastName': this.lastName.value,
       'birthDate': this.datePipe.transform(this.birthDate.value, 'dd-MM-yyyy'),
       'password': this.password.value,
       'confirmPassword': this.confirmPassword.value
